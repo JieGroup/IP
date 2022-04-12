@@ -5,7 +5,7 @@ This open-source project aims to develop Interval Privacy into a human-centric t
 The code will be actively developed and maintained by Jie Ding and his team.
 
 ## Reference
-Ding, Jie, and Bangjun Ding. "Interval Privacy: A Framework for Data Collection." arXiv preprint arXiv:2106.09565 (2021).
+Ding, Jie, and Bangjun Ding. "Interval Privacy: A Framework for Privacy-Preserving Data Collection." https://arxiv.org/pdf/2106.09565.pdf
 ```
 @article{ding2021interval,
   title={Interval Privacy: A Framework for Data Collection},
