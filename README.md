@@ -2,17 +2,18 @@
 
 This open-source project aims to develop Interval Privacy into a human-centric technology of collecting private data, where individuals have a perceptible, transparent, and simple way of sharing sensitive data.
 
-The code will be actively maintained by Jie Ding and his team.
+The code will be actively developed and maintained by Jie Ding and his team.
 
 # Reference
 Ding, Jie, and Bangjun Ding. "Interval Privacy: A Framework for Data Collection." arXiv preprint arXiv:2106.09565 (2021).
-
+```
 @article{ding2021interval,
   title={Interval Privacy: A Framework for Data Collection},
   author={Ding, Jie and Ding, Bangjun},
   journal={arXiv preprint arXiv:2106.09565},
   year={2021}
 }
+```
 
 ## Description
 
@@ -51,9 +52,8 @@ deactivate
 which python3
 ```
 * install necessary packages
+```
 pip3 install -r requirements.txt
-% this was from 
-pip freeze --local > requirements.txt
 ```
 
 ### Executing program
