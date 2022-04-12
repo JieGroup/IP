@@ -80,8 +80,8 @@ Please contact Jie for any concerns on the open-source project
 
 Contributors names and contact info
 
-ex. Jie Ding  
-ex. [dingj@umn.edu](http://jding.org)
+Jie Ding  
+[dingj@umn.edu](http://jding.org)
 
 ## Version History
 
@@ -93,6 +93,6 @@ ex. [dingj@umn.edu](http://jding.org)
 
 ## License
 
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
+This project is licensed under the MIT License - see the LICENSE.md file for details
 
 
