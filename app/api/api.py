@@ -1,39 +1,32 @@
-from flask import render_template, flash, redirect, url_for, request, session, make_response
-from app import app, db
-from app.models import Voter, QandA
-from app.form import FrontForm, DynammicForm, StaticForm
-import numpy as np
 import sys
-from datetime import datetime, timezone
-from app.constant import *
-from wtforms import RadioField
-from wtforms.validators import InputRequired
-from random import Random
-from sqlalchemy import desc
 import string
 import random
+import numpy as np
 
+from random import Random
+from wtforms import RadioField
+from wtforms.validators import InputRequired
+from datetime import datetime, timezone
 
-# define fixed TYPE of entry to either random, dynamic, or static survey
-RAN = '1mACBzA4ktv9fEEPfcXh8RB6' # http://0.0.0.0:8000/1mACBzA4ktv9fEEPfcXh8RB6
-DYN = 'ZrovHUMI0wZE8DdPNI6WElY3' # http://0.0.0.0:8000/ZrovHUMI0wZE8DdPNI6WElY3
-STA = 'ypnWYpfb5dLEQ6xWfiALTVqH' # http://0.0.0.0:8000/ypnWYpfb5dLEQ6xWfiALTVqH
+# from app import app
+from app.api import api_bp
+from app.mongoDB.SurveyAnswerOperator import SurveyAnswer
+from app.utils import *
+from app.utils import Constant
+from app.mongoDB import select_mongoDB_operator
+from app.form import FrontForm, DynammicForm, StaticForm
 
-# to publish: 
-# http://3.141.9.233:8000/1mACBzA4ktv9fEEPfcXh8RB6 
-# http://3.141.9.233:8000/ZrovHUMI0wZE8DdPNI6WElY3
-# http://3.141.9.233:8000/ypnWYpfb5dLEQ6xWfiALTVqH
-
-# SIMPLE_CHARS = string.ascii_letters + string.digits
-SIMPLE_CHARS = string.digits
-def get_random_digits(length=8):
-    return ''.join(random.choice(SIMPLE_CHARS) for i in range(length))
+from flask import render_template, flash, redirect, url_for, request, session, make_response
 
 
 # front page that introduces the survey and record user info
-# @app.route('/', methods=['GET', 'POST'])
-# @app.route('/front', methods=['GET', 'POST'])
-@app.route('/<string:typ>', methods=['GET', 'POST'])
+# @api_bp.route('/', methods=['GET', 'POST'])
+# @api_bp.route('/front', methods=['GET', 'POST'])
+@api_bp.route('/')
+def ceshi():
+    return 'test successfully'
+
+@api_bp.route('/<string:typ>', methods=['GET', 'POST'])
 def front(typ):
 
     # clean upon entry
@@ -54,34 +47,35 @@ def front(typ):
         # initialize session once the voter submits basic info and starts survey
         session['start_time'] = datetime.now(timezone.utc)
         session['progress_bar'] = 0
-        session['digits'] = get_random_digits()
+        session['digits'] = obtain_unique_digits()
         session['entered_MTurk'] = False
         
         # generate a randseed specific for this voter
-        randseed = int(session['digits']) * MAXREP
+        randseed = int(session['digits']) * Constant.MAXREP
 
         # settle the type of the survey
-        if typ == RAN:
+        if typ == Constant.RAN:
             # randomly determine which survey way to use
             myRandom = Random(randseed)
-            session['survey_way'] = myRandom.sample(SURVEY_WAY, 1)[0]
+            session['survey_way'] = myRandom.sample(Constant.SURVEY_WAY, 1)[0]
 
-        elif typ == DYN:
+        elif typ == Constant.DYN:
             session['survey_way'] = 'dynamic'
 
-        elif typ == STA:
+        elif typ == Constant.STA:
             session['survey_way'] = 'static'
 
         else:
             debug('not the right type!')
+        # return 'zheli'
+        return redirect(url_for('api.question', randseed=randseed))
 
-        return redirect(url_for('question', randseed=randseed))
-
+    # return 'wudi'
     return render_template('front2.html', form=form)
 
 
 # end page that thanks the survey
-@app.route('/end', methods=['GET'])
+@api_bp.route('/end', methods=['GET'])
 def end():
 
     # create a session key-value that has 30min default expiration
@@ -101,7 +95,7 @@ def end():
 # conditional on the previous answers (by default stored in request)
 # previously we used voter_id to query how many rounds the voter has answered a question, now we can use the
 # digits (also unique) to identify the round
-@app.route('/q/<string:randseed>', methods=['GET', 'POST'])
+@api_bp.route('/question/<string:randseed>', methods=['GET', 'POST'])
 def question(randseed):
 
     # debug(f'{voter_id}, {randseed}, {tok}', 'enter question')
@@ -125,41 +119,51 @@ def question(randseed):
 
         flash(f"Thanks, you have completed the survey!")
 
-        return redirect(url_for('end'))
+        return redirect(url_for('api.end'))
 
     # equiv to check if request.method == 'POST' and if valid_login(request.form)
     if form.validate_on_submit():
-
+        
+        # obtain corresponding mongoDB operator
+        mongoDB_operator = select_mongoDB_operator('SurveyAnswer')
+        # obtain unique survey_answer_id for each SurveyAnswer document
+        survey_answer_id = mongoDB_operator.search_document(digits=session['digits'])['survey_answer_id']
         for topic, (param, sentence, choices) in questions.items():
-
-            answer = str(form.data[topic]) # we required str field in the database
-            # rounds = db.session.query(QandA).filter_by(voter_id=voter_id, topic=topic).count()
-            rounds = db.session.query(QandA).filter_by(digits=session['digits'], topic=topic).count()
-
             if topic == 'MTurk':
                 session['entered_MTurk'] = True # one time lock
 
-            # debug(topic, 'topic')
+            answer = str(form.data[topic]) # we required str field in the database
+            
+            # rounds = db.session.query(QandA).filter_by(voter_id=voter_id, topic=topic).count()
+            # rounds = db.session.query(QandA).filter_by(digits=session['digits'], topic=topic).count()
 
-            # add time stamp
-            qa = QandA(
-                starttime=session['start_time'],
-                endtime=datetime.now(timezone.utc),
-                way=session['survey_way'],
-                topic=topic,
-                param=param,
-                answer=answer,
-                rounds=rounds+1,
-                digits=session['digits']
-                )
+            # # debug(topic, 'topic')
 
-            db.session.add(qa)
-            db.session.commit()
+            # # add time stamp
+            # qa = QandA(
+            #     starttime=session['start_time'],
+            #     endtime=datetime.now(timezone.utc),
+            #     way=session['survey_way'],
+            #     topic=topic,
+            #     param=param,
+            #     answer=answer,
+            #     rounds=rounds+1,
+            #     digits=session['digits']
+            #     )
+
+            # db.session.add(qa)
+            # db.session.commit()
+            
+            # 注意param
+            # Insert new answer for current topic
+            mongoDB_operator.update_document(survey_answer_id=survey_answer_id, survey_topic=topic, 
+                                             survey_answer=answer, start_time=session['start_time'], 
+                                             end_time=datetime.now(timezone.utc), answer_type=param)
 
         flash(f"Thanks, you have completed {session['progress_bar']}% of the survey!")
 
-        # note that the randseed became string type because of @app.route coercion
-        return redirect(url_for('question', randseed=int(randseed)+1))
+        # note that the randseed became string type because of @api_bp.route coercion
+        return redirect(url_for('api.question', randseed=int(randseed)+1))
 
     # else:
     #     print('Jie debug logic', file=sys.stdout)

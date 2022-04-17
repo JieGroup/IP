@@ -2,12 +2,12 @@ from flask_wtf import FlaskForm
 from wtforms import (
     StringField, SubmitField, RadioField, SelectField,
     SelectMultipleField, TextAreaField)
-from wtforms.fields.html5 import EmailField, IntegerField
-from wtforms.widgets import html5 as h5widgets
+# from wtforms.fields.html5 import EmailField, IntegerField
+from wtforms.fields import EmailField, IntegerField
+# from wtforms.widgets import html5 as h5widgets
 from wtforms.widgets import CheckboxInput, ListWidget
 from wtforms.validators import ValidationError, DataRequired, Length, Optional, InputRequired, NumberRange
-from app.models import Voter
-from app.constant import *
+from app.utils import *
 
 
 class FrontForm(FlaskForm):
@@ -38,7 +38,7 @@ def DynammicForm(questions: dict):
     # dynamic question
     for topic, (param, sentence, choices) in questions.items():
         
-        if topic is not 'MTurk':
+        if topic != 'MTurk':
             value = RadioField(sentence, choices=choices, validators=[DataRequired()])
 
         else: 
