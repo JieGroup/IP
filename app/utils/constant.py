@@ -16,23 +16,26 @@ class Constant:
     SURVEY_WAY = ('dynamic', 'static')  # survey way to use
 
     # ordered from less private to more private, according to the original survey excel
-    TOPICS = (
-        'gender',
-        'race',
+#     TOPICS = (
+#         'gender',
+#         'race',
+#         'age', 
+#         'education',
+#         'zip',
+#         'hours_web',
+#         'politics',
+#         'sexual_orientation',
+#         'spouse_age',
+#         'social_class',
+#         'no_houses',
+#         'health',
+#         'salary',
+#         'cash',
+#         'stock',
+#         'sex'
+#         )
+    TOPICS = (     
         'age', 
-        'education',
-        'zip',
-        'hours_web',
-        'politics',
-        'sexual_orientation',
-        'spouse_age',
-        'social_class',
-        'no_houses',
-        'health',
-        'salary',
-        'cash',
-        'stock',
-        'sex'
         )
 
     ALPH_GENDER = ('Male', 'Female', 'Transgender', 'Gender neutral', 'Others')

@@ -1,5 +1,7 @@
 import sys
 import uuid
+import random
+import string
 import numpy as np
 
 from numpy.random import randint
@@ -9,6 +11,15 @@ from flask import session
 from app import mongoDB, pyMongo
 from app.utils.constant import Constant
 from app.mongoDB import select_mongoDB_operator
+
+def combine_response(response, new_response):
+    for key, val in new_response.items():
+        response[key] = val
+    return
+
+SIMPLE_CHARS = string.digits
+def get_random_digits(length=8):
+    return ''.join(random.choice(SIMPLE_CHARS) for i in range(length))
 
 def obtain_unique_digits():
     unique_id = str(uuid.uuid1())
@@ -29,6 +40,15 @@ def gen_dynamic_questions(randseed):
 
     mongoDB_operator = select_mongoDB_operator('SurveyAnswer')
     survey_answer_document = mongoDB_operator.search_document(digits=session['digits'])
+    # If there is no matched document, create one
+    # Will modify later
+    # if survey_answer_document == None:
+    #     survey_answer_id = obtain_unique_digits()
+    #     survey_template_id = obtain_unique_digits()
+    #     mturk_id = obtain_unique_digits()
+    #     way = 'dynamic'
+    #     mongoDB_operator.create_document(survey_answer_id=survey_answer_id, survey_template_id=survey_template_id,
+    #                                      mturk_id=mturk_id, way=way, digits=session['digits'])
 
     for topic in Constant.TOPICS:
 
@@ -50,8 +70,12 @@ def gen_dynamic_questions(randseed):
 
                 # print('Jie debug, prev_answers', prev_answers, file=sys.stdout)
         
-        cur_topic_answer = survey_answer_document['survey_answers'][topic]
-        rounds = len(cur_topic_answer)
+        cur_topic_answer = None
+        if survey_answer_document and 'survey_answers' in survey_answer_document and \
+            topic in survey_answer_document['survey_answers']:
+            cur_topic_answer = survey_answer_document['survey_answers'][topic]
+            print(f'cur_topic_answer: {cur_topic_answer}')
+        rounds = len(cur_topic_answer) if cur_topic_answer else 0
         if rounds > 0:
             # obtain the latest answer
             rounds_key = f'rounds_{rounds}'
@@ -63,6 +87,7 @@ def gen_dynamic_questions(randseed):
                     prev_answers[value['answer']].append(value['answer_type'])
 
         q = gen_dynamic_q(topic, randseed, prev_answers=prev_answers)
+        print(f'NEW q: {q}')
         if q is not None:
             questions[topic] = q
 
@@ -108,8 +133,15 @@ def gen_static_questions(randseed):
         mongoDB_operator = select_mongoDB_operator('SurveyAnswer')
         # get all qustion-voter pairs, their count, and the latest answer
         survey_answer_document = mongoDB_operator.search_document(digits=session['digits'])
-        cur_topic_answer = survey_answer_document['survey_answers'][topic]
-        rounds = len(cur_topic_answer)
+        # If there is no matched document, create one
+        # Will modify later
+        
+
+        cur_topic_answer = None
+        if survey_answer_document and 'survey_answers' in survey_answer_document and \
+            topic in survey_answer_document['survey_answers']:
+            cur_topic_answer = survey_answer_document['survey_answers'][topic]
+        rounds = len(cur_topic_answer) if cur_topic_answer else 0
 
         # debug(rounds, 'rounds')
         if rounds > 0:

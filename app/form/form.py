@@ -16,6 +16,7 @@ class FrontForm(FlaskForm):
 
     # email = EmailField('Email', validators=[DataRequired(), Length(min=2, max=20)])
 
+    # value = RadioField(sentence, choices=choices, validators=[DataRequired()])
     submit = SubmitField('Start')
 
 

@@ -4,9 +4,14 @@ class mongoDBAbstractOperator(ABC):
 
     @classmethod
     @abstractmethod
-    def document_count(cls, *args):
+    def get_all_documents_count(cls, *args):
         pass
     
+    @classmethod
+    @abstractmethod
+    def get_all_documents(cls, *args):
+        pass
+
     @classmethod
     @abstractmethod
     def search_document(cls, *args):

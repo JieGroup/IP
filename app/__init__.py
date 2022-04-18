@@ -61,9 +61,9 @@ def create_MongoDB_Collections():
         pyMongo.db.SurveyTemplate.create_index([("survey_template_id", 1)], unique=True)
 
     if 'SurveyAnswer' not in collection_list:
-        pyMongo.db.SurveyAnswer.create_index([("survey_template_id", 1)], unique=True)
+        # pyMongo.db.SurveyAnswer.create_index([("survey_template_id", 1)], unique=True)
         pyMongo.db.SurveyAnswer.create_index([("survey_answer_id", 1)], unique=True)
-        pyMongo.db.SurveyAnswer.create_index([("mturk_id", 1)], unique=True)
+        # pyMongo.db.SurveyAnswer.create_index([("mturk_id", 1)], unique=True)
         pyMongo.db.SurveyAnswer.create_index([("digits", 1)], unique=True)
 
     if 'SurveySummary' not in collection_list:

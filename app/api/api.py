@@ -1,3 +1,4 @@
+from itertools import count
 import sys
 import string
 import random
@@ -23,8 +24,8 @@ from flask import render_template, flash, redirect, url_for, request, session, m
 # @api_bp.route('/', methods=['GET', 'POST'])
 # @api_bp.route('/front', methods=['GET', 'POST'])
 @api_bp.route('/')
-def ceshi():
-    return 'test successfully'
+def main_page():
+    return redirect(url_for('api.front', typ='ZrovHUMI0wZE8DdPNI6WElY3'))
 
 @api_bp.route('/<string:typ>', methods=['GET', 'POST'])
 def front(typ):
@@ -40,14 +41,14 @@ def front(typ):
         pass
         # flash(f"The survey of the link has been completed. Thank you!")
         # return render_template('front2.html', form=form)
-
+    print('front_zheli1')
     # equiv to check if request.method == 'POST' and if valid_login(request.form)
     if form.validate_on_submit():
-
+        print('jinlaile')
         # initialize session once the voter submits basic info and starts survey
         session['start_time'] = datetime.now(timezone.utc)
         session['progress_bar'] = 0
-        session['digits'] = obtain_unique_digits()
+        session['digits'] = get_random_digits()
         session['entered_MTurk'] = False
         
         # generate a randseed specific for this voter
@@ -69,27 +70,10 @@ def front(typ):
             debug('not the right type!')
         # return 'zheli'
         return redirect(url_for('api.question', randseed=randseed))
-
+    print('front_zheli2')
     # return 'wudi'
+    # return render_template('base.html')
     return render_template('front2.html', form=form)
-
-
-# end page that thanks the survey
-@api_bp.route('/end', methods=['GET'])
-def end():
-
-    # create a session key-value that has 30min default expiration
-    # to ensure the user does not submit immediately again
-    session['submitted'] = True
-
-    # create a cookie that lasts 12 hours, to ensure the voter cannot log in after restart browser
-    # currently failed to work after restarting browser
-    # resp = make_response(render_template('end.html'))
-    # resp.set_cookie("voter-submitted", '1', 60*60*12)
-    # return resp
-
-    return render_template('end.html', digits=session['digits'])
-
 
 # question page that asks a dynamically generated list of question
 # conditional on the previous answers (by default stored in request)
@@ -100,7 +84,7 @@ def question(randseed):
 
     # debug(f'{voter_id}, {randseed}, {tok}', 'enter question')
     # debug(db.session.query(QandA).order_by(QandA.endtime).first(), 'current db->QandA')
-
+    print('question_zheli1')
     # fetch the set of feasible questions
     if session['survey_way'] == 'dynamic':
         questions = gen_dynamic_questions(randseed)
@@ -123,11 +107,16 @@ def question(randseed):
 
     # equiv to check if request.method == 'POST' and if valid_login(request.form)
     if form.validate_on_submit():
-        
+        print('question_zheli2')
         # obtain corresponding mongoDB operator
         mongoDB_operator = select_mongoDB_operator('SurveyAnswer')
-        # obtain unique survey_answer_id for each SurveyAnswer document
-        survey_answer_id = mongoDB_operator.search_document(digits=session['digits'])['survey_answer_id']
+        survey_answer_document = mongoDB_operator.search_document(digits=session['digits'])
+        # Insert new user with unique digits
+        if survey_answer_document == None:
+            survey_answer_id = obtain_unique_digits()
+            mongoDB_operator.create_document(survey_answer_id=survey_answer_id, survey_template_id=None,
+                                             mturk_id=None, way=session['survey_way'], digits=session['digits'])
+
         for topic, (param, sentence, choices) in questions.items():
             if topic == 'MTurk':
                 session['entered_MTurk'] = True # one time lock
@@ -155,10 +144,17 @@ def question(randseed):
             # db.session.commit()
             
             # 注意param
-            # Insert new answer for current topic
-            mongoDB_operator.update_document(survey_answer_id=survey_answer_id, survey_topic=topic, 
-                                             survey_answer=answer, start_time=session['start_time'], 
-                                             end_time=datetime.now(timezone.utc), answer_type=param)
+            
+            
+            # obtain unique survey_answer_id for each SurveyAnswer document
+            print(f'topic: {topic}')
+            print(f'param: {param}')
+            print(f'sentence: {sentence}')
+            print(f'choices: {choices}')
+            print(f'answer: {answer}')
+            mongoDB_operator.update_document(digits=session['digits'], survey_topic=topic, 
+                                            survey_answer=answer, start_time=session['start_time'], 
+                                            end_time=datetime.now(timezone.utc), answer_type=param)
 
         flash(f"Thanks, you have completed {session['progress_bar']}% of the survey!")
 
@@ -169,3 +165,32 @@ def question(randseed):
     #     print('Jie debug logic', file=sys.stdout)
 
     return render_template('question.html', form=form)
+
+# end page that thanks the survey
+@api_bp.route('/end', methods=['GET'])
+def end():
+
+    # create a session key-value that has 30min default expiration
+    # to ensure the user does not submit immediately again
+    session['submitted'] = True
+
+    # create a cookie that lasts 12 hours, to ensure the voter cannot log in after restart browser
+    # currently failed to work after restarting browser
+    # resp = make_response(render_template('end.html'))
+    # resp.set_cookie("voter-submitted", '1', 60*60*12)
+    # return resp
+
+    return render_template('end.html', digits=session['digits'])
+
+# end page that thanks the survey
+@api_bp.route('/summary', methods=['GET'])
+def summary():
+
+    response = {}
+    build_UserProfile()
+    combine_response(response, countDB())
+    combine_response(response, 
+            analyze_numeric(topic='age', num_range=Constant.NUM_AGE))
+
+    return response
+

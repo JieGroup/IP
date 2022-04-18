@@ -6,11 +6,11 @@ from app.mongoDB.mongoDBAbstractOperator import mongoDBAbstractOperator
 class Voter(mongoDBAbstractOperator):
 
     @classmethod
-    def document_count(cls):
-        return pyMongo.db.Voter.count()
+    def get_all_documents_count(cls):
+        return pyMongo.db.Voter.estimated_document_count()
     
     @classmethod
-    def all_documents(cls):
+    def get_all_documents(cls):
         return pyMongo.db.Voter.find({})
         
     @classmethod
