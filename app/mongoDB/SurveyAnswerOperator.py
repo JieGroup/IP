@@ -32,10 +32,15 @@ class SurveyAnswer(mongoDBAbstractOperator):
 
     @classmethod
     def create_document(cls, survey_answer_id, survey_template_id, mturk_id, way, digits):
+        # calculate survey_round
+        prev_survey_round = pyMongo.db.SurveyAnswer.count_documents({'survey_template_id': survey_template_id, 'mturk_id': mturk_id})
+        print(f'prev_survey_round: {prev_survey_round}')
+        survey_round = prev_survey_round + 1
         survey_answer_document = {
             'survey_answer_id': survey_answer_id,
             'survey_template_id': survey_template_id,
             'mturk_id': mturk_id,
+            'survey_round': survey_round,
             'way': way,
             'digits': digits,
             'survey_answers': {},

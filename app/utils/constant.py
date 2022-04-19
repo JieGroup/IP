@@ -1,6 +1,8 @@
 
 class Constant:
 
+    SURVEY_TEMPLATE_ID = 'CESHICESHICESHI'
+
     # define fixed TYPE of entry to either random, dynamic, or static survey
     RAN = '1mACBzA4ktv9fEEPfcXh8RB6' # http://0.0.0.0:8000/1mACBzA4ktv9fEEPfcXh8RB6
     DYN = 'ZrovHUMI0wZE8DdPNI6WElY3' # http://0.0.0.0:8000/ZrovHUMI0wZE8DdPNI6WElY3
@@ -11,7 +13,8 @@ class Constant:
     # http://3.141.9.233:8000/ZrovHUMI0wZE8DdPNI6WElY3
     # http://3.141.9.233:8000/ypnWYpfb5dLEQ6xWfiALTVqH
 
-    MAXREP = 3  # max num of repetitions per question
+    # MAXREP = 3  # max num of repetitions per question
+    MAXREP = 1  # max num of repetitions per question
     MAXSHOW = 5  # max num of question shown in a page
     SURVEY_WAY = ('dynamic', 'static')  # survey way to use
 
@@ -36,6 +39,7 @@ class Constant:
 #         )
     TOPICS = (     
         'age', 
+        'salary',
         )
 
     ALPH_GENDER = ('Male', 'Female', 'Transgender', 'Gender neutral', 'Others')
@@ -65,7 +69,7 @@ class Constant:
 
     NUM_HEALTH = (1, 10)
 
-    NUM_SALARY = (0, 150)
+    NUM_SALARY = (0, 200)
 
     NUM_CASH = (0, 300)
 

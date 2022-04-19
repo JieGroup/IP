@@ -326,20 +326,27 @@ def process_dynamic_data_to_plot(topic, num_range, surveyround=None):
         if mturk_id == None:
             continue
         
+        # obtain all SurveyAnswer documents of current voter
         mongoDB_operator = select_mongoDB_operator('SurveyAnswer')
         survey_answer_documents = mongoDB_operator.get_all_documents(mturk_id=mturk_id, way='dynamic')
-        print('dynamic1')
+        # print('dynamic1')
         for survey_answer_document in survey_answer_documents:
-            print(f'dynamic survey_answer_document: {survey_answer_document}')
+            # print(f'dynamic survey_answer_document: {survey_answer_document}')
             if 'survey_answers' in survey_answer_document and topic in survey_answer_document['survey_answers']:
                 voter_answer_of_topic = survey_answer_document['survey_answers'][topic]
-                # print(f'User {u.name} participated {u_ans.count()} rounds')
-                print('dynamic2')
-                f, l, h = sub_extra_interval(voter_answer_of_topic, num_range, depth = "shallow")
-                if f: intervals_shallow.append([l, h])
+
+                for rounds_key, value in voter_answer_of_topic.items():
+                    answer = value['answer']
+                    # dont count stop
+                    if answer == 'stop':
+                        continue
+                    # print(f'User {u.name} participated {u_ans.count()} rounds')
+                    # print('dynamic2')
+                    f, l, h = sub_extra_interval(voter_answer_of_topic, num_range, depth = "shallow")
+                    if f: intervals_shallow.append([l, h])
                 
-                f, l, h = sub_extra_interval(voter_answer_of_topic, num_range, depth = "full")
-                if f: intervals_full.append([l, h])
+                # f, l, h = sub_extra_interval(voter_answer_of_topic, num_range, depth = "full")
+                # if f: intervals_full.append([l, h])
     
     return intervals_shallow, intervals_full
 
@@ -373,9 +380,9 @@ def process_static_data_to_plot(topic, num_range, surveyround=None):
         
         mongoDB_operator = select_mongoDB_operator('SurveyAnswer')
         survey_answer_documents = mongoDB_operator.get_all_documents(mturk_id=mturk_id, way='static')
-        print('static1')
+        # print('static1')
         if len(list(survey_answer_documents)) > 0:
-            print('static2')
+            # print('static2')
             survey_answer_document = survey_answer_documents[0]
             if 'survey_answers' in survey_answer_document and topic in survey_answer_document['survey_answers']:
                 voter_answer = survey_answer_document['survey_answers'][topic]
@@ -384,6 +391,45 @@ def process_static_data_to_plot(topic, num_range, surveyround=None):
                     v.append(voter_answer)
 
     return v
+
+
+def cal_mean(intervals, num_range):
+    '''
+    To convert a list of intervals, e.g., [[-1, 2], [1, 3], ...]
+    into a list of points, e.g., [0, 1.3, ...]
+    and further calculate the average from such a list
+
+    Input
+        intervals: a list n elements, each a list of size two
+        num_range: a list of 2 elements, representing the legitimate range of underlying data 
+
+    Output
+        avg: float
+    '''
+
+    # a list of scalars transformed from a list of intervals
+    print(f'cal_mean: {intervals}, {num_range}')
+    n = len(intervals)
+    transform = [0] * n
+    for j in range(n):
+
+        # if the underlying data fall into the left half-open interval
+        if np.abs(num_range[0] - intervals[j][0]) < 1E-10:
+            transform[j] = (2 * intervals[j][1] - num_range[1])
+
+        # if the underlying data fall into the right half-open interval
+        else:
+            transform[j] = (2 * intervals[j][0] - num_range[0])
+
+    # estimate the average value
+    if n == 0:
+        return num_range[0]
+
+    avg = 1.0 * sum(transform) / n
+
+    avg = min(avg, num_range[1])
+    avg = max(avg, num_range[0])
+    return avg
 
 def analyze_numeric(topic, num_range, surveyround=None):
     '''surveyround means T1-T5. only consider T1 for current paper revision'''
@@ -411,17 +457,19 @@ def analyze_numeric(topic, num_range, surveyround=None):
     # n_user = db.session.query(Voter).count()
     print(f'Recall that there are {n_user} users')
     
-    intervals_shallow, intervals_full = process_dynamic_data_to_plot(topic=topic, num_range=num_range)
-    print(f'intervals_shallow: ', intervals_shallow)
-    print(f'intervals_full: ', intervals_full)
+    intervals_shallow, _ = process_dynamic_data_to_plot(topic=topic, num_range=num_range)
+    print(f'topic: {topic}, intervals_shallow: {intervals_shallow}')
 
     v = process_static_data_to_plot(topic=topic, num_range=num_range)
     print(f'There are {len(v)} users who answered this static question')
     v = np.array(v)
-
+    
+    topic_mean = cal_mean(intervals=intervals_shallow, num_range=num_range)
+    print(f'{topic}_mean: {topic_mean}')
     response = {
-        'intervals_shallow': intervals_shallow,
-        'itervals_full': intervals_full,
+        # 'intervals_shallow': intervals_shallow,
+        f'{topic}_mean': topic_mean
+        # 'itervals_full': intervals_full,
     }
     return response
     n = len(intervals_shallow)

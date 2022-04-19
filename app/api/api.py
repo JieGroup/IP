@@ -111,11 +111,14 @@ def question(randseed):
         # obtain corresponding mongoDB operator
         mongoDB_operator = select_mongoDB_operator('SurveyAnswer')
         survey_answer_document = mongoDB_operator.search_document(digits=session['digits'])
+        mturk_id = str(form.data['MTurk'])
+
         # Insert new user with unique digits
         if survey_answer_document == None:
             survey_answer_id = obtain_unique_digits()
-            mongoDB_operator.create_document(survey_answer_id=survey_answer_id, survey_template_id=None,
-                                             mturk_id=None, way=session['survey_way'], digits=session['digits'])
+            # by far, use hard code Constant.SURVEY_TEMPLATE_ID
+            mongoDB_operator.create_document(survey_answer_id=survey_answer_id, survey_template_id=Constant.SURVEY_TEMPLATE_ID,
+                                             mturk_id=mturk_id, way=session['survey_way'], digits=session['digits'])
 
         for topic, (param, sentence, choices) in questions.items():
             if topic == 'MTurk':
@@ -167,12 +170,18 @@ def question(randseed):
     return render_template('question.html', form=form)
 
 # end page that thanks the survey
-@api_bp.route('/end', methods=['GET'])
+@api_bp.route('/end', methods=['GET', 'POST'])
 def end():
 
     # create a session key-value that has 30min default expiration
     # to ensure the user does not submit immediately again
     session['submitted'] = True
+
+    if request.method == 'POST':
+        if request.form['redirect_path'] == 'summary':
+            return redirect(url_for('api.summary'))
+        elif request.form['redirect_path'] == 'main_page':
+            return redirect(url_for('api.main_page'))
 
     # create a cookie that lasts 12 hours, to ensure the voter cannot log in after restart browser
     # currently failed to work after restarting browser
@@ -182,7 +191,7 @@ def end():
 
     return render_template('end.html', digits=session['digits'])
 
-# end page that thanks the survey
+# summary page that shows summary
 @api_bp.route('/summary', methods=['GET'])
 def summary():
 
@@ -192,5 +201,18 @@ def summary():
     combine_response(response, 
             analyze_numeric(topic='age', num_range=Constant.NUM_AGE))
 
-    return response
+    combine_response(response, 
+            analyze_numeric(topic='salary', num_range=Constant.NUM_SALARY))
 
+    if request.method == 'POST':
+        if request.form['redirect_path'] == 'main_page':
+            return redirect(url_for('api.main_page'))
+
+    return render_template('summary.html', response=response)
+
+# clean database
+@api_bp.route('/clean_db', methods=['GET'])
+def clean_db():
+    clean_db_utils()
+    
+    return 'Success'

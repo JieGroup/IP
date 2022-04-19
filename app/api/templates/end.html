@@ -6,8 +6,28 @@
     	<div class="title-description">
     	<div class="form-control">
             <p id="description">You have finished the survey. Thank you for your participation!</p>
-            <p id="description">Please copy and paste the following survey code to MTurk. </p>
-            <p id="description"> {{ digits }} </p>
+            <!-- <p id="description">Please copy and paste the following survey code to MTurk. </p> -->
+            <!-- <p id="description"> {{ digits }} </p> -->
+            <!-- <p id="description" href="{{ url_for('api.summary') }}">Please click here to see our population analysis</p> -->
+            <p id="description" >Please click summary to see our population analysis</p>
+            <!-- <p id="description"></p> -->
+            <div class="form-control">
+            <div id="btn">
+                <form action="{{ url_for('api.end')}}" method = 'post'>
+                    <input type="submit" name="redirect_path" value="summary">
+                </form>
+            </div>
+            </div>
+            
+            
+            <div class="form-control">
+            <div id="btn">
+                <form action="{{ url_for('api.end')}}" method = 'post'>
+                    <input type="submit" name="redirect_path" value="main_page">
+                </form>
+            </div>        
+            </div>
+            
         </div>
         </div>
     </form>
