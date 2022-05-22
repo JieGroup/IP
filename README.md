@@ -1,4 +1,4 @@
-# IP
+# Open-source project for collecting private data
 
 This open-source project aims to develop Interval Privacy into a human-centric technology of collecting private data, where individuals have a perceptible, transparent, and simple way of sharing sensitive data.
 
