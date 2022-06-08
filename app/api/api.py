@@ -11,11 +11,11 @@ from datetime import datetime, timezone
 
 # from app import app
 from app.api import api_bp
-from app.mongoDB.SurveyAnswerOperator import SurveyAnswer
+from app.database.SurveyAnswer import SurveyAnswer
 from app.utils import *
 from app.utils import Constant
-from app.mongoDB import select_mongoDB_operator
-from app.form import FrontForm, DynammicForm, StaticForm
+from app.database import select_mongoDB_operator
+from app.process import FrontForm, DynammicForm, StaticForm
 
 from flask import render_template, flash, redirect, url_for, request, session, make_response
 

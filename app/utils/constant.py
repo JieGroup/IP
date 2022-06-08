@@ -1,5 +1,9 @@
+from typing import Final
 
 class Constant:
+
+    TIME_PERIOD_LIMIT: Final[float] = 5.62e6
+    MAX_NUMBER_OF_COPIES: Final[int] = 500
 
     SURVEY_TEMPLATE_ID = 'CESHICESHICESHI'
 
