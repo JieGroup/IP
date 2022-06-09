@@ -41,6 +41,19 @@ class Serialization:
         data: Any
     ) -> bool:
 
+        '''
+        Check if data is serializable
+
+        Parameters
+        ----------
+        data : Any
+            Can be any form
+
+        Returns
+        -------
+        bool
+        '''
+
         try:
             json.dumps(data)
         except:
@@ -53,6 +66,19 @@ class Serialization:
         cls,
         data: Any
     ) -> Serializable_Datatype:
+
+        '''
+        Turn the unserializable data to serializable data
+
+        Parameters
+        ----------
+        data : Any
+            Can be any form
+
+        Returns
+        -------
+        Serializable_Datatype
+        '''
 
         if is_numpy(data):
             return copy.deepcopy(data.tolist())
@@ -68,7 +94,16 @@ class Serialization:
     ) -> Serializable_Datatype:
 
         '''
-        Change all np.array to list
+        Use recursion to make_data_serializable 
+
+        Parameters
+        ----------
+        data : Any
+            Can be any form
+
+        Returns
+        -------
+        Serializable_Datatype
         '''
 
         if data is None:
@@ -77,9 +112,6 @@ class Serialization:
         if cls.__is_serializable(data) and not is_dict_like(data):
             return copy.deepcopy(data)
         
-        # data = cls.change_datatype_to_serializable(data)
-
-        # processed_data = None
         if is_dict_like(data):
             processed_data = {}
             for key, value in data.items():

@@ -4,7 +4,8 @@ class Constant:
 
     TIME_PERIOD_LIMIT: Final[float] = 5.62e6
     MAX_NUMBER_OF_COPIES: Final[int] = 500
-
+    MAX_ROUNDS: Final[int] = 3
+    
     SURVEY_TEMPLATE_ID = 'CESHICESHICESHI'
 
     # define fixed TYPE of entry to either random, dynamic, or static survey

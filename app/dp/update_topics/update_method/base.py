@@ -94,7 +94,25 @@ class BaseUpdateMethod:
     ) -> dict[str, dict[str, Any]]: # Topics new ranges
 
         '''
-            Abstracting out common workflows
+        Abstracting out common workflows that every update method 
+        needs to go through 
+
+        Parameters
+        ----------
+        cur_rounds_num : int
+            
+        time_period : int
+            Defines how long we should keep the survey template in database
+        max_rounds : int
+            Defines how many times the topic can be regenerated
+        number_of_copies : int
+            Defines the max number of survey to issue
+        survey_topics :
+            The detailed information of each topic
+
+        Returns
+        -------
+        bool
         '''
 
         # Check if cur_rounds_num <= max_rounds_num

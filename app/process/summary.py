@@ -23,11 +23,36 @@ from app._typing import Survey_Update_Method
 
 class Summary:
 
+    '''
+    Handle the summary process.
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    get_all_survey_answers
+    '''
+
     @classmethod
     def get_all_survey_answers(
         cls,
         survey_template_id: str
     ) -> list[dict]:
+
+        '''
+        Return all the survey answer documents that are belonged to
+        current survey_template_id
+
+        Parameters
+        ----------
+        survey_update_method : str
+
+        Returns
+        -------
+        list[dict]
+        '''
 
         return search_document(
             database_type='survey_answer',

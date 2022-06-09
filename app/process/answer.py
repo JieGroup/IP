@@ -36,7 +36,7 @@ class VoterAnswerSurvey:
 
     '''
     Helper class for voter answering survey process.
-    Mainly Check the information uploaded by Voter and
+    Mainly Check the parameters uploaded by Voter and
     check the constrains of the survey template prescribed by creator
 
     Attributes
@@ -71,9 +71,6 @@ class VoterAnswerSurvey:
         Returns
         -------
         dict
-
-        Examples
-        --------
         '''
 
         # check if survey_template_document is None
@@ -124,9 +121,6 @@ class VoterAnswerSurvey:
         Returns
         -------
         dict
-
-        Examples
-        --------
         '''
 
         # check if survey_answer_id in database

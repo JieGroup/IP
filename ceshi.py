@@ -332,5 +332,9 @@ from datetime import datetime
 
 # print('ucl' > 'ucb')
 
-a = {3,4}
-print(type(a)==set)
+a = {}
+
+print(a == None)
+
+if a:
+    print('zz')
