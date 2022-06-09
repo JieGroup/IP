@@ -52,13 +52,13 @@ class ValidateAnswer:
             return survey_prev_answers[rounds_key][topic_name]
 
     @classmethod
-    def if_survey_answer_valid(
+    def validate_survey_answers(
         cls,
         cur_rounds_num: int,
         survey_topics: dict[dict[str, Any]],
         survey_prev_answers: Union[None, dict[str, dict[str, Any]]],
         survey_new_answers: dict[dict[str, Any]],
-    ) -> Union[True, SurveyAnswerError]:
+    ) -> None:
 
         '''
             Check if the survey answers uploaded by the voter
@@ -82,21 +82,19 @@ class ValidateAnswer:
             cur_topic_ans = survey_new_answers[topic_name][f"{answer_type}_range"]
             # Check if current survey_answer is valid
             if answer_type == 'categorical':
-                if not ValidateCategoricalAnswer.validate_categorical_answer(
+                ValidateCategoricalAnswer.validate_categorical_answer(
                     cur_rounds_num=cur_rounds_num,
                     topic_name=topic_name,
                     topic_info=topic_info,
                     prev_answer=prev_answer,
                     cur_topic_ans=cur_topic_ans
-                ):
-                    return SurveyAnswerError
+                )
             elif answer_type == 'continuous':
-                if not ValidateContinuousAnswer.validate_continuous_answer(
+                ValidateContinuousAnswer.validate_continuous_answer(
                     cur_rounds_num=cur_rounds_num,
                     topic_name=topic_name,
                     topic_info=topic_info,
                     prev_answer=prev_answer,
                     cur_topic_ans=cur_topic_ans
-                ):
-                    return SurveyAnswerError
-        return True
+                )
+        return

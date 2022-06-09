@@ -7,7 +7,7 @@ import collections
 from torch import R
 
 from app import pyMongo
-from app.database.utils import (
+from app.database.database.utils import (
     if_file_size_exceed_limit
 )
 
@@ -77,13 +77,13 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
                 prev_exclusion = prev_exclusion.union(prev_ans['exclusion'])
 
         if 'inclusion' in cur_topic_ans[CATEGORICAL_RANGE_KEY]:
-            inclusion = cur_topic_ans[CATEGORICAL_RANGE_KEY]['inclusion']
+            inclusion = set(cur_topic_ans[CATEGORICAL_RANGE_KEY]['inclusion'])
             inclusion = prev_inclusion and inclusion
         elif 'exclusion' in cur_topic_ans[CATEGORICAL_RANGE_KEY]:
-            exclusion = cur_topic_ans[CATEGORICAL_RANGE_KEY]['exclusion']
+            exclusion = set(cur_topic_ans[CATEGORICAL_RANGE_KEY]['exclusion'])
             exclusion = prev_exclusion and exclusion
 
-        new_feasible_options = list(inclusion.difference(exclusion))
+        new_feasible_options = inclusion.difference(exclusion)
 
         return new_feasible_options
 
@@ -122,7 +122,7 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
     def update_survey_topics(
         cls,
         cur_rounds_num: int,
-        max_rounds_of_survey: int,
+        max_rounds: int,
         survey_topics: dict[dict[str, Any]],
         survey_prev_answers: dict[str, Union[str, Any]],
         survey_new_answers: dict[dict[str, Any]]
@@ -142,7 +142,7 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
 
         return super().update_topics_base_flow(
             cur_rounds_num=cur_rounds_num,
-            max_rounds_of_survey=max_rounds_of_survey,
+            max_rounds=max_rounds,
             survey_topics=survey_topics,
             survey_prev_answers=survey_prev_answers,
             survey_new_answers=survey_new_answers,

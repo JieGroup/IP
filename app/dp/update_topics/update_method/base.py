@@ -86,7 +86,7 @@ class BaseUpdateMethod:
     def update_topics_base_flow(
         cls,
         cur_rounds_num: int, 
-        max_rounds_of_survey: int,
+        max_rounds: int,
         survey_topics: dict[dict[str, Any]],
         survey_prev_answers: dict[str, Union[str, Any]],
         survey_new_answers: dict[dict[str, Any]],
@@ -100,7 +100,7 @@ class BaseUpdateMethod:
         # Check if cur_rounds_num <= max_rounds_num
         if not cls.if_cur_rounds_num_valid(
             cur_rounds_num=cur_rounds_num,
-            max_rounds_of_survey=max_rounds_of_survey
+            max_rounds=max_rounds
         ):
             return None
                 
@@ -108,7 +108,7 @@ class BaseUpdateMethod:
         # If it is, we need to update the question
         if not cls.if_survey_topics_need_updating(
             cur_rounds_num=cur_rounds_num,
-            max_rounds_of_survey=max_rounds_of_survey
+            max_rounds=max_rounds
         ):
             return None
 

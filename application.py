@@ -4,6 +4,8 @@ from config import Config
 
 application = create_app(Config)
 
+
+
 # @application.route('/')
 # def hello_world():
 #     return 'Hello, World!'

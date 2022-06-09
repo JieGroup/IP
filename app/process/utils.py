@@ -12,3 +12,4 @@ def get_cur_rounds_num(
 ) -> int:
 
     return len(survey_prev_answers) + 1
+

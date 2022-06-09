@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from app import pyMongo
-from app.database.utils import (
+from app.database.database.utils import (
     if_file_size_exceed_limit
 )
 

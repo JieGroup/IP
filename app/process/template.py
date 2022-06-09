@@ -40,7 +40,7 @@ class SurveyTemplate:
         return True
 
     @classmethod
-    def if_surey_topics_valid(
+    def if_survey_topics_valid(
         cls, 
         survey_update_method: Survey_Update_Method,
         time_period: int,
@@ -84,13 +84,14 @@ class SurveyTemplate:
         '''
         
         # Check the survey topics uploaded by user
-        validation_res = cls.if_surey_topics_valid(
+        validation_res = cls.if_survey_topics_valid(
             survey_update_method=survey_update_method,
             time_period=time_period,
             number_of_copies=number_of_copies,
             survey_topics=survey_topics
         )
-        # if validation_res != {}, we need to return error message
+        # If validation_res != {}, it means we have error message.
+        # We need to return error message
         if validation_res:
             return bad_request(validation_res)
 
@@ -106,18 +107,9 @@ class SurveyTemplate:
             number_of_copies=number_of_copies,
             survey_topics=survey_topics
         )
+
         return survey_template_id
     
-    @classmethod
-    def get_survey_template(
-        cls, 
-        survey_template_id: str,
-    ) -> None:
-
-        return search_document(
-            database_type='survey_template',
-            survey_template_id=survey_template_id,
-        )
 
     # @classmethod
     # def update_survey_template(

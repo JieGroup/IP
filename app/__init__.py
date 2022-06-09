@@ -85,6 +85,13 @@ def configure_after_handlers(application):
 
 def configure_errorhandlers(application):
     '''Configures the error handlers'''
+
+    @application.errorhandler(Exception)
+    def handle_error(e):
+        code = 500
+        if isinstance(e, HTTPException):
+            code = e.code
+        return jsonify(error=str(e)), code
     pass
 
 

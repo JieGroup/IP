@@ -1,218 +1,58 @@
-from itertools import count
-import sys
-import string
-import random
-import numpy as np
+from __future__ import annotations
 
-from random import Random
-from wtforms import RadioField
-from wtforms.validators import InputRequired
-from datetime import datetime, timezone
-
-# from app import app
 from app.api import api_bp
-from app.database.SurveyAnswer import SurveyAnswer
-from app.utils import *
-from app.utils import Constant
-from app.database import select_mongoDB_operator
-from app.process import FrontForm, DynammicForm, StaticForm
 
-from flask import render_template, flash, redirect, url_for, request, session, make_response
+from flask import request
+
+from app.error import bad_request
+
+from app.authentication.api import token_auth
+
+from app.api.utils import handle_response
+
+from app.process.api import (
+    get_survey_template_helper,
+    get_default_survey_template_helper,
+    get_user_history_helper
+)
+
+@api_bp.route('/get_survey_template', methods=['GET'])
+@token_auth.login_required
+@handle_response
+def get_survey_template() -> None:
+
+    '''
+    data got from json is dict[dict[str, ]], which has
+    3 keys in data: topic name, topic category, topic range
+    '''
+    # TODO: implement logic
+    return get_survey_template_helper()
 
 
-# front page that introduces the survey and record user info
-# @api_bp.route('/', methods=['GET', 'POST'])
-# @api_bp.route('/front', methods=['GET', 'POST'])
-@api_bp.route('/')
-def main_page():
-    return redirect(url_for('api.front', typ='ZrovHUMI0wZE8DdPNI6WElY3'))
+@api_bp.route('/get_default_survey_template', methods=['GET'])
+@handle_response
+def get_default_survey_template() -> None:
 
-@api_bp.route('/<string:typ>', methods=['GET', 'POST'])
-def front(typ):
+    '''
+    data got from json is dict[dict[str, ]], which has
+    3 keys in data: topic name, topic category, topic range
+    '''
 
-    # clean upon entry
-    if '_flashes' in session:
-            session.pop('_flashes', None)
+    return get_default_survey_template_helper()
 
-    form = FrontForm()
 
-    # make sure the voter submits only one time
-    if 'submitted' in session:
-        pass
-        # flash(f"The survey of the link has been completed. Thank you!")
-        # return render_template('front2.html', form=form)
-    print('front_zheli1')
-    # equiv to check if request.method == 'POST' and if valid_login(request.form)
-    if form.validate_on_submit():
-        print('jinlaile')
-        # initialize session once the voter submits basic info and starts survey
-        session['start_time'] = datetime.now(timezone.utc)
-        session['progress_bar'] = 0
-        session['digits'] = get_random_digits()
-        session['entered_MTurk'] = False
-        
-        # generate a randseed specific for this voter
-        randseed = int(session['digits']) * Constant.MAXREP
+@api_bp.route('/get_user_history', methods=['GET'])
+@token_auth.login_required
+@handle_response
+def get_user_history() -> None:
 
-        # settle the type of the survey
-        if typ == Constant.RAN:
-            # randomly determine which survey way to use
-            myRandom = Random(randseed)
-            session['survey_way'] = myRandom.sample(Constant.SURVEY_WAY, 1)[0]
+    '''
+    data got from json is dict[dict[str, ]], which has
+    3 keys in data: topic name, topic category, topic range
+    '''
 
-        elif typ == Constant.DYN:
-            session['survey_way'] = 'dynamic'
-
-        elif typ == Constant.STA:
-            session['survey_way'] = 'static'
-
-        else:
-            debug('not the right type!')
-        # return 'zheli'
-        return redirect(url_for('api.question', randseed=randseed))
-    print('front_zheli2')
-    # return 'wudi'
-    # return render_template('base.html')
-    return render_template('front2.html', form=form)
-
-# question page that asks a dynamically generated list of question
-# conditional on the previous answers (by default stored in request)
-# previously we used voter_id to query how many rounds the voter has answered a question, now we can use the
-# digits (also unique) to identify the round
-@api_bp.route('/question/<string:randseed>', methods=['GET', 'POST'])
-def question(randseed):
-
-    # debug(f'{voter_id}, {randseed}, {tok}', 'enter question')
-    # debug(db.session.query(QandA).order_by(QandA.endtime).first(), 'current db->QandA')
-    print('question_zheli1')
-    # fetch the set of feasible questions
-    if session['survey_way'] == 'dynamic':
-        questions = gen_dynamic_questions(randseed)
-        form = DynammicForm(questions)
-
-    elif session['survey_way'] == 'static':
-        questions = gen_static_questions(randseed)
-        form = StaticForm(questions)
-
-    else:
-        debug('Wrong survey_way!')
-
-    # debug(questions.keys(), 'topics')
-
-    if not questions:
-
-        flash(f"Thanks, you have completed the survey!")
-
-        return redirect(url_for('api.end'))
-
-    # equiv to check if request.method == 'POST' and if valid_login(request.form)
-    if form.validate_on_submit():
-        print('question_zheli2')
-        # obtain corresponding mongoDB operator
-        mongoDB_operator = select_mongoDB_operator('SurveyAnswer')
-        survey_answer_document = mongoDB_operator.search_document(digits=session['digits'])
-        mturk_id = str(form.data['MTurk'])
-
-        # Insert new user with unique digits
-        if survey_answer_document == None:
-            survey_answer_id = obtain_unique_digits()
-            # by far, use hard code Constant.SURVEY_TEMPLATE_ID
-            mongoDB_operator.create_document(survey_answer_id=survey_answer_id, survey_template_id=Constant.SURVEY_TEMPLATE_ID,
-                                             mturk_id=mturk_id, way=session['survey_way'], digits=session['digits'])
-
-        for topic, (param, sentence, choices) in questions.items():
-            if topic == 'MTurk':
-                session['entered_MTurk'] = True # one time lock
-
-            answer = str(form.data[topic]) # we required str field in the database
-            
-            # rounds = db.session.query(QandA).filter_by(voter_id=voter_id, topic=topic).count()
-            # rounds = db.session.query(QandA).filter_by(digits=session['digits'], topic=topic).count()
-
-            # # debug(topic, 'topic')
-
-            # # add time stamp
-            # qa = QandA(
-            #     starttime=session['start_time'],
-            #     endtime=datetime.now(timezone.utc),
-            #     way=session['survey_way'],
-            #     topic=topic,
-            #     param=param,
-            #     answer=answer,
-            #     rounds=rounds+1,
-            #     digits=session['digits']
-            #     )
-
-            # db.session.add(qa)
-            # db.session.commit()
-            
-            # 注意param
-            
-            
-            # obtain unique survey_answer_id for each SurveyAnswer document
-            print(f'topic: {topic}')
-            print(f'param: {param}')
-            print(f'sentence: {sentence}')
-            print(f'choices: {choices}')
-            print(f'answer: {answer}')
-            mongoDB_operator.update_document(digits=session['digits'], survey_topic=topic, 
-                                            survey_answer=answer, start_time=session['start_time'], 
-                                            end_time=datetime.now(timezone.utc), answer_type=param)
-
-        flash(f"Thanks, you have completed {session['progress_bar']}% of the survey!")
-
-        # note that the randseed became string type because of @api_bp.route coercion
-        return redirect(url_for('api.question', randseed=int(randseed)+1))
-
-    # else:
-    #     print('Jie debug logic', file=sys.stdout)
-
-    return render_template('question.html', form=form)
-
-# end page that thanks the survey
-@api_bp.route('/end', methods=['GET', 'POST'])
-def end():
-
-    # create a session key-value that has 30min default expiration
-    # to ensure the user does not submit immediately again
-    session['submitted'] = True
-
-    if request.method == 'POST':
-        if request.form['redirect_path'] == 'summary':
-            return redirect(url_for('api.summary'))
-        elif request.form['redirect_path'] == 'main_page':
-            return redirect(url_for('api.main_page'))
-
-    # create a cookie that lasts 12 hours, to ensure the voter cannot log in after restart browser
-    # currently failed to work after restarting browser
-    # resp = make_response(render_template('end.html'))
-    # resp.set_cookie("voter-submitted", '1', 60*60*12)
-    # return resp
-
-    return render_template('end.html', digits=session['digits'])
-
-# summary page that shows summary
-@api_bp.route('/summary', methods=['GET'])
-def summary():
-
-    response = {}
-    build_UserProfile()
-    combine_response(response, countDB())
-    combine_response(response, 
-            analyze_numeric(topic='age', num_range=Constant.NUM_AGE))
-
-    combine_response(response, 
-            analyze_numeric(topic='salary', num_range=Constant.NUM_SALARY))
-
-    if request.method == 'POST':
-        if request.form['redirect_path'] == 'main_page':
-            return redirect(url_for('api.main_page'))
-
-    return render_template('summary.html', response=response)
-
-# clean database
-@api_bp.route('/clean_db', methods=['GET'])
-def clean_db():
-    clean_db_utils()
+    data = request.get_json()
+    if not data:
+        return bad_request('You must post JSON data.')
     
-    return 'Success'
+    return get_user_history_helper()

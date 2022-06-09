@@ -14,6 +14,8 @@ from app import database, pyMongo
 from app.utils.constant import Constant
 from app.database import select_mongoDB_operator
 
+from app.error import SurveyAnswerError
+
 from typing import (
     Any,
     final
@@ -35,7 +37,7 @@ class ValidateCategoricalAnswer(ValidateBase):
         # TODO: 标注radiofield到底是什么
         answer_range: Union[Any, str],
         cur_topic_ans: str
-        ):
+    ) -> None:
 
         answer_range = decode_continuous_range_str_to_int(answer_range)
         cur_topic_ans = decode_continuous_range_str_to_int(cur_topic_ans)
@@ -44,9 +46,9 @@ class ValidateCategoricalAnswer(ValidateBase):
             answer_range=answer_range,
             cur_topic_ans=cur_topic_ans
         ):
-            return False
+            raise SurveyAnswerError
             
-        return True
+        return
 
 
 class ValidateContinuousAnswer(ValidateBase):
@@ -96,7 +98,7 @@ class ValidateContinuousAnswer(ValidateBase):
         topic_info: dict[str, Any],
         prev_answer: Union[None, dict[str, dict[str, Any]]],
         cur_topic_ans: dict[str, int],
-    ):
+    ) -> None:
 
         answer_range = prev_answer['continuous_range']
         
@@ -104,9 +106,8 @@ class ValidateContinuousAnswer(ValidateBase):
             answer_range=answer_range,
             cur_topic_ans=cur_topic_ans
         ):
-            return False
+            raise SurveyAnswerError
 
-        return True
-        
+        return
 
 

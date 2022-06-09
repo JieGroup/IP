@@ -1,6 +1,6 @@
 from app.utils.constant import Constant
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 class Time:
 
@@ -16,7 +16,7 @@ class Time:
     
     def get_expiration_time(
         cls, time_period: int
-    ) -> type[datetime]:
+    ) -> str:
 
-        expiration_time = datetime.utcnow() + timedelta(seconds=time_period)
+        expiration_time = (datetime.now(tz=timezone.utc) + timedelta(seconds=time_period)).timestamp()
         return expiration_time

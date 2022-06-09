@@ -273,14 +273,64 @@ from typing import (
     Dict
 )
 
-Database_Type = Literal[
-    'survey_answer',
-    'survey_summary',
-    'survey_template',
-    'voter'
-]
+from datetime import datetime
 
-def ceshi(a: Database_Type):
-    print(a in Database_Type.__args__)
+# a = datetime.utcnow()
+# print(a, type(a))
+# b = datetime.utcnow().timestamp()
+# print(b, type(b))
 
-ceshi(5)
+# c = datetime.utcfromtimestamp(b)
+# print(c, type(c))
+
+
+# from datetime import datetime, timezone
+# ts = 1571595618.0
+# x = datetime.fromtimestamp(ts, tz=timezone.utc)
+# x_ts = x.timestamp()
+# assert ts == x_ts, f"{ts} != {x_ts}"  # This assertion succeeds
+
+# ts = datetime.now(tz=timezone.utc).timestamp()
+# x = datetime.fromtimestamp(ts, tz=timezone.utc)
+# x_ts = x.timestamp()
+# print(ts, x_ts)
+# assert ts == x_ts, f"{ts} != {x_ts}"  # This assertion succeeds
+# Database_Type = Literal[
+#     'survey_answer',
+#     'survey_summary',
+#     'survey_template',
+#     'voter'
+# ]
+
+# def ceshi(a: Database_Type):
+#     print(a in Database_Type.__args__)
+
+# ceshi(5)
+
+# import bson
+# file = {
+#     '5': [4,5]
+# }
+
+# res = bson.BSON.encode({'file': file})
+
+# print(f'res: {res}')
+# import json
+# a = '5'
+# b = 5
+# res1 = json.dumps(a)
+# res2 = json.dumps(b)
+# print(res1, type(res1))
+# print(res2, type(res2))
+
+# c = '5'
+# d = "5"
+# res3 = json.loads(c)
+# res4 = json.loads(d)
+# print(res3, type(res3))
+# print(res4, type(res4))
+
+# print('ucl' > 'ucb')
+
+a = {3,4}
+print(type(a)==set)

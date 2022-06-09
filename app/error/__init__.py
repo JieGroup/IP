@@ -3,6 +3,9 @@ from __future__ import annotations
 from flask import jsonify
 from werkzeug.http import HTTP_STATUS_CODES
 
+class DBDocumentNotFound(ValueError):
+    pass
+
 class SurveyAnswerError(ValueError):
     """
     Error raised when the key in dict is duplicated
@@ -10,6 +13,8 @@ class SurveyAnswerError(ValueError):
 
     pass
 
+class SurveyAnswerTooLarge(ValueError):
+    pass
 
 def error_response(status_code, message=None):
     payload = {'error': HTTP_STATUS_CODES.get(status_code, 'Unknown error')}
