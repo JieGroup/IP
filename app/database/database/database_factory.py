@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from app.database.database import (
+from app.database.database.api import (
     SurveyAnswer,
     SurveySummary,
     SurveyTemplate,

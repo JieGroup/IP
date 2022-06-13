@@ -12,7 +12,6 @@ from flask import session
 
 from app import database, pyMongo
 from app.utils.constant import Constant
-from app.database import select_mongoDB_operator
 
 from app.error import SurveyAnswerError
 

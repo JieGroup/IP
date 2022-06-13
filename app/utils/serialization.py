@@ -10,8 +10,6 @@ from typing import (
     Any
 )
 
-from datetime import datetime
-
 from app.utils.dtypes.api import (
     is_numpy,
     is_dict_like,

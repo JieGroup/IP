@@ -21,12 +21,16 @@ from typing import Any
 class SurveyTemplate(AbstractDatabase, BaseDatabase):
 
     @classmethod
+    def get_all_documents(cls) -> None:
+        return pyMongo.db.Voter.find({})
+
+    @classmethod
     def search_document(
         cls, survey_template_id: str
     ) -> None:
 
         '''
-            Search and return corresponding document
+        Search and return corresponding document
         '''
 
         return pyMongo.db.SurveyTemplate.find_one({'survey_template_id': survey_template_id})
@@ -68,7 +72,7 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
     ) -> None:
 
         '''
-            Currently not needed. User can only create new template once
+        Currently not needed. User can only create new template once
         '''
 
         pass
@@ -79,7 +83,7 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
     ) -> None:
 
         '''
-            Delete corresponding record
+        Delete corresponding record
         '''
 
         return pyMongo.db.SurveyTemplate.delete_one({'survey_template_id': survey_template_id})

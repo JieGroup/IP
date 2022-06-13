@@ -332,9 +332,29 @@ from datetime import datetime
 
 # print('ucl' > 'ucb')
 
-a = {}
+# a = {}
 
-print(a == None)
+# print(a == None)
 
-if a:
-    print('zz')
+# if a:
+#     print('zz')
+
+class base:
+    # ceshi = 5
+    # def __init__(self):
+    #     self.ceshi = 5
+    def ceshi(self):
+        self.ceshi = 10
+
+class sub(base):
+
+    # def __init__(self):
+    #     # super().__init__()
+    #     print(self.ceshi)
+    #     print(base.ceshi)
+    def base_ceshi(self):
+        print(self.ceshi)
+
+a = sub()
+a.ceshi()
+a.base_ceshi()

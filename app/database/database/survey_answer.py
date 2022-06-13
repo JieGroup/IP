@@ -48,7 +48,7 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
     ) -> None:
 
         '''
-            Create Survey_Answer document
+        Create Survey_Answer document
         '''
 
         survey_answer_document = {
@@ -72,8 +72,8 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
     ) -> None:
 
         '''
-            Voter can answer dynamic topics in a survey template multiple times.
-            We need to store the answers at each round.
+        Voter can answer dynamic topics in a survey template multiple times.
+        We need to store the answers at each round.
         '''
 
         rounds_key = f'rounds_{cur_rounds_num}'
@@ -87,7 +87,7 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
     ) -> None:
 
         '''
-            Delete corresponding record
+        Delete corresponding record
         '''
 
         return pyMongo.db.SurveyAnswer.delete_one({'survey_answer_id': survey_answer_id})

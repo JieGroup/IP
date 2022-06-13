@@ -31,14 +31,14 @@ class StaticUpdate(AbstractUpdateMethod, BaseUpdateMethod):
     @classmethod
     def update_topics(
         cls,
-        max_rounds_of_survey: int,
+        max_rounds: int,
         survey_topics: dict[dict[str, Any]],
         survey_answer_document: dict[str, Union[str, Any]],
         survey_new_answers: dict[dict[str, Any]]
     ) -> None:
 
         return super().update_topics_base_flow(
-            max_rounds_of_survey=max_rounds_of_survey,
+            max_rounds=max_rounds,
             survey_topics=survey_topics,
             survey_answer_document=survey_answer_document,
             survey_new_answers=survey_new_answers,

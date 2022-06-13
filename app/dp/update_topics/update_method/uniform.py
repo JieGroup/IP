@@ -4,8 +4,6 @@ from os import setegid
 import random
 import collections
 
-from torch import R
-
 from app import pyMongo
 from app.database.database.utils import (
     if_file_size_exceed_limit

@@ -12,7 +12,7 @@ def get_cur_rounds_num(
 ) -> int:
 
     '''
-    Get the current round number of the new answer of a survey template
+    Get the number of rounds for the voter to answer the current survey
 
     Parameters
     ----------

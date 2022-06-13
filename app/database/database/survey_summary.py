@@ -15,6 +15,10 @@ from typing import Any
 class SurveySummary(AbstractDatabase, BaseDatabase):
 
     @classmethod
+    def get_all_documents(cls) -> None:
+        return pyMongo.db.Voter.find({})
+
+    @classmethod
     def search_document(
         cls, identifier_id: str
     ) -> None:

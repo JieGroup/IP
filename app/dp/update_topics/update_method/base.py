@@ -100,19 +100,21 @@ class BaseUpdateMethod:
         Parameters
         ----------
         cur_rounds_num : int
-            
-        time_period : int
-            Defines how long we should keep the survey template in database
+            The number of rounds for the voter to answer the current survey
         max_rounds : int
             Defines how many times the topic can be regenerated
-        number_of_copies : int
-            Defines the max number of survey to issue
-        survey_topics :
+        survey_topics : dict
             The detailed information of each topic
+        survey_prev_answers : dict or None
+            Previous answers
+        survey_new_answers : dict
+            New answers
+        update_method_recall :
+            Callback method to handle each specific method
 
         Returns
         -------
-        bool
+        dict
         '''
 
         # Check if cur_rounds_num <= max_rounds_num

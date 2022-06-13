@@ -10,17 +10,49 @@ from app.process.api import SurveyTemplate
 
 from app.authentication.api import token_auth
 
-from app.api.utils import handle_response
+from app.utils.api import handle_response
+
+from flask.json import jsonify
+
+@api_bp.route('/ceshierror', methods=['GET', 'POST'])
+def ceshierror():
+
+    a = {}
+    print('zheli')
+    # b = a['5']
+    return jsonify('success')
 
 
 @api_bp.route('/create_survey_template', methods=['POST'])
 @token_auth.login_required
 @handle_response
 def create_survey_template() -> None:
+
     '''
-    data got from json is dict[dict[str, ]], which has
-    3 keys in data: topic name, topic category, topic range
+    Create survey template
+    Handle http request in this function and call SurveyTemplate.create_survey_template
+    for further processing
+
+    Parameters
+    ----------
+    survey_update_method : Survey_Update_Method
+        Defines how we update topic new ranges. 'static' means the voter would only answer
+        the all topics once. 'uniform' means the topics would be dynamically generated and voter
+        may need to answer each topic more than one time.
+    time_period : int
+        Defines how long we should keep the survey template in database
+    number_of_copies : int
+        Defines the max number of survey to issue
+    max_rounds : int
+        Defines how many times the topic can be regenerated
+    survey_topics : dict
+        The detailed information of each topic
+
+    Returns
+    -------
+    str
     '''
+
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')

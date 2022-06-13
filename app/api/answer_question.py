@@ -10,7 +10,9 @@ from app.error import bad_request
 
 from app.process.api import VoterAnswerSurvey
 
-from app.api.utils import handle_response
+from app.utils.api import handle_response
+
+from app._typing import MTurkID
 
 
 @api_bp.route('/voter_start_answering', methods=['GET'])
@@ -18,12 +20,29 @@ from app.api.utils import handle_response
 def voter_start_answering():
 
     '''
-    data got from json is dict[dict[str, ]], which has
-    3 keys in data: topic name, topic category, topic range
+    Voter upload parameters to get survey template.
+    Handle http request in this function and call VoterAnswerSurvey.start_answering
+    for further processing
+
+    Parameters
+    ----------
+    survey_template_id : str
+        An unique string corresponding to a survey template.
+    mturk_id : MTurkID
+        Defines how long we should keep the survey template in database
+
+    Returns
+    -------
+    dict
     '''
 
     survey_template_id = request.args.get('survey_template_id')
     mturk_id = request.args.get('mturk_id')
+
+    if survey_template_id is None:
+        return bad_request('survey_answer_id is required.')
+    if mturk_id is None:
+        return bad_request('mturk_id is required.')
     
     return VoterAnswerSurvey.start_answering(
         survey_template_id=survey_template_id,
@@ -36,8 +55,22 @@ def voter_start_answering():
 def voter_submit_answers():
 
     '''
-    data got from json is dict[dict[str, ]], which has
-    3 keys in data: topic name, topic category, topic range
+    Voter upload parameters and new answers for a survey template.
+    Handle http request in this function and call VoterAnswerSurvey.update_survey_topics
+    for further processing
+
+    Parameters
+    ----------
+    survey_answer_id : str
+        An unique string corresponding to an answer of a survey template.
+    survey_new_answers : dict[dict[str, Any]]
+        New answers
+
+    Returns
+    -------
+    None or dict
+        If the voter has finished all rounds of survey, return None.
+        Otherwise return new topics
     '''
 
     data = request.get_json()

@@ -4,8 +4,6 @@ from app.error import bad_request
 
 from bson import ObjectId
 
-from app.utils.api import obtain_unique_id
-
 from typing import Any
 
 from app.database.api import (
@@ -24,7 +22,8 @@ from app._typing import Survey_Update_Method
 class Summary:
 
     '''
-    Handle the summary process.
+    Handle the summary process - creator gets the information
+    about the survey. 
 
     Attributes
     ----------
@@ -47,7 +46,8 @@ class Summary:
 
         Parameters
         ----------
-        survey_update_method : str
+        survey_template_id : str
+            An unique string corresponding to an answer of a survey template.
 
         Returns
         -------

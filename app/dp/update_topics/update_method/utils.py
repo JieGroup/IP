@@ -11,9 +11,7 @@ from numpy.random import randint
 from random import Random
 from flask import session
 
-from app import database, pyMongo
 from app.utils.constant import Constant
-from app.database import select_mongoDB_operator
 
 from typing import (
     Any,

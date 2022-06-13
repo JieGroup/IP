@@ -11,21 +11,19 @@ from app.database.database.abstract_database import AbstractDatabase
 
 from app.error import SurveyAnswerTooLarge
 
-from app._typing import MTurkID
 
-
-class Voter(AbstractDatabase, BaseDatabase):
+class User(AbstractDatabase, BaseDatabase):
     
     @classmethod
     def get_all_documents(cls) -> None:
-        return pyMongo.db.Voter.find({})
+        return pyMongo.db.User.find({})
         
     @classmethod
     def search_document(
         cls, mturk_id: MTurkID
     ) -> None:
 
-        return pyMongo.db.Voter.find_one({
+        return pyMongo.db.User.find_one({
             'mturk_id': mturk_id
         })
 
@@ -42,7 +40,7 @@ class Voter(AbstractDatabase, BaseDatabase):
         if not if_file_size_exceed_limit(file=voter_document):
             raise SurveyAnswerTooLarge
 
-        return pyMongo.db.Voter.insert_one(voter_document)
+        return pyMongo.db.User.insert_one(voter_document)
     
     @classmethod
     def update_document(
@@ -52,7 +50,7 @@ class Voter(AbstractDatabase, BaseDatabase):
         survey_answer_id: str
     ) -> None:
 
-        return pyMongo.db.Voter.update_one({'mturk_id': mturk_id}, {'$set':{
+        return pyMongo.db.User.update_one({'mturk_id': mturk_id}, {'$set':{
                    f'participated_survey_template_id.{survey_template_id}.{survey_answer_id}': True
                }})
     
@@ -65,4 +63,4 @@ class Voter(AbstractDatabase, BaseDatabase):
         Delete corresponding record
         '''
 
-        return pyMongo.db.Voter.delete_one({'mturk_id': mturk_id})
+        return pyMongo.db.User.delete_one({'mturk_id': mturk_id})

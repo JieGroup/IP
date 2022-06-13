@@ -4,6 +4,10 @@ from flask import jsonify
 from werkzeug.http import HTTP_STATUS_CODES
 
 class DBDocumentNotFound(ValueError):
+    """
+    Error raised when the document
+
+    """
     pass
 
 class SurveyAnswerError(ValueError):
@@ -14,7 +18,12 @@ class SurveyAnswerError(ValueError):
     pass
 
 class SurveyAnswerTooLarge(ValueError):
+    """
+    Error raised when the data uploaded by the voter is too large
+    """
+    
     pass
+
 
 def error_response(status_code, message=None):
     payload = {'error': HTTP_STATUS_CODES.get(status_code, 'Unknown error')}

@@ -33,6 +33,7 @@ def configure_blueprints(application):
     # 注册 blueprint
     # from .main import main as main_blueprint
     # print("main_blueprint", main_blueprint)
+    print('register_blue_print')
     application.register_blueprint(api_bp)
 
 def configure_extensions(application):
@@ -51,7 +52,7 @@ def configure_extensions(application):
     # mail.init_app(application)
 
     pyMongo.init_app(application)
-    create_MongoDB_Collections()
+    # create_MongoDB_Collections()
 
 def create_MongoDB_Collections():
 
@@ -84,14 +85,18 @@ def configure_after_handlers(application):
 
 
 def configure_errorhandlers(application):
+    # from werkzeug.exceptions import HTTPException
+    # from app.utils.api import handle_response
     '''Configures the error handlers'''
+    # from flask.json import jsonify
+    # @application.errorhandler(Exception)
 
-    @application.errorhandler(Exception)
-    def handle_error(e):
-        code = 500
-        if isinstance(e, HTTPException):
-            code = e.code
-        return jsonify(error=str(e)), code
+    # def handle_error(e):
+    #     code = 500
+    #     # if isinstance(e, HTTPException):
+    #     #     code = e.code
+    #     return jsonify(error=str(e)), code
+    #     return 'wudi'
     pass
 
 

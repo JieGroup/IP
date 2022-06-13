@@ -3,8 +3,6 @@ from app.error import bad_request
 
 from bson import ObjectId
 
-from app.utils.api import obtain_unique_id
-
 from typing import (
     Any,
     Union
@@ -161,7 +159,7 @@ class SurveyTemplate:
         number_of_copies: int,
         max_rounds: int,
         survey_topics: dict[dict[str, Any]]
-    ) -> None:
+    ) -> str:
 
         '''
         Check survey template information uploaded by creator and store
@@ -175,10 +173,10 @@ class SurveyTemplate:
             may need to answer each topic more than one time.
         time_period : int
             Defines how long we should keep the survey template in database
-        max_rounds : int
-            Defines how many times the topic can be regenerated
         number_of_copies : int
             Defines the max number of survey to issue
+        max_rounds : int
+            Defines how many times the topic can be regenerated
         survey_topics :
             The detailed information of each topic
 

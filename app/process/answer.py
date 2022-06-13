@@ -3,8 +3,6 @@ from app import database
 
 from bson import ObjectId
 
-from app.utils.api import obtain_unique_id
-
 from typing import Any
 
 from app.database.api import (
@@ -30,6 +28,8 @@ from app.process.template import SurveyTemplate
 from typing import Union
 
 from app.error import DBDocumentNotFound
+
+from app._typing import MTurkID
 
 
 class VoterAnswerSurvey:
@@ -65,7 +65,7 @@ class VoterAnswerSurvey:
         ----------
         survey_template_id : str
             An unique string corresponding to a survey template.
-        mturk_id : str
+        mturk_id : MTurkID
             An unique id that Amazon delivers to Voter.
 
         Returns
@@ -120,7 +120,9 @@ class VoterAnswerSurvey:
 
         Returns
         -------
-        dict
+        None or dict
+            If the voter has finished all rounds of survey, return None.
+            Otherwise return new topics
         '''
 
         # check if survey_answer_id in database
