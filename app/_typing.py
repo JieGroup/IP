@@ -25,7 +25,8 @@ Database_Type = Literal[
     'survey_answer',
     'survey_summary',
     'survey_template',
-    'voter'
+    'voter',
+    'user'
 ]
 
 Survey_Update_Method = Literal[

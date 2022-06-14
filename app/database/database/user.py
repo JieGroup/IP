@@ -11,6 +11,8 @@ from app.database.database.abstract_database import AbstractDatabase
 
 from app.error import SurveyAnswerTooLarge
 
+from app._typing import MTurkID
+
 
 class User(AbstractDatabase, BaseDatabase):
     

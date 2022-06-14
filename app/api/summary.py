@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from app.api import api_bp
+from app.api import api
 
 from flask import request
 
@@ -13,9 +13,9 @@ from app.process.api import Summary
 from app.utils.api import handle_response
 
 
-@api_bp.route('/get_all_survey_answers', methods=['GET'])
+@api.route('/get_all_survey_answers', methods=['GET'])
 @token_auth.login_required
-@handle_response
+# @handle_response
 def get_all_survey_answers():
 
     '''

@@ -8,7 +8,7 @@ load_dotenv(os.path.join(basedir, '.env'))
 
 class Config(object):
     
-    # DEBUG = True
+    DEBUG = True
     SECRET_KEY = 'adasdaxcwxq4213'
 
     # JWT secret key

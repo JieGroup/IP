@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from app.api import api_bp
+from app.api import api
 
 from flask import request
 
@@ -14,18 +14,19 @@ from app.utils.api import handle_response
 
 from flask.json import jsonify
 
-@api_bp.route('/ceshierror', methods=['GET', 'POST'])
+
+@api.route('/ceshierror', methods=['GET', 'POST'])
 def ceshierror():
 
     a = {}
     print('zheli')
-    # b = a['5']
+    b = a['5']
     return jsonify('success')
 
 
-@api_bp.route('/create_survey_template', methods=['POST'])
+@api.route('/create_survey_template', methods=['POST'])
 @token_auth.login_required
-@handle_response
+# @handle_response
 def create_survey_template() -> None:
 
     '''

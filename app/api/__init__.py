@@ -1,7 +1,18 @@
 from flask import Blueprint
 
-# use first bp in later version
-# api_bp = Blueprint('api', __name__, url_prefix='/api')
+api = Blueprint('api', __name__, url_prefix='/api')
 
-# api_bp = Blueprint('api', __name__, template_folder='templates', static_folder='static')
-api_bp = Blueprint('api', __name__, url_prefix='/api')
+'''
+Notes
+-------
+Must import files here, otherwise app instance cant
+add the url
+'''
+
+from app.api import (
+    answer_question,
+    feature,
+    summary,
+    survey_template,
+    users
+)

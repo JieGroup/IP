@@ -19,7 +19,7 @@ token_auth = HTTPTokenAuth()
 
 @authentication_bp.route('/tokens', methods=['POST'])
 @basic_auth.login_required
-@handle_response
+# @handle_response
 def get_token():
     
     '''
@@ -40,10 +40,7 @@ def get_token():
         return jsonify(msg)
     
     token = JwtManipulation.get_jwt(g.current_user)
-    # print('token is', type(token), token)
-    # print('token is 1', token.decode("utf-8"))
-    # print('token is 2', dumps({'token': token.decode()}))
-    # print('token is 3', jsonify(dumps({'token': token.decode()})))
+
     if isinstance(token, str):
         response = {
             'token': token

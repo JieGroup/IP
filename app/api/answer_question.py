@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from app.api import api_bp
+from app.api import api
 
 from flask import request
 
@@ -15,8 +15,8 @@ from app.utils.api import handle_response
 from app._typing import MTurkID
 
 
-@api_bp.route('/voter_start_answering', methods=['GET'])
-@handle_response
+@api.route('/voter_start_answering', methods=['GET'])
+# @handle_response
 def voter_start_answering():
 
     '''
@@ -50,8 +50,8 @@ def voter_start_answering():
     )
 
 
-@api_bp.route('/voter_submit_answers', methods=['POST'])
-@handle_response
+@api.route('/voter_submit_answers', methods=['POST'])
+# @handle_response
 def voter_submit_answers():
 
     '''

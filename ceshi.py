@@ -339,22 +339,28 @@ from datetime import datetime
 # if a:
 #     print('zz')
 
-class base:
-    # ceshi = 5
-    # def __init__(self):
-    #     self.ceshi = 5
-    def ceshi(self):
-        self.ceshi = 10
+# class base:
+#     # ceshi = 5
+#     # def __init__(self):
+#     #     self.ceshi = 5
+#     def ceshi(self):
+#         self.ceshi = 10
 
-class sub(base):
+# class sub(base):
 
-    # def __init__(self):
-    #     # super().__init__()
-    #     print(self.ceshi)
-    #     print(base.ceshi)
-    def base_ceshi(self):
-        print(self.ceshi)
+#     # def __init__(self):
+#     #     # super().__init__()
+#     #     print(self.ceshi)
+#     #     print(base.ceshi)
+#     def base_ceshi(self):
+#         print(self.ceshi)
 
-a = sub()
-a.ceshi()
-a.base_ceshi()
+# a = sub()
+# a.ceshi()
+# a.base_ceshi()
+
+from itsdangerous import URLSafeTimedSerializer
+
+serializer = URLSafeTimedSerializer('str')
+res = serializer.dumps('c')
+print('%%', type(res))

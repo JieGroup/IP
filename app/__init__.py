@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 from flask import Flask
-from app.extensions import cors, pyMongo
-# from flask_mail import Mail
 
-from app.api import api_bp
+from app.extensions import (
+    cors, 
+    mail,
+    pyMongo
+)
+
+from app.api import api
+from app.authentication import authentication_bp
 
 def create_app(config_class=None):
     '''Factory Pattern: Create Flask app.'''
@@ -31,10 +36,10 @@ def configure_app(application, config_class):
 
 def configure_blueprints(application):
     # 注册 blueprint
-    # from .main import main as main_blueprint
-    # print("main_blueprint", main_blueprint)
+
     print('register_blue_print')
-    application.register_blueprint(api_bp)
+    application.register_blueprint(authentication_bp)
+    application.register_blueprint(api)
 
 def configure_extensions(application):
     '''Configures the extensions.'''
@@ -42,17 +47,12 @@ def configure_extensions(application):
     # Enable CORS
     cors.init_app(application)
 
-    # Init Flask-SQLAlchemy
-    # db.init_app(app)
-
-    # Init Flask-Migrate
-    # migrate.init_app(app, db)
-
     # Init email service
-    # mail.init_app(application)
+    mail.init_app(application)
 
     pyMongo.init_app(application)
     # create_MongoDB_Collections()
+
 
 def create_MongoDB_Collections():
 
@@ -85,18 +85,17 @@ def configure_after_handlers(application):
 
 
 def configure_errorhandlers(application):
-    # from werkzeug.exceptions import HTTPException
+    from werkzeug.exceptions import HTTPException
     # from app.utils.api import handle_response
     '''Configures the error handlers'''
-    # from flask.json import jsonify
-    # @application.errorhandler(Exception)
+    from flask.json import jsonify
+    @application.errorhandler(Exception)
+    def handle_error(e):
+        code = 500
+        if isinstance(e, HTTPException):
+            code = e.code
+        return jsonify(error=str(e)), code
 
-    # def handle_error(e):
-    #     code = 500
-    #     # if isinstance(e, HTTPException):
-    #     #     code = e.code
-    #     return jsonify(error=str(e)), code
-    #     return 'wudi'
     pass
 
 

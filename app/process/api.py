@@ -1,11 +1,14 @@
 from app.process.template import SurveyTemplate
 from app.process.answer import VoterAnswerSurvey
 from app.process.summary import Summary
+from app.process.user import User
+
 
 __all__ = [
     'SurveyTemplate',
     'VoterAnswerSurvey',
-    'Summary'
+    'Summary',
+    'User'
 ]
 
 from app.database.api import (
