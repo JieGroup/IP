@@ -103,7 +103,7 @@ class SurveyTemplate:
         return True
 
     @classmethod
-    def __if_survey_topics_valid(
+    def __is_survey_topics_valid(
         cls, 
         survey_update_method: Survey_Update_Method,
         time_period: int,
@@ -177,7 +177,7 @@ class SurveyTemplate:
             Defines the max number of survey to issue
         max_rounds : int
             Defines how many times the topic can be regenerated
-        survey_topics :
+        survey_topics : dict
             The detailed information of each topic
 
         Returns
@@ -188,7 +188,7 @@ class SurveyTemplate:
         '''
         
         # Check the survey topics uploaded by user
-        validation_res = cls.__if_survey_topics_valid(
+        validation_res = cls.__is_survey_topics_valid(
             survey_update_method=survey_update_method,
             time_period=time_period,
             number_of_copies=number_of_copies,
@@ -203,7 +203,7 @@ class SurveyTemplate:
         # Store the new template
         newObjectId = ObjectId()
         survey_template_id=str(newObjectId)
-        expiration_time = Time.get_expiration_time(time_period)
+        expiration_time = Time.get_expiration_utc_time(time_period)
         create_document(
             database_type='survey_template',
             survey_template_id=survey_template_id,

@@ -1,29 +1,27 @@
 from __future__ import annotations
 
+import re
+
+from werkzeug.security import (
+    generate_password_hash, 
+)
+
+from app import mail
+
+from flask import (
+    current_app, 
+    g
+)
+from flask_mail import Message
+
+from itsdangerous import URLSafeTimedSerializer
+
 from typing import (
     final,
     Any,
     Callable,
     Union
 )
-
-from werkzeug.security import (
-    generate_password_hash, 
-    check_password_hash
-)
-
-from app import mail
-
-import errno
-import os
-import re
-import uuid
-import logging
-
-
-from flask import current_app, g
-from flask_mail import Message
-from itsdangerous import URLSafeTimedSerializer
 
 
 def get_cur_rounds_num(
@@ -243,7 +241,7 @@ def if_token_matched(
 
     serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     try:
-        email = serializer.loads(
+        serializer.loads(
             token,
             salt=current_app.config['SECURITY_PASSWORD_SALT'],
             max_age=expiration

@@ -359,8 +359,15 @@ from datetime import datetime
 # a.ceshi()
 # a.base_ceshi()
 
-from itsdangerous import URLSafeTimedSerializer
+# from itsdangerous import URLSafeTimedSerializer
 
-serializer = URLSafeTimedSerializer('str')
-res = serializer.dumps('c')
-print('%%', type(res))
+# serializer = URLSafeTimedSerializer('str')
+# res = serializer.dumps('c')
+# print('%%', type(res))
+
+class Ceshi:
+    @classmethod
+    def __siyou(cls):
+        print(5)
+
+Ceshi._Ceshi__siyou()

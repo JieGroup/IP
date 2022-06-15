@@ -382,7 +382,6 @@ class User:
                 )
                 return render_template('forgot_new.html', confirm_url=confirm_url)
 
-    
             hashed_password = get_hashed_password(password)
             update_document(
                 database_type='user',
@@ -393,7 +392,6 @@ class User:
             flash('Password successfully changed.')
             return 'Password successfully changed.'
         else:
-        
             msg = 'Hello ' + user_document['username']
             confirm_url = url_for('user.forgot_new', token=token, _external=True)
             return render_template(

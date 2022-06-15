@@ -30,7 +30,7 @@ Database_Type = Literal[
 ]
 
 Survey_Update_Method = Literal[
-    'static'
+    'static',
     'uniform',
 ]
 

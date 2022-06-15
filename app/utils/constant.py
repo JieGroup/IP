@@ -2,7 +2,8 @@ from typing import Final
 
 class Constant:
 
-    TIME_PERIOD_LIMIT: Final[float] = 5.62e6
+    TIME_PERIOD_UPPER_LIMIT: Final[float] = 5.62e6
+    TIME_PERIOD_LOWER_LIMIT: Final[float] = 2.592e5
     MAX_NUMBER_OF_COPIES: Final[int] = 500
     MAX_ROUNDS: Final[int] = 3
     
