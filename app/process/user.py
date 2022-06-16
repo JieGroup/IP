@@ -18,6 +18,7 @@ from app.database.api import (
 
 from app.process.utils import (
     get_hashed_password,
+    get_unique_id,
     validate_password,
     generate_confirmation_token,
     send_email,
@@ -94,13 +95,11 @@ class User:
         if message:
             return bad_request(message)
         
+        user_id = get_unique_id()
         hashed_password = get_hashed_password(password)
-
-        newObjectId = ObjectId()
         create_document(
             database_type='user',
-            document_id=newObjectId,
-            user_id=str(newObjectId),
+            user_id=user_id,
             username=username,
             email=email,
             hashed_password=hashed_password,

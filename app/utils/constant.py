@@ -2,11 +2,22 @@ from typing import Final
 
 class Constant:
 
+    TOKEN_EXPIRATION_PERIOD: Final[int] = 5000
+    UPDATE_TOKEN_INTERVAL: Final[int] = 900
+
+    # time period to store the survey template
     TIME_PERIOD_UPPER_LIMIT: Final[float] = 5.62e6
     TIME_PERIOD_LOWER_LIMIT: Final[float] = 2.592e5
+
+    # max number of answers for a survey template
     MAX_NUMBER_OF_COPIES: Final[int] = 500
+
+    # max rounds of a topic can be re-answered
     MAX_ROUNDS: Final[int] = 3
     
+
+
+
     SURVEY_TEMPLATE_ID = 'CESHICESHICESHI'
 
     # define fixed TYPE of entry to either random, dynamic, or static survey

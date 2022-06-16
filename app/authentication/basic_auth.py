@@ -1,0 +1,57 @@
+from __future__ import annotations
+
+from flask import g, current_app
+from flask.json import jsonify
+from flask_httpauth import HTTPBasicAuth
+
+from app import pyMongo
+
+from app.error import error_response
+
+from app.utils.api import handle_response
+
+from app.authentication.utils import check_password
+
+basic_auth = HTTPBasicAuth()
+
+@basic_auth.verify_password
+def verify_password(
+    username: str, 
+    password: str
+) -> bool:
+
+    '''
+    verify username and password
+
+    Parameters
+    ----------
+    username : str
+    password : str
+
+    Returns
+    -------
+    bool
+    '''
+
+    user = pyMongo.db.User.find_one({'username': username})
+    if user is None:
+        return False
+    g.current_user = user
+    return check_password(g.current_user, password)
+
+@basic_auth.error_handler
+def basic_auth_error():
+
+    '''
+    Return an error response in case of authentication failure
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    TODO
+    '''
+
+    return error_response(401)

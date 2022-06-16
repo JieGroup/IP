@@ -1,3 +1,7 @@
+from app.process.utils import (
+    get_unique_id,
+    get_hashed_password
+)
 from app.process.template import SurveyTemplate
 from app.process.answer import VoterAnswerSurvey
 from app.process.summary import Summary
@@ -5,6 +9,8 @@ from app.process.user import User
 
 
 __all__ = [
+    'get_unique_id',
+    'get_hashed_password',
     'SurveyTemplate',
     'VoterAnswerSurvey',
     'Summary',

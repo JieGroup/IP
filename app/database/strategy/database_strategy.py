@@ -8,7 +8,8 @@ from app.database.database.database_factory import (
     GetSurveyAnswer,
     GetSurveySummary,
     GetSurveyTemplate,
-    GetVoter
+    GetVoter,
+    GetUser
 )
 
 from typing import Union
@@ -55,39 +56,37 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
         self, database_type: Database_Type
     ) -> None:
         if database_type == 'survey_answer':
-            self.__database_operator = GetSurveyAnswer.get_database()
+            self.__database_operator = GetSurveyAnswer.get_instance()
         elif database_type == 'survey_summary':
-            self.__database_operator = GetSurveySummary.get_database()
+            self.__database_operator = GetSurveySummary.get_instance()
         elif database_type == 'survey_template':
-            self.__database_operator = GetSurveyTemplate.get_database()
+            self.__database_operator = GetSurveyTemplate.get_instance()
         elif database_type == 'voter':
-            self.__database_operator = GetVoter.get_database()
-
-    # def database_process(self, database_type, func, **kwargs):
-    #     self.set_database(database_type=database_type)
-    #     return func(**kwargs)
+            self.__database_operator = GetVoter.get_instance()
+        elif database_type == 'user':
+            self.__database_operator = GetUser.get_instance()
 
     def get_all_documents(
         self, **kwargs
     ) -> list:
-        return self.__database_operator.get_all_records(**kwargs)
+        return self.__database_operator.get_all_documents(**kwargs)
     
     def search_document(
         self, **kwargs
     ) -> list:
-        return self.__database_operator.store_record(**kwargs)
+        return self.__database_operator.search_document(**kwargs)
     
     def create_document(
         self, **kwargs
     ) -> list:
-        return self.__database_operator.get_record(**kwargs)
+        return self.__database_operator.create_document(**kwargs)
 
     def update_document(
         self, **kwargs
     ) -> list:
-        return self.__database_operator.get_record(**kwargs)
+        return self.__database_operator.update_document(**kwargs)
     
     def delete_document(
         self, **kwargs
     ) -> list:
-        return self.__database_operator.get_record(**kwargs)
+        return self.__database_operator.delete_document(**kwargs)

@@ -1,12 +1,7 @@
 from __future__ import annotations
 from app.error import bad_request
 
-from bson import ObjectId
-
-from typing import (
-    Any,
-    Union
-)
+from app.process.utils import get_unique_id
 
 from app.database.api import (
     search_document,
@@ -19,6 +14,11 @@ from app.utils.api import Time
 from app.utils.constant import Constant
 
 from app._typing import Survey_Update_Method
+
+from typing import (
+    Any,
+    Union
+)
 
 
 class SurveyTemplate:
@@ -201,8 +201,7 @@ class SurveyTemplate:
             return bad_request(validation_res)
 
         # Store the new template
-        newObjectId = ObjectId()
-        survey_template_id=str(newObjectId)
+        survey_template_id = get_unique_id()
         expiration_time = Time.get_expiration_utc_time(time_period)
         create_document(
             database_type='survey_template',
@@ -210,6 +209,7 @@ class SurveyTemplate:
             survey_update_method=survey_update_method,
             expiration_time=expiration_time,
             number_of_copies=number_of_copies,
+            max_rounds=max_rounds,
             survey_topics=survey_topics
         )
 

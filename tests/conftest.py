@@ -20,7 +20,10 @@ from app.database.api import (
     update_document
 )
 
-from tests.utils import get_hashed_password
+from app.process.api import (
+    get_hashed_password,
+    get_unique_id
+)
 
 
 class UnittestBase():
@@ -185,8 +188,7 @@ class UnittestBase():
 
         user_id = None
         if user_document == None:
-            newObjectId = ObjectId()
-            user_id = str(newObjectId)
+            user_id = get_unique_id()
             hashed_password = get_hashed_password('Xie1@456')
         
             create_document(

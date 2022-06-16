@@ -25,9 +25,11 @@ from app._typing import Survey_Update_Method
 
 from app.process.template import SurveyTemplate
 
+from app.error import DBDocumentNotFound
+
 from typing import Union
 
-from app.error import DBDocumentNotFound
+from app.process.utils import get_unique_id
 
 from app._typing import MTurkID
 
@@ -53,7 +55,7 @@ class VoterAnswerSurvey:
     def start_answering(
         cls, 
         survey_template_id: str,
-        mturk_id: str,
+        mturk_id: MTurkID,
     ) -> dict[str, Any]:
 
         '''
@@ -85,8 +87,7 @@ class VoterAnswerSurvey:
         # TODO: check if number of copies exceed limit, not urgent
 
         # create survey_answer document
-        newObjectId = ObjectId()
-        survey_answer_id=str(newObjectId)
+        survey_answer_id = get_unique_id()
         create_document(
             database_type='survey_answer',
             survey_answer_id=survey_answer_id,

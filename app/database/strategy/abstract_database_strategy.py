@@ -5,11 +5,10 @@ from abc import ABC, abstractmethod
 
 class AbstractDatabaseStrategy(ABC):
 
-    @classmethod
     @abstractmethod
-    def get_instance(cls):
+    def set_database(self, **kwargs):
         pass
-
+    
     @abstractmethod
     def get_all_documents(self, **kwargs):
         pass

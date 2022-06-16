@@ -24,7 +24,7 @@ def get_all_documents(
     '''
 
     db_operator = set_database_type(database_type=database_type)
-    return db_operator.get_all_records(**kwargs)
+    return db_operator.get_all_documents(**kwargs)
     
 def search_document(
     database_type: Database_Type,

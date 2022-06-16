@@ -11,7 +11,7 @@ add the url
 
 from app.api import (
     answer_question,
-    feature,
+    features,
     summary,
     survey_template,
     users

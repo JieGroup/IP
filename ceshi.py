@@ -365,9 +365,27 @@ from datetime import datetime
 # res = serializer.dumps('c')
 # print('%%', type(res))
 
-class Ceshi:
-    @classmethod
-    def __siyou(cls):
-        print(5)
+# class Ceshi:
+#     @classmethod
+#     def __siyou(cls):
+#         print(5)
 
-Ceshi._Ceshi__siyou()
+# Ceshi._Ceshi__siyou()
+
+import jwt
+class Ceshi:
+
+    def ceshi(self) -> int:
+        token_payload = {
+            'user_id': '666',
+        }
+
+        return jwt.encode(
+            token_payload,
+            '7777',
+            algorithm='HS256'
+        )
+
+a = Ceshi()
+print(a.ceshi())
+print(type(a.ceshi()))

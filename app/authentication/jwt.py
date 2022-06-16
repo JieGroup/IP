@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import jwt
 
 from flask import g, current_app
@@ -12,6 +14,13 @@ from app.authentication import authentication_bp
 from app.error import error_response
 from app.authentication.utils import check_password
 from app.utils.api import handle_response
+
+from app.utils.api import (
+    Constant,
+    Time
+)
+
+from typing import Union
 
 
 class JwtManipulation:
@@ -32,81 +41,213 @@ class JwtManipulation:
     '''
 
     @classmethod
-    def update_jwt(cls, user, token_payload, expires_in=5000):
+    def __is_jwt_needing_update(
+        cls,
+        current_time: float, 
+        
+        token_payload: dict,
+    ) -> bool:
 
+        '''
+        Time difference is token_payload_expiration_time - current_time
+        if time difference is greater than Constant.UPDATE_TOKEN_INTERVAL,
+        we dont need to update token yet.
+        If time difference is smaller than 0, the token has been expired.
+
+        Parameters
+        ----------
+        time_diff : int
+            Time difference between the current time and the token 
+            expiration time.
+        
+        Returns
+        -------
+        dict[str, str]
+        '''
+
+        current_time = Time.get_current_utc_time()
         token_payload_expiration_time = token_payload.get('exp')
 
-        # float
-        current_time = datetime.now(tz=timezone.utc).timestamp()
-        expiration_time = (datetime.now(tz=timezone.utc) + timedelta(seconds=expires_in)).timestamp()
+        time_diff = token_payload_expiration_time - current_time
+        if time_diff > Constant.UPDATE_TOKEN_INTERVAL:
+            return False
+        if time_diff < 0:
+            return False
+    
+        return True
 
-        time_diff = abs(token_payload_expiration_time - current_time)
- 
-        # if the difference of time is greater than 10 mins, we dont update 
-        # the token
-        if time_diff > 1000:
+    @classmethod
+    def __change_token_to_str(
+        cls, token: Union[str, bytes]
+    ) -> str:
+
+        '''
+        jwt.encode has some compatible issue with python version. 
+        The return value may be str or bytes type
+
+        Parameters
+        ----------
+        token : Union[str, bytes]
+            token
+        
+        Returns
+        -------
+        str
+        '''
+
+        if not isinstance(token, str):
+            return token.decode("utf-8")
+        
+        return token
+
+    @classmethod
+    def update_jwt(
+        cls, 
+        user: dict, 
+        token_payload: dict, 
+        expires_in: int=Constant.TOKEN_EXPIRATION_PERIOD
+    ) -> str:
+
+        '''
+        Update jwt when the expiration time is close to 
+        current time (Currently set to 15 mins)
+
+        Parameters
+        ----------
+        user : dict
+        token_payload : dict
+        expires_in : int
+
+        Returns
+        -------
+        dict[str, str]
+        '''
+
+        current_time = Time.get_current_utc_time()
+        token_payload_expiration_time = token_payload.get('exp')
+
+        if not cls.__is_jwt_needing_update(
+            current_time=current_time,
+            token_payload_expiration_time=token_payload_expiration_time
+        ):
             return None
         
+        new_expiration_time = Time.get_expiration_utc_time(time_period=expires_in)
+        # exp is token expiration time
+        # iat is token create time
         token_payload = {
             'user_id': user['user_id'],
             'user_name': user['name'] if 'name' in user else user['username'],
             'authority_level': user['authority_level'] if 'authority_level' in user else 'user',
-            # expiration time
-            'exp': expiration_time,
-            # create time
+            'exp': new_expiration_time,
             'iat': current_time
         }
-  
-        return jwt.encode(
+
+        token = jwt.encode(
             token_payload,
             current_app.config['SECRET_KEY'],
-            algorithm='HS256')
+            algorithm='HS256'
+        )
+
+        return cls.__change_token_to_str(
+            token=token
+        )
+
 
     @classmethod
-    def get_jwt(cls, user, expires_in=5000):
-        current_time = datetime.now(tz=timezone.utc).timestamp()
-        expiration_time = (datetime.now(tz=timezone.utc) + timedelta(seconds=expires_in)).timestamp()
+    def get_jwt(
+        cls, 
+        user: dict, 
+        expires_in: int=Constant.TOKEN_EXPIRATION_PERIOD
+    ) -> None:
 
-        # float
+        '''
+        get token
+
+        Parameters
+        ----------
+        user : dict
+        expires_in : int
+            TOKEN_EXPIRATION_TIME
+
+        Returns
+        -------
+        dict[str, str]
+        '''
+
+        current_time = Time.get_current_utc_time()
+        expiration_time = Time.get_expiration_utc_time(
+            time_period=expires_in
+        )
+
+        # exp is token expiration time
+        # iat is token create time
         token_payload = {
             'user_id': user['user_id'],
             'user_name': user['name'] if 'name' in user else user['username'],
             'authority_level': user['authority_level'] if 'authority_level' in user else 'user',
-            # expiration time
             'exp': expiration_time,
-            # create time
             'iat': current_time
         }
 
-        # print('type', type(jwt))
-        # return jwt.encode(
-        #     token_payload,
-        #     current_app.config['SECRET_KEY'],
-        #     algorithm='HS256').decode('utf-8')
-        # a = jwt.encode(
-        #     token_payload,
-        #     current_app.config['SECRET_KEY'],
-        #     algorithm='HS256')
-        # print('aaaaaa', a, type(a))
-
-        return jwt.encode(
+        token = jwt.encode(
             token_payload,
             current_app.config['SECRET_KEY'],
-            algorithm='HS256')
+            algorithm='HS256'
+        )
+        
+        return cls.__change_token_to_str(
+            token=token
+        )
 
     @classmethod
-    def verify_jwt(cls, token):
+    def verify_jwt(
+        cls, 
+        token: str
+    ) -> bool:
+
+        '''
+        Verify the token uploaded by the web
+
+        Parameters
+        ----------
+        token : str
+            token
+
+        Returns
+        -------
+        bool
+        '''
+
         try:
             token_payload = jwt.decode(
                 token,
                 current_app.config['SECRET_KEY'],
-                algorithms=['HS256'])
+                algorithms=['HS256']
+            )
         except (jwt.exceptions.ExpiredSignatureError,
                 jwt.exceptions.InvalidSignatureError,
                 jwt.exceptions.DecodeError) as e:
-            # If the Token expires or is modified by someone, the signature verification will also fail.
-            return None, None
+            # If the Token expires or is modified by someone, 
+            # the signature verification will also fail.
+            return False
+        
+        return True
         
         user_id = token_payload.get('user_id')
         user_document = pyMongo.db.User.find_one({'user_id': user_id})
         return user_document, token_payload
+
+    @classmethod
+    def decode_jwt(
+        cls,
+        token: str
+    ) -> dict:
+
+        token_payload = jwt.decode(
+            token,
+            current_app.config['SECRET_KEY'],
+            algorithms=['HS256']
+        )
+
+        return token_payload
