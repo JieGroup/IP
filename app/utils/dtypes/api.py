@@ -7,7 +7,8 @@ from app.utils.dtypes.inference import (
     is_list,
     is_integer,
     is_float,
-    is_set
+    is_set,
+    is_var_in_literal
 )
 
 __all__ = [
@@ -18,5 +19,6 @@ __all__ = [
     'is_list',
     'is_integer',
     'is_float',
-    'is_set'
+    'is_set',
+    'is_var_in_literal'
 ]

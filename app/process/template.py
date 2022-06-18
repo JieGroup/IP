@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from app.error import bad_request
 
 from app.process.utils import get_unique_id
@@ -9,9 +10,14 @@ from app.database.api import (
     update_document
 )
 
-from app.utils.api import Time
+from app.utils.api import (
+    Time,
+    Constant
+)
 
-from app.utils.constant import Constant
+from app.utils.dtypes.api import (
+    is_var_in_literal
+)
 
 from app._typing import Survey_Update_Method
 
@@ -22,7 +28,6 @@ from typing import (
 
 
 class SurveyTemplate:
-
     '''
     Handle the creating template process. Mainly focus on the validation
     of the uploaded parameters
@@ -37,30 +42,9 @@ class SurveyTemplate:
     '''
 
     @classmethod
-    def __if_survey_update_method_valid(
-        cls, survey_update_method: str
-    ) -> bool:
-        
-        '''
-        Check if survey_update_method is in predefined range
-
-        Parameters
-        ----------
-        survey_update_method : str
-
-        Returns
-        -------
-        bool
-        '''
-
-        # TODO: Modify private method later
-        return survey_update_method in Survey_Update_Method.__args__
-
-    @classmethod
     def __is_number_of_copies_valid(
         cls, number_of_copies: int
     ) -> bool:
-
         '''
         Check if number_of_copies is in predefined range
 
@@ -72,7 +56,6 @@ class SurveyTemplate:
         -------
         bool
         '''
-
         if number_of_copies > Constant.MAX_NUMBER_OF_COPIES:
             return False
         if number_of_copies < 1:
@@ -83,7 +66,6 @@ class SurveyTemplate:
     def __is_max_rounds_valid(
         cls, max_rounds: int
     ) -> bool:
-
         '''
         Check if max_rounds is in predefined range
 
@@ -95,7 +77,6 @@ class SurveyTemplate:
         -------
         bool
         '''
-
         if max_rounds > Constant.MAX_ROUNDS:
             return False
         if max_rounds < 1:
@@ -111,7 +92,6 @@ class SurveyTemplate:
         max_rounds: int,
         survey_topics: dict[dict[str, Any]]
     ) -> dict:
-
         '''
         Check if all parameters are valid
 
@@ -125,12 +105,12 @@ class SurveyTemplate:
             If the parameters pass all tests, error_message would be an empty dict.
             Otherwise, it would contain error message
         '''
-
         error_message = {}
 
         # Check if survey_update_method is in defined category
-        if not cls.__if_survey_update_method_valid(
-            survey_update_method=survey_update_method
+        if not is_var_in_literal(
+            var=survey_update_method,
+            expected_type=Survey_Update_Method
         ):
             error_message['survey_update_method'] = 'Please provide a valid survey topics update method'
 
@@ -148,7 +128,6 @@ class SurveyTemplate:
             error_message['max_rounds'] = 'Please provide a number of max_rounds between 1 and 3'
 
         # TODO: Check Survey_topics. Not urgent
-
         return error_message
 
     @classmethod
@@ -160,7 +139,6 @@ class SurveyTemplate:
         max_rounds: int,
         survey_topics: dict[dict[str, Any]]
     ) -> str:
-
         '''
         Check survey template information uploaded by creator and store
             the survey template information in db.
@@ -186,7 +164,6 @@ class SurveyTemplate:
             Return an unique survey_template_id that creator can obtain the information 
             about the survey template
         '''
-        
         # Check the survey topics uploaded by user
         validation_res = cls.__is_survey_topics_valid(
             survey_update_method=survey_update_method,

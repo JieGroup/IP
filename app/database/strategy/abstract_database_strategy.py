@@ -4,9 +4,12 @@ from abc import ABC, abstractmethod
 
 
 class AbstractDatabaseStrategy(ABC):
-
+    '''
+    Abstract class for database strategy class.
+    This is where our DatabaseOperator can override
+    '''
     @abstractmethod
-    def set_database(self, **kwargs):
+    def set_database(self, **kwargs) -> None:
         pass
     
     @abstractmethod

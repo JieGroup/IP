@@ -35,13 +35,14 @@ class JwtManipulation:
 
     Methods
     -------
+    is_jwt_needing_update
     update_jwt
     get_jwt
     verify_jwt
     '''
 
     @classmethod
-    def __is_jwt_needing_update(
+    def is_jwt_needing_update(
         cls,
         current_time: float, 
         
@@ -103,7 +104,7 @@ class JwtManipulation:
     @classmethod
     def update_jwt(
         cls, 
-        user: dict, 
+        cur_user_info: dict, 
         token_payload: dict, 
         expires_in: int=Constant.TOKEN_EXPIRATION_PERIOD
     ) -> str:
@@ -114,7 +115,7 @@ class JwtManipulation:
 
         Parameters
         ----------
-        user : dict
+        cur_user_info : dict
         token_payload : dict
         expires_in : int
 
@@ -136,9 +137,9 @@ class JwtManipulation:
         # exp is token expiration time
         # iat is token create time
         token_payload = {
-            'user_id': user['user_id'],
-            'user_name': user['name'] if 'name' in user else user['username'],
-            'authority_level': user['authority_level'] if 'authority_level' in user else 'user',
+            'user_id': cur_user_info['user_id'],
+            'username': cur_user_info['name'] if 'name' in cur_user_info else cur_user_info['username'],
+            'authority_level': cur_user_info['authority_level'] if 'authority_level' in cur_user_info else 'user',
             'exp': new_expiration_time,
             'iat': current_time
         }
@@ -157,7 +158,7 @@ class JwtManipulation:
     @classmethod
     def get_jwt(
         cls, 
-        user: dict, 
+        cur_user_info: dict, 
         expires_in: int=Constant.TOKEN_EXPIRATION_PERIOD
     ) -> None:
 
@@ -166,7 +167,7 @@ class JwtManipulation:
 
         Parameters
         ----------
-        user : dict
+        cur_user_info : dict
         expires_in : int
             TOKEN_EXPIRATION_TIME
 
@@ -183,9 +184,9 @@ class JwtManipulation:
         # exp is token expiration time
         # iat is token create time
         token_payload = {
-            'user_id': user['user_id'],
-            'user_name': user['name'] if 'name' in user else user['username'],
-            'authority_level': user['authority_level'] if 'authority_level' in user else 'user',
+            'user_id': cur_user_info['user_id'],
+            'username': cur_user_info['name'] if 'name' in cur_user_info else cur_user_info['username'],
+            'authority_level': cur_user_info['authority_level'] if 'authority_level' in cur_user_info else 'user',
             'exp': expiration_time,
             'iat': current_time
         }

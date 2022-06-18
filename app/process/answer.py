@@ -35,7 +35,6 @@ from app._typing import MTurkID
 
 
 class VoterAnswerSurvey:
-
     '''
     Helper class for voter answering survey process.
     Mainly Check the parameters uploaded by Voter and
@@ -50,14 +49,12 @@ class VoterAnswerSurvey:
     start_answering
     update_survey_topics
     '''
-
     @classmethod
     def start_answering(
         cls, 
         survey_template_id: str,
         mturk_id: MTurkID,
     ) -> dict[str, Any]:
-
         '''
         Check the information uploaded by Voter and
         check the constrains of the survey template 
@@ -74,7 +71,6 @@ class VoterAnswerSurvey:
         -------
         dict
         '''
-
         # check if survey_template_document is None
         # if is None, raise SurveyTemplateNotFound error
         survey_template_document = search_document(
@@ -106,7 +102,6 @@ class VoterAnswerSurvey:
         survey_answer_id: str,
         survey_new_answers: dict[dict[str, Any]]
     ) -> Union[None, dict[str, dict[str, Any]]]:
-
         '''
         Check the information uploaded by Voter and
         check the constrains of the survey template 
@@ -125,7 +120,6 @@ class VoterAnswerSurvey:
             If the voter has finished all rounds of survey, return None.
             Otherwise return new topics
         '''
-
         # check if survey_answer_id in database
         survey_answer_document = search_document(
             database_type='survey_answer',

@@ -90,25 +90,8 @@ def configure_errorhandlers(application):
     '''Configures the error handlers'''
     from flask.json import jsonify
     @application.errorhandler(Exception)
-    def handle_error(e):
+    def handle_error(error):
         code = 500
-        if isinstance(e, HTTPException):
-            code = e.code
-        return jsonify(error=str(e)), code
-
-    pass
-
-
-# from flask import Flask
-# from config import Config
-# from flask_sqlalchemy import SQLAlchemy
-# from flask_migrate import Migrate
-
-# app = Flask(__name__)
-# app.config.from_object(Config)
-# db = SQLAlchemy(app)
-# migrate = Migrate(app, db)
-
-
-# from app import models
-
+        if isinstance(error, HTTPException):
+            code = error.code
+        return jsonify(error=str(error)), code

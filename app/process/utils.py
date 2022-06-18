@@ -224,7 +224,7 @@ def if_token_user_id_equals_user_id(
 def if_token_matched(
     token: str, 
     expiration: int=3600
-) -> Union[bool, None]:
+) -> bool:
 
     '''
     Decode token and check if the token is correct
@@ -249,6 +249,7 @@ def if_token_matched(
             max_age=expiration
         )
     except:
+        # TODO
         raise None
 
     return True

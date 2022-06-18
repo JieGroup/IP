@@ -372,20 +372,44 @@ from datetime import datetime
 
 # Ceshi._Ceshi__siyou()
 
-import jwt
-class Ceshi:
+# import jwt
+# class Ceshi:
 
-    def ceshi(self) -> int:
-        token_payload = {
-            'user_id': '666',
-        }
+#     def ceshi(self) -> int:
+#         token_payload = {
+#             'user_id': '666',
+#         }
 
-        return jwt.encode(
-            token_payload,
-            '7777',
-            algorithm='HS256'
+#         return jwt.encode(
+#             token_payload,
+#             '7777',
+#             algorithm='HS256'
+#         )
+
+# a = Ceshi()
+# print(a.ceshi())
+# print(type(a.ceshi()))
+
+
+def ceshi():
+    a = {}
+
+    try:
+        b = a['5']
+    except KeyError:
+        # raise e('cuowu')
+
+        raise KeyError(
+            "String passed to weights not a valid column"
         )
 
-a = Ceshi()
-print(a.ceshi())
-print(type(a.ceshi()))
+    # except ValueError as err:
+
+    #     raise ValueError(
+    #         "String passed to weights not a valid column"
+    #     )
+
+ceshi()
+
+
+# raise Exception('There has been an error in the system')

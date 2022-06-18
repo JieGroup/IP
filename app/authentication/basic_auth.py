@@ -10,7 +10,7 @@ from app.error import error_response
 
 from app.utils.api import handle_response
 
-from app.authentication.utils import check_password
+from app.authentication.utils import is_password_valid
 
 basic_auth = HTTPBasicAuth()
 
@@ -37,7 +37,11 @@ def verify_password(
     if user is None:
         return False
     g.current_user = user
-    return check_password(g.current_user, password)
+
+    return is_password_valid(
+        hashed_password=g.current_user['hashed_password'],
+        password=password
+    )
 
 @basic_auth.error_handler
 def basic_auth_error():

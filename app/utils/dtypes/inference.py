@@ -14,6 +14,12 @@ from pandas.api.types import is_integer as pandas_is_integer
 from pandas.api.types import is_list_like as pandas_is_list_like
 from pandas.api.types import is_float as pandas_is_float
 
+from typing import (
+    Any,
+    Literal
+)
+
+
 def is_numpy(obj) -> bool:
     return isinstance(obj, (np.ndarray, np.generic))
 
@@ -38,5 +44,20 @@ def is_float(obj) -> bool:
 def is_set(obj) -> bool:
     return type(obj) == set
 
+def is_var_in_literal(
+    var: Any,
+    expected_type: Literal
+) -> bool:
+    '''
+    Check if var is in expected_type
 
+    Parameters
+    ----------
+    var : Any
+
+    Returns
+    -------
+    bool
+    '''
+    return var in expected_type.__args__
 

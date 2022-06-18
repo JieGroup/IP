@@ -1,9 +1,6 @@
 from __future__ import annotations
 
 from app import pyMongo
-from app.database.database.utils import (
-    if_file_size_exceed_limit
-)
 
 from app.database.database.base import BaseDatabase
 
@@ -13,48 +10,57 @@ from typing import Any
 
 
 class SurveySummary(AbstractDatabase, BaseDatabase):
+    '''
+    SurveySummary is not needed for now
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    get_all_documents_count
+    get_all_documents
+    search_document
+    create_document
+    update_document
+    delete_document
+    '''
+    
+    @classmethod
+    def get_all_documents_count(cls) -> int:
+
+        pass
 
     @classmethod
-    def get_all_documents(cls) -> None:
-        return pyMongo.db.Voter.find({})
+    def get_all_documents(cls) -> list[dict[str, Any]]:
+
+        pass
 
     @classmethod
     def search_document(
-        cls, identifier_id: str
+        cls
     ) -> None:
 
-        return pyMongo.db.SurveySummary.find_one({'identifier_id': identifier_id})
+        pass
 
     @classmethod
     def create_document(
-        cls, survey_template_id: str, 
+        cls
     ) -> None:
 
-        survey_summary_document = {
-            'survey_template_id': survey_template_id,
-            'survey_topic': {},
-        }
-
-        indicator, BSON_file = if_file_size_exceed_limit(file=survey_summary_document)
-        if indicator:
-            raise ValueError('Answer is too large')
-
-        return pyMongo.db.SurveySummary.insert_one(survey_summary_document)
+        pass
     
     @classmethod
     def update_document(
-        cls, 
-        survey_template_id: str, 
-        survey_topic: dict[dict[str, Any]]
+        cls
     ) -> None:
 
-        return pyMongo.db.SurveySummary.update_one({'survey_template_id': survey_template_id}, {'$set':{
-                   'survey_topic': survey_topic
-               }})
+        pass
     
     @classmethod
     def delete_document(
-        cls, survey_template_id: str
+        cls
     ) -> None:
 
-        return pyMongo.db.SurveySummary.delete_one({'survey_template_id': survey_template_id})
+        pass

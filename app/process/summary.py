@@ -4,7 +4,6 @@ from app.database.api import get_all_documents
 
 
 class Summary:
-
     '''
     Handle the summary process - creator gets the information
     about the survey. 
@@ -23,7 +22,6 @@ class Summary:
         cls,
         survey_template_id: str
     ) -> list[dict]:
-
         '''
         Return all the survey answer documents that are belonged to
         current survey_template_id
@@ -37,7 +35,6 @@ class Summary:
         -------
         list[dict]
         '''
-        
         return get_all_documents(
             database_type='survey_answer',
             survey_template_id=survey_template_id

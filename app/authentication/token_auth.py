@@ -8,20 +8,23 @@ from app.error import error_response
 
 from app.utils.api import handle_response
 
+from app.database.api import search_document
+
 from app.authentication import authentication_bp
+from app.authentication.basic_auth import basic_auth
+from app.authentication.utils import has_user_confirmed_email
 from app.authentication.jwt import JwtManipulation
 
 token_auth = HTTPTokenAuth()
 
-@authentication_bp.route('/get_voter_tokens', methods=['POST'])
-# @handle_response
-def get_voter_token():
+@authentication_bp.route('/get_user_tokens', methods=['POST'])
+@basic_auth.login_required
+def get_user_tokens() -> dict[str, str]:
     
     '''
-    Login function (doesnt need token). If the user registered but not confirmed yet, we lead it to the confirmation page.
-    If the user finishes the confirmation, we send it a token.
-
-    Since voter do not need to login, we dont need to verify username and password.
+    When user login its account:
+        1. pass the verification of username and password(decorator)
+        2. get token 
 
     Parameters
     ----------
@@ -32,16 +35,54 @@ def get_voter_token():
     dict[str, str]
     '''
 
-    if g.current_user['confirm_email'] == False:
+    if not has_user_confirmed_email(
+        cur_user_info=g.current_user
+    ):  
+    # TODO: raise error
         msg = 'not verify email yet'
         return msg
     
-    token = JwtManipulation.get_jwt(g.current_user)
+    token = JwtManipulation.get_jwt(
+        cur_user_info=g.current_user
+    )
 
     return {
         'token': token
     }
 
+@authentication_bp.route('/get_voter_tokens', methods=['POST'])
+# @handle_response
+def get_voter_token() -> dict[str, str]:
+    
+    '''
+    When voter starts answering the topics:
+        1. Since voter does not need to login, we dont need to 
+            verify username and password.
+        2. get token 
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    dict[str, str]
+    '''
+
+    if not has_user_confirmed_email(
+        cur_user_info=g.current_user
+    ):  
+    # TODO: raise error
+        msg = 'not verify email yet'
+        return msg
+    
+    token = JwtManipulation.get_jwt(
+        cur_user_info=g.current_user
+    )
+
+    return {
+        'token': token
+    }
 
 @token_auth.verify_token
 # @handle_response
@@ -50,8 +91,8 @@ def verify_token(
 ) -> bool:
 
     '''
-    Check if the request contains token.
-    Check the validity of the token
+    1. Check if the request contains token.
+    2. Check the validity of the token
 
     Parameters
     ----------
@@ -62,22 +103,29 @@ def verify_token(
     bool
     '''
 
-    print('token is!!!!!', token)
-
     if not JwtManipulation.verify_jwt(token=token):
+        # TODO: raise error
         return None
     
-    g.current_user = 
     token_payload = JwtManipulation.decode_jwt(token=token)
 
+    user_id = token_payload['user_id']
+    user_document = search_document(
+        database_type='user',
+        user_id=user_id
+    )
+    g.current_user = user_document
+    
     if JwtManipulation.is_jwt_needing_update(
         token_payload=token_payload
     ):
-        new_token = JwtManipulation.update_jwt(g.current_user, token_payload)
+        token = JwtManipulation.update_jwt(
+            cur_user_info=g.current_user, 
+            token_payload=token_payload 
+        )
 
-    g.current_user['new_token'] = new_token
-    
-    return g.current_user is not None
+    g.current_user['token'] = token
+    return True
 
 @token_auth.error_handler
 @handle_response
