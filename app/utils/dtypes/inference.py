@@ -49,22 +49,22 @@ def is_set(obj) -> bool:
 def is_datetime_dot_datetime(obj) -> bool:
     from datetime import datetime
     return type(obj) == datetime
-    
-@typechecked
-def is_var_in_literal(
-    var: Any,
-    expected_type: Literal
-) -> bool:
-    '''
-    Check if var is in expected_type
 
-    Parameters
-    ----------
-    var : Any
+# @typechecked
+# def is_var_in_literal(
+#     var: Any,
+#     expected_type: Literal
+# ) -> bool:
+#     '''
+#     Check if var is in expected_type
 
-    Returns
-    -------
-    bool
-    '''
-    return var in expected_type.__args__
+#     Parameters
+#     ----------
+#     var : Any
+
+#     Returns
+#     -------
+#     bool
+#     '''
+#     return var in expected_type.__args__
 

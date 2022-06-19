@@ -16,10 +16,3 @@ class SurveyAnswerError(ValueError):
     """
 
     pass
-
-class FileTooLarge(ValueError):
-    """
-    Error raised when the data uploaded by the voter is too large
-    """
-    
-    pass

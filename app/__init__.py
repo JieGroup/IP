@@ -62,10 +62,8 @@ def create_MongoDB_Collections():
         pyMongo.db.SurveyTemplate.create_index([("survey_template_id", 1)], unique=True)
 
     if 'SurveyAnswer' not in collection_list:
-        # pyMongo.db.SurveyAnswer.create_index([("survey_template_id", 1)], unique=True)
         pyMongo.db.SurveyAnswer.create_index([("survey_answer_id", 1)], unique=True)
-        # pyMongo.db.SurveyAnswer.create_index([("mturk_id", 1)], unique=True)
-        pyMongo.db.SurveyAnswer.create_index([("digits", 1)], unique=True)
+        # TODO: 也许survey_template_id和mturk_id要一个联合索引
 
     if 'SurveySummary' not in collection_list:
         pyMongo.db.SurveySummary.create_index([("survey_template_id", 1)], unique=True)
@@ -73,7 +71,10 @@ def create_MongoDB_Collections():
     if 'Voter' not in collection_list:
         pyMongo.db.Voter.create_index([("mturk_id", 1)], unique=True)
 
-    
+    if 'User' not in collection_list:
+        pyMongo.db.User.create_index([("user_id", 1)], unique=True)
+
+
 def configure_before_handlers(application):
     '''Configures the before request handlers'''
     pass

@@ -26,203 +26,197 @@ from app.process.api import (
 )
 
 
-class UnittestBase():
+'''
+1. Handle the funcions applied before each test and after each test.
+2. Contain some common functions
+'''
 
+
+app = None
+app_context = None
+client = None
+def pytest_runtest_setup() -> None:
     '''
-    Handle the funcions applied before each test and after each test.
-    Contain some common functions
+    Execute before every test
+    Create test flask client
 
-    Attributes
+    Parameters
     ----------
     None
 
-    Methods
+    Returns
     -------
-    setUp
-    tearDown
-    drop_db_collections
-    get_basic_auth_headers
-    get_token_auth_headers
+    None
+    '''
+    print('---- pytest_runtest_setup')
+    global app, app_context, client
+    app = create_app(TestConfig)
+    # active context of flask instance  
+    app_context = app.app_context()
+    app_context.push()
+    # Flask's built-in test client that simulates browser behavior
+    # to interact with server
+    client = app.test_client()
+
+def pytest_runtest_teardown() -> None:
+
+    '''
+    Execute after every test
+    Clean database and exit the flask instance context
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+    '''
+    print('---- pytest_runtest_teardown')
+    global app_context
+    drop_db_collections()
+    app_context.pop()
+
+def get_test_client() -> object:
+    global client
+    return client
+
+def drop_db_collections() -> None:
+        
+    '''
+    Clean database
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
     '''
 
-    def setUp(self) -> None:
+    for collecion_names in pyMongo.db.list_collection_names():
+        pyMongo.db.drop_collection(collecion_names)
 
-        '''
-        Execute before every test
-        Create test flask client
+def get_basic_auth_headers(
+    username: str, 
+    password: str
+) -> dict:
 
-        Parameters
-        ----------
-        None
+    '''
+    Create headers for the Basic Auth
 
-        Returns
-        -------
-        None
-        '''
+    Parameters
+    ----------
+    None
 
-        # create flask instance
-        self.app = create_app(TestConfig)
-        # active context of flask instance  
-        self.app_context = self.app.app_context()
-        self.app_context.push()
-        # Flask's built-in test client that simulates browser behavior
-        # to interact with server
-        self.client = self.app.test_client()
+    Returns
+    -------
+    dict
+    '''
 
-    def tearDown(self) -> None:
+    return {
+        'Authorization': 'Basic ' + b64encode(
+            (username + ':' + password).encode('utf-8')).decode('utf-8'),
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
 
-        '''
-        Execute after every test
-        Clean database and exit the flask instance context
+def get_token_auth_headers(
+    username: str, 
+    password: str
+) -> dict:
 
-        Parameters
-        ----------
-        None
+    '''
+    Create headers for the JSON Web Token
 
-        Returns
-        -------
-        None
-        '''
+    Parameters
+    ----------
+    None
 
-        self.drop_db_collections()
-        self.app_context.pop()
+    Returns
+    -------
+    dict
+    '''
 
-    def drop_db_collections(self) -> None:
-        
-        '''
-        Clean database
+    global client
 
-        Parameters
-        ----------
-        None
+    headers = get_basic_auth_headers(
+        username=username, 
+        password=password
+    )
+    response = client.post('/auth/tokens', headers=headers)
+    assert response.status_code == 200
+    json_response = json.loads(response.get_data(as_text=True))
+    assert json_response is not None
+    token = json_response['token']
+    return {
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
 
-        Returns
-        -------
-        None
-        '''
+def register_account(
+    username: str
+) -> str:
 
-        for collecion_names in pyMongo.db.list_collection_names():
-            pyMongo.db.drop_collection(collecion_names)
+    '''
+    Create account for further testing.
+    If the document containing the username already exists,
+    return the existing document
 
-    def get_basic_auth_headers(
-        self, 
-        username: str, 
-        password: str
-    ) -> dict:
+    Parameters
+    ----------
+    username : str
+        username must be unique in db
 
-        '''
-        Create headers for the Basic Auth
+    Returns
+    -------
+    str
+    '''
 
-        Parameters
-        ----------
-        None
+    user_document = search_document(
+        database_type='user',
+        username=username
+    )
 
-        Returns
-        -------
-        dict
-        '''
-
-        return {
-            'Authorization': 'Basic ' + b64encode(
-                (username + ':' + password).encode('utf-8')).decode('utf-8'),
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-
-    def get_token_auth_headers(
-        self, 
-        username: str, 
-        password: str
-    ) -> dict:
-
-        '''
-        Create headers for the JSON Web Token
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        dict
-        '''
-
-        headers = self.get_basic_auth_headers(
-            username=username, 
-            password=password
-        )
-        response = self.client.post('/auth/tokens', headers=headers)
-        assert response.status_code == 200
-        json_response = json.loads(response.get_data(as_text=True))
-        assert json_response is not None
-        token = json_response['token']
-        return {
-            'Authorization': 'Bearer ' + token,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
+    user_id = None
+    if user_document == None:
+        user_id = get_unique_id()
+        hashed_password = get_hashed_password('Xie1@456')
     
-    def register_account(
-        self, username: str
-    ) -> str:
-
-        '''
-        Create account for further testing.
-        If the document containing the username already exists,
-        return the existing document
-
-        Parameters
-        ----------
-        username : str
-            username must be unique in db
-
-        Returns
-        -------
-        str
-        '''
-
-        user_document = search_document(
+        create_document(
             database_type='user',
-            username=username
+            user_id=user_id,
+            username=username,
+            hashed_password=hashed_password,
+            comfirm_email=True
         )
+    else:
+        user_id = user_document['user_id']
 
-        user_id = None
-        if user_document == None:
-            user_id = get_unique_id()
-            hashed_password = get_hashed_password('Xie1@456')
-        
-            create_document(
-                database_type='user',
-                user_id=user_id,
-                username=username,
-                hashed_password=hashed_password,
-                comfirm_email=True
-            )
-        else:
-            user_id = user_document['user_id']
+    return user_id
 
-        return user_id
+def get_two_accounts() -> tuple[str, str]:
 
-    def get_two_accounts(self) -> tuple[str, str]:
+    '''
+    Get 2 accounts for further testing
 
-        '''
-        Get 2 accounts for further testing
+    Parameters
+    ----------
+    None
 
-        Parameters
-        ----------
-        None
+    Returns
+    -------
+    tuple[str, str]
+    '''
 
-        Returns
-        -------
-        tuple[str, str]
-        '''
+    user_id_1 = register_account(
+        username='unittest1'
+    )
 
-        user_id_1 = self.register_account(
-            username='unittest1'
-        )
+    user_id_2 = register_account(
+        username='unittest2'
+    )
 
-        user_id_2 = self.register_account(
-            username='unittest2'
-        )
-
-        return (user_id_1, user_id_2)
+    return (user_id_1, user_id_2)

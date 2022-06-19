@@ -3,13 +3,14 @@ from __future__ import annotations
 import copy
 import pytest
 
+from tests.conftest import UnittestBase
 from app.utils.api import handle_response
 
 from typeguard import check_type
 from app._typing import JSONType
 
 
-class TestResponse:
+class TestResponse():
 
     @pytest.mark.parametrize("expected", [
         JSONType

@@ -35,7 +35,7 @@ Survey_Update_Method = Literal[
     'uniform',
 ]
 
-MTurkID = Literal['str']
+MTurkID = str
 
 Serializable_Datatype = Union[
     dict,

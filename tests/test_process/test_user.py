@@ -5,6 +5,5 @@ import pytest
 
 from tests.conftest import UnittestBase
 
-
 class Test(UnittestBase):
     pass

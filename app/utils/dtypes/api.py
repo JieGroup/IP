@@ -8,7 +8,7 @@ from app.utils.dtypes.inference import (
     is_integer,
     is_float,
     is_set,
-    is_var_in_literal,
+    # is_var_in_literal,
     is_datetime_dot_datetime
 )
 
@@ -21,6 +21,6 @@ __all__ = [
     'is_integer',
     'is_float',
     'is_set',
-    'is_var_in_literal',
+    # 'is_var_in_literal',
     'is_datetime_dot_datetime'
 ]

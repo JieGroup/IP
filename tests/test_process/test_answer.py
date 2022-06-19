@@ -9,6 +9,7 @@ from app.process.api import VoterAnswerSurvey
 
 from app.utils.api import Constant
 
+from tests.conftest import get_test_client
 
 class TestVoterAnswerSurvey(UnittestBase):
 

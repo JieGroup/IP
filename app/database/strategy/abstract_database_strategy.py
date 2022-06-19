@@ -11,23 +11,27 @@ class AbstractDatabaseStrategy(ABC):
     @abstractmethod
     def set_database(self, **kwargs) -> None:
         pass
-    
+
     @abstractmethod
-    def get_all_documents(self, **kwargs):
+    def get_all_documents_count(self, **kwargs) -> int:
         pass
     
     @abstractmethod
-    def search_document(self, **kwargs):
+    def get_all_documents(self, **kwargs) -> list[dict]:
         pass
     
     @abstractmethod
-    def create_document(self, **kwargs):
+    def search_document(self, **kwargs) -> dict:
+        pass
+    
+    @abstractmethod
+    def create_document(self, **kwargs) -> None:
         pass
 
     @abstractmethod
-    def update_document(self, **kwargs):
+    def update_document(self, **kwargs) -> None:
         pass
     
     @abstractmethod
-    def delete_document(self, **kwargs):
+    def delete_document(self, **kwargs) -> None:
         pass

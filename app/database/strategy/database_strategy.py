@@ -12,9 +12,9 @@ from app.database.database.database_factory import (
     GetUser
 )
 
-from app.utils.dtypes.api import is_var_in_literal
-
 from typeguard import typechecked
+
+from typing import Union
 
 from app._typing import (
     Database_Type
@@ -87,11 +87,6 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
         -------
         None
         '''
-        if not is_var_in_literal(
-            var=database_type,
-            expected_type=Database_Type
-        ):
-            raise ValueError('database_type is wrong')
 
         if database_type == 'survey_answer':
             self.__database_operator = GetSurveyAnswer.get_instance()
@@ -105,9 +100,17 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
             self.__database_operator = GetUser.get_instance()
         return
 
+    def get_all_documents_count(
+        self, **kwargs
+    ) -> int:
+        '''
+        strategy interface
+        '''
+        return self.__database_operator.get_all_documents_count(**kwargs)
+
     def get_all_documents(
         self, **kwargs
-    ) -> list[dict]:
+    ) -> Union[None, list[dict]]:
         '''
         strategy interface
         '''
@@ -115,7 +118,7 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
     
     def search_document(
         self, **kwargs
-    ) -> dict:
+    ) -> Union[None, dict]:
         '''
         strategy interface
         '''

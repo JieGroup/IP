@@ -8,10 +8,13 @@ from app.database.database.abstract_database import AbstractDatabase
 
 from typeguard import typechecked
 
+from app._typing import MTurkID
+
 from typing import (
     Union,
     Any
 )
+
 
 @typechecked
 class SurveyAnswer(AbstractDatabase, BaseDatabase):
@@ -67,12 +70,14 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
             return pyMongo.db.SurveyAnswer.find({
                 'survey_template_id': kwargs['survey_template_id']
             })
-        return pyMongo.db.SurveyAnswer.find({})
+        res = pyMongo.db.SurveyAnswer.find({})
+        print('***', res, type(res))
+        return res
 
     @classmethod
     def search_document(
         cls, survey_answer_id: str
-    ) -> dict[str, Any]:
+    ) -> Union[None, dict[str, Any]]:
         '''
         Search unique SurveyAnswer document
 
@@ -82,18 +87,22 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
 
         Returns
         -------
-        dict
+        None or dict.
+            Return None when db cannot find the
+            document, otherwise return dict.
         '''
-        return pyMongo.db.SurveyAnswer.find_one({
+        res = pyMongo.db.SurveyAnswer.find_one({
             'survey_answer_id': survey_answer_id
         })
+        print(f'search_document: {res}', type(res))
+        return res
 
     @classmethod
     def create_document(
         cls, 
         survey_answer_id: str, 
         survey_template_id: str, 
-        mturk_id: str, 
+        mturk_id: MTurkID, 
     ) -> None:
         '''
         Create Survey_Answer document
