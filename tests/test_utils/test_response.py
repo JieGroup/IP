@@ -5,19 +5,27 @@ import pytest
 
 from app.utils.api import handle_response
 
+from typeguard import check_type
+from app._typing import JSONType
+
 
 class TestResponse:
 
-    @pytest.mark.parametrize("key, container, expected", [
-        (['key1', 'key2', 'key3'], {}, {'key1': {'key2': {}}}),
-        (['key1'], {}, {})
+    @pytest.mark.parametrize("expected", [
+        JSONType
     ])
-    def test_process_key(self, key, container, expected):
-        key_res, container_res = DictHelper.process_key(
-            key=key,
-            container=container
+    def test_response(self, expected):
+        
+        @handle_response
+        def test(data: int):
+            return data
+        
+        print(type(test(5)))
+        check_type(
+            value=test(5),
+            expected_type=expected,
+            argname='check_response_type'
         )
-        print('**', key, container)
-        assert container == expected 
-
+        
+        return
     

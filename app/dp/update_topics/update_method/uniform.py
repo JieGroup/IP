@@ -1,13 +1,6 @@
 from __future__ import annotations
-from os import setegid
 
 import random
-import collections
-
-from app import pyMongo
-from app.database.database.utils import (
-    if_file_size_exceed_limit
-)
 
 from app.dp.update_topics.update_method.utils import(
     CATEGORICAL_RANGE_KEY,
@@ -18,11 +11,15 @@ from app.dp.update_topics.update_method.base import BaseUpdateMethod
 
 from app.dp.update_topics.update_method.abstract_method import AbstractUpdateMethod
 
+from typeguard import typechecked
+
 from typing import (
     Any,
     Union
 )
 
+
+@typechecked
 class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
 
     @classmethod

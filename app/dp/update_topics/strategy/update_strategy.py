@@ -11,11 +11,13 @@ from app.dp.update_topics.update_method.api import (
 
 from typing import Union
 
+from typeguard import typechecked
+
 from app._typing import (
     Survey_Update_Method
 )
 
-
+@typechecked
 class UpdateTopicsOperator(AbstractUpdateTopicsStrategy, BaseUpdateTopicsStrategy):
 
     def __init__(self) -> None:

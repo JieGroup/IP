@@ -18,7 +18,8 @@ from typing import (
 
 JSONType = Union[
     Dict[str, Any],
-    List[Any]
+    List[Any],
+    str
 ]
 
 Database_Type = Literal[

@@ -4,13 +4,13 @@ from app.api import api
 
 from flask import request
 
-from app.error import bad_request
-
 from app.authentication.api import token_auth
 
 from app.process.api import Summary
 
 from app.utils.api import handle_response
+
+from app.api.utils import check_if_data_is_valid
 
 
 @api.route('/get_all_survey_answers', methods=['GET'])
@@ -34,8 +34,15 @@ def get_all_survey_answers():
         All survey answers would be appended in a list and each term is a dict
     '''
 
+    expected_data = {
+        'survey_template_id': str,
+    }
+    check_if_data_is_valid(
+        data=request.args,
+        expected_data=expected_data
+    )
     # TODO: Verify user
-    survey_template_id = request.args.get('survey_template_id')
+    survey_template_id = request.args['survey_template_id']
 
     # 获取data
     return Summary.get_all_survey_answers(

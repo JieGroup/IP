@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from app.error import bad_request
-
 from app.process.utils import get_unique_id
 
 from app.database.api import (
@@ -137,7 +135,7 @@ class SurveyTemplate:
         time_period: int,
         number_of_copies: int,
         max_rounds: int,
-        survey_topics: dict[dict[str, Any]]
+        survey_topics: dict[str, Any]
     ) -> str:
         '''
         Check survey template information uploaded by creator and store

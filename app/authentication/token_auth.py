@@ -4,8 +4,6 @@ from flask import g
 
 from flask_httpauth import HTTPTokenAuth
 
-from app.error import error_response
-
 from app.utils.api import handle_response
 
 from app.database.api import search_document
@@ -14,6 +12,7 @@ from app.authentication import authentication_bp
 from app.authentication.basic_auth import basic_auth
 from app.authentication.utils import has_user_confirmed_email
 from app.authentication.jwt import JwtManipulation
+from typeguard import typechecked
 
 token_auth = HTTPTokenAuth()
 
@@ -86,8 +85,9 @@ def get_voter_token() -> dict[str, str]:
 
 @token_auth.verify_token
 # @handle_response
+@typechecked
 def verify_token(
-    token
+    token: str
 ) -> bool:
 
     '''

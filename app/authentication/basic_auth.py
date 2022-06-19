@@ -6,15 +6,16 @@ from flask_httpauth import HTTPBasicAuth
 
 from app import pyMongo
 
-from app.error import error_response
-
 from app.utils.api import handle_response
 
 from app.authentication.utils import is_password_valid
 
+from typeguard import typechecked
+
 basic_auth = HTTPBasicAuth()
 
 @basic_auth.verify_password
+@typechecked
 def verify_password(
     username: str, 
     password: str

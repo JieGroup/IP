@@ -4,7 +4,10 @@ from werkzeug.security import check_password_hash
 
 from typing import Any
 
+from typeguard import typechecked
 
+
+@typechecked
 def is_password_valid(
     hashed_password: str, 
     password: str
@@ -31,7 +34,7 @@ def is_password_valid(
         password
     )
 
-
+@typechecked
 def has_user_confirmed_email(
     cur_user_info: dict[str, Any]
 ) -> bool:

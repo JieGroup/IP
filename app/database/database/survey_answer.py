@@ -6,12 +6,14 @@ from app.database.database.base import BaseDatabase
 
 from app.database.database.abstract_database import AbstractDatabase
 
+from typeguard import typechecked
+
 from typing import (
     Union,
     Any
 )
 
-
+@typechecked
 class SurveyAnswer(AbstractDatabase, BaseDatabase):
     '''
     Manage the SurveyAnswer collection in DB

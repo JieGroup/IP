@@ -3,11 +3,13 @@ from __future__ import annotations
 import random
 import numpy as np
 
+from typeguard import typechecked
 
+@typechecked
 class ReformatBase:
     pass
 
-
+@typechecked
 class ReformatCategoricalTopic(ReformatBase):
 
     @classmethod

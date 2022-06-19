@@ -8,14 +8,14 @@ from typing import (
     Union
 )
 
-
+from typeguard import typechecked
 
 from app.dp.update_topics.update_method.choices import (
     ReformatCategoricalTopic,
     ReformatContinuousTopic,
 )
 
-
+@typechecked
 class BaseUpdateMethod:
     """
     Base class for Algorithm

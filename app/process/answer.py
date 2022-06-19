@@ -100,7 +100,7 @@ class VoterAnswerSurvey:
     def update_survey_topics(
         cls,
         survey_answer_id: str,
-        survey_new_answers: dict[dict[str, Any]]
+        survey_new_answers: dict[str, dict[str, Any]]
     ) -> Union[None, dict[str, dict[str, Any]]]:
         '''
         Check the information uploaded by Voter and

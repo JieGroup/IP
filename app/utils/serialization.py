@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import json
 import copy
-import numpy as np
 
 from app._typing import Serializable_Datatype
+
+from typeguard import typechecked
 
 from typing import (
     Any
@@ -14,13 +15,16 @@ from app.utils.dtypes.api import (
     is_numpy,
     is_dict_like,
     is_list,
-    is_set
+    is_set,
+    is_datetime_dot_datetime
 )
 
 
+@typechecked
 class Serialization:
 
     '''
+    Deal with the issue that the object cannot be serialized to return.
     Serialize data, mainly deal with the object that cant be serialized.
     Ex. set
 
@@ -82,7 +86,9 @@ class Serialization:
             return copy.deepcopy(data.tolist())
         elif is_set(data):
             return copy.deepcopy(list(data))
-        
+        elif is_datetime_dot_datetime(data):
+            return data.timestamp()
+
         return data
 
     @classmethod
@@ -114,6 +120,11 @@ class Serialization:
             processed_data = {}
             for key, value in data.items():
                 processed_data[key] = cls.make_data_serializable(value)   
+            return processed_data 
+        elif is_list(data):
+            processed_data = []
+            for item in data:
+                processed_data.append(cls.make_data_serializable(item))   
             return processed_data 
         else:
             return cls.__change_datatype_to_serializable(data)

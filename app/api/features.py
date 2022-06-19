@@ -4,11 +4,11 @@ from app.api import api
 
 from flask import request
 
-from app.error import bad_request
-
 from app.authentication.api import token_auth
 
 from app.utils.api import handle_response
+
+from app.api.utils import check_if_data_is_valid
 
 from app.process.api import (
     get_survey_template_helper,
@@ -35,10 +35,15 @@ def get_survey_template() -> None:
         Details will be formed in dictonary structure
     '''
 
-    survey_template_id = request.args.get('survey_template_id')
+    expected_data = {
+        'survey_template_id': str,
+    }
+    check_if_data_is_valid(
+        data=request.args,
+        expected_data=expected_data
+    )
 
-    if survey_template_id is None:
-        return bad_request('survey_answer_id is required.')
+    survey_template_id = request.args['survey_template_id']
 
     # TODO: implement logic
     # res = get_survey_template_helper()
@@ -86,9 +91,14 @@ def get_user_history() -> None:
         reverse timestamp order. (The latest record is in the first place) 
     '''
 
-    user_id = request.args.get('user_id')
+    expected_data = {
+        'user_id': str,
+    }
+    check_if_data_is_valid(
+        data=request.args,
+        expected_data=expected_data
+    )
 
-    if user_id is None:
-        return bad_request('user_id is required.')
+    user_id = request.args['user_id']
     
     return get_user_history_helper()

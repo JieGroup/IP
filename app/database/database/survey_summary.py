@@ -6,9 +6,11 @@ from app.database.database.base import BaseDatabase
 
 from app.database.database.abstract_database import AbstractDatabase
 
+from typeguard import typechecked
+
 from typing import Any
 
-
+@typechecked
 class SurveySummary(AbstractDatabase, BaseDatabase):
     '''
     SurveySummary is not needed for now
@@ -26,7 +28,7 @@ class SurveySummary(AbstractDatabase, BaseDatabase):
     update_document
     delete_document
     '''
-    
+
     @classmethod
     def get_all_documents_count(cls) -> int:
 

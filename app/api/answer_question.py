@@ -6,11 +6,13 @@ from flask import request
 
 from app.authentication.api import token_auth
 
-from app.error import bad_request
-
 from app.process.api import VoterAnswerSurvey
 
 from app.utils.api import handle_response
+
+from app.api.utils import check_if_data_is_valid
+
+from typing import Any
 
 from app._typing import MTurkID
 
@@ -36,14 +38,17 @@ def voter_start_answering():
     dict
     '''
 
-    survey_template_id = request.args.get('survey_template_id')
-    mturk_id = request.args.get('mturk_id')
+    expected_data = {
+        'survey_template_id': str,
+        'mturk_id': MTurkID
+    }
+    check_if_data_is_valid(
+        data=request.args,
+        expected_data=expected_data
+    )
 
-    if survey_template_id is None:
-        return bad_request('survey_answer_id is required.')
-    if mturk_id is None:
-        return bad_request('mturk_id is required.')
-    
+    survey_template_id = request.args['survey_template_id']
+    mturk_id = request.args['mturk_id']
     return VoterAnswerSurvey.start_answering(
         survey_template_id=survey_template_id,
         mturk_id=mturk_id,
@@ -75,11 +80,18 @@ def voter_submit_answers():
 
     data = request.get_json()
     if not data:
-        return bad_request('You must post JSON data.')
-    if 'survey_answer_id' not in data or not data.get('survey_answer_id'):
-        return bad_request('survey_answer_id is required.')
-    if 'survey_new_answers' not in data or not data.get('survey_new_answers'):
-        return bad_request('survey_new_answers is required.')
+        raise ValueError('You must post JSON data.')
+
+    expected_data = {
+        'survey_answer_id': str,
+        'survey_new_answers': dict[str, dict[str, Any]],
+        'start_time': str,
+        'end_time': str
+    }
+    check_if_data_is_valid(
+        data=request.args,
+        expected_data=expected_data,
+    )
 
     survey_answer_id = data['survey_answer_id']
     survey_new_answers = data['survey_new_answers']

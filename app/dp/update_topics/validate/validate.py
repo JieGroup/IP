@@ -12,9 +12,11 @@ from app.dp.update_topics.validate.utils import (
     ValidateContinuousAnswer,
 )
 
+from typeguard import typechecked
+
 from app.error import SurveyAnswerError
 
-
+@typechecked
 class ValidateAnswer:
 
     @classmethod

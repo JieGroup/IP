@@ -391,25 +391,181 @@ from datetime import datetime
 # print(type(a.ceshi()))
 
 
-def ceshi():
-    a = {}
+# def ceshi():
+#     a = {}
 
-    try:
-        b = a['5']
-    except KeyError:
-        # raise e('cuowu')
+#     try:
+#         b = a['5']
+#     except KeyError:
+#         # raise e('cuowu')
 
-        raise KeyError(
-            "String passed to weights not a valid column"
-        )
+#         raise KeyError(
+#             "String passed to weights not a valid column"
+#         )
 
-    # except ValueError as err:
+#     # except ValueError as err:
 
-    #     raise ValueError(
-    #         "String passed to weights not a valid column"
-    #     )
+#     #     raise ValueError(
+#     #         "String passed to weights not a valid column"
+#     #     )
 
-ceshi()
+# ceshi()
 
+# from app._typing import Survey_Update_Method
 
+from typing import Literal
+
+from typeguard import (
+    check_type,
+    check_argument_types,
+    typechecked
+)
+
+Survey_Update_Method = Literal[
+    'static',
+    'uniform',
+]
+
+# Serializable_Datatype = Union[
+#     dict,
+#     list,
+#     tuple,
+#     str,
+#     int,
+#     float,
+#     bool,
+#     None,
+# ]
+
+# print(type(Survey_Update_Method))
+# print(type(Serializable_Datatype))
+# # print(isinstance('static', Survey_Update_Method))
+# ceshi = None
+
+# print(type(a) == str, type(str))
+
+# try:
+    # check_type('string_list', a, Survey_Update_Method)
+# check_type(
+#     argname='wudi',
+#     value=ceshi,
+#     expected_type=str,
+# )
+# print("string_list conforms to string_list_class")
+# except TypeError:
+#     # print("string_list does not conform to string_list_class")
+#     raise TypeError
+
+# ceshi = {'5': {}}
+# ceshi = {}
+
+# # dict[dict[str, Any]]
+# # dict[str, dict[str, Any]]
+# check_type(
+#     argname='wudi',
+#     value=ceshi,
+#     expected_type=dict[str, Any],
+# )
+
+# @typechecked
+# class Ceshi:
+
+#     @classmethod
+#     def __ceshi(cls, a: int):
+#         print('__ceshi')
+    
+#     @classmethod
+#     def ceshi(cls, a: str):
+#         cls.__ceshi(a)
+
+# Ceshi.ceshi('6')
+# def check():
+#     check_argument_types()
+
+# @typechecked
+# def ceshi(a: str):
+#     check()
+#     # check_argument_types()
+#     print('!!!', a)
+
+# ceshi(5)
+
+# import json
+
+# # a = datetime.now(tz=timezone.utc)
+# # json.dumps(a)
+# import numpy as np
+# a = {'5': 5}
+# b = np.array(5)
+# c1 = json.dumps(a, default=str)
+# c2 = json.dumps(b, default=str)
+# print(c1)
+# print(c2)
 # raise Exception('There has been an error in the system')
+
+
+# @typechecked
+# def handle_response(
+#     func: Callable
+# ) -> Callable:
+#     print('daohandlele')
+#     def wrapper(*args, **kwargs):
+#         print('daopzheli')
+#         return func(*args, **kwargs)
+#         print('after')
+#         # res = func(*args,**kwargs)
+#         # # res = Serialization.make_data_serializable(res)
+#         # print('到wrapperle')
+#         # return jsonify(res)
+
+#     return wrapper
+
+# from functools import wraps
+# def decorator_name(f):
+#     # @wraps(f)
+#     def decorated(*args, **kwargs):
+#         if not can_run:
+#             return "Function will not run"
+#         return f(*args, **kwargs)
+#     return decorated
+
+# can_run = True
+# @decorator_name
+# def ceshi(a: str):
+#     print(f'aaaaa: {a}')
+
+# ceshi('52352')
+
+# from flask.json import jsonify
+# a = datetime.now(tz=timezone.utc)
+# b = jsonify(a)
+# @decorator_name
+# def func():
+#     print('44Function is running')
+#     return("Function is running")
+ 
+# can_run = True
+# print(func())
+# # Output: Function is running
+ 
+# can_run = False
+# print(func())
+# # Output: Function will not run
+
+# import json
+# ceshi = {4,5,6}
+# ceshi = list(ceshi)
+# a = json.dumps(ceshi, default=str)
+# print(a)
+# b = json.loads(a)
+# print(type(b))
+
+import datetime
+# from datetime import (
+#     datetime, 
+#     timedelta, 
+#     timezone
+# )
+a = datetime.datetime.now(tz=datetime.timezone.utc)
+print(type(a), type(datetime), type(datetime.timezone.utc.timestamp()))
+print(type(a) == datetime.datetime)

@@ -1,255 +1,268 @@
-from __future__ import annotations
+# from __future__ import annotations
 
-import re
-from bson import ObjectId
+# import re
+# from bson import ObjectId
 
-from flask.json import jsonify
-from flask.helpers import url_for
-from flask import request, g, render_template, flash
+# from flask.json import jsonify
+# from flask.helpers import url_for
+# from flask import request, g, render_template, flash
 
-# from Items import db
-from app import pyMongo
-from app.error import bad_request, error_response
-from app.authentication import token_auth, basic_auth
+# # from Items import db
+# from app import pyMongo
 
-from app.process.api import User
+# from app.authentication import token_auth, basic_auth
 
-from app.api import api
+# from app.process.api import User
 
-from app.utils.api import handle_response
+# from app.api import api
+
+# from app.utils.api import handle_response
+
+# from app.api.utils import check_if_data_is_valid
 
 
-@api.route('/create_user', methods=['POST'])
-# @handle_response
-def create_user():
+# @api.route('/create_user', methods=['POST'])
+# # @handle_response
+# def create_user():
 
-    '''
-    Register new user
+#     '''
+#     Register new user
 
-    Parameters
-    ----------
-    username : str
-        username
-    email : str
-        email
-    password : str
-        password
+#     Parameters
+#     ----------
+#     username : str
+#         username
+#     email : str
+#         email
+#     password : str
+#         password
 
-    Returns
-    -------
-    None
-    '''
+#     Returns
+#     -------
+#     None
+#     '''
 
-    data = request.get_json()
-    if not data:
-      return bad_request('No data. Please import JSON data')
+#     data = request.get_json()
+#     if not data:
+#       raise ValueError('No data. Please import JSON data')
 
-    message = {}
-    if 'username' not in data or not data.get('username', None) or (' ' in data.get('username')):
-        message['username'] = 'Please provide a valid username.'
-    pattern = '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
-    if 'email' not in data or not re.match(pattern, data.get('email', None)) or (' ' in data.get('email')):
-        message['email'] = 'Please provide a valid email address.'
-    if 'password' not in data or not data.get('password', None) or (' ' in data.get('password')):
-        message['password'] = 'Please provide a valid password.'
+#     expected_data = {
+#         'username': str,
+#         'email': str,
+#         'password': str,
+        
+#     }
+#     check_if_data_is_valid(
+#         data=data,
+#         expected_data=expected_data
+#     )
+#     message = {}
 
-    username = data['username']
-    email = data['email']
-    password = data['password']
+#     if 'username' not in data or not data.get('username', None) or (' ' in data.get('username')):
+#         message['username'] = 'Please provide a valid username.'
+#     pattern = '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+#     if 'email' not in data or not re.match(pattern, data.get('email', None)) or (' ' in data.get('email')):
+#         message['email'] = 'Please provide a valid email address.'
+#     if 'password' not in data or not data.get('password', None) or (' ' in data.get('password')):
+#         message['password'] = 'Please provide a valid password.'
+
+#     username = data['username']
+#     email = data['email']
+#     password = data['password']
     
-    return User.create_user(
-        username=username,
-        email=email,
-        password=password,
-    )
+#     return User.create_user(
+#         username=username,
+#         email=email,
+#         password=password,
+#     )
 
-@api.route('/get_user/<string:user_id>', methods=['GET'])
-@token_auth.login_required
-# @handle_response
-def get_user(user_id):
+# @api.route('/get_user/<string:user_id>', methods=['GET'])
+# @token_auth.login_required
+# # @handle_response
+# def get_user(user_id):
 
-    '''
-    Request to get information about the user_id
+#     '''
+#     Request to get information about the user_id
 
-    Parameters
-    ----------
-    user_id : str
-        Unique user_id
+#     Parameters
+#     ----------
+#     user_id : str
+#         Unique user_id
 
-    Returns
-    -------
-    dict
-    '''
+#     Returns
+#     -------
+#     dict
+#     '''
 
-    return User.get_user(user_id=user_id)
+#     return User.get_user(user_id=user_id)
 
-@api.route('/update_user/<string:user_id>', methods=['PUT'])
-@token_auth.login_required
-# @handle_response
-def update_user(user_id):
+# @api.route('/update_user/<string:user_id>', methods=['PUT'])
+# @token_auth.login_required
+# # @handle_response
+# def update_user(user_id):
 
-    '''
-    update information about this user_id
+#     '''
+#     update information about this user_id
 
-    Parameters
-    ----------
-    user_id : str
-        user_id
+#     Parameters
+#     ----------
+#     user_id : str
+#         user_id
 
-    Returns
-    -------
-    None
-    '''
+#     Returns
+#     -------
+#     None
+#     '''
 
-    data = request.get_json()
-    if not data:
-        return bad_request('You must post JSON data.')
-    elif 'username' not in data or not data.get('username', None) or (' ' in data.get('username')):
-        message['username'] = 'Please provide a valid username.'
-    pattern = '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
-    if 'email' not in data or not re.match(pattern, data.get('email', None)) or (' ' in data.get('email')):
-        message['email'] = 'Please provide a valid email address.'
+#     data = request.get_json()
+#     if not data:
+#         return bad_request('You must post JSON data.')
+#     elif 'username' not in data or not data.get('username', None) or (' ' in data.get('username')):
+#         message['username'] = 'Please provide a valid username.'
+#     pattern = '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+#     if 'email' not in data or not re.match(pattern, data.get('email', None)) or (' ' in data.get('email')):
+#         message['email'] = 'Please provide a valid email address.'
 
-    user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
-    # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
-        return error_response(403)
+#     user_id = obtain_user_id_from_token()
+#     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
+#     # check if the caller of the function and the id is the same
+#     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
+#         return error_response(403)
 
-    username = data.get('username')
-    email = data.get('email')
+#     username = data.get('username')
+#     email = data.get('email')
     
-    message = {}
-    if mongoDB.search_user_document(user_id=None, username=username):
-        message['username'] = 'Please use a different username.'
-    if pyMongo.db.User.find_one({'email': email}):
-        message['email'] = 'Please use a different email address.'
+#     message = {}
+#     if mongoDB.search_user_document(user_id=None, username=username):
+#         message['username'] = 'Please use a different username.'
+#     if pyMongo.db.User.find_one({'email': email}):
+#         message['email'] = 'Please use a different email address.'
 
-    if message:
-        return bad_request(message)
+#     if message:
+#         return bad_request(message)
 
-    return User.update_user(user_id=user_id)
+#     return User.update_user(user_id=user_id)
 
 
-@api.route('/delete_user/<string:id>', methods=['DELETE'])
-@token_auth.login_required
-# @handle_response
-def delete_user(id):
+# @api.route('/delete_user/<string:id>', methods=['DELETE'])
+# @token_auth.login_required
+# # @handle_response
+# def delete_user(id):
 
-    '''
-    Delete a User. Implement Later
-    '''
+#     '''
+#     Delete a User. Implement Later
+#     '''
     
-    return "Welcome to Delete!"
+#     return "Welcome to Delete!"
 
 
-@api.route('/confirm_email/<token>', methods=['GET'])
-# @handle_response
-def confirm_email(token):
+# @api.route('/confirm_email/<token>', methods=['GET'])
+# # @handle_response
+# def confirm_email(token):
 
-    '''
-    Confirm the link in the email
+#     '''
+#     Confirm the link in the email
 
-    Parameters
-    ----------
-    token : str
-        unique str generated by URLSafeTimedSerializer.
+#     Parameters
+#     ----------
+#     token : str
+#         unique str generated by URLSafeTimedSerializer.
 
-    Returns
-    -------
-    str
-        render_template would change html to special
-        format str
-    '''
+#     Returns
+#     -------
+#     str
+#         render_template would change html to special
+#         format str
+#     '''
 
-    msg = User.comfirm_email(
-        token=token
-    )
+#     msg = User.comfirm_email(
+#         token=token
+#     )
 
-    return render_template('confirm.html', msg=msg)
+#     return render_template('confirm.html', msg=msg)
 
 
-@api.route('/resend_comfirmation_link/', methods=['POST'])
-# @handle_response
-def resend_comfirmation_link() -> str:
+# @api.route('/resend_comfirmation_link/', methods=['POST'])
+# # @handle_response
+# def resend_comfirmation_link() -> str:
     
-    '''
-    Resend the comfirmation link to user's email
+#     '''
+#     Resend the comfirmation link to user's email
 
-    Parameters
-    ----------
-    None
+#     Parameters
+#     ----------
+#     None
 
-    Returns
-    -------
-    str
-        'Resend successfully!'
-    '''
+#     Returns
+#     -------
+#     str
+#         'Resend successfully!'
+#     '''
 
-    data = request.get_json()
-    if not data:
-        return bad_request('You must post JSON data.')
+#     data = request.get_json()
+#     if not data:
+#         return bad_request('You must post JSON data.')
 
-    return User.resend_comfirmation_link()
+#     return User.resend_comfirmation_link()
 
 
-@api.route('/forgot_pwd', methods=['POST'])
-# @handle_response
-def forgot_pwd():
+# @api.route('/forgot_pwd', methods=['POST'])
+# # @handle_response
+# def forgot_pwd():
     
-    '''
-    Reset the password
+#     '''
+#     Reset the password
 
-    Parameters
-    ----------
-    username : str
-        username
-    email : str
-        email
+#     Parameters
+#     ----------
+#     username : str
+#         username
+#     email : str
+#         email
 
-    Returns
-    -------
-    dict
-        {'message': 'A password reset email has been sent via email.'}
-    '''
+#     Returns
+#     -------
+#     dict
+#         {'message': 'A password reset email has been sent via email.'}
+#     '''
     
-    data = request.get_json()
-    message = {}
-    if 'username' not in data or not data.get('username', None):
-        message['username'] = 'Please provide a valid username.'
-    pattern = '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
-    if 'email' not in data or not re.match(pattern, data.get('email', None)):
-        message['email'] = 'Please provide a valid email address.'
+#     data = request.get_json()
+#     message = {}
+#     if 'username' not in data or not data.get('username', None):
+#         message['username'] = 'Please provide a valid username.'
+#     pattern = '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+#     if 'email' not in data or not re.match(pattern, data.get('email', None)):
+#         message['email'] = 'Please provide a valid email address.'
     
-    username = data['username']
-    email = data['email']
+#     username = data['username']
+#     email = data['email']
 
-    return User.forgot_pwd(
-        username=username,
-        email=email
-    )
+#     return User.forgot_pwd(
+#         username=username,
+#         email=email
+#     )
     
 
-@api.route('/update_new_pwd/<token>', methods=['GET', 'POST'])
-# @handle_response
-def update_new_pwd(token):
+# @api.route('/update_new_pwd/<token>', methods=['GET', 'POST'])
+# # @handle_response
+# def update_new_pwd(token):
 
-    '''
-    Update new password
+#     '''
+#     Update new password
 
-    Parameters
-    ----------
-    token : str
-        token
+#     Parameters
+#     ----------
+#     token : str
+#         token
 
-    Returns
-    -------
-    str
-    '''
+#     Returns
+#     -------
+#     str
+#     '''
 
-    if request.method == 'POST':
-        # would have a "\" append in the end
-        token = request.form['token'][:-1]
+#     if request.method == 'POST':
+#         # would have a "\" append in the end
+#         token = request.form['token'][:-1]
 
-    return User.update_new_pwd(token=token)
+#     return User.update_new_pwd(token=token)
     

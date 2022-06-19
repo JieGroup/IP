@@ -4,7 +4,7 @@ from app.api import api
 
 from flask import request
 
-from app.error import bad_request
+from flask.json import jsonify
 
 from app.process.api import SurveyTemplate
 
@@ -12,7 +12,11 @@ from app.authentication.api import token_auth
 
 from app.utils.api import handle_response
 
-from flask.json import jsonify
+from app.api.utils import check_if_data_is_valid
+
+from app._typing import Survey_Update_Method
+
+from typing import Any
 
 
 @api.route('/ceshierror', methods=['GET', 'POST'])
@@ -28,7 +32,6 @@ def ceshierror():
 @token_auth.login_required
 # @handle_response
 def create_survey_template() -> None:
-
     '''
     Create survey template
     Handle http request in this function and call SurveyTemplate.create_survey_template
@@ -56,17 +59,19 @@ def create_survey_template() -> None:
 
     data = request.get_json()
     if not data:
-        return bad_request('You must post JSON data.')
-    if 'survey_update_method' not in data or not data.get('survey_update_method'):
-        return bad_request('survey_update_method is required.') 
-    if 'time_period' not in data or not data.get('time_period'):
-        return bad_request('time_period is required.') 
-    if 'number_of_copies' not in data or not data.get('number_of_copies'):
-        return bad_request('number_of_copies is required.')
-    if 'max_rounds' not in data or not data.get('max_rounds'):
-        return bad_request('max_rounds is required.') 
-    if 'survey_topics' not in data or not data.get('survey_topics'):
-        return bad_request('survey_topics is required.')
+        raise ValueError('You must post JSON data.')
+
+    expected_data = {
+        'survey_update_method': Survey_Update_Method,
+        'time_period': int,
+        'number_of_copies': int,
+        'max_rounds': int,
+        'survey_topics': dict[str, Any]
+    }
+    check_if_data_is_valid(
+        data=request.args,
+        expected_data=expected_data
+    )
     
     survey_update_method = data['survey_update_method']
     time_period = data['time_period']

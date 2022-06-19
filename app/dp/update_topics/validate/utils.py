@@ -15,12 +15,15 @@ from app.utils.constant import Constant
 
 from app.error import SurveyAnswerError
 
+from typeguard import typechecked
+
 from typing import (
     Any,
     final
 )
 
 
+@typechecked
 class ValidateBase:
     @final
     @classmethod
@@ -28,6 +31,7 @@ class ValidateBase:
         pass
 
 
+@typechecked
 class ValidateCategoricalAnswer(ValidateBase):
 
     @classmethod
@@ -49,7 +53,7 @@ class ValidateCategoricalAnswer(ValidateBase):
             
         return
 
-
+@typechecked
 class ValidateContinuousAnswer(ValidateBase):
 
     @classmethod

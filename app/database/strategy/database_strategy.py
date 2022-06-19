@@ -14,11 +14,13 @@ from app.database.database.database_factory import (
 
 from app.utils.dtypes.api import is_var_in_literal
 
+from typeguard import typechecked
+
 from app._typing import (
     Database_Type
 )
 
-
+@typechecked
 class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
     '''
     Strategy pattern to manage DB

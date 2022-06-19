@@ -6,11 +6,13 @@ from app.database.database.base import BaseDatabase
 
 from app.database.database.abstract_database import AbstractDatabase
 
+from typeguard import typechecked
+
 from app._typing import MTurkID
 
 from typing import Any
 
-
+@typechecked
 class User(AbstractDatabase, BaseDatabase):
     '''
     Manage the User collection in DB

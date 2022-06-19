@@ -2,18 +2,9 @@ from __future__ import annotations
 
 import jwt
 
-from flask import g, current_app
-from flask.json import jsonify
-from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
-from bson.json_util import loads, dumps
+from flask import current_app
 
-from datetime import datetime, timedelta, timezone
-
-from app import pyMongo
-from app.authentication import authentication_bp
-from app.error import error_response
-from app.authentication.utils import check_password
-from app.utils.api import handle_response
+from typeguard import typechecked
 
 from app.utils.api import (
     Constant,
@@ -23,6 +14,7 @@ from app.utils.api import (
 from typing import Union
 
 
+@typechecked
 class JwtManipulation:
 
     '''
@@ -45,7 +37,6 @@ class JwtManipulation:
     def is_jwt_needing_update(
         cls,
         current_time: float, 
-        
         token_payload: dict,
     ) -> bool:
 
@@ -234,10 +225,6 @@ class JwtManipulation:
             return False
         
         return True
-        
-        user_id = token_payload.get('user_id')
-        user_document = pyMongo.db.User.find_one({'user_id': user_id})
-        return user_document, token_payload
 
     @classmethod
     def decode_jwt(

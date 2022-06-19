@@ -14,6 +14,8 @@ from pandas.api.types import is_integer as pandas_is_integer
 from pandas.api.types import is_list_like as pandas_is_list_like
 from pandas.api.types import is_float as pandas_is_float
 
+from typeguard import typechecked
+
 from typing import (
     Any,
     Literal
@@ -44,6 +46,11 @@ def is_float(obj) -> bool:
 def is_set(obj) -> bool:
     return type(obj) == set
 
+def is_datetime_dot_datetime(obj) -> bool:
+    from datetime import datetime
+    return type(obj) == datetime
+    
+@typechecked
 def is_var_in_literal(
     var: Any,
     expected_type: Literal

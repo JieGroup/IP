@@ -1,5 +1,7 @@
 from app.utils.constant import Constant
 
+from typeguard import typechecked
+
 from datetime import (
     datetime, 
     timedelta, 
@@ -7,6 +9,7 @@ from datetime import (
 )
 
 
+@typechecked
 class Time:
 
     '''

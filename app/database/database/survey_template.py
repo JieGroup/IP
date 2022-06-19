@@ -10,9 +10,11 @@ from app.utils.api import Serialization
 
 from datetime import datetime
 
+from typeguard import typechecked
+
 from typing import Any
 
-
+@typechecked
 class SurveyTemplate(AbstractDatabase, BaseDatabase):
     '''
     Manage the SurveyTemplate collection in DB

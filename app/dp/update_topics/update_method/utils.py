@@ -13,6 +13,8 @@ from flask import session
 
 from app.utils.constant import Constant
 
+from typeguard import typechecked
+
 from typing import (
     Any,
     final,
