@@ -12,6 +12,14 @@ from app.database.database.database_factory import (
     GetUser
 )
 
+from pymongo.results import (
+    InsertOneResult,
+    UpdateResult,
+    DeleteResult
+)
+
+from pymongo.cursor import Cursor
+
 from typeguard import typechecked
 
 from typing import Union
@@ -87,7 +95,6 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
         -------
         None
         '''
-
         if database_type == 'survey_answer':
             self.__database_operator = GetSurveyAnswer.get_instance()
         elif database_type == 'survey_summary':
@@ -110,7 +117,7 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
 
     def get_all_documents(
         self, **kwargs
-    ) -> Union[None, list[dict]]:
+    ) -> Cursor:
         '''
         strategy interface
         '''
@@ -120,30 +127,38 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
         self, **kwargs
     ) -> Union[None, dict]:
         '''
-        strategy interface
+        strategy interface and check mongodb response
         '''
-        return self.__database_operator.search_document(**kwargs)
+        res = self.__database_operator.search_document(**kwargs)
+        super().check_search_document_response(res=res)
+        return res
     
     def create_document(
         self, **kwargs
-    ) -> None:
+    ) -> InsertOneResult:
         '''
-        strategy interface
+        strategy interface and check mongodb response
         '''
-        return self.__database_operator.create_document(**kwargs)
+        res = self.__database_operator.create_document(**kwargs)
+        super().check_create_document_response(res=res)
+        return res
 
     def update_document(
         self, **kwargs
-    ) -> None:
+    ) -> UpdateResult:
         '''
-        strategy interface
+        strategy interface and check mongodb response
         '''
-        return self.__database_operator.update_document(**kwargs)
+        res = self.__database_operator.update_document(**kwargs)
+        super().check_update_document_response(res=res)
+        return res
     
     def delete_document(
         self, **kwargs
-    ) -> None:
+    ) -> DeleteResult:
         '''
-        strategy interface
+        strategy interface and check mongodb response
         '''
-        return self.__database_operator.delete_document(**kwargs)
+        res = self.__database_operator.delete_document(**kwargs)
+        super().check_delete_document_response(res=res)
+        return res

@@ -1,6 +1,10 @@
 from __future__ import annotations
 
-from typing import final
+from typing import (
+    Any,
+    final
+)
+
 
 class BaseDatabase:
     '''

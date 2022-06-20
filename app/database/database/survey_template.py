@@ -10,9 +10,21 @@ from app.utils.api import Serialization
 
 from datetime import datetime
 
+from pymongo.results import (
+    InsertOneResult,
+    UpdateResult,
+    DeleteResult
+)
+
+from pymongo.cursor import Cursor
+
 from typeguard import typechecked
 
-from typing import Any
+from typing import (
+    Any,
+    Union
+)
+
 
 @typechecked
 class SurveyTemplate(AbstractDatabase, BaseDatabase):
@@ -49,7 +61,7 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
         return pyMongo.db.SurveyTemplate.estimated_document_count()
 
     @classmethod
-    def get_all_documents(cls) -> list[dict[str, Any]]:
+    def get_all_documents(cls) -> Cursor:
         '''
         Return the all documents
 
@@ -59,16 +71,18 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
 
         Returns
         -------
-        list[dict[str, Any]]
+        Cursor
         '''
         return pyMongo.db.SurveyTemplate.find({})
 
     @classmethod
     def search_document(
         cls, survey_template_id: str
-    ) -> dict[str, Any]:
+    ) -> Union[None, dict[str, Any]]:
         '''
         Search and return SurveyAnswer document
+        In case of no matches this method returns nothing,
+        otherwise return the matched document(dict form).
 
         Parameters
         ----------
@@ -87,11 +101,11 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
         cls, 
         survey_template_id: str, 
         survey_update_method: str,
-        expiration_time: type[datetime],
+        expiration_time: datetime,
         number_of_copies: int,
         max_rounds: int,
         survey_topics: dict[dict[str, Any]]
-    ) -> None:
+    ) -> InsertOneResult:
         '''
         Create Survey_Template document
 
@@ -99,7 +113,7 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
         ----------
         survey_template_id : str
         survey_update_method : str
-        expiration_time : type[datetime]
+        expiration_time : datetime
         number_of_copies : int
         max_rounds : int
         survey_topics : dict[dict[str, Any]]
@@ -121,8 +135,7 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
             data=survey_template_document
         )
         
-        pyMongo.db.SurveyTemplate.insert_one(survey_template_document)
-        return 
+        return pyMongo.db.SurveyTemplate.insert_one(survey_template_document)
     
     @classmethod
     def update_document(
@@ -138,7 +151,7 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
     @classmethod
     def delete_document(
         cls, survey_template_id: str
-    ) -> None:
+    ) -> DeleteResult:
         '''
         Delete corresponding document
 
@@ -150,7 +163,6 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
         -------
         None
         '''
-        pyMongo.db.SurveyTemplate.delete_one({
+        return pyMongo.db.SurveyTemplate.delete_one({
             'survey_template_id': survey_template_id
         })
-        return

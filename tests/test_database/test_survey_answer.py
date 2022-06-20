@@ -9,78 +9,112 @@ from app.database.api import (
     delete_document
 )
 
-from tests.conftest import get_test_client
+from pymongo.cursor import Cursor
 
 from app._typing import MTurkID
 
+
 class TestSurveyAnswer:
 
-    @pytest.mark.parametrize("expected_res", [
-        0
-    ])
-    def test_get_all_documents_count(self, expected_res):
-        
-        assert expected_res == get_all_documents_count(
-            database_type='survey_answer'
-        )
-        return
-
     # @pytest.mark.parametrize("expected_res", [
-    #     None
+    #     0
     # ])
-    # def test_get_all_documents(self, expected_res):
-
-    #     assert expected_res == get_all_documents(
+    # def test_get_all_documents_count(self, expected_res):
+        
+    #     assert expected_res == get_all_documents_count(
     #         database_type='survey_answer'
     #     )
     #     return
 
-    @pytest.mark.parametrize("ans_id, expected_res", [
-        ('412312', None),
-        ('66767', None)
-    ])
-    def test_search_document(self, ans_id, expected_res):
+    # @pytest.mark.parametrize("expected_res", [
+    #     Cursor
+    # ])
+    # def test_get_all_documents(self, expected_res):
 
-        res = search_document(
+    #     assert expected_res == type(get_all_documents(
+    #         database_type='survey_answer'
+    #     ))
+    #     return
+
+    # @pytest.mark.parametrize("ans_id", [
+    #     '412312',
+    #     '66767'
+    # ])
+    # def test_search_document(self, ans_id):
+    #     '''simply test if survey answer search document can be used'''
+    #     msg = 'Cannot find the document'
+    #     with pytest.raises(ValueError, match=msg):
+    #         search_document(
+    #             database_type='survey_answer',
+    #             survey_answer_id=ans_id
+    #         )
+    #     return
+
+    # @pytest.mark.parametrize("ans_id, tem_id, mturk_id", [
+    #     ('412312', '512412', 'dfsdf'),
+    #     ('66767', '124123', '6123412')
+    # ])
+    # def test_create_document(self, ans_id, tem_id, mturk_id):
+    #     '''simply test if survey answer create document can be used'''
+    #     create_document(
+    #         database_type='survey_answer',
+    #         survey_answer_id=ans_id,
+    #         survey_template_id=tem_id,
+    #         mturk_id=mturk_id
+    #     )
+    #     return
+    
+    # @pytest.mark.parametrize("rounds, tem_id, new_answers", [
+    #     (1, '512412', {}),
+    #     (2, '124123', {'5': '6'})
+    # ])
+    # def test_update_document(self, rounds, tem_id, new_answers):
+    #     '''simply test if survey answer update document can be used'''
+    #     msg = 'Cannot update the document'
+    #     with pytest.raises(ValueError, match=msg):
+    #         update_document(
+    #             database_type='survey_answer',
+    #             cur_rounds_num=rounds,
+    #             survey_answer_id=tem_id,
+    #             survey_new_answers=new_answers
+    #         )
+    #     return
+    
+    @pytest.mark.parametrize("ans_id", [
+        'sdasd',
+        'ascasca'
+    ])
+    def test_delete_document(self, ans_id):
+        '''simply test if survey answer delete document can be used'''
+        msg = 'Cannot delete the document'
+        with pytest.raises(ValueError, match=msg):
+            delete_document(
+                database_type='survey_answer',
+                survey_answer_id=ans_id,
+            )
+        return
+    
+    @pytest.mark.parametrize("ans_id, tem_id, mturk_id", [
+        ('412312', '512412', 'dfsdf'),
+        ('66767', '124123', '6123412')
+    ])
+    def test_create_document_storage(self, ans_id, tem_id, mturk_id):
+        '''
+        1. Create a document
+        2. Check if we can search the above document
+        '''
+
+        create_document(
+            database_type='survey_answer',
+            survey_answer_id=ans_id,
+            survey_template_id=tem_id,
+            mturk_id=mturk_id
+        )
+
+        document = search_document(
             database_type='survey_answer',
             survey_answer_id=ans_id
         )
-        print(f'res: {res}')
-        assert expected_res == res
-        return
 
-    # @pytest.mark.parametrize("ans_id, tem_id, mturk_id, expected_res", [
-    #     ('412312', '512412', 'dfsdf', None),
-    #     ('66767', '124123', '6123412', None)
-    # ])
-    # def test_create_document(self, ans_id, tem_id, mturk_id, expected_res):
-
-    #     assert expected_res == create_document(
-    #         database_type='survey_answer',
-    #         survey_answer_id=ans_id,
-    #         survey_template_id=tem_id,
-    #         mturk_id=mturk_id
-    #     )
-    #     return
-    
-    # @pytest.mark.parametrize("ans_id, tem_id, mturk_id, expected_res", [
-    #     ('412312', '512412', 'dfsdf', None),
-    #     ('66767', '124123', '6123412', None)
-    # ])
-    # def test_update_document(self, ans_id, tem_id, mturk_id, expected_res):
-
-    #     assert expected_res == create_document(
-    #         database_type='survey_answer',
-    #         survey_answer_id=ans_id,
-    #         survey_template_id=tem_id,
-    #         mturk_id=mturk_id
-    #     )
-    #     return
-    
-    # def test_delete_document(self, DatabaseOperator_instance, test_record, expected_res):
-    #     DatabaseOperator_instance.set_database(database_type='train_sponsor_metadata')
-    #     response = DatabaseOperator_instance.get_record(
-    #         user_id=test_record[0], 
-    #         train_id=test_record[1], 
-    #     )
-    #     assert response == expected_res
+        assert document['survey_template_id'] == tem_id
+        assert document['mturk_id'] == mturk_id

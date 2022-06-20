@@ -8,6 +8,14 @@ from app.database.database.abstract_database import AbstractDatabase
 
 from typeguard import typechecked
 
+from pymongo.results import (
+    InsertOneResult,
+    UpdateResult,
+    DeleteResult
+)
+
+from pymongo.cursor import Cursor
+
 from typing import Any
 
 @typechecked

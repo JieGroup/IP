@@ -8,9 +8,21 @@ from app.database.database.abstract_database import AbstractDatabase
 
 from typeguard import typechecked
 
+from pymongo.results import (
+    InsertOneResult,
+    UpdateResult,
+    DeleteResult
+)
+
+from pymongo.cursor import Cursor
+
 from app._typing import MTurkID
 
-from typing import Any
+from typing import (
+    Union,
+    Any
+)
+
 
 @typechecked
 class Voter(AbstractDatabase, BaseDatabase):
@@ -47,7 +59,7 @@ class Voter(AbstractDatabase, BaseDatabase):
         return pyMongo.db.Voter.estimated_document_count()
 
     @classmethod
-    def get_all_documents(cls) -> list[dict[str, Any]]:
+    def get_all_documents(cls) -> Cursor:
         '''
         Return the all documents
 
@@ -57,14 +69,14 @@ class Voter(AbstractDatabase, BaseDatabase):
 
         Returns
         -------
-        list[dict[str, Any]]
+        Cursor
         '''
         return pyMongo.db.Voter.find({})
         
     @classmethod
     def search_document(
         cls, mturk_id: MTurkID
-    ) -> dict[str, Any]:
+    ) -> Union[None, dict[str, Any]]:
         '''
         Search unique Voter document
 
@@ -83,15 +95,24 @@ class Voter(AbstractDatabase, BaseDatabase):
     @classmethod
     def create_document(
         cls, mturk_id: MTurkID
-    ) -> None:
+    ) -> InsertOneResult:
+        '''
+        Create Survey_Voter document
 
+        Parameters
+        ----------
+        mturk_id : str
+
+        Returns
+        -------
+        InsertOneResult
+        '''
         voter_document = {
             'mturk_id': mturk_id,
             'participated_survey_template_id': {}
         }
 
-        pyMongo.db.Voter.insert_one(voter_document)
-        return
+        return pyMongo.db.Voter.insert_one(voter_document)
 
     @classmethod
     def update_document(
@@ -99,7 +120,7 @@ class Voter(AbstractDatabase, BaseDatabase):
         mturk_id: MTurkID, 
         survey_template_id: str, 
         survey_answer_id: str
-    ) -> None:
+    ) -> UpdateResult:
         '''
         Voter can participate in many survey template answer.
         Voter collection records this in db.
@@ -112,17 +133,16 @@ class Voter(AbstractDatabase, BaseDatabase):
 
         Returns
         -------
-        None
+        UpdateResult
         '''
-        pyMongo.db.Voter.update_one({'mturk_id': mturk_id}, {'$set':{
+        return pyMongo.db.Voter.update_one({'mturk_id': mturk_id}, {'$set':{
                 f'participated_survey_template_id.{survey_template_id}.{survey_answer_id}': True
             }})
-        return
     
     @classmethod
     def delete_document(
         cls, mturk_id: MTurkID
-    ) -> None:
+    ) -> DeleteResult:
         '''
         Delete corresponding record
 
@@ -132,8 +152,7 @@ class Voter(AbstractDatabase, BaseDatabase):
 
         Returns
         -------
-        None
+        DeleteResult
         '''
 
-        pyMongo.db.Voter.delete_one({'mturk_id': mturk_id})
-        return
+        return pyMongo.db.Voter.delete_one({'mturk_id': mturk_id})

@@ -48,7 +48,6 @@ def pytest_runtest_setup() -> None:
     -------
     None
     '''
-    print('---- pytest_runtest_setup')
     global app, app_context, client
     app = create_app(TestConfig)
     # active context of flask instance  
@@ -72,7 +71,6 @@ def pytest_runtest_teardown() -> None:
     -------
     None
     '''
-    print('---- pytest_runtest_teardown')
     global app_context
     drop_db_collections()
     app_context.pop()

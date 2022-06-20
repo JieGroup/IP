@@ -10,6 +10,8 @@ from app.database.database.api import (
     User
 )
 
+from typeguard import typechecked
+
 
 class AbstractDatabaseFactory(ABC):
     '''
@@ -22,6 +24,7 @@ class AbstractDatabaseFactory(ABC):
         pass
 
 
+@typechecked
 class GetSurveyAnswer(AbstractDatabaseFactory):
     '''
     factory pattern to handle initilization
@@ -32,6 +35,7 @@ class GetSurveyAnswer(AbstractDatabaseFactory):
         return SurveyAnswer
 
 
+@typechecked
 class GetSurveySummary(AbstractDatabaseFactory):
     '''
     factory pattern to handle initilization
@@ -42,6 +46,7 @@ class GetSurveySummary(AbstractDatabaseFactory):
         return SurveySummary
 
 
+@typechecked
 class GetSurveyTemplate(AbstractDatabaseFactory):
     '''
     factory pattern to handle initilization
@@ -52,6 +57,7 @@ class GetSurveyTemplate(AbstractDatabaseFactory):
         return SurveyTemplate
 
 
+@typechecked
 class GetVoter(AbstractDatabaseFactory):
     '''
     factory pattern to handle initilization
@@ -61,6 +67,8 @@ class GetVoter(AbstractDatabaseFactory):
     def get_instance(cls) -> type[Voter]:
         return Voter
 
+
+@typechecked
 class GetUser(AbstractDatabaseFactory):
     '''
     factory pattern to handle initilization

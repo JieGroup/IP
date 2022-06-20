@@ -37,7 +37,6 @@ def configure_app(application, config_class):
 def configure_blueprints(application):
     # 注册 blueprint
 
-    print('register_blue_print')
     application.register_blueprint(authentication_bp)
     application.register_blueprint(api)
 
@@ -51,7 +50,7 @@ def configure_extensions(application):
     mail.init_app(application)
 
     pyMongo.init_app(application)
-    # create_MongoDB_Collections()
+    create_MongoDB_Collections()
 
 
 def create_MongoDB_Collections():

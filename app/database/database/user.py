@@ -8,9 +8,21 @@ from app.database.database.abstract_database import AbstractDatabase
 
 from typeguard import typechecked
 
+from pymongo.results import (
+    InsertOneResult,
+    UpdateResult,
+    DeleteResult
+)
+
+from pymongo.cursor import Cursor
+
 from app._typing import MTurkID
 
-from typing import Any
+from typing import (
+    Union,
+    Any
+)
+
 
 @typechecked
 class User(AbstractDatabase, BaseDatabase):
@@ -47,7 +59,7 @@ class User(AbstractDatabase, BaseDatabase):
         return pyMongo.db.User.estimated_document_count()
 
     @classmethod
-    def get_all_documents(cls) -> list[dict[str, Any]]:
+    def get_all_documents(cls) -> Cursor:
         '''
         Return the all documents
 
@@ -57,14 +69,14 @@ class User(AbstractDatabase, BaseDatabase):
 
         Returns
         -------
-        list[dict[str, Any]]
+        Cursor
         '''
         return pyMongo.db.User.find({})
         
     @classmethod
     def search_document(
         cls, user_id: str
-    ) -> dict[str, Any]:
+    ) -> Union[None, dict[str, Any]]:
 
         return pyMongo.db.User.find_one({
             'user_id': user_id
@@ -73,7 +85,7 @@ class User(AbstractDatabase, BaseDatabase):
     @classmethod
     def create_document(
         cls, mturk_id: MTurkID
-    ) -> None:
+    ) -> InsertOneResult:
         # TODO: modify this part
         voter_document = {
             'mturk_id': mturk_id,
@@ -91,7 +103,7 @@ class User(AbstractDatabase, BaseDatabase):
         mturk_id: MTurkID, 
         survey_template_id: str, 
         survey_answer_id: str
-    ) -> None:
+    ) -> UpdateResult:
         # TODO: modify this part
         return pyMongo.db.User.update_one({'mturk_id': mturk_id}, {'$set':{
                    f'participated_survey_template_id.{survey_template_id}.{survey_answer_id}': True
@@ -100,7 +112,7 @@ class User(AbstractDatabase, BaseDatabase):
     @classmethod
     def delete_document(
         cls, user_id: str
-    ) -> None:
+    ) -> DeleteResult:
         '''
         delete corresponding document
 
@@ -113,5 +125,4 @@ class User(AbstractDatabase, BaseDatabase):
         None
         '''
 
-        pyMongo.db.User.delete_one({'user_id': user_id})
-        return
+        return pyMongo.db.User.delete_one({'user_id': user_id})

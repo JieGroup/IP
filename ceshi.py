@@ -560,12 +560,21 @@ Survey_Update_Method = Literal[
 # b = json.loads(a)
 # print(type(b))
 
-import datetime
-# from datetime import (
-#     datetime, 
-#     timedelta, 
-#     timezone
-# )
-a = datetime.datetime.now(tz=datetime.timezone.utc)
-print(type(a), type(datetime), type(datetime.timezone.utc.timestamp()))
-print(type(a) == datetime.datetime)
+# import datetime
+# # from datetime import (
+# #     datetime, 
+# #     timedelta, 
+# #     timezone
+# # )
+# a = datetime.datetime.now(tz=datetime.timezone.utc)
+# print(type(a), type(datetime), type(datetime.timezone.utc.timestamp()))
+# print(type(a) == datetime.datetime)
+
+class Ceshi:
+    pass
+
+ceshi = Ceshi()
+
+print(type(ceshi))
+print(type(ceshi) == Ceshi)
+print(type[Ceshi], type(ceshi) == type[ceshi])

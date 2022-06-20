@@ -8,6 +8,14 @@ from app.database.database.abstract_database import AbstractDatabase
 
 from typeguard import typechecked
 
+from pymongo.results import (
+    InsertOneResult,
+    UpdateResult,
+    DeleteResult
+)
+
+from pymongo.cursor import Cursor
+
 from app._typing import MTurkID
 
 from typing import (
@@ -53,7 +61,7 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
     @classmethod
     def get_all_documents(
         cls, **kwargs
-    ) -> list[dict[str, Any]]:
+    ) -> Cursor:
         '''
         Return the all documents based on
         conditions
@@ -64,22 +72,22 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
 
         Returns
         -------
-        list[dict[str, Any]]
+        Cursor
         '''
         if 'survey_template_id' in kwargs:
             return pyMongo.db.SurveyAnswer.find({
                 'survey_template_id': kwargs['survey_template_id']
             })
-        res = pyMongo.db.SurveyAnswer.find({})
-        print('***', res, type(res))
-        return res
+        return pyMongo.db.SurveyAnswer.find({})
 
     @classmethod
     def search_document(
         cls, survey_answer_id: str
     ) -> Union[None, dict[str, Any]]:
         '''
-        Search unique SurveyAnswer document
+        Search unique SurveyAnswer document.
+        In case of no matches this method returns nothing,
+        otherwise return the matched document(dict form).
 
         Parameters
         ----------
@@ -91,11 +99,9 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
             Return None when db cannot find the
             document, otherwise return dict.
         '''
-        res = pyMongo.db.SurveyAnswer.find_one({
+        return pyMongo.db.SurveyAnswer.find_one({
             'survey_answer_id': survey_answer_id
         })
-        print(f'search_document: {res}', type(res))
-        return res
 
     @classmethod
     def create_document(
@@ -103,7 +109,7 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
         survey_answer_id: str, 
         survey_template_id: str, 
         mturk_id: MTurkID, 
-    ) -> None:
+    ) -> InsertOneResult:
         '''
         Create Survey_Answer document
 
@@ -115,7 +121,7 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
 
         Returns
         -------
-        None
+        InsertOneResult
         '''
         survey_answer_document = {
             'survey_answer_id': survey_answer_id,
@@ -124,8 +130,7 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
             'survey_answers': {},
         }
         
-        pyMongo.db.SurveyAnswer.insert_one(survey_answer_document)
-        return
+        return pyMongo.db.SurveyAnswer.insert_one(survey_answer_document)
 
     @classmethod
     def update_document(
@@ -133,7 +138,7 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
         cur_rounds_num: int,
         survey_answer_id: str,
         survey_new_answers: dict[str, Union[str, dict[str, Any]]], 
-    ) -> None:
+    ) -> UpdateResult:
         '''
         Update unique document
         Voter can answer dynamic topics in a survey template multiple times.
@@ -147,21 +152,19 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
 
         Returns
         -------
-        None
+        UpdateResult
         '''
-
         rounds_key = f'rounds_{cur_rounds_num}'
-        pyMongo.db.SurveyAnswer.update_one({'survey_answer_id': survey_answer_id}, {'$set':{
+        return pyMongo.db.SurveyAnswer.update_one({'survey_answer_id': survey_answer_id}, {'$set':{
             f'survey_answers.{rounds_key}': survey_new_answers,
         }})
-        return 
 
     @classmethod
     def delete_document(
         cls, survey_answer_id: str
-    ) -> None:
+    ) -> DeleteResult:
         '''
-        delete specific document
+        Delete specific document
 
         Parameters
         ----------
@@ -169,10 +172,8 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
 
         Returns
         -------
-        None
+        DeleteResult
         '''
-
-        pyMongo.db.SurveyAnswer.delete_one({
+        return pyMongo.db.SurveyAnswer.delete_one({
             'survey_answer_id': survey_answer_id
         })
-        return
