@@ -54,14 +54,14 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
         -------
         tuple[int, int, int]
         '''
-        
-        #TODO: 如果min max相等怎么办
         min_value = cur_topic_ans['min']
         max_value = cur_topic_ans['max']
 
+        # If min_val == max_val, we dont need
+        # to update the range more
         if min_value == max_value:
             return TopicNoNeedUpdate
-            
+
         # Generate new_mid_value from min_value to max_value-1
         # to avoid max_value overflow
         new_mid_value = random.randint(min_value, max_value-1)
@@ -121,7 +121,7 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
 
         if len(new_feasible_options) > 1:
             sample_num = np.ceil(len(new_feasible_options)/2.0).astype(int)
-            # half-sample to obtain the subset to ask
+            # half sample to obtain the subset to ask
             new_feasible_options = random.sample(new_feasible_options, sample_num)
 
         return new_feasible_options
@@ -154,7 +154,6 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
             )
         else:
             raise ValueError('answer type wrong')
-
 
     @classmethod
     def update_survey_topics(

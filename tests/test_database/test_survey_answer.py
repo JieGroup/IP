@@ -80,22 +80,22 @@ class TestSurveyAnswer:
     #         )
     #     return
     
-    @pytest.mark.parametrize("ans_id", [
-        'sdasd',
-        'ascasca'
-    ])
-    def test_delete_document(self, ans_id):
-        '''simply test if survey answer delete document can be used'''
-        msg = 'Cannot delete the document'
-        with pytest.raises(ValueError, match=msg):
-            delete_document(
-                database_type='survey_answer',
-                survey_answer_id=ans_id,
-            )
-        return
+    # @pytest.mark.parametrize("ans_id", [
+    #     'sdasd',
+    #     'ascasca'
+    # ])
+    # def test_delete_document(self, ans_id):
+    #     '''simply test if survey answer delete document can be used'''
+    #     msg = 'Cannot delete the document'
+    #     with pytest.raises(ValueError, match=msg):
+    #         delete_document(
+    #             database_type='survey_answer',
+    #             survey_answer_id=ans_id,
+    #         )
+    #     return
     
     @pytest.mark.parametrize("ans_id, tem_id, mturk_id", [
-        ('412312', '512412', 'dfsdf'),
+        ('412312', '512412', '7766'),
         ('66767', '124123', '6123412')
     ])
     def test_create_document_storage(self, ans_id, tem_id, mturk_id):

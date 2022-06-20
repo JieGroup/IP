@@ -205,10 +205,9 @@ class BaseUpdateMethod:
                 survey_prev_answers=survey_prev_answers,
                 cur_topic_ans=cur_topic_ans
             )
-
             if topic_new_range == TopicNoNeedUpdate:
                 continue
-            
+
             # TODO: 将updated_survey_topics变成选项
             # Turn updated_survey_topics that can be parsed by the front-end
             updated_survey_topics[topic_name]['choices_list'] = cls.__reformat_topic(
