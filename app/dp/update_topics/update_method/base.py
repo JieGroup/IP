@@ -1,12 +1,6 @@
 from __future__ import annotations
 
 import collections
-from typing import (
-    final,
-    Any,
-    Callable,
-    Union
-)
 
 from typeguard import typechecked
 
@@ -15,59 +9,128 @@ from app.dp.update_topics.update_method.choices import (
     ReformatContinuousTopic,
 )
 
+from app.error import TopicNoNeedUpdate
+
+from app._typing import Answer_Type
+
+from typing import (
+    final,
+    Any,
+    Callable,
+    Union
+)
+
+
 @typechecked
 class BaseUpdateMethod:
-    """
-    Base class for Algorithm
-    """
+    '''
+    Base class for database
 
-    # TODO: implement methods
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    update_topics_base_flow
+    '''
+
     @final
     def placeholder(self):
         pass
 
     @final
     @classmethod
-    def if_cur_rounds_num_valid(
+    def __is_cur_rounds_num_valid(
         cls,
         cur_rounds_num: int,
         max_rounds_of_survey: int
     ) -> bool:
-        
-        if cur_rounds_num <= max_rounds_of_survey:
-            return True
-        return False
-    
-    @final
-    @classmethod
-    def if_survey_topics_need_updating(
-        cls,
-        cur_rounds_num: int,
-        max_rounds_of_survey: int
-    ) -> bool:
+        '''
+        Check if cur_rounds_num is valid
 
-        if cur_rounds_num < max_rounds_of_survey:
+        Parameters
+        ----------
+        cur_rounds_num : int
+            current round number
+        max_rounds_of_survey : int
+            max round of all topics that can be 
+            answered of this survey template
+
+        Returns
+        -------
+        bool
+        '''
+        if 1 <= cur_rounds_num <= max_rounds_of_survey:
             return True
         return False
     
     @final
     @classmethod
-    def if_cur_rounds_num_equals_one(
+    def __if_survey_topics_need_updating(
+        cls,
+        cur_rounds_num: int,
+        max_rounds_of_survey: int
+    ) -> bool:
+        '''
+        Check if survey_topics need updating
+
+        Parameters
+        ----------
+        cur_rounds_num : int
+            current round number
+        max_rounds_of_survey : int
+            max round of all topics that can be 
+            answered of this survey template
+
+        Returns
+        -------
+        bool
+        '''
+        if 1 <= cur_rounds_num < max_rounds_of_survey:
+            return True
+        return False
+    
+    @final
+    @classmethod
+    def __is_cur_rounds_num_equals_one(
         cls, cur_rounds_num: int
     ) -> bool:
+        '''
+        Check if cur_rounds_num is one
 
+        Parameters
+        ----------
+        cur_rounds_num : int
+            current round number
+
+        Returns
+        -------
+        bool
+        '''
         return cur_rounds_num == 1
-
     
     @final
     @classmethod
-    def reformat_topic(
+    def __reformat_topic(
         cls,
-        answer_type: str,
-        # first one for categorical, second for continuous
-        topic_new_range: Union[list[str], tuple[int, int, int]] 
+        answer_type: Answer_Type,
+        topic_new_range: Union[list[str], tuple[int, int, int]] # first type for categorical, second for continuous
     ) -> list[dict, str]:
+        '''
+        Turn the updated topics to choices that
+        can be parsed by the front-end.
 
+        Parameters
+        ----------
+        answer_type : Answer_Type
+        topic_new_range : Union[list[str], tuple[int, int, int]]
+            updated topic     
+
+        Returns
+        -------
+        list[dict, str]
+        '''
         if answer_type == 'categorical':
             return ReformatCategoricalTopic.reformat(
                 topic_new_range=topic_new_range
@@ -76,9 +139,6 @@ class BaseUpdateMethod:
             return ReformatContinuousTopic.reformat(
                 topic_new_range=topic_new_range
             )
-        else:
-            # error
-            return
 
    
     @final
@@ -91,8 +151,7 @@ class BaseUpdateMethod:
         survey_prev_answers: dict[str, Union[str, Any]],
         survey_new_answers: dict[dict[str, Any]],
         update_method_recall: Callable
-    ) -> dict[str, dict[str, Any]]: # Topics new ranges
-
+    ) -> Union[None, dict[str, dict[str, Any]]]: # Topics new ranges
         '''
         Abstracting out common workflows that every update method 
         needs to go through 
@@ -110,15 +169,14 @@ class BaseUpdateMethod:
         survey_new_answers : dict
             New answers
         update_method_recall :
-            Callback method to handle each specific method
+            Callback method to handle each specific method   
 
         Returns
         -------
         dict
         '''
-
         # Check if cur_rounds_num <= max_rounds_num
-        if not cls.if_cur_rounds_num_valid(
+        if not cls.__is_cur_rounds_num_valid(
             cur_rounds_num=cur_rounds_num,
             max_rounds=max_rounds
         ):
@@ -126,7 +184,7 @@ class BaseUpdateMethod:
                 
         # Check if cur_rounds_num < max_rounds_num
         # If it is, we need to update the question
-        if not cls.if_survey_topics_need_updating(
+        if not cls.__if_survey_topics_need_updating(
             cur_rounds_num=cur_rounds_num,
             max_rounds=max_rounds
         ):
@@ -139,6 +197,7 @@ class BaseUpdateMethod:
             cur_topic_ans = survey_new_answers[topic_name][f"{answer_type}_range"]
 
             updated_survey_topics[topic_name]['answer_type'] = answer_type
+            # update topics
             topic_new_range = update_method_recall(
                 cur_rounds_num=cur_rounds_num,
                 topic_name=topic_name,
@@ -147,8 +206,12 @@ class BaseUpdateMethod:
                 cur_topic_ans=cur_topic_ans
             )
 
+            if topic_new_range == TopicNoNeedUpdate:
+                continue
+            
             # TODO: 将updated_survey_topics变成选项
-            updated_survey_topics[topic_name]['choices_list'] = cls.reformat_topic(
+            # Turn updated_survey_topics that can be parsed by the front-end
+            updated_survey_topics[topic_name]['choices_list'] = cls.__reformat_topic(
                 topic_new_range=topic_new_range
             )
 

@@ -20,7 +20,7 @@ class AbstractDatabaseFactory(ABC):
     '''
     @classmethod
     @abstractmethod
-    def get_instance(cls):
+    def get_class(cls):
         pass
 
 
@@ -31,7 +31,7 @@ class GetSurveyAnswer(AbstractDatabaseFactory):
     of SurveyAnswer class
     '''
     @classmethod
-    def get_instance(cls) -> type[SurveyAnswer]:
+    def get_class(cls) -> type[SurveyAnswer]:
         return SurveyAnswer
 
 
@@ -42,7 +42,7 @@ class GetSurveySummary(AbstractDatabaseFactory):
     of SurveySummary class
     '''
     @classmethod
-    def get_instance(cls) -> type[SurveySummary]:
+    def get_class(cls) -> type[SurveySummary]:
         return SurveySummary
 
 
@@ -53,7 +53,7 @@ class GetSurveyTemplate(AbstractDatabaseFactory):
     of SurveyTemplate class
     '''
     @classmethod
-    def get_instance(cls) -> type[SurveyTemplate]:
+    def get_class(cls) -> type[SurveyTemplate]:
         return SurveyTemplate
 
 
@@ -64,7 +64,7 @@ class GetVoter(AbstractDatabaseFactory):
     of Voter class
     '''
     @classmethod
-    def get_instance(cls) -> type[Voter]:
+    def get_class(cls) -> type[Voter]:
         return Voter
 
 
@@ -75,5 +75,5 @@ class GetUser(AbstractDatabaseFactory):
     of User class
     '''
     @classmethod
-    def get_instance(cls) -> type[User]:
+    def get_class(cls) -> type[User]:
         return User

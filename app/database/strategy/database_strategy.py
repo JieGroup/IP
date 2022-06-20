@@ -80,6 +80,7 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
         dict
         '''
         self.__database_operator = database
+        return
 
     def set_database(
         self, database_type: Database_Type
@@ -96,15 +97,15 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
         None
         '''
         if database_type == 'survey_answer':
-            self.__database_operator = GetSurveyAnswer.get_instance()
+            self.__database_operator = GetSurveyAnswer.get_class()
         elif database_type == 'survey_summary':
-            self.__database_operator = GetSurveySummary.get_instance()
+            self.__database_operator = GetSurveySummary.get_class()
         elif database_type == 'survey_template':
-            self.__database_operator = GetSurveyTemplate.get_instance()
+            self.__database_operator = GetSurveyTemplate.get_class()
         elif database_type == 'voter':
-            self.__database_operator = GetVoter.get_instance()
+            self.__database_operator = GetVoter.get_class()
         elif database_type == 'user':
-            self.__database_operator = GetUser.get_instance()
+            self.__database_operator = GetUser.get_class()
         return
 
     def get_all_documents_count(

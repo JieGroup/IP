@@ -16,3 +16,10 @@ class SurveyAnswerError(ValueError):
     """
 
     pass
+
+class TopicNoNeedUpdate(ValueError):
+    """
+    Error raised when the topic is not needed to update
+    """
+
+    pass

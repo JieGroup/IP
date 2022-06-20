@@ -16,29 +16,35 @@ from typing import (
 
 @typechecked
 class StaticUpdate(AbstractUpdateMethod, BaseUpdateMethod):
+    '''
+    When the creator of the survey template chooses 
+    StaticUpdate, the voter only needs to answer
+    each topic in the survey once.
+
+    Update topics is not needed for static mode.
+    No funcion needs to be implemented.
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    generate_topic_new_range
+    update_topics
+    '''
 
     @classmethod
     def generate_topic_new_range(
         cls,
     ) -> None:
-        return None
-
-
+        pass
+    
     @classmethod
     def update_topics(
         cls,
-        max_rounds: int,
-        survey_topics: dict[dict[str, Any]],
-        survey_answer_document: dict[str, Union[str, Any]],
-        survey_new_answers: dict[dict[str, Any]]
     ) -> None:
 
-        return super().update_topics_base_flow(
-            max_rounds=max_rounds,
-            survey_topics=survey_topics,
-            survey_answer_document=survey_answer_document,
-            survey_new_answers=survey_new_answers,
-            update_method_recall=cls.generate_topic_new_range
-        )
+        pass
 
             

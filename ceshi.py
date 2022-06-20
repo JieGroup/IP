@@ -570,11 +570,54 @@ Survey_Update_Method = Literal[
 # print(type(a), type(datetime), type(datetime.timezone.utc.timestamp()))
 # print(type(a) == datetime.datetime)
 
-class Ceshi:
-    pass
+from typing import Type, List
+from typeguard import typechecked, check_argument_types
 
-ceshi = Ceshi()
+# check_type(
+#     argname='wudi',
+#     value=['5'],
+#     expected_type=List[str]
+# )
+# class Ceshi:
+#     pass
 
-print(type(ceshi))
-print(type(ceshi) == Ceshi)
-print(type[Ceshi], type(ceshi) == type[ceshi])
+# @typechecked
+# class Ceshi2:
+
+#     @classmethod
+#     def get_instance(cls) -> Ceshi:
+#         return Ceshi
+
+# @typechecked
+# class Ceshi3:
+
+#     @classmethod
+#     def get_instance(cls) -> Ceshi:
+#         return Ceshi()
+
+# Ceshi2.get_instance()
+# Ceshi3.get_instance()
+
+# print(type(Ceshi))
+# print(type(Ceshi()), type(Ceshi()) == Ceshi,  type(Ceshi()) == Type[Ceshi])
+# print(type[Ceshi], Type[Ceshi])
+# print(type(Ceshi) == Ceshi)
+# print(type(Ceshi) == Type[Ceshi])
+
+check_type(
+    argname='wudi',
+    value=Ceshi,
+    expected_type=type[Ceshi]
+)
+
+check_type(
+    argname='wudi',
+    value=Ceshi(),
+    expected_type=Ceshi
+)
+
+check_type(
+    argname='wudi',
+    value=Ceshi,
+    expected_type=Type[Ceshi]
+)

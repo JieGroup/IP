@@ -17,7 +17,7 @@ class AbstractUpdateMethodFactory(ABC):
 class GetStaticUpdate(AbstractUpdateMethodFactory):
 
     @classmethod
-    def get_class(cls) -> type[StaticUpdate]:
+    def get_class(cls) -> StaticUpdate:
         return StaticUpdate
 
 

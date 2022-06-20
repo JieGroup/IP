@@ -2,16 +2,17 @@ from __future__ import annotations
 
 import random
 
-from app.dp.update_topics.update_method.utils import(
-    CATEGORICAL_RANGE_KEY,
-    CONTINUOUS_RANGE_KEY
-)
+import numpy as np
+
+from app.utils.api import Constant
 
 from app.dp.update_topics.update_method.base import BaseUpdateMethod
 
 from app.dp.update_topics.update_method.abstract_method import AbstractUpdateMethod
 
 from typeguard import typechecked
+
+from app.error import TopicNoNeedUpdate
 
 from typing import (
     Any,
@@ -21,22 +22,46 @@ from typing import (
 
 @typechecked
 class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
+    '''
+    When the creator of the survey template chooses 
+    UniformUpdate, the topics of the survey template
+    can be reformed with max rounds.
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    generate_topic_new_range
+    update_topics
+    '''
 
     @classmethod
     def generate_topic_new_continuous_range(
         cls,
         cur_topic_ans: dict[str, int],
     ) -> tuple[int, int, int]:
-
         '''
-            1. Check the validity of cur_topic_ans
-            2. Generate new continuous range
+        Generate a new feasible range for voter
+        to choose.
+
+        Parameters
+        ----------
+        cur_topic_ans : dict[str, int]
+
+        Returns
+        -------
+        tuple[int, int, int]
         '''
         
         #TODO: 如果min max相等怎么办
         min_value = cur_topic_ans['min']
         max_value = cur_topic_ans['max']
 
+        if min_value == max_value:
+            return TopicNoNeedUpdate
+            
         # Generate new_mid_value from min_value to max_value-1
         # to avoid max_value overflow
         new_mid_value = random.randint(min_value, max_value-1)
@@ -50,35 +75,54 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
         topic_info: dict[str, Any],
         survey_prev_answers: dict[str, Union[str, Any]],
         cur_topic_ans: Union[dict[str, int], dict[str, set]]
-    ) -> None:
-
+    ) -> list:
         '''
-            If current round is 1, generate topic new categorical 
-            range based on initial categorical range.
-            If current round > 1, generate topic new categorical 
-            range based on initial categorical range and 
-            all previous rounds' categorical answers
-        '''
+        If current round is 1, generate topic new categorical 
+        range based on initial categorical range.
+        If current round > 1, generate topic new categorical 
+        range based on initial categorical range and 
+        all previous rounds' categorical answers
 
+        We pick half elements in new_topic_range to form new
+        categorical question
+
+        Parameters
+        ----------
+        cur_rounds_num : list[str]
+        topic_name : str
+        topic_info : dict[str, Any]
+        survey_prev_answers : dict[str, Union[str, Any]]
+        cur_topic_ans : Union[dict[str, int], dict[str, set]]
+
+        Returns
+        -------
+        list
+        '''
         prev_inclusion = topic_info['categorical_range']['inclusion']
         prev_exclusion = None
         for prev_rounds_num in range(1, cur_rounds_num):
             prev_rounds_key = f'rounds_{prev_rounds_num}'
-            prev_ans = survey_prev_answers[prev_rounds_key][topic_name][CATEGORICAL_RANGE_KEY]
+            prev_ans = survey_prev_answers[prev_rounds_key][topic_name][Constant.CATEGORICAL_RANGE_KEY]
 
             if 'inclusion' in prev_ans:
                 prev_inclusion = prev_inclusion.intersection(prev_ans['inclusion'])
             elif 'exclusion' in prev_ans:
                 prev_exclusion = prev_exclusion.union(prev_ans['exclusion'])
 
-        if 'inclusion' in cur_topic_ans[CATEGORICAL_RANGE_KEY]:
-            inclusion = set(cur_topic_ans[CATEGORICAL_RANGE_KEY]['inclusion'])
+        if 'inclusion' in cur_topic_ans[Constant.CATEGORICAL_RANGE_KEY]:
+            inclusion = set(cur_topic_ans[Constant.CATEGORICAL_RANGE_KEY]['inclusion'])
             inclusion = prev_inclusion and inclusion
-        elif 'exclusion' in cur_topic_ans[CATEGORICAL_RANGE_KEY]:
-            exclusion = set(cur_topic_ans[CATEGORICAL_RANGE_KEY]['exclusion'])
+        elif 'exclusion' in cur_topic_ans[Constant.CATEGORICAL_RANGE_KEY]:
+            exclusion = set(cur_topic_ans[Constant.CATEGORICAL_RANGE_KEY]['exclusion'])
             exclusion = prev_exclusion and exclusion
 
         new_feasible_options = inclusion.difference(exclusion)
+        new_feasible_options = list(new_feasible_options)
+
+        if len(new_feasible_options) > 1:
+            sample_num = np.ceil(len(new_feasible_options)/2.0).astype(int)
+            # half-sample to obtain the subset to ask
+            new_feasible_options = random.sample(new_feasible_options, sample_num)
 
         return new_feasible_options
 
@@ -90,7 +134,7 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
         topic_info: dict[str, Any],
         survey_prev_answers: dict[str, Union[str, Any]],
         cur_topic_ans: Union[dict[str, int], dict[str, set]]
-    ):
+    ) -> list:
 
         answer_type = topic_info['answer_type']
         if answer_type == 'continuous':
@@ -109,8 +153,7 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
                 cur_topic_ans=cur_topic_ans
             )
         else:
-            # TODO: Error
-            return None
+            raise ValueError('answer type wrong')
 
 
     @classmethod
@@ -121,20 +164,29 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
         survey_topics: dict[dict[str, Any]],
         survey_prev_answers: dict[str, Union[str, Any]],
         survey_new_answers: dict[dict[str, Any]]
-    ) -> None:
-
-        # 先检查answer
-        # 再生成新的topics
-
-        # 现在的问题是我在生成新的topics的时候检查answer，感觉耦合在了一起。分不开的
-        # 原因是检查answer需要topic
-
+    ) -> Union[None, dict[str, dict[str, Any]]]:
         '''
-            1. check current rounds of answering survey
-            1. check survey_answers
-            2. Update survey_topics if needed
-        '''
+        Call update_topics_base_flow to handle basic logic.
+        Pass generate_topic_new_range to handle the custom 
+        logic.
 
+        Parameters
+        ----------
+        cur_rounds_num : int
+            The number of rounds for the voter to answer the current survey
+        max_rounds : int
+            Defines how many times the topic can be regenerated
+        survey_topics : dict
+            The detailed information of each topic
+        survey_prev_answers : dict or None
+            Previous answers
+        survey_new_answers : dict
+            New answers
+
+        Returns
+        -------
+        Union[None, dict[str, dict[str, Any]]]
+        '''
         return super().update_topics_base_flow(
             cur_rounds_num=cur_rounds_num,
             max_rounds=max_rounds,

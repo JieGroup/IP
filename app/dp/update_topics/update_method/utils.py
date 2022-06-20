@@ -21,10 +21,6 @@ from typing import (
     Final
 )
 
-CATEGORICAL_RANGE_KEY: Final[str] = 'categorical_range'
-CONTINUOUS_RANGE_KEY: Final[str] = 'continuous_range'
-
-
 
 def decode_category(d):
     '''

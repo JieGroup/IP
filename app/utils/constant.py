@@ -15,7 +15,8 @@ class Constant:
     # max rounds of a topic can be re-answered
     MAX_ROUNDS: Final[int] = 3
     
-
+    CATEGORICAL_RANGE_KEY: Final[str] = 'categorical_range'
+    CONTINUOUS_RANGE_KEY: Final[str] = 'continuous_range'
 
 
     SURVEY_TEMPLATE_ID = 'CESHICESHICESHI'

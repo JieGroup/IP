@@ -9,41 +9,77 @@ from app.dp.update_topics.update_method.api import (
     GetUniformUpdate
 )
 
-from typing import Union
-
 from typeguard import typechecked
 
 from app._typing import (
     Survey_Update_Method
 )
 
+
 @typechecked
 class UpdateTopicsOperator(AbstractUpdateTopicsStrategy, BaseUpdateTopicsStrategy):
+    '''
+    Strategy pattern to update topics
 
+    Attributes
+    ----------
+    update_method
+
+    Methods
+    -------
+    set_update_method
+    update_topics
+    '''
     def __init__(self) -> None:
         self.__update_method = None
 
     @property
-    def update_method(self):
-        """
-        The Context maintains a reference to one of the Strategy objects. The
-        Context does not know the concrete class of a strategy. It should work
-        with all strategies via the Strategy interface.
-        """
+    def update_method(self) -> object:
+        '''
+        get strategy object
+    
+        Parameters
+        ----------
+        None
 
+        Returns
+        -------
+        object
+        '''
         return self.__update_method
 
     @update_method.setter
-    def update_method(self, update_method) -> None:
-        """
-        Usually, the Context allows replacing a Strategy object at runtime.
-        """
+    def update_method(
+        self, update_method: object
+    ) -> None:
+        '''
+        set update_method to a strategy object
 
+        Parameters
+        ----------
+        database : object
+
+        Returns
+        -------
+        dict
+        '''
         self.__update_method = update_method
+        return
 
     def set_update_method(
         self, update_method_type: Survey_Update_Method
     ) -> None:
+        '''
+        function to help set strategy object
+
+        Parameters
+        ----------
+        update_method_type : Survey_Update_Method
+
+        Returns
+        -------
+        None
+        '''
         if update_method_type == 'static':
             self.__update_method = GetStaticUpdate.get_class()
         elif update_method_type == 'uniform':
@@ -52,4 +88,7 @@ class UpdateTopicsOperator(AbstractUpdateTopicsStrategy, BaseUpdateTopicsStrateg
     def update_topics(
         self, **kwargs
     ) -> list:
+        '''
+        strategy interface
+        '''
         return self.__update_method.update_topics(**kwargs)

@@ -35,6 +35,11 @@ Survey_Update_Method = Literal[
     'uniform',
 ]
 
+Answer_Type = Literal[
+    'categorical',
+    'continuous'
+]
+
 MTurkID = str
 
 Serializable_Datatype = Union[
