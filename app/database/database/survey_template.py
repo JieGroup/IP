@@ -25,6 +25,13 @@ from typing import (
     Union
 )
 
+from app._typing import (
+    Survey_Update_Method,
+    Survey_Topics,
+    Survey_Prev_Answers,
+    Survey_New_Answers
+)
+
 
 @typechecked
 class SurveyTemplate(AbstractDatabase, BaseDatabase):
@@ -100,11 +107,11 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
     def create_document(
         cls, 
         survey_template_id: str, 
-        survey_update_method: str,
+        survey_update_method: Survey_Update_Method,
         expiration_time: datetime,
         number_of_copies: int,
         max_rounds: int,
-        survey_topics: dict[dict[str, Any]]
+        survey_topics: Survey_Topics
     ) -> InsertOneResult:
         '''
         Create Survey_Template document
@@ -112,12 +119,11 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
         Parameters
         ----------
         survey_template_id : str
-        survey_update_method : str
+        survey_update_method : Survey_Update_Method
         expiration_time : datetime
         number_of_copies : int
         max_rounds : int
-        survey_topics : dict[dict[str, Any]]
-
+        survey_topics : Survey_Topics
         Returns
         -------
         None

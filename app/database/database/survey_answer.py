@@ -16,7 +16,10 @@ from pymongo.results import (
 
 from pymongo.cursor import Cursor
 
-from app._typing import MTurkID
+from app._typing import (
+    MTurkID,
+    Survey_New_Answers
+)
 
 from typing import (
     Union,
@@ -137,7 +140,7 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
         cls, 
         cur_rounds_num: int,
         survey_answer_id: str,
-        survey_new_answers: dict[str, Union[str, dict[str, Any]]], 
+        survey_new_answers: Survey_New_Answers, 
     ) -> UpdateResult:
         '''
         Update unique document

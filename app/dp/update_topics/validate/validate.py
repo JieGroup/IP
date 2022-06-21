@@ -7,20 +7,26 @@ from typing import (
     Union
 )
 
-from app.dp.update_topics.validate.utils import (
-    ValidateCategoricalAnswer,
-    ValidateContinuousAnswer,
-)
+from .validate_continuous import ValidateContinuousAnswer
+
+from .validate_categorical import ValidateCategoricalAnswer
 
 from typeguard import typechecked
 
 from app.error import SurveyAnswerError
 
+from app._typing import (
+    Survey_Topics,
+    Survey_Prev_Answers,
+    Survey_New_Answers
+)
+
+
 @typechecked
 class ValidateAnswer:
     '''
-    Validate if new answers uploaded by voter
-    are within the previous range.
+    Validate if range of new answers uploaded by 
+    voter are within the previous range.
 
     Attributes
     ----------
@@ -49,15 +55,15 @@ class ValidateAnswer:
         return cur_rounds_num == 1
 
     @classmethod
-    def __get_prev_answer(
+    def __get_range_criteria(
         cls, 
         cur_rounds_num: int,
         topic_name: str,
         topic_info: dict[str, Any],
-        survey_prev_answers: Union[None, dict[str, dict[str, Any]]],
+        survey_prev_answers: Survey_Prev_Answers,
     ) -> dict[str, Any]:
         '''
-        Get previous round answer.
+        Get range criteria from previous answer or survey template info.
 
         If cur_rounds_num is one, we need to get range from survey 
         template document.
@@ -92,9 +98,9 @@ class ValidateAnswer:
     def validate_survey_answers(
         cls,
         cur_rounds_num: int,
-        survey_topics: dict[dict[str, Any]],
-        survey_prev_answers: Union[None, dict[str, dict[str, Any]]],
-        survey_new_answers: dict[dict[str, Any]],
+        survey_topics: Survey_Topics,
+        survey_prev_answers: Survey_Prev_Answers,
+        survey_new_answers: Survey_New_Answers,
     ) -> None:
         '''
         Validate survey_new_answers. Mainly check if the survey_new_answers
@@ -103,9 +109,9 @@ class ValidateAnswer:
         Parameters
         ----------
         cur_rounds_num : int
-        survey_topics : dict[dict[str, Any]]
-        survey_prev_answers : Union[None, dict[str, dict[str, Any]]]
-        survey_new_answers : dict[dict[str, Any]]
+        survey_topics : Survey_Topics
+        survey_prev_answers : Survey_Prev_Answers
+        survey_new_answers : Survey_New_Answers
 
         Returns
         -------
@@ -116,15 +122,20 @@ class ValidateAnswer:
         Current round's answer always is the subset of the last round's
         answer
         '''
+        # check if the survey_new_answers contains the extra key that
+        # is not in pre-defined survey template
+        if not set(survey_new_answers.keys()).issubset(set(survey_topics.keys())):
+            raise SurveyAnswerError(
+                f'New answer contains extra key'
+            )
+
         for topic_name, topic_info in survey_topics.items():
 
             # Check if topic_name is in survey_new_answers
             if topic_name not in survey_new_answers:
-                raise SurveyAnswerError(
-                    'Missing topic name in survey_new_answers'
-                )
+                continue
 
-            prev_answer = cls.__get_prev_answer(
+            range_criteria = cls.__get_range_criteria(
                 cur_rounds_num=cur_rounds_num,
                 topic_name=topic_name,
                 topic_info=topic_info,
@@ -137,13 +148,15 @@ class ValidateAnswer:
             if answer_type == 'categorical':
                 ValidateCategoricalAnswer.validate_categorical_answer(
                     topic_name=topic_name,
-                    prev_answer=prev_answer,
+                    range_criteria=range_criteria,
                     cur_topic_ans=cur_topic_ans
                 )
             elif answer_type == 'continuous':
                 ValidateContinuousAnswer.validate_continuous_answer(
                     topic_name=topic_name,
-                    prev_answer=prev_answer,
+                    range_criteria=range_criteria,
                     cur_topic_ans=cur_topic_ans
                 )
+            else:
+                raise ValueError('answer_type is wrong')
         return

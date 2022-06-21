@@ -2,7 +2,10 @@ from __future__ import annotations
 
 from app.database.api import get_all_documents
 
+from typeguard import typechecked
 
+
+@typechecked
 class Summary:
     '''
     Handle the summary process - creator gets the information

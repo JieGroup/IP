@@ -604,20 +604,34 @@ from typeguard import typechecked, check_argument_types
 # print(type(Ceshi) == Ceshi)
 # print(type(Ceshi) == Type[Ceshi])
 
-check_type(
-    argname='wudi',
-    value=Ceshi,
-    expected_type=type[Ceshi]
-)
+# check_type(
+#     argname='wudi',
+#     value=Ceshi,
+#     expected_type=type[Ceshi]
+# )
 
-check_type(
-    argname='wudi',
-    value=Ceshi(),
-    expected_type=Ceshi
-)
+# check_type(
+#     argname='wudi',
+#     value=Ceshi(),
+#     expected_type=Ceshi
+# )
 
-check_type(
-    argname='wudi',
-    value=Ceshi,
-    expected_type=Type[Ceshi]
-)
+# check_type(
+#     argname='wudi',
+#     value=Ceshi,
+#     expected_type=Type[Ceshi]
+# )
+
+# a = ['a', 'b']
+# b = ['a', 'b', 'c']
+# c = ['a', 'c']
+
+# print(set(a).issubset(b))
+# print(set(a).issubset(c))
+
+a = {'a': 5, 'b': 6, 'c': 7}
+b = {'a': 5, 'b': 6, 'c': 7, 'd': 8}
+
+print(type(a.keys()))
+d = set(a.keys())
+print(d, type(d))

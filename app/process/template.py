@@ -13,7 +13,14 @@ from app.utils.api import (
     Constant
 )
 
-from app._typing import Survey_Update_Method
+from typeguard import typechecked
+
+from app._typing import (
+    Survey_Update_Method,
+    Survey_Topics,
+    Survey_Prev_Answers,
+    Survey_New_Answers
+)
 
 from typing import (
     Any,
@@ -21,6 +28,7 @@ from typing import (
 )
 
 
+@typechecked
 class SurveyTemplate:
     '''
     Handle the creating template process. Mainly focus on the validation
@@ -80,31 +88,25 @@ class SurveyTemplate:
     @classmethod
     def __check_survey_topics(
         cls, 
-        survey_update_method: Survey_Update_Method,
         time_period: int,
         number_of_copies: int,
         max_rounds: int,
-        survey_topics: dict[dict[str, Any]]
+        survey_topics: Survey_Topics
     ) -> None:
         '''
         Check if all parameters are valid
 
         Parameters
         ----------
+        time_period : int
         number_of_copies : int
+        max_rounds : int
+        survey_topics : Survey_Topics
 
         Returns
         -------
         None
         '''
-
-        # Check if survey_update_method is in defined category
-        # if not is_var_in_literal(
-        #     var=survey_update_method,
-        #     expected_type=Survey_Update_Method
-        # ):
-        #     raise ValueError('Please provide a valid survey topics update method')
-
         # Check if the time_period is within 2 months
         if not Time.is_time_period_valid(time_period):
             raise ValueError('Please provide a time period between 1 and 60 days')
@@ -128,7 +130,7 @@ class SurveyTemplate:
         time_period: int,
         number_of_copies: int,
         max_rounds: int,
-        survey_topics: dict[str, Any]
+        survey_topics: Survey_Topics
     ) -> str:
         '''
         Check survey template information uploaded by creator and store
@@ -157,7 +159,6 @@ class SurveyTemplate:
         '''
         # Check the survey topics uploaded by user
         cls.__check_survey_topics(
-            survey_update_method=survey_update_method,
             time_period=time_period,
             number_of_copies=number_of_copies,
             max_rounds=max_rounds,

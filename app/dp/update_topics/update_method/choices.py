@@ -1,9 +1,17 @@
 from __future__ import annotations
 
-import random
+import copy
 import numpy as np
 
 from typeguard import typechecked
+
+from typing import Union
+
+from app._typing import (
+    Categorical_Option_Type,
+    Continuous_Option_Type
+)
+
 
 @typechecked
 class ReformatBase:
@@ -27,8 +35,8 @@ class ReformatCategoricalTopic(ReformatBase):
     @classmethod
     def reformat(
         cls,
-        topic_new_range: list[str]
-    ) -> list[list[str], str, str]:
+        topic_new_range: list[Categorical_Option_Type]
+    ) -> list[Union[list[Categorical_Option_Type], str]]:
         '''
         Form a list of length 3.
         List[0] is the topic_new_range.
@@ -39,17 +47,19 @@ class ReformatCategoricalTopic(ReformatBase):
 
         Parameters
         ----------
-        topic_new_range : list[str]
+        topic_new_range : list[Categorical_Option_Type]
 
         Returns
         -------
         list
         '''
         choices_list = [_ for _ in range(3)]
-        choices_list[0] = topic_new_range
+        choices_list[0] = copy.deepcopy(topic_new_range)
         choices_list[1] = 'exclusion'
         choices_list[2] = 'stop'
-
+        print(type(choices_list[0]))
+        print(type(choices_list[1]))
+        print(type(choices_list[2]))
         return choices_list
 
 
@@ -70,8 +80,8 @@ class ReformatContinuousTopic(ReformatBase):
     @classmethod
     def reformat(
         cls,
-        topic_new_range: tuple[int, int, int]
-    ) -> list[dict[str, int], dict[str, int], str]:
+        topic_new_range: tuple[Continuous_Option_Type, Continuous_Option_Type, Continuous_Option_Type]
+    ) -> list[Union[dict[str, Continuous_Option_Type], str]]:
         '''
         Form a list of length 3.
         List[0] contains min_val <= x <= new_mid_val
@@ -81,7 +91,7 @@ class ReformatContinuousTopic(ReformatBase):
 
         Parameters
         ----------
-        topic_new_range : tuple[int, int, int]
+        topic_new_range : tuple[Continuous_Option_Type, Continuous_Option_Type, Continuous_Option_Type]
 
         Returns
         -------

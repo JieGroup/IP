@@ -5,6 +5,8 @@ from abc import ABC, abstractmethod
 from app.dp.update_topics.update_method.static import StaticUpdate
 from app.dp.update_topics.update_method.uniform import UniformUpdate
 
+from typeguard import typechecked
+
 
 class AbstractUpdateMethodFactory(ABC):
 
@@ -14,13 +16,15 @@ class AbstractUpdateMethodFactory(ABC):
         pass
 
 
+@typechecked
 class GetStaticUpdate(AbstractUpdateMethodFactory):
 
     @classmethod
-    def get_class(cls) -> StaticUpdate:
+    def get_class(cls) -> type[StaticUpdate]:
         return StaticUpdate
 
 
+@typechecked
 class GetUniformUpdate(AbstractUpdateMethodFactory):
 
     @classmethod

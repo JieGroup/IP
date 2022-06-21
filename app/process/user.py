@@ -25,6 +25,8 @@ from app.process.utils import (
     decode_token
 )
 
+from typeguard import typechecked
+
 from flask.helpers import url_for
 
 from flask import (
@@ -35,6 +37,7 @@ from flask import (
 )
 
 
+@typechecked
 class User:
     
     '''

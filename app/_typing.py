@@ -40,6 +40,26 @@ Answer_Type = Literal[
     'continuous'
 ]
 
+# must be one of the three types
+Categorical_Option_Type = TypeVar('Categorical_Option_Type', int, float, str)
+
+# must be one of the two types
+Continuous_Option_Type = TypeVar('Continuous_Option_Type', int, str)
+
+# The Criteria of the survey topics that stores in survey template db
+Survey_Topics = dict[str, dict[str, Any]]
+
+# The answer uploaded by the voter from the last round
+# If current round is 1, the Survey_Prev_Answers is an empty dict
+Survey_Prev_Answers = Union[dict, dict[str, dict[str, Any]]]
+
+# The answer uploaded by the voter from the current round
+Survey_New_Answers = dict[str, Union[str, dict[str, Any]]]
+
+
+
+
+
 MTurkID = str
 
 Serializable_Datatype = Union[

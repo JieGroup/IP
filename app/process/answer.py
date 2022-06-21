@@ -31,9 +31,15 @@ from typing import Union
 
 from app.process.utils import get_unique_id
 
-from app._typing import MTurkID
+from typeguard import typechecked
+
+from app._typing import (
+    MTurkID,
+    Survey_New_Answers
+)
 
 
+@typechecked
 class VoterAnswerSurvey:
     '''
     Helper class for voter answering survey process.
@@ -100,7 +106,7 @@ class VoterAnswerSurvey:
     def update_survey_topics(
         cls,
         survey_answer_id: str,
-        survey_new_answers: dict[str, dict[str, Any]]
+        survey_new_answers: Survey_New_Answers
     ) -> Union[None, dict[str, dict[str, Any]]]:
         '''
         Check the information uploaded by Voter and

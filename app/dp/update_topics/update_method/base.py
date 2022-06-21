@@ -11,7 +11,12 @@ from app.dp.update_topics.update_method.choices import (
 
 from app.error import TopicNoNeedUpdate
 
-from app._typing import Answer_Type
+from app._typing import (
+    Answer_Type,
+    Survey_Topics,
+    Survey_Prev_Answers,
+    Survey_New_Answers
+)
 
 from typing import (
     final,
@@ -147,9 +152,9 @@ class BaseUpdateMethod:
         cls,
         cur_rounds_num: int, 
         max_rounds: int,
-        survey_topics: dict[dict[str, Any]],
-        survey_prev_answers: dict[str, Union[str, Any]],
-        survey_new_answers: dict[dict[str, Any]],
+        survey_topics: Survey_Topics,
+        survey_prev_answers: Survey_Prev_Answers,
+        survey_new_answers: Survey_New_Answers,
         update_method_recall: Callable
     ) -> Union[None, dict[str, dict[str, Any]]]: # Topics new ranges
         '''
@@ -162,11 +167,11 @@ class BaseUpdateMethod:
             The number of rounds for the voter to answer the current survey
         max_rounds : int
             Defines how many times the topic can be regenerated
-        survey_topics : dict
+        survey_topics : Survey_Topics
             The detailed information of each topic
-        survey_prev_answers : dict or None
+        survey_prev_answers : Survey_Prev_Answers
             Previous answers
-        survey_new_answers : dict
+        survey_new_answers : Survey_New_Answers
             New answers
         update_method_recall :
             Callback method to handle each specific method   
@@ -193,6 +198,9 @@ class BaseUpdateMethod:
         updated_survey_topics = collections.defaultdict(dict)
         for topic_name, topic_info in survey_topics.items(): 
 
+            if topic_name not in survey_new_answers:
+                continue
+            
             answer_type = topic_info['answer_type']
             cur_topic_ans = survey_new_answers[topic_name][f"{answer_type}_range"]
 

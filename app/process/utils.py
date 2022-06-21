@@ -25,9 +25,11 @@ from typing import (
     Union
 )
 
+from app._typing import Survey_Prev_Answers
+
 
 def get_cur_rounds_num(
-    survey_prev_answers: Union[None, dict[str, dict[str, Any]]]
+    survey_prev_answers: Survey_Prev_Answers
 ) -> int:
 
     '''
