@@ -12,8 +12,19 @@ def check_if_data_is_valid(
     data: dict[str, Any],
     expected_data: list[dict[str, object]],
 ) -> None:
+    '''
+    1. Check if data is None
+    2. Check if data type is correct
 
+    Parameters
+    ----------
+    data : dict[str, Any]
+    expected_data : list[dict[str, object]]
 
+    Returns
+    -------
+    bool
+    '''
     for expected_key, expected_type in expected_data.items():
 
         check_type(

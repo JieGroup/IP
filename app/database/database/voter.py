@@ -94,7 +94,9 @@ class Voter(AbstractDatabase, BaseDatabase):
 
     @classmethod
     def create_document(
-        cls, mturk_id: MTurkID
+        cls, 
+        mturk_id: MTurkID,
+        participated_survey_template_id: dict={}
     ) -> InsertOneResult:
         '''
         Create Survey_Voter document
@@ -109,7 +111,8 @@ class Voter(AbstractDatabase, BaseDatabase):
         '''
         voter_document = {
             'mturk_id': mturk_id,
-            'participated_survey_template_id': {}
+            # TODO: participated_survey_template_id currently not updated
+            'participated_survey_template_id': participated_survey_template_id
         }
 
         return pyMongo.db.Voter.insert_one(voter_document)

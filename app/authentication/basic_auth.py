@@ -20,7 +20,6 @@ def verify_password(
     username: str, 
     password: str
 ) -> bool:
-
     '''
     verify username and password
 
@@ -33,7 +32,6 @@ def verify_password(
     -------
     bool
     '''
-
     user = pyMongo.db.User.find_one({'username': username})
     if user is None:
         return False
@@ -46,7 +44,6 @@ def verify_password(
 
 @basic_auth.error_handler
 def basic_auth_error():
-
     '''
     Return an error response in case of authentication failure
 
@@ -58,5 +55,4 @@ def basic_auth_error():
     -------
     TODO
     '''
-
     return error_response(401)

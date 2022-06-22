@@ -69,10 +69,7 @@ class TestUniformUpdate():
                 },
                 {},
                 {
-                    Constant.CATEGORICAL_RANGE_KEY: 
-                    {
-                        'inclusion': ['5', '6']
-                    }
+                    'inclusion': ['5', '6']
                 },
                 {
                     '5',
@@ -110,12 +107,9 @@ class TestUniformUpdate():
                             }
                         }
                     },
-                },
+                },    
                 {
-                    Constant.CATEGORICAL_RANGE_KEY: 
-                    {
-                        'exclusion': ['8']
-                    }
+                    'exclusion': ['8']
                 },
                 {
                     '9'
@@ -136,21 +130,3 @@ class TestUniformUpdate():
         
         assert set(res).issubset(set(expected))
         assert len(res) == expected_length
-    
-    # @pytest.mark.usefixtures('UniformUpdate')
-    # @pytest.mark.parametrize(
-    #     "rounds, name, info, prev_answers, cur_topic_ans, expected", 
-    #     [ 
-    #         (   
-    #             {
-    #                 'stop': True
-    #             },
-    #             TopicNoNeedUpdate
-    #         )
-    #     ]
-    # )
-    # def test_generate_topic_new_categorical_range_exception(self, UniformUpdate, cur_topic_ans, expected):
-        
-    #     assert expected == UniformUpdate.generate_topic_new_categorical_range(
-    #         cur_topic_ans=cur_topic_ans
-    #     )

@@ -49,7 +49,7 @@ class BaseUpdateMethod:
     def __is_cur_rounds_num_valid(
         cls,
         cur_rounds_num: int,
-        max_rounds_of_survey: int
+        max_rounds: int
     ) -> bool:
         '''
         Check if cur_rounds_num is valid
@@ -58,7 +58,7 @@ class BaseUpdateMethod:
         ----------
         cur_rounds_num : int
             current round number
-        max_rounds_of_survey : int
+        max_rounds : int
             max round of all topics that can be 
             answered of this survey template
 
@@ -66,7 +66,7 @@ class BaseUpdateMethod:
         -------
         bool
         '''
-        if 1 <= cur_rounds_num <= max_rounds_of_survey:
+        if 1 <= cur_rounds_num <= max_rounds:
             return True
         return False
     
@@ -75,7 +75,7 @@ class BaseUpdateMethod:
     def __if_survey_topics_need_updating(
         cls,
         cur_rounds_num: int,
-        max_rounds_of_survey: int
+        max_rounds: int
     ) -> bool:
         '''
         Check if survey_topics need updating
@@ -84,7 +84,7 @@ class BaseUpdateMethod:
         ----------
         cur_rounds_num : int
             current round number
-        max_rounds_of_survey : int
+        max_rounds : int
             max round of all topics that can be 
             answered of this survey template
 
@@ -92,28 +92,28 @@ class BaseUpdateMethod:
         -------
         bool
         '''
-        if 1 <= cur_rounds_num < max_rounds_of_survey:
+        if 1 <= cur_rounds_num < max_rounds:
             return True
         return False
     
-    @final
-    @classmethod
-    def __is_cur_rounds_num_equals_one(
-        cls, cur_rounds_num: int
-    ) -> bool:
-        '''
-        Check if cur_rounds_num is one
+    # @final
+    # @classmethod
+    # def __is_cur_rounds_num_equals_one(
+    #     cls, cur_rounds_num: int
+    # ) -> bool:
+    #     '''
+    #     Check if cur_rounds_num is one
 
-        Parameters
-        ----------
-        cur_rounds_num : int
-            current round number
+    #     Parameters
+    #     ----------
+    #     cur_rounds_num : int
+    #         current round number
 
-        Returns
-        -------
-        bool
-        '''
-        return cur_rounds_num == 1
+    #     Returns
+    #     -------
+    #     bool
+    #     '''
+    #     return cur_rounds_num == 1
     
     @final
     @classmethod
@@ -121,7 +121,7 @@ class BaseUpdateMethod:
         cls,
         answer_type: Answer_Type,
         topic_new_range: Union[list[str], tuple[int, int, int]] # first type for categorical, second for continuous
-    ) -> list[dict, str]:
+    ) -> Any:
         '''
         Turn the updated topics to choices that
         can be parsed by the front-end.
@@ -134,7 +134,7 @@ class BaseUpdateMethod:
 
         Returns
         -------
-        list[dict, str]
+        Any
         '''
         if answer_type == 'categorical':
             return ReformatCategoricalTopic.reformat(
@@ -203,8 +203,7 @@ class BaseUpdateMethod:
             
             answer_type = topic_info['answer_type']
             cur_topic_ans = survey_new_answers[topic_name][f"{answer_type}_range"]
-
-            updated_survey_topics[topic_name]['answer_type'] = answer_type
+ 
             # update topics
             topic_new_range = update_method_recall(
                 cur_rounds_num=cur_rounds_num,
@@ -213,12 +212,14 @@ class BaseUpdateMethod:
                 survey_prev_answers=survey_prev_answers,
                 cur_topic_ans=cur_topic_ans
             )
+            
             if topic_new_range == TopicNoNeedUpdate:
                 continue
-
-            # TODO: 将updated_survey_topics变成选项
+            
             # Turn updated_survey_topics that can be parsed by the front-end
+            updated_survey_topics[topic_name]['answer_type'] = answer_type
             updated_survey_topics[topic_name]['choices_list'] = cls.__reformat_topic(
+                answer_type=answer_type,
                 topic_new_range=topic_new_range
             )
 

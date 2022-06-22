@@ -141,30 +141,27 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
             cur_topic_ans=cur_topic_ans
         ):
             return TopicNoNeedUpdate
-
-        prev_inclusion = set(topic_info['categorical_range']['inclusion'])
-        prev_exclusion = set()
+        
+        inclusion = set(topic_info['categorical_range']['inclusion'])
+        exclusion = set()
         for prev_rounds_num in range(1, cur_rounds_num):
             prev_rounds_key = f'rounds_{prev_rounds_num}'
             prev_ans = survey_prev_answers[prev_rounds_key][topic_name][Constant.CATEGORICAL_RANGE_KEY]
 
             if 'inclusion' in prev_ans:
                 # inclusion needs intersection to narrow down the range
-                prev_inclusion = prev_inclusion.intersection(prev_ans['inclusion'])
+                inclusion = inclusion.intersection(prev_ans['inclusion'])
             elif 'exclusion' in prev_ans:
                 # exclution needs union to extend the range
-                prev_exclusion = prev_exclusion.union(prev_ans['exclusion'])
+                exclusion = exclusion.union(prev_ans['exclusion'])
 
         # combine current answer to inclusion
-        inclusion = prev_inclusion
-        exclusion = prev_exclusion
-        if 'inclusion' in cur_topic_ans[Constant.CATEGORICAL_RANGE_KEY]:
-            cur_inclusion = set(cur_topic_ans[Constant.CATEGORICAL_RANGE_KEY]['inclusion'])
+        if 'inclusion' in cur_topic_ans:
+            cur_inclusion = set(cur_topic_ans['inclusion'])
             inclusion = inclusion.intersection(cur_inclusion)
-            
         # combine current answer to exclusion
-        elif 'exclusion' in cur_topic_ans[Constant.CATEGORICAL_RANGE_KEY]:
-            cur_exclusion = set(cur_topic_ans[Constant.CATEGORICAL_RANGE_KEY]['exclusion'])
+        elif 'exclusion' in cur_topic_ans:
+            cur_exclusion = set(cur_topic_ans['exclusion'])
             exclusion = exclusion.union(cur_exclusion)
             
         # Pick the elements that are in inclusion and not in 
@@ -172,14 +169,13 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
         new_feasible_options = inclusion.difference(exclusion)
         new_feasible_options = list(new_feasible_options)
 
-        if len(new_feasible_options) > 1:
+        if len(new_feasible_options) < 1:
+            return TopicNoNeedUpdate
+        elif len(new_feasible_options) >= 1:
             sample_num = np.ceil(len(new_feasible_options)/2.0).astype(int)
             # half sample to obtain the subset to ask
             new_feasible_options = random.sample(new_feasible_options, sample_num)
-
-        print('inclusion', inclusion)
-        print('exclusion', exclusion)
-        print(f'new_feasible_options: {new_feasible_options}')
+        
         return new_feasible_options
 
     @classmethod
@@ -189,8 +185,8 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
         topic_name: str,
         topic_info: dict[str, Any],
         survey_prev_answers: Survey_Prev_Answers,
-        cur_topic_ans: Union[dict[str, int], dict[str, set]]
-    ) -> list:
+        cur_topic_ans: Union[dict[str, Constant.CONTINUOUS_RANGE_KEY], dict[str, list[Categorical_Option_Type]]]
+    ) -> Union[type[TopicNoNeedUpdate], tuple[Continuous_Option_Type, Continuous_Option_Type, Continuous_Option_Type], list]:
 
         answer_type = topic_info['answer_type']
         if answer_type == 'continuous':

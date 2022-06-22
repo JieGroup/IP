@@ -77,36 +77,85 @@ class User(AbstractDatabase, BaseDatabase):
     def search_document(
         cls, user_id: str
     ) -> Union[None, dict[str, Any]]:
+        '''
+        Search unique user document.
+        In case of no matches this method returns nothing,
+        otherwise return the matched document(dict form).
 
+        Parameters
+        ----------
+        user_id : str
+
+        Returns
+        -------
+        None or dict.
+            Return None when db cannot find the
+            document, otherwise return dict.
+        '''
         return pyMongo.db.User.find_one({
             'user_id': user_id
         })
 
     @classmethod
     def create_document(
-        cls, mturk_id: MTurkID
+        cls, 
+        user_id: str,
+        username: str,
+        email: str,
+        hashed_password: str,
+        authority_level: str,
+        comfirm_email: bool,
+        designed_survey_template: dict={}
     ) -> InsertOneResult:
-        # TODO: modify this part
-        voter_document = {
-            'mturk_id': mturk_id,
-            'participated_survey_template_id': {}
-        },
-        
-        if not if_file_size_exceed_limit(file=voter_document):
-            raise SurveyAnswerTooLarge
+        '''
+        Create user document
 
-        return pyMongo.db.User.insert_one(voter_document)
+        Parameters
+        ----------
+        user_id : str
+        username : str
+        email : str
+        hashed_password : str
+        authority_level : str
+        comfirm_email : bool
+        designed_survey_template : dict
+
+        Returns
+        -------
+        InsertOneResult
+        '''
+        user_document = {
+            'user_id': user_id,
+            'username': username,
+            'email': email,
+            'hashed_password': hashed_password,
+            'authority_level': authority_level,
+            'comfirm_email': comfirm_email,
+            'designed_survey_template': designed_survey_template
+        }
+
+        return pyMongo.db.User.insert_one(user_document)
     
     @classmethod
     def update_document(
         cls, 
-        mturk_id: MTurkID, 
-        survey_template_id: str, 
-        survey_answer_id: str
+        user_id: str,
+        **kwargs
     ) -> UpdateResult:
-        # TODO: modify this part
-        return pyMongo.db.User.update_one({'mturk_id': mturk_id}, {'$set':{
-                   f'participated_survey_template_id.{survey_template_id}.{survey_answer_id}': True
+        
+        if 'confirm_email' in kwargs:
+            return pyMongo.db.User.update_one({'user_id': user_id}, {'$set':{
+                   f'confirm_email': kwargs['confirm_email']
+               }})
+        elif 'survey_template_id' in kwargs:
+            survey_template_id = kwargs['survey_template_id']
+            create_time = kwargs['create_time']
+            return pyMongo.db.User.update_one({'user_id': user_id}, {'$set':{
+                   f'survey_template_id.{survey_template_id}': create_time
+               }})
+        elif 'hashed_password' in kwargs:
+            return pyMongo.db.User.update_one({'user_id': user_id}, {'$set':{
+                   f'hashed_password': kwargs['hashed_password']
                }})
     
     @classmethod
@@ -124,5 +173,4 @@ class User(AbstractDatabase, BaseDatabase):
         -------
         None
         '''
-
         return pyMongo.db.User.delete_one({'user_id': user_id})

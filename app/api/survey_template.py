@@ -14,7 +14,10 @@ from app.utils.api import handle_response
 
 from app.api.utils import check_if_data_is_valid
 
-from app._typing import Survey_Update_Method
+from app._typing import (
+    Survey_Update_Method,
+    Survey_Topics
+)
 
 from typing import Any
 
@@ -66,7 +69,7 @@ def create_survey_template() -> None:
         'time_period': int,
         'number_of_copies': int,
         'max_rounds': int,
-        'survey_topics': dict[str, Any]
+        'survey_topics': Survey_Topics
     }
     check_if_data_is_valid(
         data=request.args,

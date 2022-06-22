@@ -108,7 +108,7 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
         cls, 
         survey_template_id: str, 
         survey_update_method: Survey_Update_Method,
-        expiration_time: datetime,
+        expiration_time: float,
         number_of_copies: int,
         max_rounds: int,
         survey_topics: Survey_Topics
@@ -136,10 +136,6 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
             'max_rounds': max_rounds,
             'survey_topics': survey_topics,
         }
-        # TODO: make_data_serializable
-        survey_template_document = Serialization.make_data_serializable(
-            data=survey_template_document
-        )
         
         return pyMongo.db.SurveyTemplate.insert_one(survey_template_document)
     

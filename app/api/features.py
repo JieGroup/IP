@@ -20,7 +20,6 @@ from app.process.api import (
 # @token_auth.login_required
 # @handle_response
 def get_survey_template() -> None:
-
     '''
     Get all details about specific survey template
 
@@ -34,7 +33,6 @@ def get_survey_template() -> None:
     dict
         Details will be formed in dictonary structure
     '''
-
     expected_data = {
         'survey_template_id': str,
     }
@@ -54,7 +52,6 @@ def get_survey_template() -> None:
 @api.route('/get_default_survey_template', methods=['GET'])
 # @handle_response
 def get_default_survey_template() -> None:
-
     '''
     Get all details about default survey template.
     Default survey template is carefully designed by Professor Jie Ding
@@ -68,7 +65,6 @@ def get_default_survey_template() -> None:
     dict
         Details will be formed in dictonary structure
     '''
-
     return get_default_survey_template_helper()
 
 
@@ -76,7 +72,6 @@ def get_default_survey_template() -> None:
 @token_auth.login_required
 # @handle_response
 def get_user_history() -> None:
-
     '''
     Get all survey template created by the current user.
 
@@ -90,7 +85,6 @@ def get_user_history() -> None:
         History will be formed in list structure, which sort in 
         reverse timestamp order. (The latest record is in the first place) 
     '''
-
     expected_data = {
         'user_id': str,
     }

@@ -14,7 +14,10 @@ from app.api.utils import check_if_data_is_valid
 
 from typing import Any
 
-from app._typing import MTurkID
+from app._typing import (
+    MTurkID,
+    Survey_New_Answers
+)
 
 
 @api.route('/voter_start_answering', methods=['GET'])
@@ -68,7 +71,7 @@ def voter_submit_answers():
     ----------
     survey_answer_id : str
         An unique string corresponding to an answer of a survey template.
-    survey_new_answers : dict[dict[str, Any]]
+    survey_new_answers : Survey_New_Answers
         New answers
 
     Returns
@@ -84,7 +87,7 @@ def voter_submit_answers():
 
     expected_data = {
         'survey_answer_id': str,
-        'survey_new_answers': dict[str, dict[str, Any]],
+        'survey_new_answers': Survey_New_Answers,
         'start_time': str,
         'end_time': str
     }

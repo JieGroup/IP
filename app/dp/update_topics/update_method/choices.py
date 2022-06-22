@@ -57,9 +57,7 @@ class ReformatCategoricalTopic(ReformatBase):
         choices_list[0] = copy.deepcopy(topic_new_range)
         choices_list[1] = 'exclusion'
         choices_list[2] = 'stop'
-        print(type(choices_list[0]))
-        print(type(choices_list[1]))
-        print(type(choices_list[2]))
+        
         return choices_list
 
 

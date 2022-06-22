@@ -132,7 +132,7 @@ class VoterAnswerSurvey:
             survey_answer_id=survey_answer_id
         )
         if survey_answer_document is None:
-            raise DBDocumentNotFound
+            raise DBDocumentNotFound('cannot find the db document')
 
         # Get the info prescribed by creator
         survey_template_id = survey_answer_document['survey_template_id']

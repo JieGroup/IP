@@ -2,13 +2,11 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from app.database.database.api import (
-    SurveyAnswer,
-    SurveySummary,
-    SurveyTemplate,
-    Voter,
-    User
-)
+from app.database.database.survey_answer import SurveyAnswer
+from app.database.database.survey_summary import SurveySummary
+from app.database.database.survey_template import SurveyTemplate
+from app.database.database.voter import Voter
+from app.database.database.user import User
 
 from typeguard import typechecked
 

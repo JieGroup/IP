@@ -4,7 +4,7 @@ from app.database.strategy.abstract_database_strategy import AbstractDatabaseStr
 
 from app.database.strategy.base import BaseDatabaseStrategy
 
-from app.database.database.database_factory import (
+from app.database.database.api import (
     GetSurveyAnswer,
     GetSurveySummary,
     GetSurveyTemplate,
