@@ -3,7 +3,6 @@ from __future__ import annotations
 import copy
 import pytest
 
-from tests.conftest import UnittestBase
 from app.utils.api import handle_response
 
 from typeguard import check_type

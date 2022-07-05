@@ -223,7 +223,7 @@ def if_token_user_id_equals_user_id(
     return token_user_id == user_id
 
 
-def if_token_matched(
+def is_token_matched(
     token: str, 
     expiration: int=3600
 ) -> bool:

@@ -3,14 +3,12 @@ from __future__ import annotations
 import json
 import pytest
 
-from tests.conftest import UnittestBase
-
 from app.process.api import Summary
 
 from app.utils.api import Constant
 
 
-class TestSummary(UnittestBase):
+class TestSummary():
 
     @pytest.mark.usefixtures('network_instance')
     @pytest.mark.parametrize(

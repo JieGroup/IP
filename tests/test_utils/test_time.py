@@ -2,15 +2,13 @@ from __future__ import annotations
 
 import pytest
 
-from tests.conftest import UnittestBase
-
 from app.utils.api import (
     Time,
     Constant
 )
 
 
-class TestTime(UnittestBase):
+class TestTime():
 
     @pytest.mark.parametrize(
         "time_period, expected", 

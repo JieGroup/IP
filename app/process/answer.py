@@ -84,7 +84,9 @@ class VoterAnswerSurvey:
             survey_template_id=survey_template_id
         )
         if survey_template_document is None:
-            raise DBDocumentNotFound
+            raise DBDocumentNotFound(
+                'cannot find corresponding survey template document'
+            )
         
         # TODO: check if number of copies exceed limit, not urgent
 
@@ -98,6 +100,7 @@ class VoterAnswerSurvey:
         )
 
         return {
+            'survey_template_id': survey_template_id,
             'survey_answer_id': survey_answer_id,
             'survey_topics': survey_template_document['survey_topics']
         }

@@ -3,14 +3,12 @@ from __future__ import annotations
 import json
 import pytest
 
-from tests.conftest import UnittestBase
-
 from app.process.api import SurveyTemplate
 
 from app.utils.api import Constant
 
 
-class TestSurveyTemplate(UnittestBase):
+class TestSurveyTemplate():
 
     @pytest.mark.parametrize(
         "survey_update_method, expected", 

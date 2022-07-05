@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 import copy
 
+from app.error import DataTypeError
+
 from app._typing import Serializable_Datatype
 
 from typeguard import typechecked
@@ -22,7 +24,6 @@ from app.utils.dtypes.api import (
 
 @typechecked
 class Serialization:
-
     '''
     Deal with the issue that the object cannot be serialized to return.
     Serialize data, mainly deal with the object that cant be serialized.
@@ -36,13 +37,11 @@ class Serialization:
     -------
     make_data_serializable
     '''
-    
     @classmethod
     def __is_serializable(
         cls,
         data: Any
     ) -> bool:
-
         '''
         Check if data is serializable
 
@@ -55,7 +54,6 @@ class Serialization:
         -------
         bool
         '''
-
         try:
             json.dumps(data)
         except:
@@ -68,7 +66,6 @@ class Serialization:
         cls,
         data: Any
     ) -> Serializable_Datatype:
-
         '''
         Turn the unserializable data to serializable data
 
@@ -81,22 +78,22 @@ class Serialization:
         -------
         Serializable_Datatype
         '''
-
         if is_numpy(data):
             return copy.deepcopy(data.tolist())
         elif is_set(data):
             return copy.deepcopy(list(data))
         elif is_datetime_dot_datetime(data):
             return data.timestamp()
-
-        return data
+        else:
+            raise DataTypeError(
+                'Data type wrong: not serializable'
+            )
 
     @classmethod
     def make_data_serializable(
         cls,
         data: Any
     ) -> Serializable_Datatype:
-
         '''
         Use recursion to make_data_serializable 
 
@@ -109,7 +106,6 @@ class Serialization:
         -------
         Serializable_Datatype
         '''
-
         if data is None:
             return None
 

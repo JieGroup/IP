@@ -177,5 +177,4 @@ class SurveyTemplate:
             max_rounds=max_rounds,
             survey_topics=survey_topics
         )
-
         return survey_template_id

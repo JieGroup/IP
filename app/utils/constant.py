@@ -6,8 +6,8 @@ class Constant:
     UPDATE_TOKEN_INTERVAL: Final[int] = 900
 
     # time period to store the survey template
-    TIME_PERIOD_UPPER_LIMIT: Final[float] = 5.62e6
-    TIME_PERIOD_LOWER_LIMIT: Final[float] = 2.592e5
+    TIME_PERIOD_UPPER_LIMIT: Final[int] = 5620000
+    TIME_PERIOD_LOWER_LIMIT: Final[int] = 259200
 
     # max number of answers for a survey template
     MAX_NUMBER_OF_COPIES: Final[int] = 500
@@ -36,61 +36,188 @@ class Constant:
     MAXSHOW = 5  # max num of question shown in a page
     SURVEY_WAY = ('dynamic', 'static')  # survey way to use
 
-    # ordered from less private to more private, according to the original survey excel
-#     TOPICS = (
-#         'gender',
-#         'race',
-#         'age', 
-#         'education',
-#         'zip',
-#         'hours_web',
-#         'politics',
-#         'sexual_orientation',
-#         'spouse_age',
-#         'social_class',
-#         'no_houses',
-#         'health',
-#         'salary',
-#         'cash',
-#         'stock',
-#         'sex'
-#         )
-    TOPICS = (     
-        'age', 
-        'salary',
-        )
 
-    ALPH_GENDER = ('Male', 'Female', 'Transgender', 'Gender neutral', 'Others')
-
-    ALPH_RACE = ('White', 'Black or African American', 'American Indian or Alaska Native', 'Asian',
-            'Native Hawaiian and Pacific Islander', 'others')
-
-    NUM_AGE = (18, 80) # inclusive
-
-    ALPH_EDUCATION = ('Less than high school', 'High school', 'Bachelor\'s degree',
-            'Master\'s degree', 'Doctoral or professional degree')
+    DEFAULT_CATEGORICAL_OPTIONS = {
+        'gender': {
+            'range': {
+                'Male', 
+                'Female', 
+                'Transgender', 
+                'Gender neutral', 
+                'Others'
+            },
+            'unit': {
+                None
+            }
+        },
+        'race': {
+            'range': {
+                'White', 
+                'Black or African American', 
+                'American Indian or Alaska Native', 
+                'Asian',
+                'Native Hawaiian and Pacific Islander', 
+                'others'
+            },
+            'unit': {
+                None
+            }
+        },
+        'education': {
+            'range':{
+                'Less than high school', 
+                'High school', 
+                "Bachelor's degree",
+                "Master's degree", 
+                'Doctoral or professional degree'
+            },
+            'unit': {
+                None
+            }
+        },
+        'politics': {
+            'range':{
+                'Conservatism', 
+                'Socialism', 
+                'Social Liberalism', 
+                'Classical liberalism', 
+                'Others'
+            },
+            'unit':{
+                None
+            }
             
-    NUM_ZIP=(2, 99)
+        },
+        'sexual_orientation': {
+            'range':{
+                'Heterosexuality', 
+                'Bisexuality', 
+                'Homosexuality', 
+                'Asexuality', 
+                'Others'
+            },
+            'unit':{
+                None
+            }
+        },
+        'social_class': {
+            'range':{
+                'Upper (elite)', 
+                'Upper middle', 
+                'Lower middle', 
+                'Working', 
+                'Poor'
+            },
+            'unit':{
+                None
+            }
+        }
+    }
 
-    NUM_HOURS_WEB = (1, 6)
+    DEFAULT_CONTINUOUS_OPTIONS = {
+        'age': {
+            'range':{
+                [18, 80]
+            },
+            'unit':{
+                None
+            }
+        },
+        'zip': {
+            'range':{
+                [2, 99]
+            },
+            'unit':{
+                ' (first two digits)'
+            }
+        },
+        'hours_web': {
+            'range':{
+                [1, 6]
+            },
+            'unit':{
+                ' hours per day'
+            }
+        },
+        'spouse_age': {
+            'range':{
+                [18, 80]
+            },
+            'unit':{
+                None
+            }
+        },
+        'num_houses': {
+            'range':{
+                [0, 5]
+            },
+            'unit':{
+                None
+            }
+        },
+        'health': {
+            'range':{
+                [1, 10]
+            },
+            'unit':{
+                ' at scale 1-10'
+            }
+        },
+        'salary': {
+            'range':{
+                [0, 150]
+            },
+            'unit':{
+                ' k (before tax)'
+            }
+        },
+        'cash': {
+            'range':{
+                [0, 300]
+            },
+            'unit':{
+                ' k (before tax)'
+            }
+        },
+        'stock': {
+            'range':{
+                [0, 300]
+            },
+            'unit':{
+                ' k'
+            }
+        },
+        'sex': {
+            'range':{
+                [0, 100]
+            },
+            'unit':{
+                ' times per month'
+            }
+        },
+    }
 
-    ALPH_PHLITICS = ('Conservatism', 'Socialism', 'Social Liberalism', 'Classical liberalism', 'Others')
+    DEFAULT_TEMPLATE = None
 
-    ALPH_SEXUAL_ORIENTATION = ('Heterosexuality', 'Bisexuality', 'Homosexuality', 'Asexuality', 'Others')
-
-    NUMS_SPOUSE_AGE = (18, 80) #(0, 100) 
-
-    ALPH_SOCIAL_CLASS = ('Upper (elite)', 'Upper middle', 'Lower middle', 'Working', 'Poor')
-
-    # alph_no_houses = ('None', '1', '2', 'More than 2')
-    NUM_NO_HOUSES = (0, 5)
-
-    NUM_HEALTH = (1, 10)
-
-    NUM_SALARY = (0, 200)
-
-    NUM_CASH = (0, 300)
-
-    NUM_STOCK = (0, 300)
-
-    NUM_SEX = (0, 100)
+    @classmethod
+    def generate_default_template(cls):
+        if cls.DEFAULT_TEMPLATE is None:
+            for key, val in cls.DEFAULT_CATEGORICAL_OPTIONS.items():
+                cls.DEFAULT_TEMPLATE[key] = {
+                    'answer_type': 'categorical',
+                    'categorical_range': {
+                        'inclusion': val['range']
+                    },
+                    'unit': val['unit']
+                }
+            
+            for key, val in cls.DEFAULT_CONTINUOUS_OPTIONS.items():
+                cls.DEFAULT_TEMPLATE[key] = {
+                    'answer_type': 'continuous',
+                    'continuous_range': {
+                        'min': val['range'][0],
+                        'max': val['range'][1] 
+                    },
+                    'unit': val['unit']
+                }
+        return cls.DEFAULT_TEMPLATE

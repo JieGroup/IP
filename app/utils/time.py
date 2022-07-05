@@ -53,7 +53,7 @@ class Time:
     @classmethod
     def get_expiration_utc_time(
         cls, time_period: int
-    ) -> float:
+    ) -> int:
 
         '''
         Calculate expiration time based on utc time.
@@ -65,7 +65,7 @@ class Time:
 
         Returns
         -------
-        float
+        int
 
         Notes
         -----
@@ -73,12 +73,11 @@ class Time:
         These 2 methods contain bugs.
         '''
 
-        expiration_time = (datetime.now(tz=timezone.utc) + timedelta(seconds=time_period)).timestamp()
+        expiration_time = int((datetime.now(tz=timezone.utc) + timedelta(seconds=time_period)).timestamp())
         return expiration_time
 
     @classmethod
-    def get_current_utc_time(cls) -> float:
-
+    def get_current_utc_time(cls) -> int:
         '''
         Calculate current time based on utc time.
 
@@ -88,7 +87,7 @@ class Time:
 
         Returns
         -------
-        float
+        int
 
         Notes
         -----
@@ -96,5 +95,5 @@ class Time:
         These 2 methods contain bugs.
         '''
 
-        current_time = datetime.now(tz=timezone.utc).timestamp()
+        current_time = int(datetime.now(tz=timezone.utc).timestamp())
         return current_time

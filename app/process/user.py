@@ -21,7 +21,7 @@ from app.process.utils import (
     send_email,
     get_user_id_from_token,
     if_token_user_id_equals_user_id,
-    if_token_matched,
+    is_token_matched,
     decode_token
 )
 
@@ -39,7 +39,6 @@ from flask import (
 
 @typechecked
 class User:
-    
     '''
     Handle the user-related information
 
@@ -61,7 +60,6 @@ class User:
         email: str,
         password: str,
     ) -> None:
-
         '''
         Handle creating new account
 
@@ -78,22 +76,17 @@ class User:
         -------
         bool
         '''
-
-        message = {}
-
         # Check if the username is duplicated
         user_document = search_document(
             database_type='user',
             username=username
         )
         if user_document:
-            message['username'] = 'Please use a different username.'
+            raise ValueError('Please use a different username.')
         
         validate_password_indicator, return_message = validate_password(password)
         if not validate_password_indicator:
-            message['password'] = return_message
-        if message:
-            return bad_request(message)
+            raise ValueError(f'{return_message}')
         
         user_id = get_unique_id()
         hashed_password = get_hashed_password(password)
@@ -108,7 +101,11 @@ class User:
         )
         
         token = generate_confirmation_token(email)
-        confirm_url = url_for('user.confirm_email', token=token, _external=True)
+        confirm_url = url_for(
+            'api.confirm_email', 
+            token=token, 
+            _external=True
+        )
         html_template = render_template('activate.html', confirm_url=confirm_url)
         message = "Please confirm your email"
         send_email(
@@ -116,20 +113,15 @@ class User:
             message=message, 
             html_template=html_template
         )
-
-        return_dict = {}
-        return_dict['token'] = token
-        return_dict['message'] = 'create successfully'
-        response = jsonify(return_dict)
-        response.status_code = 201
-
+        response = {}
+        response['token'] = token
+        response['message'] = 'create successfully'
         return response
 
     @classmethod
     def get_user(
         cls, user_id: str
     ) -> None:
-
         '''
         Request to get information about the user_id
 
@@ -142,7 +134,6 @@ class User:
         -------
         dict
         '''
-
         token_user_id = get_user_id_from_token()
         if if_token_user_id_equals_user_id(
             token_user_id=token_user_id,
@@ -151,18 +142,19 @@ class User:
             current_user_information = g.current_user
             # delete ObjectID to jsonify
             del current_user_information['_id']
-            response = {
+            return {
                 'user': current_user_information
             }
-            return jsonify(response)
         else:
-            raise 'WrongUserId'    
+            raise ValueError('Wrong UserId')    
     
     @classmethod
     def update_user(
-        cls, user_id: str
+        cls, 
+        user_id: str,
+        username: str,
+        email: str
     ) -> None:
-
         '''
         update information about this user_id
 
@@ -170,11 +162,28 @@ class User:
         ----------
         user_id : str
             Unique user_id
+        username : str
+        email : str
 
         Returns
         -------
-        dict
+        None
         '''
+        if search_document(
+            database_type='user',
+            username=username
+        ):
+            raise ValueError('Please use a different username.')
+        if search_document(
+            database_type='user',
+            email=email
+        ):
+            raise ValueError('Please use a different email address.')
+
+        update_document(
+            database_type='user',
+
+        )
 
         token_user_id = get_user_id_from_token()
         if if_token_user_id_equals_user_id(
@@ -210,21 +219,21 @@ class User:
         bool
         '''
 
-        if_token_matched(token)
+        is_token_matched(token)
         email = decode_token(token)
-        search_document(
-            database_type='user'
+        user_document = search_document(
+            database_type='user',
+            email=email
         )
-        # TODO: 弄懂现在email对应
-        user = pyMongo.db.User.find_one({'email': email})
 
         msg = ''
-        if user:
-            if user['confirm_email'] == False:
-                if user['email'] == email:
-                    pyMongo.db.User.update_one({'email': email}, {'$set':{
-                        'confirm_email': True
-                    }})
+        if user_document:
+            if user_document['confirm_email'] == False:
+                if user_document['email'] == email:
+                    update_document(
+                        database_type='user',
+                        confirm_email=True
+                    )
                     msg = 'You have confirmed your account. Thanks!'
                 else:
                     msg = 'The confirmation link is invalid or has expired.'
@@ -232,14 +241,12 @@ class User:
                 msg = 'Account already confirmed. Please login.'
         else:
             msg = 'The confirmation link is invalid or has expired.'
-        
         return msg
     
     @classmethod
     def resend_comfirmation_link(
         cls
     ) -> bool:
-
         '''
         Resend the comfirmation link to user's email
 
@@ -252,7 +259,6 @@ class User:
         -------
         bool
         '''
-
         user_document = search_document(
             database_type='user'
         )
@@ -283,7 +289,6 @@ class User:
         username: str,
         email: str
     ) -> dict:
-
         '''
         Reset the password
 
@@ -298,25 +303,22 @@ class User:
         -------
         dict
         '''
-
         user_document = search_document(
             database_type='user'
         )
 
-        message = {}
         if not user_document:
-            message['username'] = 'Please type in the correct username.'
+            raise ValueError('Please type in the correct username.')
         if user_document['email'] != email:
-            message['email'] = 'Please type in the correct username and email'
-            message['username'] = 'Please type in the correct username and email'
-        if message:
-            return bad_request(message)
+            raise ValueError('Please type in the correct username and email.')
 
         token = generate_confirmation_token(email)
         reset_url = url_for('user.forgot_new', token=token, _external=True)
-        html_template = render_template('reset.html',
-                                username=username,
-                                reset_url=reset_url)
+        html_template = render_template(
+            'reset.html',
+            username=username,
+            reset_url=reset_url
+        )
         message = "Reset your password"
         send_email(
             target_email=email, 
@@ -333,7 +335,6 @@ class User:
         cls, 
         token: str,
     ) -> dict:
-
         '''
         Update the new password
 
@@ -346,7 +347,6 @@ class User:
         -------
         str
         '''
-
         if not if_token_matched(token):
             flash('Token has expired')
             return 'Token has expired'

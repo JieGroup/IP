@@ -10,6 +10,10 @@ from app.utils.api import handle_response
 
 from app.api.utils import check_if_data_is_valid
 
+from app.database.api import search_document
+
+from app.utils.api import Constant
+
 from app.process.api import (
     get_survey_template_helper,
     get_default_survey_template_helper,
@@ -17,8 +21,8 @@ from app.process.api import (
 )
 
 @api.route('/get_survey_template', methods=['GET'])
-# @token_auth.login_required
-# @handle_response
+@token_auth.login_required
+@handle_response
 def get_survey_template() -> None:
     '''
     Get all details about specific survey template
@@ -42,15 +46,13 @@ def get_survey_template() -> None:
     )
 
     survey_template_id = request.args['survey_template_id']
-
-    # TODO: implement logic
-    # res = get_survey_template_helper()
-    res = 5
-    return res
-
+    return search_document(
+        database_type='survey_template',
+        survey_template_id=survey_template_id
+    )
 
 @api.route('/get_default_survey_template', methods=['GET'])
-# @handle_response
+@handle_response
 def get_default_survey_template() -> None:
     '''
     Get all details about default survey template.
@@ -65,7 +67,7 @@ def get_default_survey_template() -> None:
     dict
         Details will be formed in dictonary structure
     '''
-    return get_default_survey_template_helper()
+    return Constant.generate_default_template()
 
 
 @api.route('/get_user_history', methods=['GET'])

@@ -108,7 +108,7 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
         cls, 
         survey_template_id: str, 
         survey_update_method: Survey_Update_Method,
-        expiration_time: float,
+        expiration_time: int,
         number_of_copies: int,
         max_rounds: int,
         survey_topics: Survey_Topics

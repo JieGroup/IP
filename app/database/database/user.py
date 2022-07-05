@@ -75,7 +75,7 @@ class User(AbstractDatabase, BaseDatabase):
         
     @classmethod
     def search_document(
-        cls, user_id: str
+        cls, **kwargs: Any
     ) -> Union[None, dict[str, Any]]:
         '''
         Search unique user document.
@@ -92,9 +92,22 @@ class User(AbstractDatabase, BaseDatabase):
             Return None when db cannot find the
             document, otherwise return dict.
         '''
-        return pyMongo.db.User.find_one({
-            'user_id': user_id
-        })
+        if 'user_id' in kwargs:
+            return pyMongo.db.User.find_one({
+                'user_id': kwargs['user_id']
+            })
+        elif 'username' in kwargs:
+            return pyMongo.db.User.find_one({
+                'username': kwargs['username']
+            })
+        elif 'email' in kwargs:
+            return pyMongo.db.User.find_one({
+                'email': kwargs['email']
+            })
+        else:
+            raise ValueError(
+                'wrong key used in searching user document'
+            )
 
     @classmethod
     def create_document(
@@ -142,21 +155,23 @@ class User(AbstractDatabase, BaseDatabase):
         user_id: str,
         **kwargs
     ) -> UpdateResult:
-        
+        # confirm email
         if 'confirm_email' in kwargs:
             return pyMongo.db.User.update_one({'user_id': user_id}, {'$set':{
-                   f'confirm_email': kwargs['confirm_email']
-               }})
+                f'confirm_email': kwargs['confirm_email']
+            }})
+        # record the survey template created by current user
         elif 'survey_template_id' in kwargs:
             survey_template_id = kwargs['survey_template_id']
             create_time = kwargs['create_time']
             return pyMongo.db.User.update_one({'user_id': user_id}, {'$set':{
-                   f'survey_template_id.{survey_template_id}': create_time
-               }})
+                f'survey_template_id.{survey_template_id}': create_time
+            }})
+        # reset password
         elif 'hashed_password' in kwargs:
             return pyMongo.db.User.update_one({'user_id': user_id}, {'$set':{
-                   f'hashed_password': kwargs['hashed_password']
-               }})
+                f'hashed_password': kwargs['hashed_password']
+            }})
     
     @classmethod
     def delete_document(
