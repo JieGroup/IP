@@ -20,7 +20,6 @@ const findActiveMenu = (subMenu, route) => {
 };
 
 const nestedMenu = (menu, route) => {
-  console.log('????', menu, route)
   menu.forEach((item, key) => {
     if (typeof item !== "string") {
       let menuItem = menu[key];

@@ -236,7 +236,6 @@ import {
 import { useVuelidate } from "@vuelidate/core";
 import Toastify from "toastify-js";
 import dom from "@left4code/tw-starter/dist/js/dom";
-import { defineEmits } from 'vue'
 
 // receive variable from parent
 const props = defineProps({

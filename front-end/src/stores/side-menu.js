@@ -5,31 +5,31 @@ export const useSideMenuStore = defineStore("sideMenu", {
     menu: [
       {
         icon: "HomeIcon",
-        // pageName: "side-menu-dashboard",
-        // title: "Dashboard",
         pageName: "side-menu-dashboard-overview-4",
         title: "Overview",
+        // pageName: "side-menu-dashboard",
+        // title: "Dashboard",
         // subMenu: [
-          // {
-          //   icon: "",
-          //   pageName: "side-menu-dashboard-overview-1",
-          //   title: "Overview 1",
-          // },
-          // {
-          //   icon: "",
-          //   pageName: "side-menu-dashboard-overview-2",
-          //   title: "Overview 2",
-          // },
-          // {
-          //   icon: "",
-          //   pageName: "side-menu-dashboard-overview-3",
-          //   title: "Overview 3",
-          // },
-          // {
-          //   icon: "",
-          //   pageName: "side-menu-dashboard-overview-4",
-          //   title: "Overview 4",
-          // },
+        //   {
+        //     icon: "",
+        //     pageName: "side-menu-dashboard-overview-1",
+        //     title: "Overview 1",
+        //   },
+        //   {
+        //     icon: "",
+        //     pageName: "side-menu-dashboard-overview-2",
+        //     title: "Overview 2",
+        //   },
+        //   {
+        //     icon: "",
+        //     pageName: "side-menu-dashboard-overview-3",
+        //     title: "Overview 3",
+        //   },
+        //   {
+        //     icon: "",
+        //     pageName: "side-menu-dashboard-overview-4",
+        //     title: "Overview 4",
+        //   },
         // ],
       },
       // {
@@ -123,13 +123,18 @@ export const useSideMenuStore = defineStore("sideMenu", {
       //         },
       //       ],
       //     },
+      //     {
+      //       icon: "",
+      //       pageName: "side-menu-reviews",
+      //       title: "Reviews",
+      //     },
+      //   ],
+      // },
       {
         icon: "ShoppingBagIcon",
         pageName: "side-menu-reviews",
         title: "Reviews",
       },
-        // ],
-      // },
       // {
       //   icon: "InboxIcon",
       //   pageName: "side-menu-inbox",

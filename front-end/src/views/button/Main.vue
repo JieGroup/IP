@@ -792,9 +792,6 @@
             <button class="btn btn-pending mr-1 mb-2">
               <DownloadIcon class="w-5 h-5" />
             </button>
-            <button class="btn btn-success mr-1 mb-2">
-              <PlusIcon class="w-5 h-5" />
-            </button>
             <button class="btn btn-danger mr-1 mb-2">
               <TrashIcon class="w-5 h-5" />
             </button>

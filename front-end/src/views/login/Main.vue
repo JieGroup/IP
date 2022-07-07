@@ -11,7 +11,7 @@
               class="w-6"
               src="@/assets/images/logo.svg"
             />
-            <span class="text-white text-lg ml-3"> IP </span>
+            <span class="text-white text-lg ml-3"> Rubick </span>
           </a>
           <div class="my-auto">
             <img
