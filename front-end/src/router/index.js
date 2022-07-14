@@ -67,7 +67,8 @@ import Datepicker from "../views/datepicker/Main.vue";
 import TomSelect from "../views/tom-select/Main.vue";
 import FileUpload from "../views/file-upload/Main.vue";
 import WysiwygEditor from "../views/wysiwg-editor/Main.vue";
-import Validation from "../views/validation/Main.vue";
+import CreateForm from "../views/create-form/Main.vue";
+import AnswerForm from "../views/answer-form/Main.vue";
 import Chart from "../views/chart/Main.vue";
 import Slider from "../views/slider/Main.vue";
 import ImageZoom from "../views/image-zoom/Main.vue";
@@ -81,6 +82,9 @@ const routes = [
         path: "/",
         name: "side-menu-dashboard-overview-1",
         component: DashboardOverview1,
+        meta: {
+          show: false
+        }
       },
       {
         path: "dashboard-overview-2",
@@ -388,9 +392,14 @@ const routes = [
         component: WysiwygEditor,
       },
       {
-        path: "validation",
-        name: "side-menu-validation",
-        component: Validation,
+        path: "create-form",
+        name: "side-menu-create-form",
+        component: CreateForm,
+      },
+      {
+        path: "answer-form",
+        name: "side-menu-answer-form",
+        component: AnswerForm,
       },
       {
         path: "chart",
@@ -409,678 +418,678 @@ const routes = [
       },
     ],
   },
-  {
-    path: "/simple-menu",
-    component: SimpleMenu,
-    children: [
-      {
-        path: "dashboard-overview-1",
-        name: "simple-menu-dashboard-overview-1",
-        component: DashboardOverview1,
-      },
-      {
-        path: "dashboard-overview-2",
-        name: "simple-menu-dashboard-overview-2",
-        component: DashboardOverview2,
-      },
-      {
-        path: "dashboard-overview-3",
-        name: "simple-menu-dashboard-overview-3",
-        component: DashboardOverview3,
-      },
-      {
-        path: "dashboard-overview-4",
-        name: "simple-menu-dashboard-overview-4",
-        component: DashboardOverview4,
-      },
-      {
-        path: "categories",
-        name: "simple-menu-categories",
-        component: Categories,
-      },
-      {
-        path: "add-product",
-        name: "simple-menu-add-product",
-        component: AddProduct,
-      },
-      {
-        path: "product-list",
-        name: "simple-menu-product-list",
-        component: ProductList,
-      },
-      {
-        path: "product-grid",
-        name: "simple-menu-product-grid",
-        component: ProductGrid,
-      },
-      {
-        path: "transaction-list",
-        name: "simple-menu-transaction-list",
-        component: TransactionList,
-      },
-      {
-        path: "transaction-detail",
-        name: "simple-menu-transaction-detail",
-        component: TransactionDetail,
-      },
-      {
-        path: "seller-list",
-        name: "simple-menu-seller-list",
-        component: SellerList,
-      },
-      {
-        path: "seller-detail",
-        name: "simple-menu-seller-detail",
-        component: SellerDetail,
-      },
-      {
-        path: "reviews",
-        name: "simple-menu-reviews",
-        component: Reviews,
-      },
-      {
-        path: "inbox",
-        name: "simple-menu-inbox",
-        component: Inbox,
-      },
-      {
-        path: "file-manager",
-        name: "simple-menu-file-manager",
-        component: FileManager,
-      },
-      {
-        path: "point-of-sale",
-        name: "simple-menu-point-of-sale",
-        component: PointOfSale,
-      },
-      {
-        path: "chat",
-        name: "simple-menu-chat",
-        component: Chat,
-      },
-      {
-        path: "post",
-        name: "simple-menu-post",
-        component: Post,
-      },
-      {
-        path: "calendar",
-        name: "simple-menu-calendar",
-        component: Calendar,
-      },
-      {
-        path: "crud-data-list",
-        name: "simple-menu-crud-data-list",
-        component: CrudDataList,
-      },
-      {
-        path: "crud-form",
-        name: "simple-menu-crud-form",
-        component: CrudForm,
-      },
-      {
-        path: "users-layout-1",
-        name: "simple-menu-users-layout-1",
-        component: UsersLayout1,
-      },
-      {
-        path: "users-layout-2",
-        name: "simple-menu-users-layout-2",
-        component: UsersLayout2,
-      },
-      {
-        path: "users-layout-3",
-        name: "simple-menu-users-layout-3",
-        component: UsersLayout3,
-      },
-      {
-        path: "profile-overview-1",
-        name: "simple-menu-profile-overview-1",
-        component: ProfileOverview1,
-      },
-      {
-        path: "profile-overview-2",
-        name: "simple-menu-profile-overview-2",
-        component: ProfileOverview2,
-      },
-      {
-        path: "profile-overview-3",
-        name: "simple-menu-profile-overview-3",
-        component: ProfileOverview3,
-      },
-      {
-        path: "wizard-layout-1",
-        name: "simple-menu-wizard-layout-1",
-        component: WizardLayout1,
-      },
-      {
-        path: "wizard-layout-2",
-        name: "simple-menu-wizard-layout-2",
-        component: WizardLayout2,
-      },
-      {
-        path: "wizard-layout-3",
-        name: "simple-menu-wizard-layout-3",
-        component: WizardLayout3,
-      },
-      {
-        path: "blog-layout-1",
-        name: "simple-menu-blog-layout-1",
-        component: BlogLayout1,
-      },
-      {
-        path: "blog-layout-2",
-        name: "simple-menu-blog-layout-2",
-        component: BlogLayout2,
-      },
-      {
-        path: "blog-layout-3",
-        name: "simple-menu-blog-layout-3",
-        component: BlogLayout3,
-      },
-      {
-        path: "pricing-layout-1",
-        name: "simple-menu-pricing-layout-1",
-        component: PricingLayout1,
-      },
-      {
-        path: "pricing-layout-2",
-        name: "simple-menu-pricing-layout-2",
-        component: PricingLayout2,
-      },
-      {
-        path: "invoice-layout-1",
-        name: "simple-menu-invoice-layout-1",
-        component: InvoiceLayout1,
-      },
-      {
-        path: "invoice-layout-2",
-        name: "simple-menu-invoice-layout-2",
-        component: InvoiceLayout2,
-      },
-      {
-        path: "faq-layout-1",
-        name: "simple-menu-faq-layout-1",
-        component: FaqLayout1,
-      },
-      {
-        path: "faq-layout-2",
-        name: "simple-menu-faq-layout-2",
-        component: FaqLayout2,
-      },
-      {
-        path: "faq-layout-3",
-        name: "simple-menu-faq-layout-3",
-        component: FaqLayout3,
-      },
-      {
-        path: "update-profile",
-        name: "simple-menu-update-profile",
-        component: UpdateProfile,
-      },
-      {
-        path: "change-password",
-        name: "simple-menu-change-password",
-        component: ChangePassword,
-      },
-      {
-        path: "regular-table",
-        name: "simple-menu-regular-table",
-        component: RegularTable,
-      },
-      {
-        path: "tabulator",
-        name: "simple-menu-tabulator",
-        component: Tabulator,
-      },
-      {
-        path: "modal",
-        name: "simple-menu-modal",
-        component: Modal,
-      },
-      {
-        path: "slide-over",
-        name: "simple-menu-slide-over",
-        component: SlideOver,
-      },
-      {
-        path: "notification",
-        name: "simple-menu-notification",
-        component: Notification,
-      },
-      {
-        path: "tab",
-        name: "simple-menu-tab",
-        component: Tab,
-      },
-      {
-        path: "accordion",
-        name: "simple-menu-accordion",
-        component: Accordion,
-      },
-      {
-        path: "button",
-        name: "simple-menu-button",
-        component: Button,
-      },
-      {
-        path: "alert",
-        name: "simple-menu-alert",
-        component: Alert,
-      },
-      {
-        path: "progress-bar",
-        name: "simple-menu-progress-bar",
-        component: ProgressBar,
-      },
-      {
-        path: "tooltip",
-        name: "simple-menu-tooltip",
-        component: Tooltip,
-      },
-      {
-        path: "dropdown",
-        name: "simple-menu-dropdown",
-        component: Dropdown,
-      },
-      {
-        path: "typography",
-        name: "simple-menu-typography",
-        component: Typography,
-      },
-      {
-        path: "icon",
-        name: "simple-menu-icon",
-        component: Icon,
-      },
-      {
-        path: "loading-icon",
-        name: "simple-menu-loading-icon",
-        component: LoadingIcon,
-      },
-      {
-        path: "regular-form",
-        name: "simple-menu-regular-form",
-        component: RegularForm,
-      },
-      {
-        path: "datepicker",
-        name: "simple-menu-datepicker",
-        component: Datepicker,
-      },
-      {
-        path: "tom-select",
-        name: "simple-menu-tom-select",
-        component: TomSelect,
-      },
-      {
-        path: "file-upload",
-        name: "simple-menu-file-upload",
-        component: FileUpload,
-      },
-      {
-        path: "wysiwyg-editor",
-        name: "simple-menu-wysiwyg-editor",
-        component: WysiwygEditor,
-      },
-      {
-        path: "validation",
-        name: "simple-menu-validation",
-        component: Validation,
-      },
-      {
-        path: "chart",
-        name: "simple-menu-chart",
-        component: Chart,
-      },
-      {
-        path: "slider",
-        name: "simple-menu-slider",
-        component: Slider,
-      },
-      {
-        path: "image-zoom",
-        name: "simple-menu-image-zoom",
-        component: ImageZoom,
-      },
-    ],
-  },
-  {
-    path: "/top-menu",
-    component: TopMenu,
-    children: [
-      {
-        path: "dashboard-overview-1",
-        name: "top-menu-dashboard-overview-1",
-        component: DashboardOverview1,
-      },
-      {
-        path: "dashboard-overview-2",
-        name: "top-menu-dashboard-overview-2",
-        component: DashboardOverview2,
-      },
-      {
-        path: "dashboard-overview-3",
-        name: "top-menu-dashboard-overview-3",
-        component: DashboardOverview3,
-      },
-      {
-        path: "dashboard-overview-4",
-        name: "top-menu-dashboard-overview-4",
-        component: DashboardOverview4,
-      },
-      {
-        path: "categories",
-        name: "top-menu-categories",
-        component: Categories,
-      },
-      {
-        path: "add-product",
-        name: "top-menu-add-product",
-        component: AddProduct,
-      },
-      {
-        path: "product-list",
-        name: "top-menu-product-list",
-        component: ProductList,
-      },
-      {
-        path: "product-grid",
-        name: "top-menu-product-grid",
-        component: ProductGrid,
-      },
-      {
-        path: "transaction-list",
-        name: "top-menu-transaction-list",
-        component: TransactionList,
-      },
-      {
-        path: "transaction-detail",
-        name: "top-menu-transaction-detail",
-        component: TransactionDetail,
-      },
-      {
-        path: "seller-list",
-        name: "top-menu-seller-list",
-        component: SellerList,
-      },
-      {
-        path: "seller-detail",
-        name: "top-menu-seller-detail",
-        component: SellerDetail,
-      },
-      {
-        path: "reviews",
-        name: "top-menu-reviews",
-        component: Reviews,
-      },
-      {
-        path: "inbox",
-        name: "top-menu-inbox",
-        component: Inbox,
-      },
-      {
-        path: "file-manager",
-        name: "top-menu-file-manager",
-        component: FileManager,
-      },
-      {
-        path: "point-of-sale",
-        name: "top-menu-point-of-sale",
-        component: PointOfSale,
-      },
-      {
-        path: "chat",
-        name: "top-menu-chat",
-        component: Chat,
-      },
-      {
-        path: "post",
-        name: "top-menu-post",
-        component: Post,
-      },
-      {
-        path: "calendar",
-        name: "top-menu-calendar",
-        component: Calendar,
-      },
-      {
-        path: "crud-data-list",
-        name: "top-menu-crud-data-list",
-        component: CrudDataList,
-      },
-      {
-        path: "crud-form",
-        name: "top-menu-crud-form",
-        component: CrudForm,
-      },
-      {
-        path: "users-layout-1",
-        name: "top-menu-users-layout-1",
-        component: UsersLayout1,
-      },
-      {
-        path: "users-layout-2",
-        name: "top-menu-users-layout-2",
-        component: UsersLayout2,
-      },
-      {
-        path: "users-layout-3",
-        name: "top-menu-users-layout-3",
-        component: UsersLayout3,
-      },
-      {
-        path: "profile-overview-1",
-        name: "top-menu-profile-overview-1",
-        component: ProfileOverview1,
-      },
-      {
-        path: "profile-overview-2",
-        name: "top-menu-profile-overview-2",
-        component: ProfileOverview2,
-      },
-      {
-        path: "profile-overview-3",
-        name: "top-menu-profile-overview-3",
-        component: ProfileOverview3,
-      },
-      {
-        path: "wizard-layout-1",
-        name: "top-menu-wizard-layout-1",
-        component: WizardLayout1,
-      },
-      {
-        path: "wizard-layout-2",
-        name: "top-menu-wizard-layout-2",
-        component: WizardLayout2,
-      },
-      {
-        path: "wizard-layout-3",
-        name: "top-menu-wizard-layout-3",
-        component: WizardLayout3,
-      },
-      {
-        path: "blog-layout-1",
-        name: "top-menu-blog-layout-1",
-        component: BlogLayout1,
-      },
-      {
-        path: "blog-layout-2",
-        name: "top-menu-blog-layout-2",
-        component: BlogLayout2,
-      },
-      {
-        path: "blog-layout-3",
-        name: "top-menu-blog-layout-3",
-        component: BlogLayout3,
-      },
-      {
-        path: "pricing-layout-1",
-        name: "top-menu-pricing-layout-1",
-        component: PricingLayout1,
-      },
-      {
-        path: "pricing-layout-2",
-        name: "top-menu-pricing-layout-2",
-        component: PricingLayout2,
-      },
-      {
-        path: "invoice-layout-1",
-        name: "top-menu-invoice-layout-1",
-        component: InvoiceLayout1,
-      },
-      {
-        path: "invoice-layout-2",
-        name: "top-menu-invoice-layout-2",
-        component: InvoiceLayout2,
-      },
-      {
-        path: "faq-layout-1",
-        name: "top-menu-faq-layout-1",
-        component: FaqLayout1,
-      },
-      {
-        path: "faq-layout-2",
-        name: "top-menu-faq-layout-2",
-        component: FaqLayout2,
-      },
-      {
-        path: "faq-layout-3",
-        name: "top-menu-faq-layout-3",
-        component: FaqLayout3,
-      },
-      {
-        path: "update-profile",
-        name: "top-menu-update-profile",
-        component: UpdateProfile,
-      },
-      {
-        path: "change-password",
-        name: "top-menu-change-password",
-        component: ChangePassword,
-      },
-      {
-        path: "regular-table",
-        name: "top-menu-regular-table",
-        component: RegularTable,
-      },
-      {
-        path: "tabulator",
-        name: "top-menu-tabulator",
-        component: Tabulator,
-      },
-      {
-        path: "modal",
-        name: "top-menu-modal",
-        component: Modal,
-      },
-      {
-        path: "slide-over",
-        name: "top-menu-slide-over",
-        component: SlideOver,
-      },
-      {
-        path: "notification",
-        name: "top-menu-notification",
-        component: Notification,
-      },
-      {
-        path: "tab",
-        name: "top-menu-tab",
-        component: Tab,
-      },
-      {
-        path: "accordion",
-        name: "top-menu-accordion",
-        component: Accordion,
-      },
-      {
-        path: "button",
-        name: "top-menu-button",
-        component: Button,
-      },
-      {
-        path: "alert",
-        name: "top-menu-alert",
-        component: Alert,
-      },
-      {
-        path: "progress-bar",
-        name: "top-menu-progress-bar",
-        component: ProgressBar,
-      },
-      {
-        path: "tooltip",
-        name: "top-menu-tooltip",
-        component: Tooltip,
-      },
-      {
-        path: "dropdown",
-        name: "top-menu-dropdown",
-        component: Dropdown,
-      },
-      {
-        path: "typography",
-        name: "top-menu-typography",
-        component: Typography,
-      },
-      {
-        path: "icon",
-        name: "top-menu-icon",
-        component: Icon,
-      },
-      {
-        path: "loading-icon",
-        name: "top-menu-loading-icon",
-        component: LoadingIcon,
-      },
-      {
-        path: "regular-form",
-        name: "top-menu-regular-form",
-        component: RegularForm,
-      },
-      {
-        path: "datepicker",
-        name: "top-menu-datepicker",
-        component: Datepicker,
-      },
-      {
-        path: "tom-select",
-        name: "top-menu-tom-select",
-        component: TomSelect,
-      },
-      {
-        path: "file-upload",
-        name: "top-menu-file-upload",
-        component: FileUpload,
-      },
-      {
-        path: "wysiwyg-editor",
-        name: "top-menu-wysiwyg-editor",
-        component: WysiwygEditor,
-      },
-      {
-        path: "validation",
-        name: "top-menu-validation",
-        component: Validation,
-      },
-      {
-        path: "chart",
-        name: "top-menu-chart",
-        component: Chart,
-      },
-      {
-        path: "slider",
-        name: "top-menu-slider",
-        component: Slider,
-      },
-      {
-        path: "image-zoom",
-        name: "top-menu-image-zoom",
-        component: ImageZoom,
-      },
-    ],
-  },
+  // {
+  //   path: "/simple-menu",
+  //   component: SimpleMenu,
+  //   children: [
+  //     {
+  //       path: "dashboard-overview-1",
+  //       name: "simple-menu-dashboard-overview-1",
+  //       component: DashboardOverview1,
+  //     },
+  //     {
+  //       path: "dashboard-overview-2",
+  //       name: "simple-menu-dashboard-overview-2",
+  //       component: DashboardOverview2,
+  //     },
+  //     {
+  //       path: "dashboard-overview-3",
+  //       name: "simple-menu-dashboard-overview-3",
+  //       component: DashboardOverview3,
+  //     },
+  //     {
+  //       path: "dashboard-overview-4",
+  //       name: "simple-menu-dashboard-overview-4",
+  //       component: DashboardOverview4,
+  //     },
+  //     {
+  //       path: "categories",
+  //       name: "simple-menu-categories",
+  //       component: Categories,
+  //     },
+  //     {
+  //       path: "add-product",
+  //       name: "simple-menu-add-product",
+  //       component: AddProduct,
+  //     },
+  //     {
+  //       path: "product-list",
+  //       name: "simple-menu-product-list",
+  //       component: ProductList,
+  //     },
+  //     {
+  //       path: "product-grid",
+  //       name: "simple-menu-product-grid",
+  //       component: ProductGrid,
+  //     },
+  //     {
+  //       path: "transaction-list",
+  //       name: "simple-menu-transaction-list",
+  //       component: TransactionList,
+  //     },
+  //     {
+  //       path: "transaction-detail",
+  //       name: "simple-menu-transaction-detail",
+  //       component: TransactionDetail,
+  //     },
+  //     {
+  //       path: "seller-list",
+  //       name: "simple-menu-seller-list",
+  //       component: SellerList,
+  //     },
+  //     {
+  //       path: "seller-detail",
+  //       name: "simple-menu-seller-detail",
+  //       component: SellerDetail,
+  //     },
+  //     {
+  //       path: "reviews",
+  //       name: "simple-menu-reviews",
+  //       component: Reviews,
+  //     },
+  //     {
+  //       path: "inbox",
+  //       name: "simple-menu-inbox",
+  //       component: Inbox,
+  //     },
+  //     {
+  //       path: "file-manager",
+  //       name: "simple-menu-file-manager",
+  //       component: FileManager,
+  //     },
+  //     {
+  //       path: "point-of-sale",
+  //       name: "simple-menu-point-of-sale",
+  //       component: PointOfSale,
+  //     },
+  //     {
+  //       path: "chat",
+  //       name: "simple-menu-chat",
+  //       component: Chat,
+  //     },
+  //     {
+  //       path: "post",
+  //       name: "simple-menu-post",
+  //       component: Post,
+  //     },
+  //     {
+  //       path: "calendar",
+  //       name: "simple-menu-calendar",
+  //       component: Calendar,
+  //     },
+  //     {
+  //       path: "crud-data-list",
+  //       name: "simple-menu-crud-data-list",
+  //       component: CrudDataList,
+  //     },
+  //     {
+  //       path: "crud-form",
+  //       name: "simple-menu-crud-form",
+  //       component: CrudForm,
+  //     },
+  //     {
+  //       path: "users-layout-1",
+  //       name: "simple-menu-users-layout-1",
+  //       component: UsersLayout1,
+  //     },
+  //     {
+  //       path: "users-layout-2",
+  //       name: "simple-menu-users-layout-2",
+  //       component: UsersLayout2,
+  //     },
+  //     {
+  //       path: "users-layout-3",
+  //       name: "simple-menu-users-layout-3",
+  //       component: UsersLayout3,
+  //     },
+  //     {
+  //       path: "profile-overview-1",
+  //       name: "simple-menu-profile-overview-1",
+  //       component: ProfileOverview1,
+  //     },
+  //     {
+  //       path: "profile-overview-2",
+  //       name: "simple-menu-profile-overview-2",
+  //       component: ProfileOverview2,
+  //     },
+  //     {
+  //       path: "profile-overview-3",
+  //       name: "simple-menu-profile-overview-3",
+  //       component: ProfileOverview3,
+  //     },
+  //     {
+  //       path: "wizard-layout-1",
+  //       name: "simple-menu-wizard-layout-1",
+  //       component: WizardLayout1,
+  //     },
+  //     {
+  //       path: "wizard-layout-2",
+  //       name: "simple-menu-wizard-layout-2",
+  //       component: WizardLayout2,
+  //     },
+  //     {
+  //       path: "wizard-layout-3",
+  //       name: "simple-menu-wizard-layout-3",
+  //       component: WizardLayout3,
+  //     },
+  //     {
+  //       path: "blog-layout-1",
+  //       name: "simple-menu-blog-layout-1",
+  //       component: BlogLayout1,
+  //     },
+  //     {
+  //       path: "blog-layout-2",
+  //       name: "simple-menu-blog-layout-2",
+  //       component: BlogLayout2,
+  //     },
+  //     {
+  //       path: "blog-layout-3",
+  //       name: "simple-menu-blog-layout-3",
+  //       component: BlogLayout3,
+  //     },
+  //     {
+  //       path: "pricing-layout-1",
+  //       name: "simple-menu-pricing-layout-1",
+  //       component: PricingLayout1,
+  //     },
+  //     {
+  //       path: "pricing-layout-2",
+  //       name: "simple-menu-pricing-layout-2",
+  //       component: PricingLayout2,
+  //     },
+  //     {
+  //       path: "invoice-layout-1",
+  //       name: "simple-menu-invoice-layout-1",
+  //       component: InvoiceLayout1,
+  //     },
+  //     {
+  //       path: "invoice-layout-2",
+  //       name: "simple-menu-invoice-layout-2",
+  //       component: InvoiceLayout2,
+  //     },
+  //     {
+  //       path: "faq-layout-1",
+  //       name: "simple-menu-faq-layout-1",
+  //       component: FaqLayout1,
+  //     },
+  //     {
+  //       path: "faq-layout-2",
+  //       name: "simple-menu-faq-layout-2",
+  //       component: FaqLayout2,
+  //     },
+  //     {
+  //       path: "faq-layout-3",
+  //       name: "simple-menu-faq-layout-3",
+  //       component: FaqLayout3,
+  //     },
+  //     {
+  //       path: "update-profile",
+  //       name: "simple-menu-update-profile",
+  //       component: UpdateProfile,
+  //     },
+  //     {
+  //       path: "change-password",
+  //       name: "simple-menu-change-password",
+  //       component: ChangePassword,
+  //     },
+  //     {
+  //       path: "regular-table",
+  //       name: "simple-menu-regular-table",
+  //       component: RegularTable,
+  //     },
+  //     {
+  //       path: "tabulator",
+  //       name: "simple-menu-tabulator",
+  //       component: Tabulator,
+  //     },
+  //     {
+  //       path: "modal",
+  //       name: "simple-menu-modal",
+  //       component: Modal,
+  //     },
+  //     {
+  //       path: "slide-over",
+  //       name: "simple-menu-slide-over",
+  //       component: SlideOver,
+  //     },
+  //     {
+  //       path: "notification",
+  //       name: "simple-menu-notification",
+  //       component: Notification,
+  //     },
+  //     {
+  //       path: "tab",
+  //       name: "simple-menu-tab",
+  //       component: Tab,
+  //     },
+  //     {
+  //       path: "accordion",
+  //       name: "simple-menu-accordion",
+  //       component: Accordion,
+  //     },
+  //     {
+  //       path: "button",
+  //       name: "simple-menu-button",
+  //       component: Button,
+  //     },
+  //     {
+  //       path: "alert",
+  //       name: "simple-menu-alert",
+  //       component: Alert,
+  //     },
+  //     {
+  //       path: "progress-bar",
+  //       name: "simple-menu-progress-bar",
+  //       component: ProgressBar,
+  //     },
+  //     {
+  //       path: "tooltip",
+  //       name: "simple-menu-tooltip",
+  //       component: Tooltip,
+  //     },
+  //     {
+  //       path: "dropdown",
+  //       name: "simple-menu-dropdown",
+  //       component: Dropdown,
+  //     },
+  //     {
+  //       path: "typography",
+  //       name: "simple-menu-typography",
+  //       component: Typography,
+  //     },
+  //     {
+  //       path: "icon",
+  //       name: "simple-menu-icon",
+  //       component: Icon,
+  //     },
+  //     {
+  //       path: "loading-icon",
+  //       name: "simple-menu-loading-icon",
+  //       component: LoadingIcon,
+  //     },
+  //     {
+  //       path: "regular-form",
+  //       name: "simple-menu-regular-form",
+  //       component: RegularForm,
+  //     },
+  //     {
+  //       path: "datepicker",
+  //       name: "simple-menu-datepicker",
+  //       component: Datepicker,
+  //     },
+  //     {
+  //       path: "tom-select",
+  //       name: "simple-menu-tom-select",
+  //       component: TomSelect,
+  //     },
+  //     {
+  //       path: "file-upload",
+  //       name: "simple-menu-file-upload",
+  //       component: FileUpload,
+  //     },
+  //     {
+  //       path: "wysiwyg-editor",
+  //       name: "simple-menu-wysiwyg-editor",
+  //       component: WysiwygEditor,
+  //     },
+  //     {
+  //       path: "validation",
+  //       name: "simple-menu-validation",
+  //       component: Validation,
+  //     },
+  //     {
+  //       path: "chart",
+  //       name: "simple-menu-chart",
+  //       component: Chart,
+  //     },
+  //     {
+  //       path: "slider",
+  //       name: "simple-menu-slider",
+  //       component: Slider,
+  //     },
+  //     {
+  //       path: "image-zoom",
+  //       name: "simple-menu-image-zoom",
+  //       component: ImageZoom,
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: "/top-menu",
+  //   component: TopMenu,
+  //   children: [
+  //     {
+  //       path: "dashboard-overview-1",
+  //       name: "top-menu-dashboard-overview-1",
+  //       component: DashboardOverview1,
+  //     },
+  //     {
+  //       path: "dashboard-overview-2",
+  //       name: "top-menu-dashboard-overview-2",
+  //       component: DashboardOverview2,
+  //     },
+  //     {
+  //       path: "dashboard-overview-3",
+  //       name: "top-menu-dashboard-overview-3",
+  //       component: DashboardOverview3,
+  //     },
+  //     {
+  //       path: "dashboard-overview-4",
+  //       name: "top-menu-dashboard-overview-4",
+  //       component: DashboardOverview4,
+  //     },
+  //     {
+  //       path: "categories",
+  //       name: "top-menu-categories",
+  //       component: Categories,
+  //     },
+  //     {
+  //       path: "add-product",
+  //       name: "top-menu-add-product",
+  //       component: AddProduct,
+  //     },
+  //     {
+  //       path: "product-list",
+  //       name: "top-menu-product-list",
+  //       component: ProductList,
+  //     },
+  //     {
+  //       path: "product-grid",
+  //       name: "top-menu-product-grid",
+  //       component: ProductGrid,
+  //     },
+  //     {
+  //       path: "transaction-list",
+  //       name: "top-menu-transaction-list",
+  //       component: TransactionList,
+  //     },
+  //     {
+  //       path: "transaction-detail",
+  //       name: "top-menu-transaction-detail",
+  //       component: TransactionDetail,
+  //     },
+  //     {
+  //       path: "seller-list",
+  //       name: "top-menu-seller-list",
+  //       component: SellerList,
+  //     },
+  //     {
+  //       path: "seller-detail",
+  //       name: "top-menu-seller-detail",
+  //       component: SellerDetail,
+  //     },
+  //     {
+  //       path: "reviews",
+  //       name: "top-menu-reviews",
+  //       component: Reviews,
+  //     },
+  //     {
+  //       path: "inbox",
+  //       name: "top-menu-inbox",
+  //       component: Inbox,
+  //     },
+  //     {
+  //       path: "file-manager",
+  //       name: "top-menu-file-manager",
+  //       component: FileManager,
+  //     },
+  //     {
+  //       path: "point-of-sale",
+  //       name: "top-menu-point-of-sale",
+  //       component: PointOfSale,
+  //     },
+  //     {
+  //       path: "chat",
+  //       name: "top-menu-chat",
+  //       component: Chat,
+  //     },
+  //     {
+  //       path: "post",
+  //       name: "top-menu-post",
+  //       component: Post,
+  //     },
+  //     {
+  //       path: "calendar",
+  //       name: "top-menu-calendar",
+  //       component: Calendar,
+  //     },
+  //     {
+  //       path: "crud-data-list",
+  //       name: "top-menu-crud-data-list",
+  //       component: CrudDataList,
+  //     },
+  //     {
+  //       path: "crud-form",
+  //       name: "top-menu-crud-form",
+  //       component: CrudForm,
+  //     },
+  //     {
+  //       path: "users-layout-1",
+  //       name: "top-menu-users-layout-1",
+  //       component: UsersLayout1,
+  //     },
+  //     {
+  //       path: "users-layout-2",
+  //       name: "top-menu-users-layout-2",
+  //       component: UsersLayout2,
+  //     },
+  //     {
+  //       path: "users-layout-3",
+  //       name: "top-menu-users-layout-3",
+  //       component: UsersLayout3,
+  //     },
+  //     {
+  //       path: "profile-overview-1",
+  //       name: "top-menu-profile-overview-1",
+  //       component: ProfileOverview1,
+  //     },
+  //     {
+  //       path: "profile-overview-2",
+  //       name: "top-menu-profile-overview-2",
+  //       component: ProfileOverview2,
+  //     },
+  //     {
+  //       path: "profile-overview-3",
+  //       name: "top-menu-profile-overview-3",
+  //       component: ProfileOverview3,
+  //     },
+  //     {
+  //       path: "wizard-layout-1",
+  //       name: "top-menu-wizard-layout-1",
+  //       component: WizardLayout1,
+  //     },
+  //     {
+  //       path: "wizard-layout-2",
+  //       name: "top-menu-wizard-layout-2",
+  //       component: WizardLayout2,
+  //     },
+  //     {
+  //       path: "wizard-layout-3",
+  //       name: "top-menu-wizard-layout-3",
+  //       component: WizardLayout3,
+  //     },
+  //     {
+  //       path: "blog-layout-1",
+  //       name: "top-menu-blog-layout-1",
+  //       component: BlogLayout1,
+  //     },
+  //     {
+  //       path: "blog-layout-2",
+  //       name: "top-menu-blog-layout-2",
+  //       component: BlogLayout2,
+  //     },
+  //     {
+  //       path: "blog-layout-3",
+  //       name: "top-menu-blog-layout-3",
+  //       component: BlogLayout3,
+  //     },
+  //     {
+  //       path: "pricing-layout-1",
+  //       name: "top-menu-pricing-layout-1",
+  //       component: PricingLayout1,
+  //     },
+  //     {
+  //       path: "pricing-layout-2",
+  //       name: "top-menu-pricing-layout-2",
+  //       component: PricingLayout2,
+  //     },
+  //     {
+  //       path: "invoice-layout-1",
+  //       name: "top-menu-invoice-layout-1",
+  //       component: InvoiceLayout1,
+  //     },
+  //     {
+  //       path: "invoice-layout-2",
+  //       name: "top-menu-invoice-layout-2",
+  //       component: InvoiceLayout2,
+  //     },
+  //     {
+  //       path: "faq-layout-1",
+  //       name: "top-menu-faq-layout-1",
+  //       component: FaqLayout1,
+  //     },
+  //     {
+  //       path: "faq-layout-2",
+  //       name: "top-menu-faq-layout-2",
+  //       component: FaqLayout2,
+  //     },
+  //     {
+  //       path: "faq-layout-3",
+  //       name: "top-menu-faq-layout-3",
+  //       component: FaqLayout3,
+  //     },
+  //     {
+  //       path: "update-profile",
+  //       name: "top-menu-update-profile",
+  //       component: UpdateProfile,
+  //     },
+  //     {
+  //       path: "change-password",
+  //       name: "top-menu-change-password",
+  //       component: ChangePassword,
+  //     },
+  //     {
+  //       path: "regular-table",
+  //       name: "top-menu-regular-table",
+  //       component: RegularTable,
+  //     },
+  //     {
+  //       path: "tabulator",
+  //       name: "top-menu-tabulator",
+  //       component: Tabulator,
+  //     },
+  //     {
+  //       path: "modal",
+  //       name: "top-menu-modal",
+  //       component: Modal,
+  //     },
+  //     {
+  //       path: "slide-over",
+  //       name: "top-menu-slide-over",
+  //       component: SlideOver,
+  //     },
+  //     {
+  //       path: "notification",
+  //       name: "top-menu-notification",
+  //       component: Notification,
+  //     },
+  //     {
+  //       path: "tab",
+  //       name: "top-menu-tab",
+  //       component: Tab,
+  //     },
+  //     {
+  //       path: "accordion",
+  //       name: "top-menu-accordion",
+  //       component: Accordion,
+  //     },
+  //     {
+  //       path: "button",
+  //       name: "top-menu-button",
+  //       component: Button,
+  //     },
+  //     {
+  //       path: "alert",
+  //       name: "top-menu-alert",
+  //       component: Alert,
+  //     },
+  //     {
+  //       path: "progress-bar",
+  //       name: "top-menu-progress-bar",
+  //       component: ProgressBar,
+  //     },
+  //     {
+  //       path: "tooltip",
+  //       name: "top-menu-tooltip",
+  //       component: Tooltip,
+  //     },
+  //     {
+  //       path: "dropdown",
+  //       name: "top-menu-dropdown",
+  //       component: Dropdown,
+  //     },
+  //     {
+  //       path: "typography",
+  //       name: "top-menu-typography",
+  //       component: Typography,
+  //     },
+  //     {
+  //       path: "icon",
+  //       name: "top-menu-icon",
+  //       component: Icon,
+  //     },
+  //     {
+  //       path: "loading-icon",
+  //       name: "top-menu-loading-icon",
+  //       component: LoadingIcon,
+  //     },
+  //     {
+  //       path: "regular-form",
+  //       name: "top-menu-regular-form",
+  //       component: RegularForm,
+  //     },
+  //     {
+  //       path: "datepicker",
+  //       name: "top-menu-datepicker",
+  //       component: Datepicker,
+  //     },
+  //     {
+  //       path: "tom-select",
+  //       name: "top-menu-tom-select",
+  //       component: TomSelect,
+  //     },
+  //     {
+  //       path: "file-upload",
+  //       name: "top-menu-file-upload",
+  //       component: FileUpload,
+  //     },
+  //     {
+  //       path: "wysiwyg-editor",
+  //       name: "top-menu-wysiwyg-editor",
+  //       component: WysiwygEditor,
+  //     },
+  //     {
+  //       path: "validation",
+  //       name: "top-menu-validation",
+  //       component: Validation,
+  //     },
+  //     {
+  //       path: "chart",
+  //       name: "top-menu-chart",
+  //       component: Chart,
+  //     },
+  //     {
+  //       path: "slider",
+  //       name: "top-menu-slider",
+  //       component: Slider,
+  //     },
+  //     {
+  //       path: "image-zoom",
+  //       name: "top-menu-image-zoom",
+  //       component: ImageZoom,
+  //     },
+  //   ],
+  // },
   {
     path: "/login",
     name: "login",

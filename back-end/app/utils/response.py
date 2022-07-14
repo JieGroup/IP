@@ -17,7 +17,7 @@ from app._typing import JSONType
 def handle_response(
     func: Callable
 ) -> Callable:
-    print('daohandlele')
+    # print('daohandlele')
 
     @wraps(func)
     def wrapper(

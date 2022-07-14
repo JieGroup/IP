@@ -7,16 +7,16 @@
     <!-- <br /> -->
     <div>
       <!-- BEGIN: Validation Form -->
-      <form class="validate-form">
+      <!-- <form class="validate-form"> -->
 
         <div class="input-form">
         <label
             for="validation-form-1"
             class="form-label w-full flex flex-col sm:flex-row"
         >
-            Topic Name
+            Topic name
             <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-            >Required, at least 1 characters</span
+            >Required, at least 1 character</span
             >
         </label>
         <input
@@ -28,7 +28,6 @@
             :class="{ 'border-danger': validate.topic_name.$error }"
             placeholder="Type your topic name. E.g. age"
         />
-
         <template v-if="validate.topic_name.$error">
             <div
             v-for="(error, index) in validate.topic_name.$errors"
@@ -45,7 +44,7 @@
             for="validation-form-2"
             class="form-label w-full flex flex-col sm:flex-row"
         >
-            Topic Question
+            Topic question
             <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
             >Required, at least 5 characters</span
             >
@@ -71,7 +70,7 @@
         </div>
 
         <div class="mt-3">
-        <label>Answer Type</label>
+        <label>Answer type</label>
         <div class="mt-2">
             <TomSelect v-model="validate.answer_type.$model" :options="{
                         placeholder: 'Select answer type',
@@ -85,93 +84,25 @@
         </div>
 
         <div v-if="validate.answer_type.$model === 'categorical'" class="input-form mt-3">
-        <label
-            for="validation-form-3"
-            class="form-label w-full flex flex-col sm:flex-row"
-        >
-            Categorical Answer Options
-            <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-            >Required, at least 1 option</span
-            >
-        </label>
-        <input
-            id="validation-form-3"
-            v-model.trim="validate.categorical_answer_options.$model"
-            type='text'
-            name="categorical_answer_options"
-            class="form-control"
-            :class="{ 'border-danger': validate.categorical_answer_options.$error }"
-            placeholder="Type your options. E.g. Student, Nurse, etc."
-        />
-        <template v-if="validate.categorical_answer_options.$error">
-            <div
-            v-for="(error, index) in validate.categorical_answer_options.$errors"
-            :key="index"
-            class="text-danger mt-2"
-            >
-            {{ error.$message }}
-            </div>
-        </template>
+        <CategoricalAnsOpt v-for="(item, index) in categorical_answer_options"
+                          :key="item.unique_id" 
+                          :categorical_answer_option_index="index"
+                          :categorical_answer_option_data="item"
+                          @parent_delete_categorical_answer_option="delete_categorical_answer_option"/>
+        <br />
+        <div class="input-form">
+          <!-- <br> -->
+          <input class="form-check-input" type="checkbox" id="disabledFieldsetCheck" disabled>
+          <label class="form-check-label" for="disabledFieldsetCheck" @click="add_categorical_answer_option">
+            <!-- <u class="block mt-1">add new option</u> -->
+            <u>add new option</u>
+            <!-- <u class="block mt-1">This line of text will render as underlined</u> -->
+          </label>
+        </div>
         </div>
 
         <div v-if="validate.answer_type.$model === 'continuous'" class="input-form mt-3">
-        <label
-            for="validation-form-31"
-            class="form-label w-full flex flex-col sm:flex-row"
-        >
-            Continuous Answer Minimum
-            <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-            >Required, at least 1 number</span
-            >
-        </label>
-        <input
-            id="validation-form-31"
-            v-model.trim="validate.continuous_answer_min.$model"
-            type='text'
-            name="continuous_answer_min"
-            class="form-control"
-            :class="{ 'border-danger': validate.continuous_answer_min.$error }"
-            placeholder="Type your minimum range. E.g. 0"
-        />
-        <template v-if="validate.continuous_answer_min.$error">
-            <div
-            v-for="(error, index) in validate.continuous_answer_min.$errors"
-            :key="index"
-            class="text-danger mt-2"
-            >
-            {{ error.$message }}
-            </div>
-        </template>
-        </div>
-
-        <div v-if="validate.answer_type.$model === 'continuous'" class="input-form mt-3">
-        <label
-            for="validation-form-32"
-            class="form-label w-full flex flex-col sm:flex-row"
-        >
-            Continuous Answer Maximum
-            <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-            >Required, at least 1 number</span
-            >
-        </label>
-        <input
-            id="validation-form-32"
-            v-model.trim="validate.continuous_answer_max.$model"
-            type='text'
-            name="continuous_answer_max"
-            class="form-control"
-            :class="{ 'border-danger': validate.continuous_answer_max.$error }"
-            placeholder="Type your maximum range. E.g. 10000"
-        />
-        <template v-if="validate.continuous_answer_max.$error">
-            <div
-            v-for="(error, index) in validate.continuous_answer_max.$errors"
-            :key="index"
-            class="text-danger mt-2"
-            >
-            {{ error.$message }}
-            </div>
-        </template>
+          <ContinuousAnsOpt :continuous_answer_option_data="continuous_answer_options"/>
         </div>
 
         <div class="input-form mt-3">
@@ -181,7 +112,7 @@
         >
             Unit
             <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-            >Required, at least 1 characters</span
+            >Required, at least 1 character</span
             >
         </label>
         <input
@@ -214,7 +145,7 @@
         <button type='button' @click="delete_dynamic_form" class="btn btn-danger mt-5">
           <TrashIcon class="w-5 h-5" />
         </button>
-      </form>
+      <!-- </form> -->
       <br />
       <!-- END: Validation Form -->
     </div>
@@ -236,6 +167,8 @@ import {
 import { useVuelidate } from "@vuelidate/core";
 import Toastify from "toastify-js";
 import dom from "@left4code/tw-starter/dist/js/dom";
+import CategoricalAnsOpt from "@/components/categorical-ans-opt/Main.vue";
+import ContinuousAnsOpt from "@/components/continuous-ans-opt/Main.vue";
 
 // receive variable from parent
 const props = defineProps({
@@ -249,6 +182,19 @@ const props = defineProps({
 });
 
 // const { dynamic_form_index, dynamic_form_data } = toRefs(props);
+let categorical_answer_options = reactive([
+  {
+    unique_id: 0,
+  },
+  {
+    unique_id: 1,
+  },
+  {
+    unique_id: 2,  
+  }
+])
+let unique_id = categorical_answer_options.length
+let continuous_answer_options = reactive([{}])
 
 const emits = defineEmits([
   'parent_add_dynamic_form', 
@@ -265,13 +211,25 @@ const delete_dynamic_form = () => {
   emits('parent_delete_dynamic_form', props.dynamic_form_index)
 }
 
-const form_data = reactive({
+const add_categorical_answer_option = () => {
+  categorical_answer_options.push({unique_id: unique_id})
+  unique_id += 1
+}
+
+const delete_categorical_answer_option = (categorical_answer_options_index) => {
+  console.log('zizujian', categorical_answer_options_index)
+  if (categorical_answer_options_index !== 0){
+    // array.splice(index, howmany)
+    categorical_answer_options.splice(categorical_answer_options_index, 1)
+  }
+}
+
+const formData = reactive({
   topic_name: "",
   topic_question: "",
   answer_type: "categorical",
-  categorical_answer_options: "",
-  continuous_answer_min: null,
-  continuous_answer_max: null,
+  categorical_answer_options: [{}],
+  continuous_answer_options: {},
   unit: "",
 });
 
@@ -288,13 +246,10 @@ const rules = {
     required
   },
   categorical_answer_options: {
-    required: requiredIf(() => form_data.answer_type === 'categorical')
+    required: requiredIf(() => formData.answer_type === 'categorical')
   },
-  continuous_answer_min: {
-    required: requiredIf(() => form_data.answer_type === 'continuous')
-  },
-  continuous_answer_max: {
-    required: requiredIf(() => form_data.answer_type === 'continuous')
+  continuous_answer_options: {
+    required: requiredIf(() => formData.answer_type === 'continuous')
   },
   unit: {
     required,
@@ -302,7 +257,7 @@ const rules = {
   },
 };
 
-const validate = useVuelidate(rules, toRefs(form_data));
+const validate = reactive(useVuelidate(rules, toRefs(formData)));
 props.dynamic_form_data.validate = validate;
 // dynamic_form_data.value = validate
 console.log('validate', validate)

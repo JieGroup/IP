@@ -30,6 +30,8 @@ PyJWT = "==2.3.0"
 Werkzeug = "==2.1.2"
 pytest = "*"
 typeguard = "*"
+numpy = "*"
+pandas = "*"
 
 [dev-packages]
 

@@ -19,7 +19,7 @@
             class="w-6"
             src="@/assets/images/logo.svg"
           />
-          <span class="text-white text-lg ml-3"> Rubick </span>
+          <span class="text-white text-lg ml-3"> IP </span>
         </router-link>
         <!-- END: Logo -->
         <!-- BEGIN: Breadcrumb -->

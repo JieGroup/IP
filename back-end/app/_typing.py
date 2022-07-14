@@ -56,9 +56,10 @@ Survey_Prev_Answers = Union[dict, dict[str, dict[str, Any]]]
 # The answer uploaded by the voter from the current round
 Survey_New_Answers = dict[str, Union[str, dict[str, Any]]]
 
-
-
-
+Role = Literal[
+    'user',
+    'voter'
+]
 
 MTurkID = str
 

@@ -34,25 +34,27 @@ def verify_password(
     '''
     user = pyMongo.db.User.find_one({'username': username})
     if user is None:
-        return False
-    g.current_user = user
-
-    return is_password_valid(
+        raise ValueError('user cannot found')
+    if not is_password_valid(
         hashed_password=g.current_user['hashed_password'],
         password=password
-    )
+    ):
+        raise ValueError('user cannot found')
 
-@basic_auth.error_handler
-def basic_auth_error():
-    '''
-    Return an error response in case of authentication failure
+    g.current_user = user
+    return True
 
-    Parameters
-    ----------
-    None
+# @basic_auth.error_handler
+# def basic_auth_error():
+#     '''
+#     Return an error response in case of authentication failure
 
-    Returns
-    -------
-    TODO
-    '''
-    return error_response(401)
+#     Parameters
+#     ----------
+#     None
+
+#     Returns
+#     -------
+#     TODO
+#     '''
+#     return error_response(401)

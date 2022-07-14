@@ -22,6 +22,7 @@
             You may have mistyped the address or the page may have moved.
           </div>
           <button
+            @click='to_homepage'
             class="intro-x btn py-3 px-4 text-white border-white dark:border-darkmode-400 dark:text-slate-200 mt-10"
           >
             Back to Home
@@ -35,8 +36,15 @@
 
 <script setup>
 import { onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import DarkModeSwitcher from "@/components/dark-mode-switcher/Main.vue";
 import dom from "@left4code/tw-starter/dist/js/dom";
+import { linkTo } from './index'
+
+const router = useRouter();
+const to_homepage = () => {
+  linkTo('/', router)
+}
 
 onMounted(() => {
   dom("body").removeClass("main").removeClass("login").addClass("error-page");

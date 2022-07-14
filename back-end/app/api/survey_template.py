@@ -22,15 +22,6 @@ from app._typing import (
 from typing import Any
 
 
-@api.route('/ceshierror', methods=['GET', 'POST'])
-def ceshierror():
-
-    a = {}
-    print('zheli')
-    b = a['5']
-    return jsonify('success')
-
-
 @api.route('/create_survey_template', methods=['POST'])
 @token_auth.login_required
 # @handle_response
@@ -59,7 +50,6 @@ def create_survey_template() -> None:
     -------
     str
     '''
-
     data = request.get_json()
     if not data:
         raise ValueError('You must post JSON data.')

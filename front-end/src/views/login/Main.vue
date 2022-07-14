@@ -5,14 +5,37 @@
       <div class="block xl:grid grid-cols-2 gap-4">
         <!-- BEGIN: Login Info -->
         <div class="hidden xl:flex flex-col min-h-screen">
-          <a href="" class="-intro-x flex items-center pt-5">
+
+
+          <!-- <router-link
+            :to="{ name: 'side-menu-dashboard-overview-4' }"
+            tag="a"
+            class="intro-x flex items-center pl-5 pt-4"
+          >
             <img
               alt="Midone Tailwind HTML Admin Template"
               class="w-6"
               src="@/assets/images/logo.svg"
             />
-            <span class="text-white text-lg ml-3"> Rubick </span>
-          </a>
+            <span class="hidden xl:block text-white text-lg ml-3"> Interval Privacy </span>
+          </router-link> -->
+
+
+
+          <router-link
+            :to="{ name: 'side-menu-dashboard-overview-4' }"
+            tag="a"
+            class="intro-x flex items-center pl-5 pt-4"
+          >
+            <img
+              alt="Midone Tailwind HTML Admin Template"
+              class="w-6"
+              src="@/assets/images/logo.svg"
+            />
+            <span class="text-white text-lg ml-3"> Interval Privacy </span>
+          </router-link>
+
+
           <div class="my-auto">
             <img
               alt="Midone Tailwind HTML Admin Template"
@@ -49,15 +72,42 @@
             </div>
             <div class="intro-x mt-8">
               <input
+                id="login-form-1"
+                v-model.trim="validate.username.$model"
                 type="text"
+                name="username"
                 class="intro-x login__input form-control py-3 px-4 block"
-                placeholder="Email"
+                :class="{ 'border-danger': validate.username.$error }"
+                :placeholder="validate.username.$model"
               />
+              <template v-if="validate.username.$error">
+                <div
+                v-for="(error, index) in validate.username.$errors"
+                :key="index"
+                class="text-danger mt-2"
+                >
+                {{ error.$message }}
+                </div>
+              </template>
+
               <input
-                type="password"
+                id="login-form-2"
+                v-model.trim="validate.password.$model"
+                type="text"
+                name="password"
                 class="intro-x login__input form-control py-3 px-4 block mt-4"
-                placeholder="Password"
+                :class="{ 'border-danger': validate.password.$error }"
+                :placeholder="validate.password.$model"
               />
+              <template v-if="validate.password.$error">
+                <div
+                v-for="(error, index) in validate.password.$errors"
+                :key="index"
+                class="text-danger mt-2"
+                >
+                {{ error.$message }}
+                </div>
+              </template>
             </div>
             <div
               class="intro-x flex text-slate-600 dark:text-slate-500 text-xs sm:text-sm mt-4"
@@ -76,6 +126,7 @@
             </div>
             <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
               <button
+                @click="login"
                 class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top"
               >
                 Login
@@ -101,15 +152,103 @@
           </div>
         </div>
         <!-- END: Login Form -->
+        <!-- BEGIN: Request Error Content -->
+          <div
+            id="request-error-content"
+            class="toastify-content hidden flex"
+          >
+            <CheckCircleIcon class="text-danger" />
+            <div class="ml-4 mr-4">
+              <div class="font-medium">Network request error!</div>
+              <div class="text-slate-500 mt-1" >
+                Please check your input!
+              </div>
+            </div>
+          </div>
+        <!-- END: Request Error Content -->
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { reactive, toRefs } from "vue";
+import {
+  required,
+  minLength,
+  maxLength,
+  email,
+  url,
+  integer,
+  requiredIf
+} from "@vuelidate/validators";
+import { useVuelidate } from "@vuelidate/core";
+import { computed, onMounted } from "vue";
 import DarkModeSwitcher from "@/components/dark-mode-switcher/Main.vue";
 import dom from "@left4code/tw-starter/dist/js/dom";
+import { useInfoStore } from "@/stores/stored-info"
+import { useAuthenticationStore } from "@/stores/authentication"
+import { process_axios_error, get_auth_url } from "@/utils/axios_utils"
+import { axios } from "@/utils/axios";
+// import { axios } from "@/utils/axios";
+
+const infoStore = useInfoStore()
+const username = computed(() => infoStore.username);
+const password = computed(() => infoStore.password);
+
+const authenticationStore = useAuthenticationStore()
+
+const formData = reactive({
+  username: username,
+  password: password,
+});
+
+const rules = {
+  username: {
+    required,
+    minLength: minLength(1),
+  },
+  password: {
+    required,
+    minLength: minLength(1),
+  },
+};
+
+const validate = reactive(useVuelidate(rules, toRefs(formData)));
+
+const store_info = (username, password) => {
+  infoStore.setUsername(username)
+  infoStore.setPassword(password)
+}
+
+const login = async () => {
+  login_data = {
+    'username': formData.username,
+    'password': formData.password
+  }
+  try{
+    let username = formData.username
+    let password = formData.password
+    let response = await axios.post(get_auth_url('login'), login_data)
+    store_info(username, password)
+    authenticationStore.loginAction(response.data.userToken)
+  } catch (err) {
+    let processed_err = process_axios_error(err)
+    console.log(`login processed err: ${processed_err}`)
+
+    Toastify({
+      node: dom("#request-error-content")
+        .clone()
+        .removeClass("hidden")[0],
+      duration: 10000,
+      newWindow: true,
+      close: true,
+      gravity: "top",
+      position: "right",
+      stopOnFocus: true,
+    }).showToast();
+  }
+}
 
 onMounted(() => {
   dom("body").removeClass("main").removeClass("error-page").addClass("login");

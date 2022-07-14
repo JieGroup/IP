@@ -12,7 +12,6 @@ export const useColorSchemeStore = defineStore("colorScheme", {
       if (localStorage.getItem("colorScheme") === null) {
         localStorage.setItem("colorScheme", "default");
       }
-
       return state.colorSchemeValue;
     },
   },

@@ -13,10 +13,11 @@ from app.utils.api import (
 
 from typing import Union
 
+from app._typing import Role
+
 
 @typechecked
 class JwtManipulation:
-
     '''
     jwt is Json Web Token. This class is the helper class
     for jwt manipulation
@@ -32,14 +33,12 @@ class JwtManipulation:
     get_jwt
     verify_jwt
     '''
-
     @classmethod
     def is_jwt_needing_update(
         cls,
         current_time: float, 
         token_payload: dict,
     ) -> bool:
-
         '''
         Time difference is token_payload_expiration_time - current_time
         if time difference is greater than Constant.UPDATE_TOKEN_INTERVAL,
@@ -56,7 +55,6 @@ class JwtManipulation:
         -------
         dict[str, str]
         '''
-
         current_time = Time.get_current_utc_time()
         token_payload_expiration_time = token_payload.get('exp')
 
@@ -72,7 +70,6 @@ class JwtManipulation:
     def __change_token_to_str(
         cls, token: Union[str, bytes]
     ) -> str:
-
         '''
         jwt.encode has some compatible issue with python version. 
         The return value may be str or bytes type
@@ -86,20 +83,55 @@ class JwtManipulation:
         -------
         str
         '''
-
         if not isinstance(token, str):
             return token.decode("utf-8")
         
         return token
 
     @classmethod
+    def __form_userToken(
+        cls,
+        user_id: str,
+        username: str,
+        authority_level: str,
+        exp: int,
+        iat: int
+    ) -> dict[str, Union[int, str]]:
+
+        return {
+            'user_id': user_id,
+            'username': username,
+            'authority_level': authority_level,
+            'exp': exp,
+            'iat': iat
+        }
+
+    @classmethod
+    def __form_voterToken(
+        cls,
+        survey_template_id: str,
+        mturk_id: str,
+        authority_level: str,
+        exp: int,
+        iat: int
+    ) -> dict[str, Union[int, str]]:
+
+        return {
+            'survey_template_id': survey_template_id,
+            'mturk_id': mturk_id,
+            'authority_level': authority_level,
+            'exp': exp,
+            'iat': iat
+        }
+
+    @classmethod
     def update_jwt(
         cls, 
-        cur_user_info: dict, 
+        role: Role,
         token_payload: dict, 
+        cur_user_info: dict=None, 
         expires_in: int=Constant.TOKEN_EXPIRATION_PERIOD
     ) -> str:
-
         '''
         Update jwt when the expiration time is close to 
         current time (Currently set to 15 mins)
@@ -114,26 +146,30 @@ class JwtManipulation:
         -------
         dict[str, str]
         '''
-
-        current_time = Time.get_current_utc_time()
-        token_payload_expiration_time = token_payload.get('exp')
-
-        if not cls.__is_jwt_needing_update(
-            current_time=current_time,
-            token_payload_expiration_time=token_payload_expiration_time
-        ):
-            return None
-        
+        current_time = Time.get_current_utc_time()        
         new_expiration_time = Time.get_expiration_utc_time(time_period=expires_in)
+        
         # exp is token expiration time
         # iat is token create time
-        token_payload = {
-            'user_id': cur_user_info['user_id'],
-            'username': cur_user_info['name'] if 'name' in cur_user_info else cur_user_info['username'],
-            'authority_level': cur_user_info['authority_level'] if 'authority_level' in cur_user_info else 'user',
-            'exp': new_expiration_time,
-            'iat': current_time
-        }
+        token_payload = None
+        if role == 'user':
+            token_payload = cls.__form_userToken(
+                user_id=cur_user_info['user_id'],
+                username=cur_user_info['username'],
+                authority_level=cur_user_info['authority_level'] if 'authority_level' in cur_user_info else 'user',
+                exp=new_expiration_time,
+                iat=current_time
+            )
+        elif role == 'voter':
+            token_payload = cls.__form_voterToken(
+                survey_template_id=token_payload['survey_template_id'],
+                mturk_id=token_payload['mturk_id'],
+                authority_level='voter',
+                exp=new_expiration_time,
+                iat=current_time
+            )
+        else:
+            raise ValueError('role is not belonged to user or voter')
 
         token = jwt.encode(
             token_payload,
@@ -149,12 +185,12 @@ class JwtManipulation:
     @classmethod
     def get_jwt(
         cls, 
+        role: Role,
         cur_user_info: dict, 
         expires_in: int=Constant.TOKEN_EXPIRATION_PERIOD
     ) -> None:
-
         '''
-        get token
+        Get token
 
         Parameters
         ----------
@@ -166,7 +202,6 @@ class JwtManipulation:
         -------
         dict[str, str]
         '''
-
         current_time = Time.get_current_utc_time()
         expiration_time = Time.get_expiration_utc_time(
             time_period=expires_in
@@ -174,14 +209,26 @@ class JwtManipulation:
 
         # exp is token expiration time
         # iat is token create time
-        token_payload = {
-            'user_id': cur_user_info['user_id'],
-            'username': cur_user_info['name'] if 'name' in cur_user_info else cur_user_info['username'],
-            'authority_level': cur_user_info['authority_level'] if 'authority_level' in cur_user_info else 'user',
-            'exp': expiration_time,
-            'iat': current_time
-        }
-
+        token_payload = None
+        if role == 'user':
+            token_payload = cls.__form_userToken(
+                user_id=cur_user_info['user_id'],
+                username=cur_user_info['username'],
+                authority_level=cur_user_info['authority_level'] if 'authority_level' in cur_user_info else 'user',
+                exp=expiration_time,
+                iat=current_time
+            )
+        elif role == 'voter':
+            token_payload = cls.__form_voterToken(
+                survey_template_id=cur_user_info['survey_template_id'],
+                mturk_id=cur_user_info['mturk_id'],
+                authority_level='voter',
+                exp=expiration_time,
+                iat=current_time
+            )
+        else:
+            raise ValueError('role is not belonged to user or voter')
+        
         token = jwt.encode(
             token_payload,
             current_app.config['SECRET_KEY'],
@@ -192,12 +239,12 @@ class JwtManipulation:
             token=token
         )
 
+
     @classmethod
     def verify_jwt(
         cls, 
         token: str
     ) -> bool:
-
         '''
         Verify the token uploaded by the web
 
@@ -210,7 +257,6 @@ class JwtManipulation:
         -------
         bool
         '''
-
         try:
             token_payload = jwt.decode(
                 token,
@@ -231,11 +277,21 @@ class JwtManipulation:
         cls,
         token: str
     ) -> dict:
+        '''
+        Decode token
 
+        Parameters
+        ----------
+        token : str
+            token
+
+        Returns
+        -------
+        str
+        '''
         token_payload = jwt.decode(
             token,
             current_app.config['SECRET_KEY'],
             algorithms=['HS256']
         )
-
         return token_payload

@@ -37,187 +37,184 @@ class Constant:
     SURVEY_WAY = ('dynamic', 'static')  # survey way to use
 
 
-    DEFAULT_CATEGORICAL_OPTIONS = {
-        'gender': {
-            'range': {
-                'Male', 
-                'Female', 
-                'Transgender', 
-                'Gender neutral', 
-                'Others'
-            },
-            'unit': {
-                None
-            }
-        },
-        'race': {
-            'range': {
-                'White', 
-                'Black or African American', 
-                'American Indian or Alaska Native', 
-                'Asian',
-                'Native Hawaiian and Pacific Islander', 
-                'others'
-            },
-            'unit': {
-                None
-            }
-        },
-        'education': {
-            'range':{
-                'Less than high school', 
-                'High school', 
-                "Bachelor's degree",
-                "Master's degree", 
-                'Doctoral or professional degree'
-            },
-            'unit': {
-                None
-            }
-        },
-        'politics': {
-            'range':{
-                'Conservatism', 
-                'Socialism', 
-                'Social Liberalism', 
-                'Classical liberalism', 
-                'Others'
-            },
-            'unit':{
-                None
-            }
+    # DEFAULT_CATEGORICAL_OPTIONS = {
+    #     'gender': {
+    #         'range': [
+    #             'Male', 
+    #             'Female', 
+    #             'Transgender', 
+    #             'Gender neutral', 
+    #             'Others'
+    #         ],
+    #         'unit': None
+    #     },
+    #     'race': {
+    #         'range': [
+    #             'White', 
+    #             'Black or African American', 
+    #             'American Indian or Alaska Native', 
+    #             'Asian',
+    #             'Native Hawaiian and Pacific Islander', 
+    #             'others'
+    #         ],
+    #         'unit': None
+ 
+    #     },
+    #     'education': {
+    #         'range':{
+    #             'Less than high school', 
+    #             'High school', 
+    #             "Bachelor's degree",
+    #             "Master's degree", 
+    #             'Doctoral or professional degree'
+    #         },
+    #         'unit': {
+    #             None
+    #         }
+    #     },
+    #     'politics': {
+    #         'range':{
+    #             'Conservatism', 
+    #             'Socialism', 
+    #             'Social Liberalism', 
+    #             'Classical liberalism', 
+    #             'Others'
+    #         },
+    #         'unit':{
+    #             None
+    #         }
             
-        },
-        'sexual_orientation': {
-            'range':{
-                'Heterosexuality', 
-                'Bisexuality', 
-                'Homosexuality', 
-                'Asexuality', 
-                'Others'
-            },
-            'unit':{
-                None
-            }
-        },
-        'social_class': {
-            'range':{
-                'Upper (elite)', 
-                'Upper middle', 
-                'Lower middle', 
-                'Working', 
-                'Poor'
-            },
-            'unit':{
-                None
-            }
-        }
-    }
+    #     },
+    #     'sexual_orientation': {
+    #         'range':{
+    #             'Heterosexuality', 
+    #             'Bisexuality', 
+    #             'Homosexuality', 
+    #             'Asexuality', 
+    #             'Others'
+    #         },
+    #         'unit':{
+    #             None
+    #         }
+    #     },
+    #     'social_class': {
+    #         'range':{
+    #             'Upper (elite)', 
+    #             'Upper middle', 
+    #             'Lower middle', 
+    #             'Working', 
+    #             'Poor'
+    #         },
+    #         'unit':{
+    #             None
+    #         }
+    #     }
+    # }
 
-    DEFAULT_CONTINUOUS_OPTIONS = {
-        'age': {
-            'range':{
-                [18, 80]
-            },
-            'unit':{
-                None
-            }
-        },
-        'zip': {
-            'range':{
-                [2, 99]
-            },
-            'unit':{
-                ' (first two digits)'
-            }
-        },
-        'hours_web': {
-            'range':{
-                [1, 6]
-            },
-            'unit':{
-                ' hours per day'
-            }
-        },
-        'spouse_age': {
-            'range':{
-                [18, 80]
-            },
-            'unit':{
-                None
-            }
-        },
-        'num_houses': {
-            'range':{
-                [0, 5]
-            },
-            'unit':{
-                None
-            }
-        },
-        'health': {
-            'range':{
-                [1, 10]
-            },
-            'unit':{
-                ' at scale 1-10'
-            }
-        },
-        'salary': {
-            'range':{
-                [0, 150]
-            },
-            'unit':{
-                ' k (before tax)'
-            }
-        },
-        'cash': {
-            'range':{
-                [0, 300]
-            },
-            'unit':{
-                ' k (before tax)'
-            }
-        },
-        'stock': {
-            'range':{
-                [0, 300]
-            },
-            'unit':{
-                ' k'
-            }
-        },
-        'sex': {
-            'range':{
-                [0, 100]
-            },
-            'unit':{
-                ' times per month'
-            }
-        },
-    }
+    # DEFAULT_CONTINUOUS_OPTIONS = {
+    #     'age': {
+    #         'range':{
+    #             [18, 80]
+    #         },
+    #         'unit':{
+    #             None
+    #         }
+    #     },
+    #     'zip': {
+    #         'range':{
+    #             [2, 99]
+    #         },
+    #         'unit':{
+    #             ' (first two digits)'
+    #         }
+    #     },
+    #     'hours_web': {
+    #         'range':{
+    #             [1, 6]
+    #         },
+    #         'unit':{
+    #             ' hours per day'
+    #         }
+    #     },
+    #     'spouse_age': {
+    #         'range':{
+    #             [18, 80]
+    #         },
+    #         'unit':{
+    #             None
+    #         }
+    #     },
+    #     'num_houses': {
+    #         'range':{
+    #             [0, 5]
+    #         },
+    #         'unit':{
+    #             None
+    #         }
+    #     },
+    #     'health': {
+    #         'range':{
+    #             [1, 10]
+    #         },
+    #         'unit':{
+    #             ' at scale 1-10'
+    #         }
+    #     },
+    #     'salary': {
+    #         'range':{
+    #             [0, 150]
+    #         },
+    #         'unit':{
+    #             ' k (before tax)'
+    #         }
+    #     },
+    #     'cash': {
+    #         'range':{
+    #             [0, 300]
+    #         },
+    #         'unit':{
+    #             ' k (before tax)'
+    #         }
+    #     },
+    #     'stock': {
+    #         'range':{
+    #             [0, 300]
+    #         },
+    #         'unit':{
+    #             ' k'
+    #         }
+    #     },
+    #     'sex': {
+    #         'range':{
+    #             [0, 100]
+    #         },
+    #         'unit':{
+    #             ' times per month'
+    #         }
+    #     },
+    # }
 
-    DEFAULT_TEMPLATE = None
+    # DEFAULT_TEMPLATE = None
 
-    @classmethod
-    def generate_default_template(cls):
-        if cls.DEFAULT_TEMPLATE is None:
-            for key, val in cls.DEFAULT_CATEGORICAL_OPTIONS.items():
-                cls.DEFAULT_TEMPLATE[key] = {
-                    'answer_type': 'categorical',
-                    'categorical_range': {
-                        'inclusion': val['range']
-                    },
-                    'unit': val['unit']
-                }
+    # @classmethod
+    # def generate_default_template(cls):
+    #     if cls.DEFAULT_TEMPLATE is None:
+    #         for key, val in cls.DEFAULT_CATEGORICAL_OPTIONS.items():
+    #             cls.DEFAULT_TEMPLATE[key] = {
+    #                 'answer_type': 'categorical',
+    #                 'categorical_range': {
+    #                     'inclusion': val['range']
+    #                 },
+    #                 'unit': val['unit']
+    #             }
             
-            for key, val in cls.DEFAULT_CONTINUOUS_OPTIONS.items():
-                cls.DEFAULT_TEMPLATE[key] = {
-                    'answer_type': 'continuous',
-                    'continuous_range': {
-                        'min': val['range'][0],
-                        'max': val['range'][1] 
-                    },
-                    'unit': val['unit']
-                }
-        return cls.DEFAULT_TEMPLATE
+    #         for key, val in cls.DEFAULT_CONTINUOUS_OPTIONS.items():
+    #             cls.DEFAULT_TEMPLATE[key] = {
+    #                 'answer_type': 'continuous',
+    #                 'continuous_range': {
+    #                     'min': val['range'][0],
+    #                     'max': val['range'][1] 
+    #                 },
+    #                 'unit': val['unit']
+    #             }
+    #     return cls.DEFAULT_TEMPLATE

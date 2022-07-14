@@ -32,6 +32,23 @@ export const useSideMenuStore = defineStore("sideMenu", {
         //   },
         // ],
       },
+      {
+        icon: "LogInIcon",
+        pageName: "login",
+        title: "Login",
+      },
+      "devider",
+      {
+        icon: "SidebarIcon",
+        pageName: "side-menu-create-form",
+        title: "Create Form",
+      },
+      {
+        icon: "SidebarIcon",
+        pageName: "side-menu-answer-form",
+        title: "Answer Form",
+      },
+      "devider",
       // {
       //   icon: "BoxIcon",
       //   pageName: "side-menu-menu-layout",
@@ -130,11 +147,6 @@ export const useSideMenuStore = defineStore("sideMenu", {
       //     },
       //   ],
       // },
-      {
-        icon: "ShoppingBagIcon",
-        pageName: "side-menu-reviews",
-        title: "Reviews",
-      },
       // {
       //   icon: "InboxIcon",
       //   pageName: "side-menu-inbox",
@@ -165,7 +177,7 @@ export const useSideMenuStore = defineStore("sideMenu", {
       //   pageName: "side-menu-calendar",
       //   title: "Calendar",
       // },
-      "devider",
+      // "devider",
       // {
       //   icon: "EditIcon",
       //   pageName: "side-menu-crud",
@@ -207,26 +219,37 @@ export const useSideMenuStore = defineStore("sideMenu", {
       // },
       {
         icon: "TrelloIcon",
-        pageName: "side-menu-profile",
+        pageName: "side-menu-profile-overview-3",
         title: "Profile",
-        subMenu: [
-          {
-            icon: "",
-            pageName: "side-menu-profile-overview-1",
-            title: "Overview 1",
-          },
-          {
-            icon: "",
-            pageName: "side-menu-profile-overview-2",
-            title: "Overview 2",
-          },
-          {
-            icon: "",
-            pageName: "side-menu-profile-overview-3",
-            title: "Overview 3",
-          },
-        ],
       },
+      {
+        icon: "ShoppingBagIcon",
+        pageName: "side-menu-reviews",
+        title: "History",
+      },
+      // {
+      //   icon: "TrelloIcon",
+      //   pageName: "side-menu-profile",
+      //   title: "Profile",
+      //   subMenu: [
+      //     {
+      //       icon: "",
+      //       pageName: "side-menu-profile-overview-1",
+      //       title: "Overview 1",
+      //     },
+      //     {
+      //       icon: "",
+      //       pageName: "side-menu-profile-overview-2",
+      //       title: "Overview 2",
+      //     },
+      //     {
+      //       icon: "",
+      //       pageName: "side-menu-profile-overview-3",
+      //       title: "Overview 3",
+      //     },
+      //   ],
+      // },
+      "devider",
       {
         icon: "LayoutIcon",
         pageName: "side-menu-layout",
@@ -359,7 +382,6 @@ export const useSideMenuStore = defineStore("sideMenu", {
           },
         ],
       },
-      "devider",
       {
         icon: "InboxIcon",
         pageName: "side-menu-components",
@@ -486,11 +508,11 @@ export const useSideMenuStore = defineStore("sideMenu", {
             pageName: "side-menu-wysiwyg-editor",
             title: "Wysiwyg Editor",
           },
-          {
-            icon: "",
-            pageName: "side-menu-validation",
-            title: "Validation",
-          },
+          // {
+          //   icon: "",
+          //   pageName: "side-menu-validation",
+          //   title: "Validation",
+          // },
         ],
       },
       {

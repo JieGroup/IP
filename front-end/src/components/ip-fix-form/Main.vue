@@ -2,12 +2,12 @@
     <div>
         <!-- BEGIN: Validation Form -->
         <form class="validate-form">
-            <div class="input-form">
+            <!-- <div class="input-form">
             <label
                 for="validation-form-1"
                 class="form-label w-full flex flex-col sm:flex-row"
             >
-                Name
+                Survey Update Method
                 <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
                 >Required, at least 2 characters</span
                 >
@@ -30,29 +30,44 @@
                 {{ error.$message }}
                 </div>
             </template>
+            </div> -->
+
+            <div class="mt-3">
+            <label>Survey update method</label>
+            <div class="mt-2">
+                <TomSelect v-model="validate.survey_update_method.$model" :options="{
+                            placeholder: 'Select survey update method',
+                            }" class="w-full">
+                <optgroup label="Update method">
+                    <option value="static">Static</option>
+                    <option value="uniform">Uniform</option>
+                </optgroup>
+                </TomSelect>
             </div>
-            <div class="input-form mt-3">
+            </div>
+
+            <div v-if="validate.survey_update_method.$model === 'uniform'" class="input-form mt-3">
             <label
                 for="validation-form-2"
                 class="form-label w-full flex flex-col sm:flex-row"
             >
-                Email
+                Max rounds
                 <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-                >Required, email address format</span
+                >Required, integer only & maximum 5 rounds</span
                 >
             </label>
             <input
                 id="validation-form-2"
-                v-model.trim="validate.email.$model"
-                type="email"
-                name="email"
+                v-model.trim="validate.max_rounds.$model"
+                type="number"
+                name="max_rounds"
                 class="form-control"
-                :class="{ 'border-danger': validate.email.$error }"
-                placeholder="example@gmail.com"
+                :class="{ 'border-danger': validate.max_rounds.$error }"
+                placeholder="Times you want to update the topics. E.g.1"
             />
-            <template v-if="validate.email.$error">
+            <template v-if="validate.max_rounds.$error">
                 <div
-                v-for="(error, index) in validate.email.$errors"
+                v-for="(error, index) in validate.max_rounds.$errors"
                 :key="index"
                 class="text-danger mt-2"
                 >
@@ -60,18 +75,66 @@
                 </div>
             </template>
             </div>
+
             <div class="input-form mt-3">
             <label
                 for="validation-form-3"
                 class="form-label w-full flex flex-col sm:flex-row"
             >
-                Password
+                Number of copies
+                <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
+                >Required, integer only & maximum 500 copies</span
+                >
+            </label>
+            <input
+                id="validation-form-3"
+                v-model.trim="validate.num_copies.$model"
+                type="number"
+                name="num_copies"
+                class="form-control"
+                :class="{ 'border-danger': validate.num_copies.$error }"
+                placeholder="The maximum number of surveys issued. E.g. 200"
+            />
+            <template v-if="validate.num_copies.$error">
+                <div
+                v-for="(error, index) in validate.num_copies.$errors"
+                :key="index"
+                class="text-danger mt-2"
+                >
+                {{ error.$message }}
+                </div>
+            </template>
+            </div>
+
+            <div class="mt-3">
+            <label>Expiration time</label>
+            <div class="mt-2">
+                <TomSelect v-model="validate.expiration_time.$model" :options="{
+                            placeholder: 'Select survey expiration time',
+                            }" class="w-full">
+                <optgroup label="Expiration Time">
+                    <option value="three_days">3 days</option>
+                    <option value="seven_days">7 days</option>
+                    <option value="fifteen_days">15 days</option>
+                    <option value="thirty_days">30 days</option>
+                    <option value="sixty_days">60 days</option>
+                </optgroup>
+                </TomSelect>
+            </div>
+            </div>
+
+            <!-- <div class="input-form mt-3">
+            <label
+                for="validation-form-4"
+                class="form-label w-full flex flex-col sm:flex-row"
+            >
+                Expiration Time
                 <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
                 >Required, at least 6 characters</span
                 >
             </label>
             <input
-                id="validation-form-3"
+                id="validation-form-4"
                 v-model.trim="validate.password.$model"
                 type="password"
                 name="password" 
@@ -88,37 +151,9 @@
                 {{ error.$message }}
                 </div>
             </template>
-            </div>
-            <div class="input-form mt-3">
-            <label
-                for="validation-form-4"
-                class="form-label w-full flex flex-col sm:flex-row"
-            >
-                Age
-                <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-                >Required, integer only & maximum 3 characters</span
-                >
-            </label>
-            <input
-                id="validation-form-4"
-                v-model.trim="validate.age.$model"
-                type="number"
-                name="age"
-                class="form-control"
-                :class="{ 'border-danger': validate.age.$error }"
-                placeholder="21"
-            />
-            <template v-if="validate.age.$error">
-                <div
-                v-for="(error, index) in validate.age.$errors"
-                :key="index"
-                class="text-danger mt-2"
-                >
-                {{ error.$message }}
-                </div>
-            </template>
-            </div>
-            <div class="input-form mt-3">
+            </div> -->
+
+            <!-- <div class="input-form mt-3">
             <label
                 for="validation-form-5"
                 class="form-label w-full flex flex-col sm:flex-row"
@@ -146,8 +181,9 @@
                 {{ error.$message }}
                 </div>
             </template>
-            </div>
-            <div class="input-form mt-3">
+            </div> -->
+
+            <!-- <div class="input-form mt-3">
             <label
                 for="validation-form-6"
                 class="form-label w-full flex flex-col sm:flex-row"
@@ -174,7 +210,8 @@
                 {{ error.$message }}
                 </div>
             </template>
-            </div>
+            </div> -->
+
         </form>
         <!-- END: Validation Form -->
     </div>
@@ -190,6 +227,9 @@ import {
   email,
   url,
   integer,
+  requiredIf,
+  minValue,
+  maxValue
 } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import Toastify from "toastify-js";
@@ -205,38 +245,30 @@ const props = defineProps({
 const emit = defineEmits([])
 
 const formData = reactive({
-  name: "",
-  email: "",
-  password: "secret",
-  age: "",
-  url: "",
-  comment: "",
+  survey_update_method: "static",
+  max_rounds: "",
+  num_copies: "",
+  expiration_time: "three_days"
 });
 
 const rules = {
-  name: {
-    required,
-    minLength: minLength(2),
+  survey_update_method: {
+    required
   },
-  email: {
-    required,
-    email,
+  max_rounds: {
+    required: requiredIf(() => formData.survey_update_method === 'uniform'),
+    integer,
+    maxValue: maxValue(5),
+    minValue: minValue(1)
   },
-  password: {
-    required,
-    minLength: minLength(6),
-  },
-  age: {
+  num_copies: {
     required,
     integer,
-    maxLength: maxLength(3),
+    maxValue: maxValue(500),
+    minValue: minValue(0)
   },
-  url: {
-    url,
-  },
-  comment: {
+  expiration_time: {
     required,
-    minLength: minLength(10),
   },
 };
 

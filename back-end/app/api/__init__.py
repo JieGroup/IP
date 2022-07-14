@@ -14,5 +14,6 @@ from app.api import (
     features,
     summary,
     survey_template,
-    users
+    users,
+    test_connection
 )

@@ -169,20 +169,50 @@
           </DropdownHeader>
           <DropdownDivider class="border-white/[0.08]" />
           <DropdownItem class="hover:bg-white/5">
-            <UserIcon class="w-4 h-4 mr-2" /> Profile
+            <UserIcon @click="to_profile" class="w-4 h-4 mr-2" /> Profile
           </DropdownItem>
-          <DropdownItem class="hover:bg-white/5">
+          <!-- <DropdownItem class="hover:bg-white/5">
             <EditIcon class="w-4 h-4 mr-2" /> Add Account
-          </DropdownItem>
+          </DropdownItem> -->
           <DropdownItem class="hover:bg-white/5">
-            <LockIcon class="w-4 h-4 mr-2" /> Reset Password
+            <!-- <router-link
+              :to="{ name: 'side-menu-change-password' }"
+              tag="a"
+              class="intro-x flex items-center pl-5 pt-4"
+            >
+              
+            </router-link> -->
+
+            <LockIcon @click="to_reset_pwd" class="w-4 h-4 mr-2" /> Reset Password
+            <!-- <button type="button" @click="to_reset_pwd" class="w-4 h-4 mr-2"> 
+              Reset Password 
+            </button> -->
           </DropdownItem>
+          
+
+          <!-- <a class="flex items-center mt-5" href="">
+            <BoxIcon class="w-4 h-4 mr-2" /> Account Settings
+          </a>
+
+          <router-link
+            :to="{ name: 'side-menu-dashboard-overview-4' }"
+            tag="a"
+            class="intro-x flex items-center pl-5 pt-4"
+          >
+            <img
+              alt="Midone Tailwind HTML Admin Template"
+              class="w-6"
+              src="@/assets/images/logo.svg"
+            />
+            <span class="hidden xl:block text-white text-lg ml-3"> Interval Privacy </span>
+          </router-link> -->
+
           <DropdownItem class="hover:bg-white/5">
-            <HelpCircleIcon class="w-4 h-4 mr-2" /> Help
+            <HelpCircleIcon @click="to_faq" class="w-4 h-4 mr-2" /> Help
           </DropdownItem>
           <DropdownDivider class="border-white/[0.08]" />
           <DropdownItem class="hover:bg-white/5">
-            <ToggleRightIcon class="w-4 h-4 mr-2" /> Logout
+            <ToggleRightIcon @click="logout" class="w-4 h-4 mr-2" /> Logout
           </DropdownItem>
         </DropdownContent>
       </DropdownMenu>
@@ -194,6 +224,28 @@
 
 <script setup>
 import { ref } from "vue";
+import { linkTo } from './index'
+import { useRoute, useRouter } from "vue-router";
+import { useAuthenticationStore } from "@/stores/authentication"
+
+const router = useRouter();
+const authenticationStore = useAuthenticationStore()
+
+const to_profile = () => {
+  linkTo('/profile-overview-3', router)
+}
+const to_reset_pwd = () => {
+  linkTo('/change-password', router)
+}
+const to_faq = () => {
+  linkTo('/faq-layout-3', router)
+}
+const logout = () => {
+  // clean msg stored in authenticationStore
+  authenticationStore.logoutAction()
+  // go back to main page
+  linkTo('/', router)
+}
 
 const searchDropdown = ref(false);
 const showSearchDropdown = () => {

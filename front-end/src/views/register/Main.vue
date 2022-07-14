@@ -5,14 +5,28 @@
       <div class="block xl:grid grid-cols-2 gap-4">
         <!-- BEGIN: Register Info -->
         <div class="hidden xl:flex flex-col min-h-screen">
-          <a href="" class="-intro-x flex items-center pt-5">
+          <!-- <a href="" class="-intro-x flex items-center pt-5">
             <img
               alt="Midone Tailwind HTML Admin Template"
               class="w-6"
               src="@/assets/images/logo.svg"
             />
-            <span class="text-white text-lg ml-3"> Rubick </span>
-          </a>
+            <span class="text-white text-lg ml-3"> Interval Privacy </span>
+          </a> -->
+
+          <router-link
+            :to="{ name: 'side-menu-dashboard-overview-4' }"
+            tag="a"
+            class="intro-x flex items-center pl-5 pt-4"
+          >
+            <img
+              alt="Midone Tailwind HTML Admin Template"
+              class="w-6"
+              src="@/assets/images/logo.svg"
+            />
+            <span class="text-white text-lg ml-3"> Interval Privacy </span>
+          </router-link>
+
           <div class="my-auto">
             <img
               alt="Midone Tailwind HTML Admin Template"

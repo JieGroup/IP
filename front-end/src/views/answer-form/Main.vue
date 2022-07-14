@@ -35,7 +35,7 @@
             <br />
             <IpFixForm :fix_form_data="fix_form_data"/>
             <IpDynamicForm  v-for="(item, index) in dynamic_form_array"
-                            :key="index" 
+                            :key="item.unique_id" 
                             :dynamic_form_index="index"
                             :dynamic_form_data="item"
                             @parent_add_dynamic_form="add_dynamic_form" 
@@ -53,9 +53,9 @@
             >
               <CheckCircleIcon class="text-success" />
               <div class="ml-4 mr-4">
-                <div class="font-medium">Registration success!</div>
+                <div class="font-medium">Create form success!</div>
                 <div class="text-slate-500 mt-1">
-                  Please check your e-mail for further info!
+                  Please check your history for further info!
                 </div>
               </div>
             </div>
@@ -67,7 +67,7 @@
             >
               <XCircleIcon class="text-danger" />
               <div class="ml-4 mr-4">
-                <div class="font-medium">Registration failed!</div>
+                <div class="font-medium">Create form failed!</div>
                 <div class="text-slate-500 mt-1">
                   Please check the fileld form.
                 </div>
@@ -171,20 +171,26 @@ import IpFixForm from "@/components/ip-fix-form/Main.vue";
 import IpDynamicForm from "@/components/ip-dynamic-form/Main.vue";
 
 let fix_form_data = reactive({})
-let dynamic_form_array = reactive([{}])
+let unique_id = 0
+let dynamic_form_array = reactive([{unique_id: unique_id}])
+
 
 const add_dynamic_form = () => {
   console.log('jiajiajia')
-  dynamic_form_array.push({})
-  console.log('dynamic_form_array', dynamic_form_array)
+  unique_id += 1
+  dynamic_form_array.push({unique_id: unique_id})
+  console.log('dynamic_form_array', dynamic_form_array, unique_id)
 }
 
 const delete_dynamic_form = (dynamic_form_index) => {
-  console.log('wudi,duide')
+  console.log('shemeqingkuang-000', dynamic_form_array)
+  console.log('wudi,duide', dynamic_form_index)
+  
   if (dynamic_form_index !== 0){
     // array.splice(index, howmany)
     dynamic_form_array.splice(dynamic_form_index, 1)
   }
+  console.log('shemeqingkuang', dynamic_form_array)
 }
 
 const is_fix_form_validate = (data_invalid) => {

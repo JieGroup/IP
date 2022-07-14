@@ -12,7 +12,7 @@ from typeguard import (
 @typechecked
 def check_if_data_is_valid(
     data: dict[str, Any],
-    expected_data: list[dict[str, object]],
+    expected_data: dict[str, object],
 ) -> None:
     '''
     1. Check if data is None
@@ -21,7 +21,7 @@ def check_if_data_is_valid(
     Parameters
     ----------
     data : dict[str, Any]
-    expected_data : list[dict[str, object]]
+    expected_data : dict[str, object]
 
     Returns
     -------
@@ -29,7 +29,7 @@ def check_if_data_is_valid(
     '''
     for expected_key, expected_type in expected_data.items():
         check_type(
-            argname=f"{data[expected_key]}",
+            argname=f'{expected_key}',
             value=data[expected_key],
             expected_type=expected_type,
         )
