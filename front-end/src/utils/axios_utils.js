@@ -1,3 +1,9 @@
+const process_axios_response = (response) => {
+    console.log('???')
+    let data = response.data
+    console.log('data', data)
+    return data
+}
 
 const process_axios_error = (error) => {
     const error_name = error.response.data.error_name
@@ -21,6 +27,7 @@ const get_api_url = (root) => '/api/' + root
 const get_auth_url = (root) => '/auth/' + root
 
 export { 
+    process_axios_response,
     process_axios_error, 
     get_api_url,
     get_auth_url 

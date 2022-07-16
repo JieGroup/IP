@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pyparsing import str_type
+
 from app.api import api
 
 from flask import request
@@ -23,8 +25,8 @@ from typing import Any
 
 
 @api.route('/create_survey_template', methods=['POST'])
-@token_auth.login_required
-# @handle_response
+# @token_auth.login_required
+@handle_response
 def create_survey_template() -> None:
     '''
     Create survey template
@@ -53,19 +55,19 @@ def create_survey_template() -> None:
     data = request.get_json()
     if not data:
         raise ValueError('You must post JSON data.')
-
+    print('zheli', data)
     expected_data = {
         'survey_update_method': Survey_Update_Method,
-        'time_period': int,
+        'time_period': str,
         'number_of_copies': int,
         'max_rounds': int,
         'survey_topics': Survey_Topics
     }
     check_if_data_is_valid(
-        data=request.args,
+        data=data,
         expected_data=expected_data
     )
-    
+    print('0.5')
     survey_update_method = data['survey_update_method']
     time_period = data['time_period']
     number_of_copies = data['number_of_copies']

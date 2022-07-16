@@ -88,16 +88,16 @@
             </label>
             <input
                 id="validation-form-3"
-                v-model.trim="validate.num_copies.$model"
+                v-model.trim="validate.number_of_copies.$model"
                 type="number"
-                name="num_copies"
+                name="number_of_copies"
                 class="form-control"
-                :class="{ 'border-danger': validate.num_copies.$error }"
+                :class="{ 'border-danger': validate.number_of_copies.$error }"
                 placeholder="The maximum number of surveys issued. E.g. 200"
             />
-            <template v-if="validate.num_copies.$error">
+            <template v-if="validate.number_of_copies.$error">
                 <div
-                v-for="(error, index) in validate.num_copies.$errors"
+                v-for="(error, index) in validate.number_of_copies.$errors"
                 :key="index"
                 class="text-danger mt-2"
                 >
@@ -109,15 +109,15 @@
             <div class="mt-3">
             <label>Expiration time</label>
             <div class="mt-2">
-                <TomSelect v-model="validate.expiration_time.$model" :options="{
+                <TomSelect v-model="validate.time_period.$model" :options="{
                             placeholder: 'Select survey expiration time',
                             }" class="w-full">
                 <optgroup label="Expiration Time">
-                    <option value="three_days">3 days</option>
-                    <option value="seven_days">7 days</option>
-                    <option value="fifteen_days">15 days</option>
-                    <option value="thirty_days">30 days</option>
-                    <option value="sixty_days">60 days</option>
+                    <option value='3'>3 days</option>
+                    <option value='7'>7 days</option>
+                    <option value='15'>15 days</option>
+                    <option value='30'>30 days</option>
+                    <option value='60'>60 days</option>
                 </optgroup>
                 </TomSelect>
             </div>
@@ -246,9 +246,9 @@ const emit = defineEmits([])
 
 const formData = reactive({
   survey_update_method: "static",
-  max_rounds: "",
-  num_copies: "",
-  expiration_time: "three_days"
+  max_rounds: 0,
+  number_of_copies: "",
+  time_period: "3"
 });
 
 const rules = {
@@ -259,15 +259,15 @@ const rules = {
     required: requiredIf(() => formData.survey_update_method === 'uniform'),
     integer,
     maxValue: maxValue(5),
-    minValue: minValue(1)
+    minValue: minValue(0)
   },
-  num_copies: {
+  number_of_copies: {
     required,
     integer,
     maxValue: maxValue(500),
     minValue: minValue(0)
   },
-  expiration_time: {
+  time_period: {
     required,
   },
 };

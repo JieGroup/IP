@@ -228,8 +228,8 @@ const formData = reactive({
   topic_name: "",
   topic_question: "",
   answer_type: "categorical",
-  categorical_answer_options: [{}],
-  continuous_answer_options: {},
+  categorical_answer_options: categorical_answer_options,
+  continuous_answer_options: continuous_answer_options,
   unit: "",
 });
 

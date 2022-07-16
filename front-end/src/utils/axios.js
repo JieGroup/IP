@@ -23,9 +23,9 @@ axios.interceptors.request.use(config => {
   console.log('request config1')
   // add token to request
   const authenticationStore = useAuthenticationStore();
-  const token = computed(() => authenticationStore.token);
-  if (token !== null) {
-    config.headers.Authorization = `Bearer ${token}`
+  const userToken = computed(() => authenticationStore.userToken);
+  if (userToken !== null) {
+    config.headers.Authorization = `Bearer ${userToken}`
   }
   console.log('request config2')
   return config
@@ -38,6 +38,7 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(response => {
   console.log('response config2', response)
   return response
+  // return Promise.resolve(response)
 }, error => {
   // handle response error
   console.log('Error_https', error)

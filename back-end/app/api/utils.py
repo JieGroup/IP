@@ -28,6 +28,9 @@ def check_if_data_is_valid(
     bool
     '''
     for expected_key, expected_type in expected_data.items():
+        print(f'expected_key: {expected_key}')
+        print(f'data[expected_key]: {data[expected_key]}')
+        print(f'expected_type: {expected_type}')
         check_type(
             argname=f'{expected_key}',
             value=data[expected_key],

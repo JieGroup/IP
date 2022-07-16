@@ -190,27 +190,8 @@ import dom from "@left4code/tw-starter/dist/js/dom";
 import IpFixForm from "@/components/ip-fix-form/Main.vue";
 import IpDynamicForm from "@/components/ip-dynamic-form/Main.vue";
 import { axios } from "@/utils/axios";
-import { process_axios_error } from '@/utils/axios_utils'
-
-
-// const login = async (mapRef, mapConfig) => {
-//   login_data = {
-//     'username': formData.username,
-//     'password': formData.password
-//   }
-//   let res = await axios.post('/login/', all_notifications)
-
-//   if (res === true) {
-//     store_info()
-//   }
-//   const google = window.google
-//   const map = new google.maps.Map(mapRef, mapConfig.config(google))
-
-//   return {
-//     map: map,
-//     google: google
-//   }
-// }
+import { linkTo, process_template_data } from "./index"
+import { process_axios_response, process_axios_error, get_api_url } from "@/utils/axios_utils"
 
 let request_error = reactive({})
 request_error.adasdsa = 'asdfasdf'
@@ -261,12 +242,9 @@ const test2 = () => {
   console.log('??????')
 }
 
-
-
 let fix_form_data = reactive({})
 let unique_id = 0
 let dynamic_form_array = reactive([{unique_id: unique_id}])
-
 
 const add_dynamic_form = () => {
   console.log('jiajiajia')
@@ -291,7 +269,7 @@ const is_fix_form_validate = (data_valid) => {
   // the vuelidate we used
   const validate = fix_form_data.validate
   validate.$touch();
-  console.log('fixxxxx', validate.$invalid, data_valid)
+  console.log('fixxxxx', validate.$invalid, data_valid, validate)
   if (validate.$invalid === true) {
     data_valid = false
   }
@@ -346,12 +324,56 @@ const notification = (data_valid) => {
   }
 }
 
-const send_to_server = () => {
+const is_form_valid = () => {
   let fix_data_valid = true
   let dynamic_data_valid = true
   fix_data_valid = is_fix_form_validate(fix_data_valid)
   dynamic_data_valid = is_dynamic_form_validate(dynamic_data_valid)
   console.log('total@@@@@@', fix_data_valid, dynamic_data_valid)
-  notification(fix_data_valid && dynamic_data_valid)
+  return fix_data_valid && dynamic_data_valid
+}
+
+
+const send_form = async (templateData) => {
+  try {
+    let response = await axios.post(get_api_url('create_survey_template'), templateData);
+    console.log('response', response)
+    console.log('asda', response.data)
+    let processed_response = process_axios_response(response);
+    console.log(`send_form response: ${processed_response}`)
+    // Go to response page
+    // linkTo()
+  } catch (err) {
+    console.log(`send_form err 0.5: ${err}`)
+    let processed_err = process_axios_error(err)
+    console.log(`send_form err: ${processed_err}`)
+
+    Toastify({
+      node: dom("#request-error-content")
+        .clone()
+        .removeClass("hidden")[0],
+      duration: 10000,
+      newWindow: true,
+      close: true,
+      gravity: "top",
+      position: "right",
+      stopOnFocus: true,
+    }).showToast();
+  }
+}
+
+const send_to_server = () => {
+  let validation = is_form_valid()
+  notification(validation)
+  console.log('fix_form_data', fix_form_data)
+  console.log('dynamic_form_array', dynamic_form_array)
+  if (validation === true) {
+    let templateData = process_template_data(
+      fix_form_data,
+      dynamic_form_array
+    )
+    console.log('templateData', templateData)
+    send_form(templateData)
+  }
 }
 </script>

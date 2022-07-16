@@ -81,7 +81,7 @@ class SurveyTemplate:
         '''
         if max_rounds > Constant.MAX_ROUNDS:
             return False
-        if max_rounds < 1:
+        if max_rounds < 0:
             return False
         return True
 
@@ -123,11 +123,12 @@ class SurveyTemplate:
         # TODO: Check Survey_topics. Not urgent
         return
 
+
     @classmethod
     def create_survey_template(
         cls, 
         survey_update_method: Survey_Update_Method,
-        time_period: int,
+        time_period: str,
         number_of_copies: int,
         max_rounds: int,
         survey_topics: Survey_Topics
@@ -142,7 +143,7 @@ class SurveyTemplate:
             Defines how we update topic new ranges. 'static' means the voter would only answer
             the all topics once. 'uniform' means the topics would be dynamically generated and voter
             may need to answer each topic more than one time.
-        time_period : int
+        time_period : str
             Defines how long we should keep the survey template in database
         number_of_copies : int
             Defines the max number of survey to issue
@@ -157,6 +158,10 @@ class SurveyTemplate:
             Return an unique survey_template_id that creator can obtain the information 
             about the survey template
         '''
+        # Change time_period from str(number of day) to int(seconds)
+        print('0.7')
+        time_period = Time.change_time_period_to_sec(time_period=time_period)
+        print('1')
         # Check the survey topics uploaded by user
         cls.__check_survey_topics(
             time_period=time_period,
@@ -164,9 +169,10 @@ class SurveyTemplate:
             max_rounds=max_rounds,
             survey_topics=survey_topics
         )
-
+        print('2')
         # Store the new template
         survey_template_id = get_unique_id()
+        print('zheli')
         expiration_time = Time.get_expiration_utc_time(time_period)
         create_document(
             database_type='survey_template',
