@@ -45,7 +45,7 @@ def get_cur_rounds_num(
     -------
     int
     '''
-
+    print(f'get_cur_rounds_num: {survey_prev_answers}, {len(survey_prev_answers)+1}')
     return len(survey_prev_answers) + 1
 
 def get_hashed_password(
@@ -227,7 +227,6 @@ def is_token_matched(
     token: str, 
     expiration: int=3600
 ) -> bool:
-
     '''
     Decode token and check if the token is correct
 
@@ -242,7 +241,6 @@ def is_token_matched(
     -------
     bool
     '''
-
     serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     try:
         serializer.loads(
@@ -260,7 +258,6 @@ def decode_token(
     token: str, 
     expiration: int=3600
 ) -> dict:
-
     '''
     Decode token created by URLSafeTimedSerializer
 
@@ -273,7 +270,6 @@ def decode_token(
     -------
     dict
     '''
-
     serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     return serializer.loads(
         token,

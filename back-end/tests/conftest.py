@@ -94,13 +94,14 @@ def drop_db_collections() -> None:
     '''
 
     for collecion_names in pyMongo.db.list_collection_names():
+        if collecion_names == 'User':
+            continue
         pyMongo.db.drop_collection(collecion_names)
 
 def get_basic_auth_headers(
     username: str, 
     password: str
 ) -> dict:
-
     '''
     Create headers for the Basic Auth
 
@@ -112,7 +113,6 @@ def get_basic_auth_headers(
     -------
     dict
     '''
-
     return {
         'Authorization': 'Basic ' + b64encode(
             (username + ':' + password).encode('utf-8')).decode('utf-8'),
@@ -121,10 +121,9 @@ def get_basic_auth_headers(
     }
 
 def get_token_auth_headers(
-    username: str, 
-    password: str
+    # username: str, 
+    # password: str
 ) -> dict:
-
     '''
     Create headers for the JSON Web Token
 
@@ -136,20 +135,19 @@ def get_token_auth_headers(
     -------
     dict
     '''
-
     global client
 
-    headers = get_basic_auth_headers(
-        username=username, 
-        password=password
-    )
-    response = client.post('/auth/tokens', headers=headers)
-    assert response.status_code == 200
-    json_response = json.loads(response.get_data(as_text=True))
-    assert json_response is not None
-    token = json_response['token']
+    # headers = get_basic_auth_headers(
+    #     username=username, 
+    #     password=password
+    # )
+    # response = client.post('/auth/tokens', headers=headers)
+    # assert response.status_code == 200
+    # json_response = json.loads(response.get_data(as_text=True))
+    # assert json_response is not None
+    # token = json_response['token']
     return {
-        'Authorization': 'Bearer ' + token,
+        # 'Authorization': 'Bearer ' + token,
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     }

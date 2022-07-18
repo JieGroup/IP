@@ -27,7 +27,8 @@ from typing import (
 from app._typing import (
     Survey_Topics,
     Survey_Prev_Answers,
-    Survey_New_Answers
+    Survey_New_Answers,
+    Survey_Update_Method
 )
 
 
@@ -69,7 +70,6 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
             return False
         return True
 
-
     @classmethod
     def generate_topic_new_continuous_range(
         cls,
@@ -87,11 +87,12 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
         -------
         tuple[Continuous_Option_Type, Continuous_Option_Type, Continuous_Option_Type]
         '''
+        print('uniform_')
         if not cls.check_if_voter_willing_to_answer(
             cur_topic_ans=cur_topic_ans
         ):
             return TopicNoNeedUpdate
-
+        print('uniform_continuous')
         min_value = cur_topic_ans['min']
         max_value = cur_topic_ans['max']
 
@@ -113,7 +114,7 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
         topic_info: dict[str, Any],
         survey_prev_answers: Survey_Prev_Answers,
         cur_topic_ans: Union[dict[str, Constant.CONTINUOUS_RANGE_KEY], dict[str, list[Categorical_Option_Type]]]
-    ) -> Union[type[TopicNoNeedUpdate], list]:
+    ) -> Union[type[TopicNoNeedUpdate], list[Categorical_Option_Type]]:
         '''
         If current round is 1, generate topic new categorical 
         range based on initial categorical range(defined in
@@ -166,17 +167,18 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
             
         # Pick the elements that are in inclusion and not in 
         # exclusion
-        new_feasible_options = inclusion.difference(exclusion)
-        new_feasible_options = list(new_feasible_options)
+        new_feasible_options = list(inclusion.difference(exclusion))
 
+        new_inclusion_options = None
         if len(new_feasible_options) < 1:
             return TopicNoNeedUpdate
         elif len(new_feasible_options) >= 1:
             sample_num = np.ceil(len(new_feasible_options)/2.0).astype(int)
             # half sample to obtain the subset to ask
-            new_feasible_options = random.sample(new_feasible_options, sample_num)
-        
-        return new_feasible_options
+            new_inclusion_options = random.sample(new_feasible_options, sample_num)
+            # new_exclusion_options = list(set(new_feasible_options).difference(set(new_inclusion_options)))
+
+        return new_inclusion_options
 
     @classmethod
     def generate_topic_new_range(
@@ -210,6 +212,7 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
     @classmethod
     def update_survey_topics(
         cls,
+        survey_update_method: Survey_Update_Method,
         cur_rounds_num: int,
         max_rounds: int,
         survey_topics: Survey_Topics,
@@ -238,7 +241,9 @@ class UniformUpdate(AbstractUpdateMethod, BaseUpdateMethod):
         -------
         Union[None, dict[str, dict[str, Any]]]
         '''
+        print('uniform')
         return super().update_topics_base_flow(
+            survey_update_method=survey_update_method,
             cur_rounds_num=cur_rounds_num,
             max_rounds=max_rounds,
             survey_topics=survey_topics,

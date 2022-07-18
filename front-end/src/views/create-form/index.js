@@ -17,6 +17,7 @@ Form of the data that transfer to back-end
       categorical_range: {
         'inclusion': {'a', 'b', 'c'} (set of options)
       },
+      topic_question: what is your gender?
       unit: None
     },
     topic_name_2: {
@@ -24,7 +25,8 @@ Form of the data that transfer to back-end
       continuous_range: {
         'min': min_value,
         'max': max_value    
-      } 
+      },
+      topic_question: what is your age? 
       unit: k       
     }
     ...
@@ -34,6 +36,7 @@ Form of the data that transfer to back-end
         'min': min_value,
         'max': max_value
       },
+      topic_question: ...,
       unit: ...       
     }
   }

@@ -55,6 +55,16 @@ class ValidateAnswer:
         return cur_rounds_num == 1
 
     @classmethod
+    def __has_the_user_stop(
+        cls,
+        cur_topic_ans: dict[str, Any]
+    ):
+        '''
+        Check if user has stopped answer this topic
+        '''
+        return 'stop' in cur_topic_ans
+
+    @classmethod
     def __get_range_criteria(
         cls, 
         cur_rounds_num: int,
@@ -130,7 +140,6 @@ class ValidateAnswer:
             )
 
         for topic_name, topic_info in survey_topics.items():
-
             # Check if topic_name is in survey_new_answers
             if topic_name not in survey_new_answers:
                 continue
@@ -144,6 +153,11 @@ class ValidateAnswer:
 
             answer_type = topic_info['answer_type']
             cur_topic_ans = survey_new_answers[topic_name][f"{answer_type}_range"]
+            if cls.__has_the_user_stop(
+                cur_topic_ans=cur_topic_ans
+            ):
+                continue
+            print('cur_topic_ansaa', cur_topic_ans)
             # Check if current survey_answer is valid
             if answer_type == 'categorical':
                 ValidateCategoricalAnswer.validate_categorical_answer(

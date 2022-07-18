@@ -6,13 +6,17 @@ class Constant:
     UPDATE_TOKEN_INTERVAL: Final[int] = 900
 
     # time period to store the survey template
-    TIME_PERIOD_UPPER_LIMIT: Final[int] = 5620000
+    # maximum is 60 days
+    TIME_PERIOD_UPPER_LIMIT: Final[int] = 5200000
+    # minimum is 3 days
     TIME_PERIOD_LOWER_LIMIT: Final[int] = 259200
 
     # max number of answers for a survey template
     MAX_NUMBER_OF_COPIES: Final[int] = 500
-
-    # max rounds of a topic can be re-answered
+    
+    # min rounds of a topic can be answered
+    MIN_ROUNDS: Final[int] = 1
+    # max rounds of a topic can be answered
     MAX_ROUNDS: Final[int] = 3
     
     CATEGORICAL_RANGE_KEY: Final[str] = 'categorical_range'

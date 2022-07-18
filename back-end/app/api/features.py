@@ -21,7 +21,7 @@ from app.process.api import (
 )
 
 @api.route('/get_survey_template', methods=['GET'])
-@token_auth.login_required
+# @token_auth.login_required
 @handle_response
 def get_survey_template() -> None:
     '''

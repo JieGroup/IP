@@ -4,6 +4,7 @@ from app import database
 from bson import ObjectId
 
 from typing import Any
+from app.authentication.token_auth import get_voterToken
 
 from app.database.api import (
     search_document,
@@ -17,9 +18,10 @@ from app.dp.update_topics.validate.api import ValidateAnswer
 
 from app.process.utils import get_cur_rounds_num
 
-from app.utils.api import Time
-
-from app.utils.constant import Constant
+from app.utils.api import (
+    Time,
+    Constant
+)
 
 from app._typing import Survey_Update_Method
 
@@ -29,13 +31,14 @@ from app.error import DBDocumentNotFound
 
 from typing import Union
 
-from app.process.utils import get_unique_id
+from app.process.api import get_unique_id
 
 from typeguard import typechecked
 
 from app._typing import (
     MTurkID,
-    Survey_New_Answers
+    Survey_New_Answers,
+    Survey_Topics
 )
 
 
@@ -68,15 +71,18 @@ class VoterAnswerSurvey:
 
         Parameters
         ----------
-        survey_template_id : str
-            An unique string corresponding to a survey template.
-        mturk_id : MTurkID
-            An unique id that Amazon delivers to Voter.
+        voterToken : str
+            Token to verify voter
+        survey_answer_id : str
+            unique string to distinguish answer
+        survey_topics : Survey_Topics
+            Union[None, dict[str, dict[str, Any]]]
 
         Returns
         -------
         dict
         '''
+        print('44444')
         # check if survey_template_document is None
         # if is None, raise SurveyTemplateNotFound error
         survey_template_document = search_document(
@@ -98,19 +104,37 @@ class VoterAnswerSurvey:
             survey_template_id=survey_template_id,
             mturk_id=mturk_id,
         )
+        print('55555')
+        survey_update_method = survey_template_document['survey_update_method']
+        survey_topics = survey_template_document['survey_topics']
+        # get choices list from survey template topics 
+        updated_survey_topics = update_topics(
+            survey_update_method=survey_update_method,
+            cur_rounds_num=0,
+            max_rounds=1,
+            survey_topics=survey_topics,
+            survey_prev_answers={},
+            survey_new_answers=survey_topics
+        )
+        print('99999')
+        voterToken = get_voterToken(
+            survey_template_id=survey_template_id,
+            mturk_id=mturk_id
+        )
 
         return {
-            'survey_template_id': survey_template_id,
+            'voterToken': voterToken,
             'survey_answer_id': survey_answer_id,
-            'survey_topics': survey_template_document['survey_topics']
+            'survey_update_method': survey_update_method,
+            'updated_survey_topics': updated_survey_topics
         }
     
     @classmethod
     def update_survey_topics(
         cls,
         survey_answer_id: str,
-        survey_new_answers: Survey_New_Answers
-    ) -> Union[None, dict[str, dict[str, Any]]]:
+        survey_new_answers: Survey_New_Answers,
+    ) -> dict[str, Union[str, dict, dict[str, dict[str, Any]]]]:
         '''
         Check the information uploaded by Voter and
         check the constrains of the survey template 
@@ -130,13 +154,14 @@ class VoterAnswerSurvey:
             Otherwise return new topics
         '''
         # check if survey_answer_id in database
+        print('2')
         survey_answer_document = search_document(
             database_type='survey_answer',
             survey_answer_id=survey_answer_id
         )
         if survey_answer_document is None:
             raise DBDocumentNotFound('cannot find the db document')
-
+        print('3')
         # Get the info prescribed by creator
         survey_template_id = survey_answer_document['survey_template_id']
         survey_template_document = search_document(
@@ -152,7 +177,7 @@ class VoterAnswerSurvey:
         cur_rounds_num = get_cur_rounds_num(
             survey_prev_answers=survey_prev_answers
         )
-
+        print('4')
         # Validate the new answers
         ValidateAnswer.validate_survey_answers(
             cur_rounds_num=cur_rounds_num,
@@ -160,7 +185,7 @@ class VoterAnswerSurvey:
             survey_prev_answers=survey_prev_answers,
             survey_new_answers=survey_new_answers
         )
-
+        print('5')
         # Store new answers
         update_document(
             database_type='survey_answer',
@@ -168,8 +193,8 @@ class VoterAnswerSurvey:
             survey_answer_id=survey_answer_id,
             survey_new_answers=survey_new_answers
         )
-
-        # Get dynamic topic
+        print('6')
+        # Get dynamic topics
         updated_survey_topics = update_topics(
             survey_update_method=survey_update_method,
             cur_rounds_num=cur_rounds_num,
@@ -179,4 +204,8 @@ class VoterAnswerSurvey:
             survey_new_answers=survey_new_answers
         )
         
-        return updated_survey_topics
+        return {
+            'survey_answer_id': survey_answer_id,
+            'survey_update_method': survey_update_method,
+            'updated_survey_topics': updated_survey_topics
+        }

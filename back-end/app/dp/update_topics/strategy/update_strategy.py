@@ -15,6 +15,13 @@ from app._typing import (
     Survey_Update_Method
 )
 
+from typing import (
+    final,
+    Any,
+    Callable,
+    Union
+)
+
 
 @typechecked
 class UpdateTopicsOperator(AbstractUpdateTopicsStrategy, BaseUpdateTopicsStrategy):
@@ -85,10 +92,10 @@ class UpdateTopicsOperator(AbstractUpdateTopicsStrategy, BaseUpdateTopicsStrateg
         elif update_method_type == 'uniform':
             self.__update_method = GetUniformUpdate.get_class()
 
-    def update_topics(
+    def update_survey_topics(
         self, **kwargs
-    ) -> list:
+    ) -> Union[None, dict[str, dict[str, Any]]]:
         '''
         strategy interface
         '''
-        return self.__update_method.update_topics(**kwargs)
+        return self.__update_method.update_survey_topics(**kwargs)

@@ -54,7 +54,7 @@ class ValidateCategoricalAnswer(ValidateBase):
         cls,
         topic_name: str,
         range_criteria: dict[str, Any],
-        cur_topic_ans: list[Categorical_Option_Type]
+        cur_topic_ans: dict[str, list[Categorical_Option_Type]]
     ) -> None:
         '''
         Check if cur_topic_ans is in answer_range
@@ -69,6 +69,11 @@ class ValidateCategoricalAnswer(ValidateBase):
         -------
         None
         '''
+        if 'inclusion' in cur_topic_ans:
+            cur_topic_ans = cur_topic_ans['inclusion']
+        elif 'exclusion' in cur_topic_ans:
+            cur_topic_ans = cur_topic_ans['exclution']
+            
         if not cls.__is_cur_topic_ans_valid(
             range=range_criteria[Constant.CATEGORICAL_RANGE_KEY]['inclusion'],
             cur_topic_ans=cur_topic_ans

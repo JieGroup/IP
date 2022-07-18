@@ -52,6 +52,7 @@ def create_survey_template() -> None:
     -------
     str
     '''
+    print('template', request)
     data = request.get_json()
     if not data:
         raise ValueError('You must post JSON data.')

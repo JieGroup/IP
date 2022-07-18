@@ -3,22 +3,24 @@ from __future__ import annotations
 import copy
 import numpy as np
 
+from app.dp.update_topics.reformat.base import BaseReformat
+
 from typeguard import typechecked
 
-from typing import Union
+from typing import (
+    Union,
+    Any
+)
 
 from app._typing import (
     Categorical_Option_Type,
-    Continuous_Option_Type
+    Continuous_Option_Type,
+    Answer_Type
 )
 
 
 @typechecked
-class ReformatBase:
-    pass
-
-@typechecked
-class ReformatCategoricalTopic(ReformatBase):
+class UniformTopicReformat(BaseReformat):
     '''
     Class to reformat categorical updated
     topic to choices
@@ -29,16 +31,33 @@ class ReformatCategoricalTopic(ReformatBase):
 
     Methods
     -------
-    reformat
+    reformat_topic
     '''
+    @classmethod
+    def reformat_topic(
+        cls,
+        answer_type: Answer_Type,
+        topic_new_range: Union[list, tuple]
+    ) -> Any:
+
+        if answer_type == 'categorical':
+            return cls.__reformat_categorical_topic(
+                topic_new_range=topic_new_range
+            )
+        elif answer_type == 'continuous':
+            return cls.__reformat_continuous_topic(
+                topic_new_range=topic_new_range
+            )
 
     @classmethod
-    def reformat(
+    def __reformat_categorical_topic(
         cls,
         topic_new_range: list[Categorical_Option_Type]
-    ) -> list[Union[list[Categorical_Option_Type], str]]:
+    ) -> list[dict[str, Union[list, str]]]:
         '''
+        Reformat categorical updated topic to choices
         Form a list of length 3.
+
         List[0] is the topic_new_range.
         List[1] means none of the options
         in list[0].
@@ -51,36 +70,29 @@ class ReformatCategoricalTopic(ReformatBase):
 
         Returns
         -------
-        list
+        list[dict[str, Union[list, str]]]
         '''
         choices_list = [_ for _ in range(3)]
-        choices_list[0] = copy.deepcopy(topic_new_range)
-        choices_list[1] = 'exclusion'
-        choices_list[2] = 'stop'
+        choices_list[0] = {
+            'inclusion': copy.deepcopy(topic_new_range)
+        }
+        choices_list[1] = {
+            'exclusion': copy.deepcopy(topic_new_range)
+        }
+        choices_list[2] = {
+            'stop': 'stop'
+        }
         
         return choices_list
 
-
-class ReformatContinuousTopic(ReformatBase):
-    '''
-    Class to reformat continuous updated
-    topic to choices
-
-    Attributes
-    ----------
-    None
-
-    Methods
-    -------
-    reformat
-    '''
-
     @classmethod
-    def reformat(
+    def __reformat_continuous_topic(
         cls,
         topic_new_range: tuple[Continuous_Option_Type, Continuous_Option_Type, Continuous_Option_Type]
     ) -> list[Union[dict[str, Continuous_Option_Type], str]]:
         '''
+        Reformat continuous updated topic to choices
+
         Form a list of length 3.
         List[0] contains min_val <= x <= new_mid_val
         List[1] contains new_mid_val+1 <= x <= max_val.
@@ -95,6 +107,7 @@ class ReformatContinuousTopic(ReformatBase):
         -------
         list
         '''
+        print(f'topic_new_range: {topic_new_range}')
         min_val = topic_new_range[0]
         new_mid_val = topic_new_range[1]
         max_val = topic_new_range[2]
@@ -111,3 +124,5 @@ class ReformatContinuousTopic(ReformatBase):
         choices_list[2] = 'stop'
         
         return choices_list
+
+    

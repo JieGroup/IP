@@ -81,7 +81,7 @@ class SurveyTemplate:
         '''
         if max_rounds > Constant.MAX_ROUNDS:
             return False
-        if max_rounds < 0:
+        if max_rounds < Constant.MIN_ROUNDS:
             return False
         return True
 
@@ -132,7 +132,7 @@ class SurveyTemplate:
         number_of_copies: int,
         max_rounds: int,
         survey_topics: Survey_Topics
-    ) -> str:
+    ) -> dict:
         '''
         Check survey template information uploaded by creator and store
             the survey template information in db.
@@ -154,7 +154,7 @@ class SurveyTemplate:
 
         Returns
         -------
-        str
+        dict
             Return an unique survey_template_id that creator can obtain the information 
             about the survey template
         '''
@@ -183,4 +183,6 @@ class SurveyTemplate:
             max_rounds=max_rounds,
             survey_topics=survey_topics
         )
-        return survey_template_id
+        return {
+            'survey_template_id': survey_template_id
+        }

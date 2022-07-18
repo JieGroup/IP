@@ -188,7 +188,7 @@ class JwtManipulation:
         role: Role,
         cur_user_info: dict, 
         expires_in: int=Constant.TOKEN_EXPIRATION_PERIOD
-    ) -> None:
+    ) -> str:
         '''
         Get token
 

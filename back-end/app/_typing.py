@@ -41,10 +41,16 @@ Answer_Type = Literal[
 ]
 
 # must be one of the three types
-Categorical_Option_Type = TypeVar('Categorical_Option_Type', int, float, str)
+# Categorical_Option_Type = TypeVar('Categorical_Option_Type', int, float, str)
+Categorical_Option_Type = Union[
+    int, 
+    float, 
+    str
+]
 
 # must be one of the two types
-Continuous_Option_Type = TypeVar('Continuous_Option_Type', int, str)
+# Continuous_Option_Type = TypeVar('Continuous_Option_Type', int, float)
+Continuous_Option_Type = Union[int, float, str]
 
 # The Criteria of the survey topics that stores in survey template db
 Survey_Topics = dict[str, dict[str, Any]]

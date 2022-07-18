@@ -20,7 +20,7 @@ from app._typing import (
 )
 
 
-@api.route('/voter_start_answering', methods=['GET'])
+@api.route('/voter_start_answering', methods=['POST'])
 # @handle_response
 def voter_start_answering():
 
@@ -40,18 +40,20 @@ def voter_start_answering():
     -------
     dict
     '''
-
+    data = request.get_json()
+    if not data:
+        raise ValueError('You must post JSON data.')
     expected_data = {
         'survey_template_id': str,
         'mturk_id': MTurkID
     }
     check_if_data_is_valid(
-        data=request.args,
+        data=data,
         expected_data=expected_data
     )
 
-    survey_template_id = request.args['survey_template_id']
-    mturk_id = request.args['mturk_id']
+    survey_template_id = data['survey_template_id']
+    mturk_id = data['mturk_id']
     return VoterAnswerSurvey.start_answering(
         survey_template_id=survey_template_id,
         mturk_id=mturk_id,
@@ -61,7 +63,6 @@ def voter_start_answering():
 @api.route('/voter_submit_answers', methods=['POST'])
 # @handle_response
 def voter_submit_answers():
-
     '''
     Voter upload parameters and new answers for a survey template.
     Handle http request in this function and call VoterAnswerSurvey.update_survey_topics
@@ -80,30 +81,26 @@ def voter_submit_answers():
         If the voter has finished all rounds of survey, return None.
         Otherwise return new topics
     '''
-
     data = request.get_json()
     if not data:
         raise ValueError('You must post JSON data.')
-
+    print(f'voter_submit_answers: {data}')
     expected_data = {
         'survey_answer_id': str,
         'survey_new_answers': Survey_New_Answers,
-        'start_time': str,
-        'end_time': str
     }
     check_if_data_is_valid(
-        data=request.args,
+        data=data,
         expected_data=expected_data,
     )
 
     survey_answer_id = data['survey_answer_id']
     survey_new_answers = data['survey_new_answers']
-    start_time = data['start_time']
-    end_time = data['end_time']
-    
+    print('???survey_new_answers', survey_new_answers, len(survey_new_answers))
+    if len(survey_new_answers) == 0:
+        raise ValueError('cannot input empty survey_new_answers')
+    print('1')
     return VoterAnswerSurvey.update_survey_topics(
         survey_answer_id=survey_answer_id,
         survey_new_answers=survey_new_answers,
-        start_time=start_time,
-        end_time=end_time
     )

@@ -63,7 +63,7 @@
                 name="max_rounds"
                 class="form-control"
                 :class="{ 'border-danger': validate.max_rounds.$error }"
-                placeholder="Times you want to update the topics. E.g.1"
+                placeholder="The number of times the voter can answer the topic. E.g.1"
             />
             <template v-if="validate.max_rounds.$error">
                 <div
@@ -246,7 +246,7 @@ const emit = defineEmits([])
 
 const formData = reactive({
   survey_update_method: "static",
-  max_rounds: 0,
+  max_rounds: 1,
   number_of_copies: "",
   time_period: "3"
 });
@@ -259,7 +259,7 @@ const rules = {
     required: requiredIf(() => formData.survey_update_method === 'uniform'),
     integer,
     maxValue: maxValue(5),
-    minValue: minValue(0)
+    minValue: minValue(1)
   },
   number_of_copies: {
     required,

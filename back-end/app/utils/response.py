@@ -17,13 +17,13 @@ from app._typing import JSONType
 def handle_response(
     func: Callable
 ) -> Callable:
-    # print('daohandlele')
+    
 
     @wraps(func)
     def wrapper(
         *args, **kwargs
     ) -> JSONType:
-
+        print('daohandlele')
         res = func(*args, **kwargs)
         res = Serialization.make_data_serializable(res)
         return json.dumps(res)

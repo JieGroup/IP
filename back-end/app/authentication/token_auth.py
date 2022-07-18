@@ -45,6 +45,7 @@ def get_userToken() -> dict[str, str]:
         raise ValueError('not verify email yet')
     
     userToken = JwtManipulation.get_jwt(
+        role='user',
         cur_user_info=g.current_user
     )
 
@@ -73,6 +74,7 @@ def get_voterToken(
     '''
     
     voterToken = JwtManipulation.get_jwt(
+        role='voter',
         cur_user_info={
             'survey_template_id': survey_template_id,
             'mturk_id': mturk_id

@@ -1,8 +1,9 @@
 import pytest
 
-from synspot.tests.test_autorization.conftest import Authorization_instance
+from tests.test_autorization.conftest import Authorization_instance
 
-from synspot.tests.test_autorization.conftest import Network_instance
+from tests.test_autorization.conftest import Network_instance
+
 
 class TestLogin:
 
