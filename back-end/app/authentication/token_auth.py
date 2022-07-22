@@ -54,7 +54,6 @@ def get_userToken() -> dict[str, str]:
     }
 
 # @authentication_bp.route('/get_voter_token', methods=['POST'])
-@handle_response
 def get_voterToken(
     survey_template_id: str,
     mturk_id: MTurkID,
@@ -72,7 +71,6 @@ def get_voterToken(
     -------
     dict[str, str]
     '''
-    
     voterToken = JwtManipulation.get_jwt(
         role='voter',
         cur_user_info={
@@ -85,8 +83,8 @@ def get_voterToken(
         'voterToken': voterToken
     }
 
+
 @token_auth.verify_token
-@handle_response
 @typechecked
 def verify_token(
     token: str
@@ -94,6 +92,7 @@ def verify_token(
     '''
     1. Check if the request contains token.
     2. Check the validity of the token
+    3. Check if we need to update the token
 
     Parameters
     ----------
@@ -107,7 +106,8 @@ def verify_token(
         raise ValueError('token is not valid')
     
     token_payload = JwtManipulation.decode_jwt(token=token)
-
+    
+    # decide the role of token
     role = None
     if 'user_id' in token_payload:
         role = 'user'
@@ -121,7 +121,7 @@ def verify_token(
             user_id=user_id
         )
         g.current_user = user_document
-    
+        
         if JwtManipulation.is_jwt_needing_update(
             token_payload=token_payload
         ):
@@ -130,6 +130,7 @@ def verify_token(
                 token_payload=token_payload,
                 cur_user_info=g.current_user, 
             )
+        g.current_user['userToken'] = token
     elif role == 'voter':
         if JwtManipulation.is_jwt_needing_update(
             token_payload=token_payload
@@ -138,24 +139,5 @@ def verify_token(
                 role=role,
                 token_payload=token_payload,
             )
-
-    g.current_user['token'] = token
+        g.current_user['voterToken'] = token
     return True
-
-# @token_auth.error_handler
-# @handle_response
-# def token_auth_error():
-
-#     '''
-#     Return an error response if Token Auth authentication fails
-
-#     Parameters
-#     ----------
-#     None
-
-#     Returns
-#     -------
-#     '''
-#     pass
-    # return error_response(401)
-

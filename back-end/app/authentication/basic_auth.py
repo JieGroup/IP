@@ -8,6 +8,8 @@ from app import pyMongo
 
 from app.utils.api import handle_response
 
+from app.database.api import search_document
+
 from app.authentication.utils import is_password_valid
 
 from typeguard import typechecked
@@ -32,29 +34,15 @@ def verify_password(
     -------
     bool
     '''
-    user = pyMongo.db.User.find_one({'username': username})
-    if user is None:
-        raise ValueError('user cannot found')
+    user = search_document(
+        database_type='user',
+        username=username,
+    )
     if not is_password_valid(
-        hashed_password=g.current_user['hashed_password'],
+        hashed_password=user['hashed_password'],
         password=password
     ):
-        raise ValueError('user cannot found')
+        raise ValueError('password wrong')
 
     g.current_user = user
     return True
-
-# @basic_auth.error_handler
-# def basic_auth_error():
-#     '''
-#     Return an error response in case of authentication failure
-
-#     Parameters
-#     ----------
-#     None
-
-#     Returns
-#     -------
-#     TODO
-#     '''
-#     return error_response(401)

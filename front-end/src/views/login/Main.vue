@@ -186,7 +186,7 @@ import { useVuelidate } from "@vuelidate/core";
 import { computed, onMounted } from "vue";
 import DarkModeSwitcher from "@/components/dark-mode-switcher/Main.vue";
 import dom from "@left4code/tw-starter/dist/js/dom";
-import { useInfoStore } from "@/stores/stored-info"
+import { useInfoStore } from "@/stores/user-info"
 import { useAuthenticationStore } from "@/stores/authentication"
 import { process_axios_error, get_auth_url } from "@/utils/axios_utils"
 import { axios } from "@/utils/axios";

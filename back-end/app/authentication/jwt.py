@@ -36,7 +36,6 @@ class JwtManipulation:
     @classmethod
     def is_jwt_needing_update(
         cls,
-        current_time: float, 
         token_payload: dict,
     ) -> bool:
         '''
@@ -47,9 +46,7 @@ class JwtManipulation:
 
         Parameters
         ----------
-        time_diff : int
-            Time difference between the current time and the token 
-            expiration time.
+        token_payload : dict
         
         Returns
         -------

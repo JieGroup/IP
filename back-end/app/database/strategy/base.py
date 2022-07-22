@@ -29,9 +29,7 @@ class BaseDatabaseStrategy:
         res: Any
     ) -> None:
         '''
-        If we search a specific record in the DB and
-        the result is None.
-        We shall raise an error.
+        Check if searched document is None
 
         Parameters
         ----------

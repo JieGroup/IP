@@ -203,7 +203,7 @@ class VoterAnswerSurvey:
             survey_prev_answers=survey_prev_answers,
             survey_new_answers=survey_new_answers
         )
-        
+
         return {
             'survey_answer_id': survey_answer_id,
             'survey_update_method': survey_update_method,

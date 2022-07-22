@@ -129,8 +129,16 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
     ) -> Union[None, dict]:
         '''
         strategy interface and check mongodb response
+
+        Notes
+        -----
+        search_document doest not need to check all the time,
+        since we may use it to check if the username is duplicated(the
+        return value can be None), etc.
         '''
         res = self.__database_operator.search_document(**kwargs)
+        if 'check_response' in kwargs and not kwargs['check_response']:
+            return res
         super().check_search_document_response(res=res)
         return res
     

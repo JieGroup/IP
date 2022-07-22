@@ -171,30 +171,31 @@ def register_account(
     str
     '''
 
-    user_document = search_document(
-        database_type='user',
-        username=username
-    )
-
+    # user_document = search_document(
+    #     database_type='user',
+    #     username=username
+    # )
+    # print('user_document', user_document)
     user_id = None
-    if user_document == None:
-        user_id = get_unique_id()
-        hashed_password = get_hashed_password('Xie1@456')
-    
-        create_document(
-            database_type='user',
-            user_id=user_id,
-            username=username,
-            hashed_password=hashed_password,
-            comfirm_email=True
-        )
-    else:
-        user_id = user_document['user_id']
+    # if user_document == None:
+    user_id = get_unique_id()
+    hashed_password = get_hashed_password('Xie1@456')
+
+    create_document(
+        database_type='user',
+        user_id=user_id,
+        username=username,
+        email='123@123.com',
+        hashed_password=hashed_password,
+        authority_level='user',
+        comfirm_email=True
+    )
+    # else:
+        # user_id = user_document['user_id']
 
     return user_id
 
 def get_two_accounts() -> tuple[str, str]:
-
     '''
     Get 2 accounts for further testing
 
@@ -206,7 +207,6 @@ def get_two_accounts() -> tuple[str, str]:
     -------
     tuple[str, str]
     '''
-
     user_id_1 = register_account(
         username='unittest1'
     )

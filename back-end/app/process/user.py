@@ -79,6 +79,7 @@ class User:
         # Check if the username is duplicated
         user_document = search_document(
             database_type='user',
+            check_response=False,
             username=username
         )
         if user_document:
@@ -171,12 +172,14 @@ class User:
         '''
         if search_document(
             database_type='user',
-            username=username
+            username=username,
+            check_response=False
         ):
             raise ValueError('Please use a different username.')
         if search_document(
             database_type='user',
-            email=email
+            email=email,
+            check_response=False
         ):
             raise ValueError('Please use a different email address.')
 
@@ -223,7 +226,8 @@ class User:
         email = decode_token(token)
         user_document = search_document(
             database_type='user',
-            email=email
+            email=email,
+            check_response=False
         )
 
         msg = ''

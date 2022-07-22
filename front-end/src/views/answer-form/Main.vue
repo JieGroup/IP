@@ -74,6 +74,24 @@
               </div>
             </div>
             <!-- END: Failed Notification Content -->
+            <!-- BEGIN: Request Error Content -->
+            <div
+              id="request-error-content"
+              class="toastify-content hidden flex"
+            >
+              <CheckCircleIcon class="text-danger" />
+              <div class="ml-4 mr-4" :model="request_error">
+                <div class="font-medium">Network request error!</div>
+                <div class="text-slate-500 mt-1" >
+                  <!-- {{ request_error }}
+                  error_name: {{ request_error['error_name'] }}
+                  error_msg: {{ request_error.error_msg }}
+                  error_status: {{ request_error.error_status }} -->
+                  Please check your input!
+                </div>
+              </div>
+            </div>
+            <!-- END: Request Error Content -->
           </Preview>
           <Source>
             <Highlight type="javascript">
@@ -150,6 +168,8 @@
       </PreviewComponent>
       <!-- END: Form Validation -->
     </div>
+    <button @click="test">TEST</button>
+    <button @click="test">TEST2 no async</button>
   </div>
 </template>
 
@@ -163,17 +183,120 @@ import {
   email,
   url,
   integer,
+  requiredIf
 } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import Toastify from "toastify-js";
 import dom from "@left4code/tw-starter/dist/js/dom";
 import IpFixForm from "@/components/ip-fix-form/Main.vue";
 import IpDynamicForm from "@/components/ip-dynamic-form/Main.vue";
+import { axios } from "@/utils/axios";
+import { linkTo, process_template_data } from "./index"
+import { process_axios_response, process_axios_error, get_api_url } from "@/utils/axios_utils"
+import { useAuthenticationStore } from '@/stores/authentication'
+import { voterAnswerStore } from '@/stores/voter-answer'
+import { UniformOpt } from '@/components/voter-ans-opt/uniform-ans-opt'
+import { StaticOpt } from '@/components/voter-ans-opt/static-ans-opt'
+
+//判断answer store
+const voterAnswer = voterAnswerStore();
+const surveyTopics = computed(() => voterAnswer.surveyTopics);
+
+//判断voterToken
+const authenticationStore = useAuthenticationStore();
+const voterToken = computed(() => authenticationStore.voterToken);
+
+let request_error = reactive({})
+request_error.adasdsa = 'asdfasdf'
+
+const voter_start_answering = () => {
+  // construct form with requirements
+  const formData = reactive({
+    survey_template_id: "",
+    mturk_id: "",
+  });
+
+  const rules = {
+    survey_template_id: {
+      required,
+      minLength: minLength(1),
+    },
+    mturk_id: {
+      required,
+      minLength: minLength(1),
+    },
+  };
+  const validate = reactive(useVuelidate(rules, toRefs(formData)));
+}
+
+const voter_submit_answer = () => {
+  // construct form with requirements
+
+
+}
+
+const send_voter_start_answering = () => {
+  // send voter start answering data to
+  // corresponding back-end api
+  
+}
+
+const send_voter_submit_answer = () => {
+  // send voter submit answer data to
+  // corresponding back-end api
+
+}
+
+
+const xxx = async () => {
+  console.log('!!!!')
+  try{
+    let res = await axios.get('/api/testing_get_exception')
+    console.log('$$$$', res)
+  } catch (err) {
+    let processed_err = process_axios_error(err)
+    // console.log('asdasd', aa)
+    // console.log('!@#!@#errrrr', err)
+    // console.log(err.error_name)
+    // let request_error = ref({'adasdsa': '12312'})
+    request_error.error_name = processed_err.error_name
+    request_error.error_msg = processed_err.error_msg
+    request_error.error_status = processed_err.error_status
+
+    console.log('fuzhi', request_error)
+    Toastify({
+      node: dom("#request-error-content")
+        .clone()
+        .removeClass("hidden")[0],
+      duration: 10000,
+      newWindow: true,
+      close: true,
+      gravity: "top",
+      position: "right",
+      stopOnFocus: true,
+    }).showToast();
+
+  } 
+  console.log('??????')
+}
+
+const test2 = () => {
+  console.log('!!!!')
+  axios.get('/api/testing_get')
+    .then((response) => {
+      console.log('!!!!!!')
+      console.log('$$zhende response', response);
+    })
+    .catch((error) => {
+      console.log('&&&&&&')
+      console.log('$$zhende response', error);
+    });
+  console.log('??????')
+}
 
 let fix_form_data = reactive({})
 let unique_id = 0
 let dynamic_form_array = reactive([{unique_id: unique_id}])
-
 
 const add_dynamic_form = () => {
   console.log('jiajiajia')
@@ -193,18 +316,20 @@ const delete_dynamic_form = (dynamic_form_index) => {
   console.log('shemeqingkuang', dynamic_form_array)
 }
 
-const is_fix_form_validate = (data_invalid) => {
+const is_fix_form_validate = (data_valid) => {
   // fix_form_data.validate is the value of 
   // the vuelidate we used
   const validate = fix_form_data.validate
   validate.$touch();
-  if (validate.$invalid === false) {
-    data_invalid = false
+  console.log('fixxxxx', validate.$invalid, data_valid, validate)
+  if (validate.$invalid === true) {
+    data_valid = false
   }
-  return data_invalid
+  // data_invalid = validate.$invalid
+  return data_valid
 };
 
-const is_dynamic_form_validate = (data_invalid) => {
+const is_dynamic_form_validate = (data_valid) => {
   console.log('dynamic_form_arrayaa', dynamic_form_array);
   dynamic_form_array.forEach((item, index) => {
     console.log('dynamic_form_arrayaabb', item, index);
@@ -213,27 +338,18 @@ const is_dynamic_form_validate = (data_invalid) => {
     // item is the value of the vuelidate we used
     const validate = item.validate
     validate.$touch();
-    if (validate.$invalid === false) {
-      data_invalid = false
+    console.log('dynamic!!!!!!', validate.$invalid, data_valid)
+    if (validate.$invalid === true) {
+      data_valid = false
     }
+    // data_invalid = validate.$invalid
   });
-  return data_invalid
+  
+  return data_valid
 };
 
-const notification = (data_invalid) => {
-  if (data_invalid) {
-    Toastify({
-      node: dom("#failed-notification-content")
-        .clone()
-        .removeClass("hidden")[0],
-      duration: 3000,
-      newWindow: true,
-      close: true,
-      gravity: "top",
-      position: "right",
-      stopOnFocus: true,
-    }).showToast();
-  } else {
+const notification = (data_valid) => {
+  if (data_valid) {
     Toastify({
       node: dom("#success-notification-content")
         .clone()
@@ -245,14 +361,84 @@ const notification = (data_invalid) => {
       position: "right",
       stopOnFocus: true,
     }).showToast();
+  } else {
+    Toastify({
+      node: dom("#failed-notification-content")
+        .clone()
+        .removeClass("hidden")[0],
+      duration: 3000,
+      newWindow: true,
+      close: true,
+      gravity: "top",
+      position: "right",
+      stopOnFocus: true,
+    }).showToast();
+  }
+}
+
+const is_form_valid = () => {
+  let fix_data_valid = true
+  let dynamic_data_valid = true
+  fix_data_valid = is_fix_form_validate(fix_data_valid)
+  dynamic_data_valid = is_dynamic_form_validate(dynamic_data_valid)
+  console.log('total@@@@@@', fix_data_valid, dynamic_data_valid)
+  return fix_data_valid && dynamic_data_valid
+}
+
+
+const send_form = async (templateData) => {
+  try {
+    let response = await axios.post(get_api_url('create_survey_template'), templateData);
+    console.log('response', response)
+    console.log('asda', response.data)
+    let processed_response = process_axios_response(response);
+    console.log(`send_form response: ${processed_response}`)
+    // Go to response page
+    // linkTo()
+  } catch (err) {
+    console.log(`send_form err 0.5: ${err}`)
+    let processed_err = process_axios_error(err)
+    console.log(`send_form err: ${processed_err}`)
+
+    Toastify({
+      node: dom("#request-error-content")
+        .clone()
+        .removeClass("hidden")[0],
+      duration: 10000,
+      newWindow: true,
+      close: true,
+      gravity: "top",
+      position: "right",
+      stopOnFocus: true,
+    }).showToast();
   }
 }
 
 const send_to_server = () => {
-  let fix_data_invalid = ref(true)
-  let dynamic_data_invalid = ref(true)
-  fix_data_invalid = is_fix_form_validate(fix_data_invalid)
-  dynamic_data_invalid = is_dynamic_form_validate(dynamic_data_invalid)
-  notification(dynamic_data_invalid || fix_data_invalid)
+  let validation = is_form_valid()
+  notification(validation)
+  console.log('fix_form_data', fix_form_data)
+  console.log('dynamic_form_array', dynamic_form_array)
+  if (validation === true) {
+    let templateData = process_template_data(
+      fix_form_data,
+      dynamic_form_array
+    )
+    console.log('templateData', templateData)
+    send_form(templateData)
+  }
 }
+
+onMounted(() => {
+  // Indicates the voter is answering the survey topics
+  // The voter might refresh the page
+  if (surveyTopics !== null && voterToken !== null){
+    continue
+    voter_start_answering()
+  } else {
+    // New answer to a survey template
+    continue
+    voter_submit_answer()
+  }
+});
 </script>
