@@ -3,6 +3,8 @@ import Toastify from "toastify-js";
 import { computed, toRefs } from "vue";
 import { useAuthenticationStore } from "@/stores/authentication";
 import { useRoute, useRouter } from "vue-router";
+import { process_axios_response, is_url_belonging_voter_answering, update_token } from './axios_utils'
+import { update } from 'lodash';
 
 // default setting
 axios.defaults.timeout = 50000  // 超时时间
@@ -20,11 +22,17 @@ const linkTo = (path, router) => {
 
 // Add a request interceptor to axios
 axios.interceptors.request.use(config => {
-  console.log('request config1')
-  // add token to request
+  console.log('request config1', config)
   const authenticationStore = useAuthenticationStore();
-  const userToken = computed(() => authenticationStore.userToken);
-  if (userToken !== null) {
+  // If current request is sending to the voter answering part
+  // we may need to add the voterToken
+  if (is_url_belonging_voter_answering(config.url) === true) {
+    const voterToken = authenticationStore.voterToken;
+    config.headers.Authorization = `Bearer ${voterToken}`
+  } else {
+    // If current request is sending to the api that needs
+    // to verify user identity, we need to add the userToken
+    const userToken = authenticationStore.userToken;
     config.headers.Authorization = `Bearer ${userToken}`
   }
   console.log('request config2')
@@ -37,8 +45,9 @@ axios.interceptors.request.use(config => {
 // Add a response interceptor to axios
 axios.interceptors.response.use(response => {
   console.log('response config2', response)
+  let data = process_axios_response(response)
+  // update_token(data)
   return response
-  // return Promise.resolve(response)
 }, error => {
   // handle response error
   console.log('Error_https', error)
@@ -65,8 +74,6 @@ axios.interceptors.response.use(response => {
           break
         case 500:
           return Promise.reject(error)
-          
-          // return error
       }
     }
   }

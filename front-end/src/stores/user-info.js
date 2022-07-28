@@ -3,11 +3,11 @@ import { defineStore } from "pinia";
 export const useInfoStore = defineStore("info", {
   state: () => ({
     usernameValue: 
-      localStorage.getItem("username") == null
+      localStorage.getItem("username") === null
         ? 'username'
         : localStorage.getItem("username"),
     passwordValue: 
-      localStorage.getItem("password") == null
+      localStorage.getItem("password") === null
         ? 'password'
         : localStorage.getItem("password")
   }),
@@ -22,11 +22,11 @@ export const useInfoStore = defineStore("info", {
   actions: {
     setUsername(username) {
       localStorage.setItem("username", username);
-      this.username = username;
+      this.usernameValue = username;
     },
     setPassword(password) {
       localStorage.setItem("password", password);
-      this.password = password;
+      this.passwordValue = password;
     },
   },
 });

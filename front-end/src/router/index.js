@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import SideMenu from "../layouts/side-menu/Main.vue";
-import SimpleMenu from "../layouts/simple-menu/Main.vue";
-import TopMenu from "../layouts/top-menu/Main.vue";
+// import SimpleMenu from "../layouts/simple-menu/Main.vue";
+// import TopMenu from "../layouts/top-menu/Main.vue";
 import DashboardOverview1 from "../views/dashboard-overview-1/Main.vue";
 import DashboardOverview2 from "../views/dashboard-overview-2/Main.vue";
 import DashboardOverview3 from "../views/dashboard-overview-3/Main.vue";
@@ -68,12 +68,35 @@ import TomSelect from "../views/tom-select/Main.vue";
 import FileUpload from "../views/file-upload/Main.vue";
 import WysiwygEditor from "../views/wysiwg-editor/Main.vue";
 import CreateForm from "../views/create-form/Main.vue";
+import CreateFormRes from "../views/create-form-res/Main.vue";
 import AnswerForm from "../views/answer-form/Main.vue";
 import Chart from "../views/chart/Main.vue";
 import Slider from "../views/slider/Main.vue";
 import ImageZoom from "../views/image-zoom/Main.vue";
 
 const routes = [
+
+  // {
+  //   path: "/",
+  //   component: SideMenu,
+  //   children: [
+  //     {
+  //       path: "/",
+  //       name: "side-menu-dashboard-overview-1",
+  //       component: DashboardOverview1,
+  //       meta: {
+  //         show: false
+  //       }
+  //     },
+  //     {
+  //       path: "dashboard-overview-2",
+  //       name: "side-menu-dashboard-overview-2",
+  //       component: DashboardOverview2,
+  //     },
+  //   ],
+  // },
+
+
   {
     path: "/",
     component: SideMenu,
@@ -397,6 +420,11 @@ const routes = [
         component: CreateForm,
       },
       {
+        path: "create-form-res",
+        name: "side-menu-create-form-res",
+        component: CreateFormRes,
+      },
+      {
         path: "answer-form",
         name: "side-menu-answer-form",
         component: AnswerForm,
@@ -418,6 +446,10 @@ const routes = [
       },
     ],
   },
+
+
+
+
   // {
   //   path: "/simple-menu",
   //   component: SimpleMenu,
@@ -1090,6 +1122,8 @@ const routes = [
   //     },
   //   ],
   // },
+
+
   {
     path: "/login",
     name: "login",
@@ -1109,6 +1143,9 @@ const routes = [
     path: "/:pathMatch(.*)*",
     component: ErrorPage,
   },
+
+
+
 ];
 
 const router = createRouter({

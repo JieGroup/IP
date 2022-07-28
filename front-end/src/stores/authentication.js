@@ -4,23 +4,23 @@ export const useAuthenticationStore = defineStore("authentication", {
   state: () => ({
     userTokenValue: localStorage.getItem("userToken"),
     voterTokenValue: localStorage.getItem("voterToken"),
-    isUserAuthenticated: 
+    isUserAuthenticatedValue: 
       localStorage.getItem('userToken') !== null
         ? true 
         : false,
-    isVoterAuthenticated: 
+    isVoterAuthenticatedValue: 
       localStorage.getItem('voterToken') !== null
         ? true 
         : false,
-    userAuthority: 
+    userAuthorityValue: 
       localStorage.getItem('userToken') !== null
         ? JSON.parse(atob(window.localStorage.getItem('userToken').split('.')[1])).authority 
         : 'user',
-    voterAuthority: 
+    voterAuthorityValue: 
       localStorage.getItem('voterToken') !== null
         ? JSON.parse(atob(window.localStorage.getItem('voterToken').split('.')[1])).authority 
         : 'voter',
-    userId: 
+    userIdValue: 
       localStorage.getItem('userToken') !== null
         ? JSON.parse(atob(window.localStorage.getItem('userToken').split('.')[1])).user_id 
         : null,
@@ -33,42 +33,42 @@ export const useAuthenticationStore = defineStore("authentication", {
       return state.voterTokenValue;
     },
     isUserAthenticated(state) {
-      return state.isUserAuthenticated;
+      return state.isUserAuthenticatedValue;
     },
     isVoterAthenticated(state) {
-      return state.isVoterAuthenticated;
+      return state.isVoterAuthenticatedValue;
     },
     userAuthority(state) {
-      return state.userAuthority;
+      return state.userAuthorityValue;
     },
     voterAuthority(state) {
-      return state.voterAuthority;
+      return state.voterAuthorityValue;
     },
     userId(state) {
-      return state.userId;
+      return state.userIdValue;
     },
   },
   actions: {
     setUserToken(userToken) {
       localStorage.setItem("userToken", userToken);
-      this.userToken = userToken;
+      this.userTokenValue = userToken;
     },
     setVoterToken(voterToken) {
       localStorage.setItem("voterToken", voterToken);
-      this.voterToken = voterToken;
+      this.voterTokenValue = voterToken;
     },
     loginAction (userToken) {
       console.log('loginAction triggered')
-      this.setUserToken(userToken)
-      this.isUserAuthenticated = true;
       const parsed_token = JSON.parse(atob(localStorage.getItem('userToken').split('.')[1]));
-      this.userId = parsed_token.user_id;
+      this.userIdValue = parsed_token.user_id;
+      this.setUserToken(userToken)
+      this.isUserAuthenticatedValue = true;
     },
     logoutAction () {
       console.log('logoutAction triggered')
+      this.userIdValue = null;
       localStorage.removeItem('userToken');
-      this.isUserAuthenticated = false;
-      this.userId = null;
+      this.isUserAuthenticatedValue = false;
     },
   },
 });

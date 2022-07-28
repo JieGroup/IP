@@ -113,7 +113,7 @@ console.log('maxxx', form_data.continuous_answer_max)
 const rules = {
   continuous_answer_min: {
     required,
-    maxValue: maxValue(form_data.continuous_answer_max),
+    // maxValue: maxValue(form_data.continuous_answer_max),
   },
   continuous_answer_max: {
     required
