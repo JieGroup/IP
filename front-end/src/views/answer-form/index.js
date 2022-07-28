@@ -59,17 +59,25 @@ const process_answerFormData = (surveyTopics, surveyAnswerID, surveyUpdateMethod
     console.log('answerFormData[key]', answerFormData[key])
     console.log('surveyTopics[key]', surveyTopics[key])
     if (answer_type === 'continuous') {
-      let chosedIndex = answerFormData[key].continuous_range.$model
       if (surveyUpdateMethod === 'static') {
-        newSubAns['continuous_range']['min'] = surveyTopics[key]['choices_list'][chosedIndex]['min']
-        newSubAns['continuous_range']['max'] = surveyTopics[key]['choices_list'][chosedIndex]['max']
+        // input specific value, no choices
+        newSubAns = {
+          'continuous_range': {
+            'min': null,
+            'max': null
+          }
+        }
+        newSubAns['continuous_range']['min'] = answerFormData[key].continuous_range.$model
+        newSubAns['continuous_range']['max'] = answerFormData[key].continuous_range.$model
       } else {
+        let chosedIndex = answerFormData[key].continuous_range.$model
         newSubAns['continuous_range'] = surveyTopics[key]['choices_list'][chosedIndex]
       }
     } else if (answer_type === 'categorical') {
       // at current time, uniform update does not need to change
       // only continuous option in static update needs modification
       let chosedIndex = answerFormData[key].categorical_range.$model
+      console.log('BB', chosedIndex)
       newSubAns['categorical_range'] = surveyTopics[key]['choices_list'][chosedIndex]
     }
     tempData['survey_new_answers'][key] = newSubAns

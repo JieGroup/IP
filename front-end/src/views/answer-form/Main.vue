@@ -321,7 +321,8 @@ const send_voter_submit_answers = async () => {
   try{
     let res = await axios.post(get_api_url('voter_submit_answers'), processed_answerFormData)
     res = process_axios_response(res)
-    console.log('$$$$', res)
+    console.log('voter_submit_answers_rrrese', res)
+    console.log('updated_surevey+topics', res.updated_survey_topics, res.updated_survey_topics === {}, res.updated_survey_topics.length === 0, Object.keys(res.updated_survey_topics).length)
 
     Toastify({
       node: dom("#request-success-content")
@@ -336,11 +337,11 @@ const send_voter_submit_answers = async () => {
     }).showToast();
     
     // Finish all rounds of survey
-    if (res === {} || res.length === 0) {
+    if (Object.keys(res.updated_survey_topics).length === 0) {
       let params = {
         surveyAnswerID: surveyAnswerID.value
       }
-      linkTo('side-menu-create-form-res', router, params)
+      linkTo('side-menu-answer-form-done', router, params)
     }
   } catch (err) {
     let processed_err = process_axios_error(err)
