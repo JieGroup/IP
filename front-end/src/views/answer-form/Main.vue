@@ -185,8 +185,8 @@ import { linkTo, process_startFormData, process_answerFormData } from "./index"
 import { process_axios_response, process_axios_error, get_api_url } from "@/utils/axios_utils"
 import { useAuthenticationStore } from '@/stores/authentication'
 import { voterAnswerStore } from '@/stores/voter-answer'
-import StaticOpt from '@/components/voter-ans-opt/static-ans-opt/Main.vue'
-// import UniformOpt from '@/components/voter-ans-opt/uniform-ans-opt/Main.vue'
+import StaticOpt from '@/components/voter-ans-opt/static-ans-opt/Main.vue';
+import UniformOpt from '@/components/voter-ans-opt/uniform-ans-opt/Main.vue'
 
 const router = useRouter();
 let request_error = reactive({})
@@ -342,6 +342,8 @@ const send_voter_submit_answers = async () => {
         surveyAnswerID: surveyAnswerID.value
       }
       linkTo('side-menu-answer-form-done', router, params)
+    } else {
+      store_cur_template_info(res)
     }
   } catch (err) {
     let processed_err = process_axios_error(err)

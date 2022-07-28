@@ -77,7 +77,7 @@ class ValidateCategoricalAnswer(ValidateBase):
         if 'inclusion' in cur_topic_ans:
             cur_topic_ans = cur_topic_ans['inclusion']
         elif 'exclusion' in cur_topic_ans:
-            cur_topic_ans = cur_topic_ans['exclution']
+            cur_topic_ans = cur_topic_ans['exclusion']
             
         if not cls.__is_cur_topic_ans_valid(
             range=range_criteria[Constant.CATEGORICAL_RANGE_KEY]['inclusion'],

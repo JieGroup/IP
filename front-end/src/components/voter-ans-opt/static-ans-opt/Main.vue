@@ -133,7 +133,7 @@ console.log('props.subSurveyTopicValue-ans-opt', props.subSurveyTopicValue)
 
 const formData = reactive({
   continuous_range: "",
-  categorical_range: '?????'
+  categorical_range: 0
 })
 const rules = {
   // Answer can be null at current time.

@@ -227,7 +227,7 @@ class BaseUpdateMethod:
                 survey_prev_answers=survey_prev_answers,
                 cur_topic_ans=cur_topic_ans
             )
-            print('debug 666666')
+            print('debug 666666', topic_name, topic_new_range, updated_survey_topics)
             if topic_new_range == TopicNoNeedUpdate:
                 continue
             print('####', topic_new_range, type(topic_new_range))

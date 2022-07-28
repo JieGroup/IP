@@ -29,6 +29,7 @@
             </optgroup>
           </TomSelect>
         </div>
+        </div>
         <!-- END: Continuous Topic Options -->
 
         <!-- BEGIN: Categorical Topic Options -->
@@ -109,8 +110,8 @@ const categoricalChoicesList = computed(() => {
 });
 
 const formData = reactive({
-  continuous_range: "",
-  categorical_range: ""
+  continuous_range: 0,
+  categorical_range: 0
 })
 const rules = {
   // Answer can be null at current time.
