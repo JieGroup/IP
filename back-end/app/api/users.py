@@ -227,7 +227,7 @@ def resend_comfirmation_link() -> str:
 
 
 @api.route('/forgot_pwd', methods=['POST'])
-# @handle_response
+@handle_response
 def forgot_pwd():
     
     '''
@@ -264,7 +264,7 @@ def forgot_pwd():
     
 
 @api.route('/update_new_pwd/<token>', methods=['GET', 'POST'])
-# @handle_response
+@handle_response
 def update_new_pwd(token):
 
     '''

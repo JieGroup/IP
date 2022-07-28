@@ -75,10 +75,13 @@ def create_survey_template() -> None:
     max_rounds = data['max_rounds']
     survey_topics = data['survey_topics']
 
-    return SurveyTemplate.create_survey_template(
+    res = SurveyTemplate.create_survey_template(
         survey_update_method=survey_update_method,
         time_period=time_period,
         number_of_copies=number_of_copies,
         max_rounds=max_rounds,
         survey_topics=survey_topics
     )
+    print('create_template', res)
+
+    return res

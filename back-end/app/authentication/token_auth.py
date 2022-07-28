@@ -24,7 +24,7 @@ token_auth = HTTPTokenAuth()
 @authentication_bp.route('/get_userToken', methods=['POST'])
 @basic_auth.login_required
 @handle_response
-def get_userToken() -> dict[str, str]:
+def get_userToken() -> None:
     '''
     When user login its account:
         1. pass the verification of username and password(decorator)
@@ -37,7 +37,11 @@ def get_userToken() -> dict[str, str]:
 
     Returns
     -------
-    dict[str, str]
+    None
+
+    Notes
+    -----
+    token will be handled in the handle_response
     '''
     if not has_user_confirmed_email(
         cur_user_info=g.current_user
@@ -48,16 +52,14 @@ def get_userToken() -> dict[str, str]:
         role='user',
         cur_user_info=g.current_user
     )
-
-    return {
-        'userToken': userToken
-    }
+    g.userToken = userToken
+    return 
 
 # @authentication_bp.route('/get_voter_token', methods=['POST'])
 def get_voterToken(
     survey_template_id: str,
     mturk_id: MTurkID,
-) -> dict[str, str]:
+) -> None:
     '''
     Form voterToken based on survey_template_id
     and mturk_id, which contrains the voter can
@@ -69,7 +71,7 @@ def get_voterToken(
 
     Returns
     -------
-    dict[str, str]
+    None
     '''
     voterToken = JwtManipulation.get_jwt(
         role='voter',
@@ -78,10 +80,9 @@ def get_voterToken(
             'mturk_id': mturk_id
         }
     )
-
-    return {
-        'voterToken': voterToken
-    }
+    
+    g.voterToken = voterToken
+    return None
 
 
 @token_auth.verify_token
@@ -130,7 +131,7 @@ def verify_token(
                 token_payload=token_payload,
                 cur_user_info=g.current_user, 
             )
-        g.current_user['userToken'] = token
+        g.userToken = token
     elif role == 'voter':
         if JwtManipulation.is_jwt_needing_update(
             token_payload=token_payload
@@ -139,5 +140,5 @@ def verify_token(
                 role=role,
                 token_payload=token_payload,
             )
-        g.current_user['voterToken'] = token
+        g.voterToken = token
     return True

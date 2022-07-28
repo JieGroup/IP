@@ -174,6 +174,7 @@ class SurveyTemplate:
         survey_template_id = get_unique_id()
         print('zheli')
         expiration_time = Time.get_expiration_utc_time(time_period)
+        print('zheli2')
         create_document(
             database_type='survey_template',
             survey_template_id=survey_template_id,
@@ -183,6 +184,7 @@ class SurveyTemplate:
             max_rounds=max_rounds,
             survey_topics=survey_topics
         )
+        print('zheli3')
         return {
             'survey_template_id': survey_template_id
         }

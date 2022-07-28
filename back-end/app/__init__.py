@@ -95,7 +95,6 @@ def configure_errorhandlers(application):
         # print(e.args)
         print('exception', Exception)
         # print('resssponses', e.name)
-        print('sadasd')
         code = 500
         if isinstance(e, HTTPException):
             code = e.code

@@ -34,15 +34,15 @@ def verify_password(
     -------
     bool
     '''
-    user = search_document(
+    user_document = search_document(
         database_type='user',
         username=username,
     )
     if not is_password_valid(
-        hashed_password=user['hashed_password'],
+        hashed_password=user_document['hashed_password'],
         password=password
     ):
         raise ValueError('password wrong')
 
-    g.current_user = user
+    g.current_user = user_document
     return True

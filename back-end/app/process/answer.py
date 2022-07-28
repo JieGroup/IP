@@ -117,13 +117,12 @@ class VoterAnswerSurvey:
             survey_new_answers=survey_topics
         )
         print('99999')
-        voterToken = get_voterToken(
+        get_voterToken(
             survey_template_id=survey_template_id,
             mturk_id=mturk_id
         )
 
         return {
-            'voterToken': voterToken,
             'survey_answer_id': survey_answer_id,
             'survey_update_method': survey_update_method,
             'updated_survey_topics': updated_survey_topics

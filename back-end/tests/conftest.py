@@ -94,8 +94,9 @@ def drop_db_collections() -> None:
     '''
 
     for collecion_names in pyMongo.db.list_collection_names():
-        if collecion_names == 'User':
+        if collecion_names == 'User' or collecion_names == 'SurveyTemplate':
             continue
+
         pyMongo.db.drop_collection(collecion_names)
 
 def get_basic_auth_headers(

@@ -188,15 +188,15 @@ import {
 import { useVuelidate } from "@vuelidate/core";
 import Toastify from "toastify-js";
 import dom from "@left4code/tw-starter/dist/js/dom";
-import IpFixForm from "@/components/ip-fix-form/Main.vue";
-import IpDynamicForm from "@/components/ip-dynamic-form/Main.vue";
+// import IpFixForm from "@/components/ip-fix-form/Main.vue";
+// import IpDynamicForm from "@/components/ip-dynamic-form/Main.vue";
 import { axios } from "@/utils/axios";
 import { linkTo, process_template_data } from "./index"
 import { process_axios_response, process_axios_error, get_api_url } from "@/utils/axios_utils"
 import { useAuthenticationStore } from '@/stores/authentication'
 import { voterAnswerStore } from '@/stores/voter-answer'
-import { UniformOpt } from '@/components/voter-ans-opt/uniform-ans-opt'
-import { StaticOpt } from '@/components/voter-ans-opt/static-ans-opt'
+// import UniformOpt from '@/components/voter-ans-opt/uniform-ans-opt'
+// import StaticOpt from '@/components/voter-ans-opt/static-ans-opt'
 
 //判断answer store
 const voterAnswer = voterAnswerStore();
@@ -433,11 +433,11 @@ onMounted(() => {
   // Indicates the voter is answering the survey topics
   // The voter might refresh the page
   if (surveyTopics !== null && voterToken !== null){
-    continue
+    //
     voter_start_answering()
   } else {
     // New answer to a survey template
-    continue
+    //
     voter_submit_answer()
   }
 });

@@ -21,7 +21,7 @@ from app._typing import (
 
 
 @api.route('/voter_start_answering', methods=['POST'])
-# @handle_response
+@handle_response
 def voter_start_answering():
 
     '''
@@ -61,7 +61,7 @@ def voter_start_answering():
 
 
 @api.route('/voter_submit_answers', methods=['POST'])
-# @handle_response
+@handle_response
 def voter_submit_answers():
     '''
     Voter upload parameters and new answers for a survey template.

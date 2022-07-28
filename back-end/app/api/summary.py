@@ -15,7 +15,7 @@ from app.api.utils import check_if_data_is_valid
 
 @api.route('/get_all_survey_answers', methods=['GET'])
 @token_auth.login_required
-# @handle_response
+@handle_response
 def get_all_survey_answers():
     '''
     Get all survey answers under a survey template

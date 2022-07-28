@@ -72,7 +72,7 @@ def get_default_survey_template() -> None:
 
 @api.route('/get_user_history', methods=['GET'])
 @token_auth.login_required
-# @handle_response
+@handle_response
 def get_user_history() -> None:
     '''
     Get all survey template created by the current user.

@@ -53,7 +53,7 @@ class StaticTopicReformat(BaseReformat):
     def __reformat_categorical_topic(
         cls,
         topic_new_range: list[Categorical_Option_Type]
-    ) -> list[dict[str, Union[list, str]]]:
+    ) -> list[dict[str, Categorical_Option_Type]]:
         '''
         Reformat categorical updated topic to choices
         Form a list of length 3.
@@ -70,13 +70,16 @@ class StaticTopicReformat(BaseReformat):
         -------
         list[dict[str, Union[list, str]]]
         '''
-        choices_list = [_ for _ in range(2)]
-        choices_list[0] = {
-            'inclusion': copy.deepcopy(topic_new_range)
-        }
-        choices_list[1] = {
-            'stop': 'stop'
-        }
+        choices_list = [_ for _ in range(len(topic_new_range))]
+
+        for i in range(len(topic_new_range)):
+            choices_list[i] = {
+                'inclusion': copy.deepcopy(topic_new_range[i])
+            }
+
+        # choices_list[-1] = {
+        #     'stop': 'stop'
+        # }
         
         return choices_list
 
@@ -84,7 +87,7 @@ class StaticTopicReformat(BaseReformat):
     def __reformat_continuous_topic(
         cls,
         topic_new_range: tuple[Continuous_Option_Type, Continuous_Option_Type]
-    ) -> list[Union[dict[str, Continuous_Option_Type], str]]:
+    ) -> list[dict[str, Continuous_Option_Type]]:
         '''
         Reformat continuous updated topic to choices
 
@@ -105,13 +108,15 @@ class StaticTopicReformat(BaseReformat):
         min_val = topic_new_range[0]
         max_val = topic_new_range[1]
 
-        choices_list = [_ for _ in range(2)]
+        choices_list = [_ for _ in range(1)]
         choices_list[0] = {
             'min': min_val,
             'max': max_val,
         }
-        choices_list[1] = 'stop'
-        
+        # choices_list[1] = {
+        #     'stop': 'stop'
+        # }
+
         return choices_list
 
     

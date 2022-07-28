@@ -89,7 +89,7 @@ class UniformTopicReformat(BaseReformat):
     def __reformat_continuous_topic(
         cls,
         topic_new_range: tuple[Continuous_Option_Type, Continuous_Option_Type, Continuous_Option_Type]
-    ) -> list[Union[dict[str, Continuous_Option_Type], str]]:
+    ) -> list[dict[str, Continuous_Option_Type]]:
         '''
         Reformat continuous updated topic to choices
 
@@ -121,7 +121,9 @@ class UniformTopicReformat(BaseReformat):
             'min': new_mid_val+1,
             'max': max_val
         }
-        choices_list[2] = 'stop'
+        choices_list[2] = {
+            'stop': 'stop'
+        }
         
         return choices_list
 
