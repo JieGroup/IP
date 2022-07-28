@@ -8,7 +8,10 @@ from app.error import SurveyAnswerError
 
 from app.dp.update_topics.validate.base import ValidateBase
 
-from typing import Any
+from typing import (
+    Any,
+    Union
+)
 
 from app._typing import Categorical_Option_Type
 
@@ -31,7 +34,7 @@ class ValidateCategoricalAnswer(ValidateBase):
     def __is_cur_topic_ans_valid(
         cls,
         range: list[Categorical_Option_Type],
-        cur_topic_ans: list[Categorical_Option_Type],
+        cur_topic_ans: Union[Categorical_Option_Type, list[Categorical_Option_Type]],
     ) -> bool:
         '''
         Check if cur_topic_ans(categorical) is 
@@ -46,6 +49,8 @@ class ValidateCategoricalAnswer(ValidateBase):
         -------
         bool
         '''
+        print('range', range)
+        print('cur_topic_ans', cur_topic_ans, set(cur_topic_ans), set(cur_topic_ans).issubset(range))
         return set(cur_topic_ans).issubset(range)
 
 
@@ -54,7 +59,7 @@ class ValidateCategoricalAnswer(ValidateBase):
         cls,
         topic_name: str,
         range_criteria: dict[str, Any],
-        cur_topic_ans: dict[str, list[Categorical_Option_Type]]
+        cur_topic_ans: dict[str, Union[Categorical_Option_Type, list[Categorical_Option_Type]]]
     ) -> None:
         '''
         Check if cur_topic_ans is in answer_range

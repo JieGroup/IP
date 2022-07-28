@@ -45,28 +45,34 @@ const process_startFormData = (startFormDataValidate) => {
 // }
 
 const process_answerFormData = (surveyTopics, surveyAnswerID, surveyUpdateMethod, answerFormData) => {
-  // console.log('answerFormData', answerFormData, answerFormData.value)
-  // console.log(typeof answerFormData)
-  let tempData = {};
-  for (let key of answerFormData) {
+  console.log('process_answerFormData', surveyTopics, surveyAnswerID, surveyUpdateMethod)
+  console.log('answerFormData', answerFormData, answerFormData.categorical_1)
+  console.log(typeof answerFormData)
+  let tempData = {
+    survey_answer_id: surveyAnswerID,
+    survey_new_answers: {}
+  };
+  for (let key in surveyTopics) {
+    console.log('keyyyy', key)
+    let newSubAns = {}
     let answer_type = surveyTopics[key].answer_type
+    console.log('answerFormData[key]', answerFormData[key])
+    console.log('surveyTopics[key]', surveyTopics[key])
     if (answer_type === 'continuous') {
-      let chosedIndex = answerFormData[key].validate.continuous_range.$model
+      let chosedIndex = answerFormData[key].continuous_range.$model
       if (surveyUpdateMethod === 'static') {
-        tempData[key] = {}
-        tempData[key]['min'] = surveyTopics[key]['choices_list'][chosedIndex]['min']
-        tempData[key]['max'] = surveyTopics[key]['choices_list'][chosedIndex]['max']
+        newSubAns['continuous_range']['min'] = surveyTopics[key]['choices_list'][chosedIndex]['min']
+        newSubAns['continuous_range']['max'] = surveyTopics[key]['choices_list'][chosedIndex]['max']
       } else {
-        tempData[key] = surveyTopics[key]['choices_list'][chosedIndex]
+        newSubAns['continuous_range'] = surveyTopics[key]['choices_list'][chosedIndex]
       }
     } else if (answer_type === 'categorical') {
-      let chosedIndex = answerFormData[key].validate.categorical_range.$model
-      tempData[key] = surveyTopics[key]['choices_list'][chosedIndex]
+      // at current time, uniform update does not need to change
+      // only continuous option in static update needs modification
+      let chosedIndex = answerFormData[key].categorical_range.$model
+      newSubAns['categorical_range'] = surveyTopics[key]['choices_list'][chosedIndex]
     }
-    
-    // at current time, uniform update does not need to change
-    // only continuous option in static update needs modification
-    
+    tempData['survey_new_answers'][key] = newSubAns
   }
   console.log('ttttempData', tempData)
   return JSON.parse(JSON.stringify(tempData))

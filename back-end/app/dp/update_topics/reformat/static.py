@@ -53,7 +53,7 @@ class StaticTopicReformat(BaseReformat):
     def __reformat_categorical_topic(
         cls,
         topic_new_range: list[Categorical_Option_Type]
-    ) -> list[dict[str, Categorical_Option_Type]]:
+    ) -> list[dict[str, list[Categorical_Option_Type]]]:
         '''
         Reformat categorical updated topic to choices
         Form a list of length 3.
@@ -74,7 +74,7 @@ class StaticTopicReformat(BaseReformat):
 
         for i in range(len(topic_new_range)):
             choices_list[i] = {
-                'inclusion': copy.deepcopy(topic_new_range[i])
+                'inclusion': [copy.deepcopy(topic_new_range[i])]
             }
 
         # choices_list[-1] = {

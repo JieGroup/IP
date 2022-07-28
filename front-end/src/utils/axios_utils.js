@@ -30,7 +30,7 @@ const get_api_url = (root) => '/api/' + root
 const get_auth_url = (root) => '/auth/' + root
 
 const is_url_belonging_voter_answering = (url) => {
-    if (url.indexOf('voter_submit_answer') >= 0) {
+    if (url.indexOf('voter_submit_answers') >= 0) {
         return true;
     }
     return false;

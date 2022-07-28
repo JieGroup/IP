@@ -61,7 +61,7 @@
             <optgroup label="Answer">
               <option v-for="(option, index) in categoricalChoicesList" 
                       :key="index"
-                      :value="index">{{ option.inclusion }}</option>
+                      :value="index">{{ option.inclusion[0] }}</option>
             </optgroup>
             
           </TomSelect>

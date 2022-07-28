@@ -239,14 +239,14 @@ const back_to_start_answering = () => {
 // ref, computed 取值要加.value
 
 const submit_ceshi_answer = () => {
-  send_voter_submit_answer()
+  send_voter_submit_answers()
 }
 
 const send_to_server = () => {
   console.log('topics and token', surveyTopics, voterToken)
   console.log('topics and token value', surveyTopics.value, voterToken.value)
   if (surveyTopics.value !== null && voterToken.value !== null){
-    send_voter_submit_answer()
+    send_voter_submit_answers()
   } else {
     send_voter_start_answering()
   }
@@ -267,6 +267,7 @@ const store_cur_template_info = (res) => {
 
 const send_voter_start_answering = async () => {
   // static categorical: 62e220016648301fab9ab211
+  // static categorical_multiple: 62e2e89b6be732eba69f0b6a
   // static continuous: 62e220226648301fab9ab213
   // static categorical + continuous: 62e2204c6648301fab9ab215
   // uniform categorical: 62e220af6648301fab9ab217
@@ -308,7 +309,7 @@ const send_voter_start_answering = async () => {
   } 
 }
 
-const send_voter_submit_answer = async () => {
+const send_voter_submit_answers = async () => {
   // send voter submit answer data to
   // corresponding back-end api
   let processed_answerFormData = process_answerFormData(
@@ -318,7 +319,7 @@ const send_voter_submit_answer = async () => {
     answerFormData
   )
   try{
-    let res = await axios.post(get_api_url('voter_submit_answer'), processed_answerFormData)
+    let res = await axios.post(get_api_url('voter_submit_answers'), processed_answerFormData)
     res = process_axios_response(res)
     console.log('$$$$', res)
 
