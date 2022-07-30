@@ -318,6 +318,7 @@ const send_voter_submit_answers = async () => {
     surveyUpdateMethod.value,
     answerFormData
   )
+  let surveyAnswerID = formTemplateData.surveyAnswerID
   try{
     let res = await axios.post(get_api_url('voter_submit_answers'), processed_answerFormData)
     res = process_axios_response(res)
@@ -339,7 +340,7 @@ const send_voter_submit_answers = async () => {
     // Finish all rounds of survey
     if (Object.keys(res.updated_survey_topics).length === 0) {
       let params = {
-        surveyAnswerID: surveyAnswerID.value
+        surveyAnswerID: surveyAnswerID
       }
       linkTo('side-menu-answer-form-done', router, params)
     } else {

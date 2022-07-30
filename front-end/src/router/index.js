@@ -71,6 +71,7 @@ import CreateForm from "../views/create-form/Main.vue";
 import CreateFormRes from "../views/create-form-res/Main.vue";
 import AnswerForm from "../views/answer-form/Main.vue";
 import AnswerFormDone from "../views/answer-form-done/Main.vue";
+import GetVoterAnswers from "../views/get-voter-answers/Main.vue";
 import Chart from "../views/chart/Main.vue";
 import Slider from "../views/slider/Main.vue";
 import ImageZoom from "../views/image-zoom/Main.vue";
@@ -434,6 +435,11 @@ const routes = [
         path: "answer-form-done",
         name: "side-menu-answer-form-done",
         component: AnswerFormDone,
+      },
+      {
+        path: "get-voter-answers",
+        name: "side-menu-get-voter-answers",
+        component: GetVoterAnswers,
       },
       {
         path: "chart",
