@@ -198,7 +198,7 @@
               250 Official stores in 21 countries, click the marker to see
               location details.
             </div>
-            <ReportMap class="report-maps mt-5 bg-slate-200 rounded-md" />
+            <!-- <ReportMap class="report-maps mt-5 bg-slate-200 rounded-md" /> -->
           </div>
         </div>
         <!-- END: Official Store -->
@@ -1030,7 +1030,7 @@
 <script setup>
 import { ref, provide } from "vue";
 import ReportDonutChart from "@/components/report-donut-chart/Main.vue";
-import ReportMap from "@/components/report-map/Main.vue";
+// import ReportMap from "@/components/report-map/Main.vue";
 
 const importantNotesRef = ref();
 

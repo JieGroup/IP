@@ -3,8 +3,8 @@ import SideMenu from "../layouts/side-menu/Main.vue";
 // import SimpleMenu from "../layouts/simple-menu/Main.vue";
 // import TopMenu from "../layouts/top-menu/Main.vue";
 import DashboardOverview1 from "../views/dashboard-overview-1/Main.vue";
-import DashboardOverview2 from "../views/dashboard-overview-2/Main.vue";
-import DashboardOverview3 from "../views/dashboard-overview-3/Main.vue";
+// import DashboardOverview2 from "../views/dashboard-overview-2/Main.vue";
+// import DashboardOverview3 from "../views/dashboard-overview-3/Main.vue";
 import DashboardOverview4 from "../views/dashboard-overview-4/Main.vue";
 import Categories from "../views/categories/Main.vue";
 import AddProduct from "../views/add-product/Main.vue";
@@ -71,7 +71,7 @@ import CreateForm from "../views/create-form/Main.vue";
 import CreateFormRes from "../views/create-form-res/Main.vue";
 import AnswerForm from "../views/answer-form/Main.vue";
 import AnswerFormDone from "../views/answer-form-done/Main.vue";
-// import GetVoterAnswers from "../views/get-voter-answers/Main.vue";
+import GetVoterAnswers from "../views/get-voter-answers/Main.vue";
 import Chart from "../views/chart/Main.vue";
 import Slider from "../views/slider/Main.vue";
 import ImageZoom from "../views/image-zoom/Main.vue";
@@ -111,16 +111,16 @@ const routes = [
           show: false
         }
       },
-      {
-        path: "dashboard-overview-2",
-        name: "side-menu-dashboard-overview-2",
-        component: DashboardOverview2,
-      },
-      {
-        path: "dashboard-overview-3",
-        name: "side-menu-dashboard-overview-3",
-        component: DashboardOverview3,
-      },
+      // {
+      //   path: "dashboard-overview-2",
+      //   name: "side-menu-dashboard-overview-2",
+      //   component: DashboardOverview2,
+      // },
+      // {
+      //   path: "dashboard-overview-3",
+      //   name: "side-menu-dashboard-overview-3",
+      //   component: DashboardOverview3,
+      // },
       {
         path: "dashboard-overview-4",
         name: "side-menu-dashboard-overview-4",
@@ -436,11 +436,11 @@ const routes = [
         name: "side-menu-answer-form-done",
         component: AnswerFormDone,
       },
-      // {
-      //   path: "get-voter-answers",
-      //   name: "side-menu-get-voter-answers",
-      //   component: GetVoterAnswers,
-      // },
+      {
+        path: "get-voter-answers",
+        name: "side-menu-get-voter-answers",
+        component: GetVoterAnswers,
+      },
       {
         path: "chart",
         name: "side-menu-chart",

@@ -24,11 +24,11 @@ export const useSideMenuStore = defineStore("sideMenu", {
         pageName: "side-menu-answer-form",
         title: "Answer Form",
       },
-      // {
-      //   icon: "SidebarIcon",
-      //   pageName: "side-menu-get-voter-answers",
-      //   title: "Get Voter Answers",
-      // },
+      {
+        icon: "SidebarIcon",
+        pageName: "side-menu-get-voter-answers",
+        title: "Get Voter Answers",
+      },
       "devider",
       {
         icon: "TrelloIcon",

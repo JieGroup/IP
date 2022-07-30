@@ -1,6 +1,6 @@
 import "zoom-vanilla.js/dist/zoom-vanilla.min.js";
 import Chart from "./chart/Main.vue";
-import GoogleMapLoader from "./google-map-loader/Main.vue";
+// import GoogleMapLoader from "./google-map-loader/Main.vue";
 import Litepicker from "./litepicker/Main.vue";
 import Tippy from "./tippy/Main.vue";
 import TippyContent from "./tippy-content/Main.vue";
@@ -45,7 +45,7 @@ import LucideIcons from "./lucide";
 
 export default (app) => {
   app.component("Chart", Chart);
-  app.component("GoogleMapLoader", GoogleMapLoader);
+  // app.component("GoogleMapLoader", GoogleMapLoader);
   app.component("Litepicker", Litepicker);
   app.component("Tippy", Tippy);
   app.component("TippyContent", TippyContent);
