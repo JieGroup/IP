@@ -32,12 +32,13 @@
             <button @click="send_to_server" type="button" class="btn btn-primary mt-3">
             Send
             </button>
+            {{ }}
             <button @click="back_to_start_answering" type="button" class="btn btn-primary mt-3">
             Back
             </button>
-            <button @click="submit_ceshi_answer" type="button" class="btn btn-primary mt-3">
+            <!-- <button @click="submit_ceshi_answer" type="button" class="btn btn-primary mt-3">
             submit_ceshi_answer
-            </button>
+            </button> -->
             <br />
             <br />
 
@@ -106,7 +107,7 @@
             <!-- BEGIN: Voter Submit Answers -->
             <div v-if="isStartAnswer === false" class="input-form mt-3">
               isStartAnswer shi false
-              <div v-if="surveyUpdateMethod === 'static'" class="input-form mt-3">
+              <div v-if="formTemplateData.surveyUpdateMethod === 'static'" class="input-form mt-3">
                 <StaticOpt  v-for="(item, key) in formTemplateData.surveyTopics"
                             :key="key"
                             :subSurveyTopicKey="key"
@@ -114,7 +115,7 @@
                             :answerFormData="answerFormData"/>
               </div>
 
-              <div v-if="surveyUpdateMethod === 'uniform'" class="input-form mt-3">
+              <div v-if="formTemplateData.surveyUpdateMethod === 'uniform'" class="input-form mt-3">
                 <UniformOpt  v-for="(item, key) in formTemplateData.surveyTopics"
                             :key="key"
                             :subSurveyTopicKey="key"
@@ -124,6 +125,9 @@
             </div>
             <!-- BEGIN: Voter Submit Answers -->
 
+            <!-- <button @click="ceshierror">
+              ceshierror
+            </button> -->
             <!-- BEGIN: Request Success Content -->
             <div
               id="request-success-content"
@@ -189,8 +193,10 @@ import StaticOpt from '@/components/voter-ans-opt/static-ans-opt/Main.vue';
 import UniformOpt from '@/components/voter-ans-opt/uniform-ans-opt/Main.vue'
 
 const router = useRouter();
-let request_error = reactive({})
-request_error.adasdsa = 'asdfasdf'
+let request_error = reactive({
+  error: 'adadsd'
+})
+
 let isStartAnswer = ref(true);
 // let unique_id = 0
 // voter's answers
@@ -200,13 +206,13 @@ let formTemplateData = reactive({})
 
 //判断answer store
 const voterAnswer = voterAnswerStore();
-const surveyTopics = computed(() => voterAnswer.surveyTopics);
-const surveyAnswerID = computed(() => voterAnswer.surveyAnswerID);
-const surveyUpdateMethod = computed(() => voterAnswer.surveyUpdateMethod);
+const storedSurveyTopics = computed(() => voterAnswer.surveyTopics);
+const storedSurveyAnswerID = computed(() => voterAnswer.surveyAnswerID);
+const storedSurveyUpdateMethod = computed(() => voterAnswer.surveyUpdateMethod);
 
 //判断voterToken
 const authenticationStore = useAuthenticationStore();
-const voterToken = computed(() => authenticationStore.voterToken);
+// const voterToken = computed(() => authenticationStore.voterToken);
 
 let startFormData = reactive({
   survey_template_id: "",
@@ -224,13 +230,18 @@ const rules = {
 };
 const startFormDataValidate = reactive(useVuelidate(rules, toRefs(startFormData)));
 
-
+const ceshierror = () => {
+  // Object.assign(request_error.error, 'ceshideyo')
+}
 
 const back_to_start_answering = () => {
   // go back to start_answering
   // clean related variables
-  for (let key of formTemplateData) {
-    formTemplateData[key] = null
+  for (let key in formTemplateData) {
+    delete formTemplateData[key]
+  }
+  for (let key in answerFormData) {
+    delete answerFormData[key]
   }
   isStartAnswer.value = true
   authenticationStore.setVoterToken(null)
@@ -243,26 +254,28 @@ const submit_ceshi_answer = () => {
 }
 
 const send_to_server = () => {
-  console.log('topics and token', surveyTopics, voterToken)
-  console.log('topics and token value', surveyTopics.value, voterToken.value)
-  if (surveyTopics.value !== null && voterToken.value !== null){
+  console.log('formTemplateData send_to_server', formTemplateData)
+  console.log('topics and token value', storedSurveyTopics.value)
+  if (Object.keys(formTemplateData).length > 0){
     send_voter_submit_answers()
   } else {
     send_voter_start_answering()
   }
 }
 
-const store_cur_template_info = (res) => {
-  // change variables in current page
-  formTemplateData.surveyTopics = res.updated_survey_topics;
-  formTemplateData.surveyAnswerID = res.survey_answer_id;
-  formTemplateData.surveyUpdateMethod = res.survey_update_method;
-
+const store_cur_template_info = (templateData) => {
   // change data in storage
-  voterAnswer.setsurveyTopics(res.updated_survey_topics);
-  voterAnswer.setsurveyAnswerID(res.survey_answer_id);
-  voterAnswer.setsurveyUpdateMethod(res.survey_update_method);
-  console.log('change data in storage')
+  console.log('~~~~~~store_cur_template_info', templateData)
+  voterAnswer.setsurveyTopics(templateData.updated_survey_topics);
+  voterAnswer.setsurveyAnswerID(templateData.survey_answer_id);
+  voterAnswer.setsurveyUpdateMethod(templateData.survey_update_method);
+
+  // change variables in current page
+  formTemplateData.surveyTopics = templateData.updated_survey_topics;
+  formTemplateData.surveyAnswerID = templateData.survey_answer_id;
+  formTemplateData.surveyUpdateMethod = templateData.survey_update_method;
+
+  console.log('change data in storage', formTemplateData)
 }
 
 const send_voter_start_answering = async () => {
@@ -313,17 +326,16 @@ const send_voter_submit_answers = async () => {
   // send voter submit answer data to
   // corresponding back-end api
   let processed_answerFormData = process_answerFormData(
-    surveyTopics.value,
-    surveyAnswerID.value,
-    surveyUpdateMethod.value,
+    formTemplateData.surveyTopics,
+    formTemplateData.surveyAnswerID,
+    formTemplateData.surveyUpdateMethod,
     answerFormData
   )
-  let surveyAnswerID = formTemplateData.surveyAnswerID
+  let answer_id = formTemplateData.surveyAnswerID
   try{
     let res = await axios.post(get_api_url('voter_submit_answers'), processed_answerFormData)
     res = process_axios_response(res)
-    console.log('voter_submit_answers_rrrese', res)
-    console.log('updated_surevey+topics', res.updated_survey_topics, res.updated_survey_topics === {}, res.updated_survey_topics.length === 0, Object.keys(res.updated_survey_topics).length)
+    console.log('voter_submit_answers_rrrese', res, formTemplateData)
 
     Toastify({
       node: dom("#request-success-content")
@@ -339,8 +351,9 @@ const send_voter_submit_answers = async () => {
     
     // Finish all rounds of survey
     if (Object.keys(res.updated_survey_topics).length === 0) {
+      back_to_start_answering()
       let params = {
-        surveyAnswerID: surveyAnswerID
+        surveyAnswerID: answer_id
       }
       linkTo('side-menu-answer-form-done', router, params)
     } else {
@@ -368,27 +381,33 @@ const send_voter_submit_answers = async () => {
 }
 
 const load_prev_template_info = () => {
-  formTemplateData.surveyTopics = surveyTopics.value;
-  formTemplateData.surveyAnswerID = surveyAnswerID.value;
-  formTemplateData.surveyUpdateMethod = surveyUpdateMethod.value;
+  console.log('##### load_prev_template_info', voterAnswer.surveyTopics)
+  // console.log('##### json parse', JSON.parse(voterAnswer.surveyTopics))
+  for (let key in voterAnswer.surveyTopics) {
+    console.log('dasdsad', key)
+  }
+  console.log('storedSurveyTopics.value', storedSurveyTopics.value)
+  formTemplateData.surveyTopics = storedSurveyTopics.value;
+  formTemplateData.surveyAnswerID = storedSurveyAnswerID.value;
+  formTemplateData.surveyUpdateMethod = storedSurveyUpdateMethod.value;
+  
 }
 
 onMounted(() => {
   // Indicates the voter is answering the survey topics
   // The voter might refresh the page
-  console.log('storage', surveyTopics, surveyAnswerID, surveyUpdateMethod)
-  console.log('storage_value', surveyTopics.value, surveyAnswerID.value, surveyUpdateMethod.value)
-  if (surveyTopics.value !== null && voterToken.value !== null){
-    console.log('jinlai')
-    // isStartAnswer = false
-    // Object.assign(isStartAnswer, false)
-    isStartAnswer.value = false
-    console.log('isStartAnswer', isStartAnswer)
-    load_prev_template_info()
-  } else {
-    // New answer to a survey template
-    // pass
-  }
+  console.log('storage', storedSurveyTopics, storedSurveyAnswerID, storedSurveyUpdateMethod)
+  // if (storedSurveyTopics.value !== null){
+  //   console.log('jinlai')
+  //   // isStartAnswer = false
+  //   // Object.assign(isStartAnswer, false)
+  //   isStartAnswer.value = false
+  //   console.log('isStartAnswer', isStartAnswer)
+  //   // load_prev_template_info()
+  // } else {
+  //   // New answer to a survey template
+  //   // pass
+  // }
 });
 
 

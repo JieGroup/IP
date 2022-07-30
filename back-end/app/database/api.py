@@ -60,6 +60,17 @@ def search_document(
     return db_operator.search_document(**kwargs)
 
 @typechecked
+def search_multiple_documents(
+    database_type: Database_Type,
+    **kwargs
+) -> Cursor:
+    '''
+    Wrapper of database strategy and call corresponding funcion
+    '''
+    db_operator = set_database_type(database_type=database_type)
+    return db_operator.search_multiple_documents(**kwargs)
+
+@typechecked
 def create_document(
     database_type: Database_Type,
     **kwargs

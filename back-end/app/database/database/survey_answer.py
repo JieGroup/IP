@@ -107,6 +107,26 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
         })
 
     @classmethod
+    def search_multiple_documents(
+        cls, survey_template_id: str, **kwargs
+    ) -> Cursor:
+        '''
+        Search multiple answer documents of a
+        template id
+
+        Parameters
+        ----------
+        survey_answer_id : str
+
+        Returns
+        -------
+        Cursor
+        '''
+        return pyMongo.db.SurveyAnswer.find({
+            'survey_template_id': survey_template_id
+        })
+
+    @classmethod
     def create_document(
         cls, 
         survey_answer_id: str, 

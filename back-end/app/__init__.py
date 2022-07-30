@@ -62,6 +62,7 @@ def create_MongoDB_Collections():
 
     if 'SurveyAnswer' not in collection_list:
         pyMongo.db.SurveyAnswer.create_index([("survey_answer_id", 1)], unique=True)
+        pyMongo.db.SurveyAnswer.create_index([("survey_template_id", 1)], unique=True)
         # TODO: 也许survey_template_id和mturk_id要一个联合索引
 
     if 'SurveySummary' not in collection_list:

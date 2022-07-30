@@ -17,7 +17,8 @@ from app.utils.api import Constant
 from app.process.api import (
     get_survey_template_helper,
     get_default_survey_template_helper,
-    get_user_history_helper
+    get_user_history_helper,
+    get_voter_answers
 )
 
 @api.route('/get_survey_template', methods=['GET'])
@@ -98,3 +99,35 @@ def get_user_history() -> None:
     user_id = request.args['user_id']
     
     return get_user_history_helper()
+
+@api.route('/get_voter_answers_of_template', methods=['POST'])
+# @token_auth.login_required
+@handle_response
+def get_voter_answers_of_template() -> list:
+    '''
+    Get all survey answers of a specific survey template.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    list
+        History will be formed in list structure
+    '''
+    data = request.get_json()
+    if not data:
+        raise ValueError('You must post JSON data.')
+    expected_data = {
+        'survey_template_id': str,
+    }
+    check_if_data_is_valid(
+        data=data,
+        expected_data=expected_data
+    )
+
+    survey_template_id = data['survey_template_id']
+    return get_voter_answers(
+        survey_template_id=survey_template_id
+    )

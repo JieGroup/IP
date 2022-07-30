@@ -2,6 +2,9 @@ from app.process.utils import (
     get_unique_id,
     get_hashed_password
 )
+
+from app.database.api import search_multiple_documents
+
 from app.process.template import SurveyTemplate
 from app.process.answer import VoterAnswerSurvey
 from app.process.summary import Summary
@@ -48,3 +51,31 @@ def get_user_history_helper():
     '''
 
     return
+
+def get_voter_answers(
+    survey_template_id: str
+) -> list:
+    '''
+    get all voter answers of a survey_template_id
+
+    Parameters
+    ----------
+    survey_template_id : str
+        An unique string corresponding to a survey template.
+
+    Returns
+    -------
+    list
+    '''
+    multiple_documents = search_multiple_documents(
+        database_type='survey_answer',
+        survey_template_id=survey_template_id,
+        check_response=False
+    )
+
+    res = []
+    for doc in multiple_documents:
+        del doc['_id']
+        res.append(doc)
+    
+    return res
