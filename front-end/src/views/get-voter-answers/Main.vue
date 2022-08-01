@@ -173,7 +173,8 @@ const rules = {
     minLength: minLength(1),
   },
 };
-const FormDataValidate = reactive(useVuelidate(rules, toRefs(FormData)));
+// const FormDataValidate = reactive(useVuelidate(rules, toRefs(FormData)));
+const FormDataValidate = useVuelidate(rules, toRefs(FormData));
 
 const send_to_server = async () => {
   // static categorical: 62e220016648301fab9ab211

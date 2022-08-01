@@ -189,3 +189,13 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
         res = self.__database_operator.delete_document(**kwargs)
         super().check_delete_document_response(res=res)
         return res
+    
+    def delete_multiple_documents(
+        self, **kwargs
+    ) -> DeleteResult:
+        '''
+        strategy interface and check mongodb response
+        '''
+        res = self.__database_operator.delete_multiple_documents(**kwargs)
+        # super().check_delete_document_response(res=res)
+        return res

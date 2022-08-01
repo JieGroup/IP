@@ -6,44 +6,45 @@
   <div class="grid grid-cols-12 gap-6 mt-5">
     <div class="intro-y col-span-12 lg:col-span-6">
       <!-- BEGIN: Form Validation -->
-      <!-- <PreviewComponent class="intro-y box" v-slot="{ toggle }"> -->
-      <PreviewComponent class="intro-y box">
-        <!-- <div
-          class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400"
-        > -->
-          <!-- <h2 class="font-medium text-base mr-auto">Implementation</h2>
-          <div
-            class="form-check form-switch w-full sm:w-auto sm:ml-auto mt-3 sm:mt-0"
-          >
-            <label class="form-check-label ml-0" for="show-example-1"
-              >Show example code</label
+      <form class="validate-form">
+        <!-- <PreviewComponent class="intro-y box" v-slot="{ toggle }"> -->
+        <PreviewComponent class="intro-y box">
+          <!-- <div
+            class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400"
+          > -->
+            <!-- <h2 class="font-medium text-base mr-auto">Implementation</h2>
+            <div
+              class="form-check form-switch w-full sm:w-auto sm:ml-auto mt-3 sm:mt-0"
             >
-            <input
-              @click="toggle"
-              class="form-check-input mr-0 ml-3"
-              type="checkbox"
-            />
-          </div> -->
-        <!-- </div> -->
+              <label class="form-check-label ml-0" for="show-example-1"
+                >Show example code</label
+              >
+              <input
+                @click="toggle"
+                class="form-check-input mr-0 ml-3"
+                type="checkbox"
+              />
+            </div> -->
+          <!-- </div> -->
 
-        <div class="p-5">
-          <Preview>
-            <!-- BEGIN: Validation Form -->
-            <button @click="send_to_server" type="button" class="btn btn-primary mt-3">
-            Send
-            </button>
-            {{ }}
-            <button @click="back_to_start_answering" type="button" class="btn btn-primary mt-3">
-            Back
-            </button>
-            <!-- <button @click="submit_ceshi_answer" type="button" class="btn btn-primary mt-3">
-            submit_ceshi_answer
-            </button> -->
-            <br />
-            <br />
+          <div class="p-5">
+            <Preview>
+              <!-- BEGIN: Validation Form -->
+              <button @click="send_to_server" type="button" class="btn btn-primary mt-3">
+              Send
+              </button>
+              {{ }}
+              <button @click="back_to_start_answering" type="button" class="btn btn-primary mt-3">
+              Back
+              </button>
+              <!-- <button @click="submit_ceshi_answer" type="button" class="btn btn-primary mt-3">
+              submit_ceshi_answer
+              </button> -->
+              <br />
+              <br />
 
-            <!-- BEGIN: Start Answering Topics -->
-            <div v-if="isStartAnswer === true" class="input-form mt-3">
+              <!-- BEGIN: Start Answering Topics -->
+              <div v-if="isStartAnswer === true" class="input-form mt-3">
               WOW: {{ isStartAnswer }} {{ isStartAnswer.value }}
               <label
                   for="validation-form-2"
@@ -72,8 +73,11 @@
                   {{ error.$message }}
                   </div>
               </template>
+              </div>
+
               <br />
-              <br />
+
+              <div class="input-form mt-3">
               <label
                   for="validation-form-2"
                   class="form-label w-full flex flex-col sm:flex-row"
@@ -101,69 +105,79 @@
                   {{ error.$message }}
                   </div>
               </template>
-            </div>
-            <!-- END: Start Answering Topics -->
-
-            <!-- BEGIN: Voter Submit Answers -->
-            <div v-if="isStartAnswer === false" class="input-form mt-3">
-              isStartAnswer shi false
-              <div v-if="formTemplateData.surveyUpdateMethod === 'static'" class="input-form mt-3">
-                <StaticOpt  v-for="(item, key) in formTemplateData.surveyTopics"
-                            :key="key"
-                            :subSurveyTopicKey="key"
-                            :subSurveyTopicValue="item"
-                            :answerFormData="answerFormData"/>
               </div>
+              <!-- END: Start Answering Topics -->
 
-              <div v-if="formTemplateData.surveyUpdateMethod === 'uniform'" class="input-form mt-3">
-                <UniformOpt  v-for="(item, key) in formTemplateData.surveyTopics"
-                            :key="key"
-                            :subSurveyTopicKey="key"
-                            :subSurveyTopicValue="item"
-                            :answerFormData="answerFormData"/>
-              </div>
-            </div>
-            <!-- BEGIN: Voter Submit Answers -->
+              <!-- BEGIN: Voter Submit Answers -->
+              <div v-if="isStartAnswer === false" class="input-form mt-3">
+                isStartAnswer shi false
+                <div v-if="formTemplateData.surveyUpdateMethod === 'static'" class="input-form mt-3">
+                  <StaticOpt  v-for="(item, key) in formTemplateData.surveyTopics"
+                              :key="key"
+                              :subSurveyTopicKey="key"
+                              :subSurveyTopicValue="item"
+                              :answerFormData="answerFormData"/>
+                </div>
 
-            <!-- <button @click="ceshierror">
-              ceshierror
-            </button> -->
-            <!-- BEGIN: Request Success Content -->
-            <div
-              id="request-success-content"
-              class="toastify-content hidden flex"
-            >
-              <CheckCircleIcon class="text-success" />
-              <div class="ml-4 mr-4">
-                <div class="font-medium">Send request successfully!</div>
-                <div class="text-slate-500 mt-1">
-                  Please wait for the response
+                <div v-if="formTemplateData.surveyUpdateMethod === 'uniform'" class="input-form mt-3">
+                  <UniformOpt  v-for="(item, key) in formTemplateData.surveyTopics"
+                              :key="key"
+                              :subSurveyTopicKey="key"
+                              :subSurveyTopicValue="item"
+                              :answerFormData="answerFormData"/>
                 </div>
               </div>
-            </div>
-            <!-- END: Request Error Content -->
-            <!-- BEGIN: Request Error Content -->
-            <div
-              id="request-error-content"
-              class="toastify-content hidden flex"
-            >
-              <CheckCircleIcon class="text-danger" />
-              <div class="ml-4 mr-4" :model="request_error">
-                <div class="font-medium">Network request error!</div>
-                <div class="text-slate-500 mt-1" >
-                  <!-- {{ request_error }}
-                  error_name: {{ request_error['error_name'] }}
-                  error_msg: {{ request_error.error_msg }}
-                  error_status: {{ request_error.error_status }} -->
-                  Please check your input!
+              <!-- BEGIN: Voter Submit Answers -->
+
+              <button type='button' @click='test_error'>
+                test_error
+              </button>
+              zhe!! {{ request_error }}
+              <!-- <button @click="ceshierror">
+                ceshierror
+              </button> -->
+              <!-- BEGIN: Request Success Content -->
+              <div
+                id="request-success-content"
+                class="toastify-content hidden flex"
+              >
+                <CheckCircleIcon class="text-success" />
+                <div class="ml-4 mr-4">
+                  <div class="font-medium">Send request successfully!</div>
+                  <div class="text-slate-500 mt-1">
+                    Please wait for the response
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- END: Request Error Content -->
-          </Preview>
-        </div>
-      </PreviewComponent>
+              <!-- END: Request Error Content -->
+              <!-- BEGIN: Request Error Content -->
+              <div
+                id="request-error-content"
+                class="toastify-content hidden flex"
+              >
+                <CheckCircleIcon class="text-danger" />
+                <div class="ml-4 mr-4">
+                  <div class="font-medium">Network request error!</div>
+                  <div class="text-slate-500 mt-1">
+                    <!-- {{ request_error }}
+                    error_name: {{ request_error['error_name'] }}
+                    error_msg: {{ request_error.error_msg }}
+                    error_status: {{ request_error.error_status }} -->
+                    <!-- <div> -->
+                    Please check your input and send again
+                    <!-- </div> -->
+                  </div>
+                </div>
+              </div>
+              
+              <!-- END: Request Error Content -->
+            </Preview>
+          </div>
+        </PreviewComponent>
+      </form>
       <!-- END: Form Validation -->
+      <button @click='tiaozhuan'>wowowow
+      </button>
     </div>
   </div>
 </template>
@@ -193,9 +207,10 @@ import StaticOpt from '@/components/voter-ans-opt/static-ans-opt/Main.vue';
 import UniformOpt from '@/components/voter-ans-opt/uniform-ans-opt/Main.vue'
 
 const router = useRouter();
-let request_error = reactive({
-  error: 'adadsd'
-})
+// let request_error = reactive({
+//   error: 'adadsd'
+// })
+let request_error = ref(false)
 
 let isStartAnswer = ref(true);
 // let unique_id = 0
@@ -228,10 +243,77 @@ const rules = {
     minLength: minLength(1),
   },
 };
-const startFormDataValidate = reactive(useVuelidate(rules, toRefs(startFormData)));
+// const startFormDataValidate = reactive(useVuelidate(rules, toRefs(startFormData)));
+const startFormDataValidate = useVuelidate(rules, toRefs(startFormData));
+console.log('~~~~~', startFormDataValidate)
 
-const ceshierror = () => {
+const tiaozhuan = () => {
+  console.log('!!!!ceshi', startFormDataValidate)
+  startFormDataValidate.value.$touch()
+  // startFormDataValidate.$touch()
+
+}
+
+const test_error = () => {
+  request_error.value = 'ceshishishi'
+  console.log('request_error', request_error)
+  // Object.assign(request_error, 'ceshideyo')
   // Object.assign(request_error.error, 'ceshideyo')
+  Toastify({
+    text: 'shaaaa',
+    node: dom("#request-error-content")
+      .clone()
+      .removeClass("hidden")[0],
+    duration: 10000,
+    newWindow: true,
+    close: true,
+    gravity: "top",
+    position: "right",
+    stopOnFocus: true,
+  }).showToast();
+
+  Toastify({
+
+    // <div class="ml-4 mr-4">
+    //             <div class="font-medium">Network request error!</div>
+    //             <div class="text-slate-500 mt-1" >
+
+    text: "ceshi0",
+    className: 'toastify-content hidden flex',
+    className: 'ml-4 mr-4',
+    duration: 3000,
+    // gravity: "bottom", // `top` or `bottom`
+    // position: 'center', // `left`, `center` or `right`
+    // backgroundColor: "linear-gradient(to right, red, orange)",
+    newWindow: true,
+    close: true,
+    gravity: "top",
+    position: "right",
+    stopOnFocus: true,
+  }).showToast();
+
+  Toastify({
+    text: "ceshi1",
+    duration: 3000,
+    // destination: "https://github.com/apvarun/toastify-js",
+    newWindow: true,
+    close: true,
+    gravity: "top", // `top` or `bottom`
+    position: "left", // `left`, `center` or `right`
+    stopOnFocus: true, // Prevents dismissing of toast on hover
+    style: {
+      background: "linear-gradient(to right, #00b09b, #96c93d)",
+    },
+    onClick: function(){} // Callback after click
+  }).showToast();
+
+  Toastify({
+  text: "ceshi2",
+  className: "info",
+  style: {
+    background: "linear-gradient(to right, #00b09b, #96c93d)",
+  }
+}).showToast();
 }
 
 const back_to_start_answering = () => {
@@ -289,12 +371,15 @@ const send_voter_start_answering = async () => {
 
   // send voter start answering data to
   // corresponding back-end api
-  console.log('!!!!')
+  console.log('!!!!', startFormDataValidate)
+
+  startFormDataValidate.value.$touch();
   let startFormData = process_startFormData(
     startFormDataValidate
   )
   try{
     let res = await axios.post(get_api_url('voter_start_answering'), startFormData);
+    console.log('bucuowu')
     res = process_axios_response(res);
     // update indicator and variables
     isStartAnswer.value = false
@@ -302,7 +387,9 @@ const send_voter_start_answering = async () => {
     console.log('$$$$', res)
     console.log('formTemplateData', formTemplateData)
   } catch (err) {
+    console.log('sttt', err)
     let processed_err = process_axios_error(err)
+    console.log('----- Debugdone', processed_err)
     // request_error.error_name = processed_err.error_name
     // request_error.error_msg = processed_err.error_msg
     // request_error.error_status = processed_err.error_status

@@ -107,8 +107,11 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
     def create_document(
         cls, 
         survey_template_id: str, 
+        survey_template_name: str,
         survey_update_method: Survey_Update_Method,
+        creation_time: int,
         expiration_time: int,
+        time_period: str,
         number_of_copies: int,
         max_rounds: int,
         survey_topics: Survey_Topics
@@ -119,19 +122,26 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
         Parameters
         ----------
         survey_template_id : str
+        survey_template_name : str
         survey_update_method : Survey_Update_Method
-        expiration_time : datetime
+        creation_time : int
+        expiration_time : int
+        time_period : str
         number_of_copies : int
         max_rounds : int
         survey_topics : Survey_Topics
+
         Returns
         -------
         None
         '''
         survey_template_document = {
             'survey_template_id': survey_template_id,
+            'survey_template_name': survey_template_name,
             'survey_update_method': survey_update_method,
+            'creation_time': creation_time,
             'expiration_time': expiration_time,
+            'time_period': time_period,
             'number_of_copies': number_of_copies,
             'max_rounds': max_rounds,
             'survey_topics': survey_topics,

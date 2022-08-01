@@ -200,3 +200,23 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
         return pyMongo.db.SurveyAnswer.delete_one({
             'survey_answer_id': survey_answer_id
         })
+
+    @classmethod
+    def delete_multiple_documents(
+        cls, survey_template_id: str
+    ) -> DeleteResult:
+        '''
+        Delete multipls documents of the
+        survey template
+
+        Parameters
+        ----------
+        survey_template_id : str
+
+        Returns
+        -------
+        DeleteResult
+        '''
+        return pyMongo.db.SurveyAnswer.delete_many({
+            'survey_template_id': survey_template_id
+        })

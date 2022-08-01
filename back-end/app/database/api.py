@@ -102,3 +102,14 @@ def delete_document(
     '''
     db_operator = set_database_type(database_type=database_type)
     return db_operator.delete_document(**kwargs)
+
+@typechecked
+def delete_multiple_documents(
+    database_type: Database_Type,
+    **kwargs
+) -> DeleteResult:
+    '''
+    Wrapper of database strategy and call corresponding funcion
+    '''
+    db_operator = set_database_type(database_type=database_type)
+    return db_operator.delete_multiple_documents(**kwargs)

@@ -58,6 +58,7 @@ const process_answerFormData = (surveyTopics, surveyAnswerID, surveyUpdateMethod
     let answer_type = surveyTopics[key].answer_type
     console.log('answerFormData[key]', answerFormData[key])
     console.log('surveyTopics[key]', surveyTopics[key])
+    answerFormData.$touch();
     if (answer_type === 'continuous') {
       if (surveyUpdateMethod === 'static') {
         // input specific value, no choices

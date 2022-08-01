@@ -6,22 +6,47 @@ from flask import request
 
 from app.authentication.api import token_auth
 
-from app.utils.api import handle_response
+from app.utils.api import (
+    handle_response,
+    Time
+)
 
 from app.api.utils import check_if_data_is_valid
 
-from app.database.api import search_document
-
+from app.database.api import (
+    search_document,
+    delete_document,
+    delete_multiple_documents
+)
+    
 from app.utils.api import Constant
 
 from app.process.api import (
     get_survey_template_helper,
     get_default_survey_template_helper,
-    get_user_history_helper,
+    get_user_histories_helper,
     get_voter_answers
 )
 
-@api.route('/get_survey_template', methods=['GET'])
+@api.route('/ceshiyixia', methods=['GET', 'POST'])
+@handle_response
+def ceshiyixia() -> None:
+    '''
+    Get all details about default survey template.
+    Default survey template is carefully designed by Professor Jie Ding
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    dict
+        Details will be formed in dictonary structure
+    '''
+    return 'ceshiyixia'
+
+@api.route('/get_survey_template', methods=['POST'])
 # @token_auth.login_required
 @handle_response
 def get_survey_template() -> None:
@@ -38,19 +63,24 @@ def get_survey_template() -> None:
     dict
         Details will be formed in dictonary structure
     '''
+    data = request.get_json()
+    if not data:
+        raise ValueError('You must post JSON data.')
     expected_data = {
         'survey_template_id': str,
     }
     check_if_data_is_valid(
-        data=request.args,
+        data=data,
         expected_data=expected_data
     )
 
-    survey_template_id = request.args['survey_template_id']
-    return search_document(
+    survey_template_id = data['survey_template_id']
+    survey_template_document = search_document(
         database_type='survey_template',
         survey_template_id=survey_template_id
     )
+    del survey_template_document['_id']
+    return survey_template_document
 
 @api.route('/get_default_survey_template', methods=['GET'])
 @handle_response
@@ -71,12 +101,12 @@ def get_default_survey_template() -> None:
     return Constant.generate_default_template()
 
 
-@api.route('/get_user_history', methods=['GET'])
-@token_auth.login_required
+@api.route('/get_user_histories', methods=['POST'])
+# @token_auth.login_required
 @handle_response
-def get_user_history() -> None:
+def get_user_histories() -> list:
     '''
-    Get all survey template created by the current user.
+    Get all survey templates created by current user
 
     Parameters
     ----------
@@ -88,24 +118,29 @@ def get_user_history() -> None:
         History will be formed in list structure, which sort in 
         reverse timestamp order. (The latest record is in the first place) 
     '''
-    expected_data = {
-        'user_id': str,
-    }
-    check_if_data_is_valid(
-        data=request.args,
-        expected_data=expected_data
-    )
+    # data = request.get_json()
+    # if not data:
+    #     raise ValueError('You must post JSON data.')
+    # expected_data = {
+    #     'survey_template_id': str,
+    # }
+    # check_if_data_is_valid(
+    #     data=data,
+    #     expected_data=expected_data
+    # )
 
-    user_id = request.args['user_id']
-    
-    return get_user_history_helper()
+    # survey_template_id = request.args['survey_template_id']
+    return get_user_histories_helper()
 
 @api.route('/get_voter_answers_of_template', methods=['POST'])
 # @token_auth.login_required
 @handle_response
 def get_voter_answers_of_template() -> list:
     '''
-    Get all survey answers of a specific survey template.
+    1. Check if the survey template document and all survey
+        answers of current template needs to be deleted.
+    2. if the template is not expired, get all survey 
+        answers of a specific survey template.
 
     Parameters
     ----------
@@ -128,6 +163,30 @@ def get_voter_answers_of_template() -> list:
     )
 
     survey_template_id = data['survey_template_id']
+
+    survey_template_document = search_document(
+        database_type='survey_template',
+        survey_template_id=survey_template_id
+    )
+    expiration_time = survey_template_document['expiration_time']
+
+    # If the survey template is expired,
+    # delete corresponding documents
+    if Time.has_expiration_time_expired(
+        expiration_time=expiration_time
+    ):
+        # delete survey_template document
+        delete_document(
+            database_type='survey_template',
+            survey_template_id=survey_template_id
+        )
+
+        # delete all survey_answer documents
+        delete_multiple_documents(
+            database_type='survey_answer',
+            survey_template_id=survey_template_id
+        )
+
     return get_voter_answers(
         survey_template_id=survey_template_id
     )

@@ -58,6 +58,7 @@ def create_survey_template() -> None:
         raise ValueError('You must post JSON data.')
     print('zheli', data)
     expected_data = {
+        'survey_template_name': str,
         'survey_update_method': Survey_Update_Method,
         'time_period': str,
         'number_of_copies': int,
@@ -69,6 +70,7 @@ def create_survey_template() -> None:
         expected_data=expected_data
     )
     print('0.5')
+    survey_template_name = data['survey_template_name']
     survey_update_method = data['survey_update_method']
     time_period = data['time_period']
     number_of_copies = data['number_of_copies']
@@ -76,6 +78,7 @@ def create_survey_template() -> None:
     survey_topics = data['survey_topics']
 
     res = SurveyTemplate.create_survey_template(
+        survey_template_name=survey_template_name,
         survey_update_method=survey_update_method,
         time_period=time_period,
         number_of_copies=number_of_copies,

@@ -62,7 +62,7 @@ def create_MongoDB_Collections():
 
     if 'SurveyAnswer' not in collection_list:
         pyMongo.db.SurveyAnswer.create_index([("survey_answer_id", 1)], unique=True)
-        pyMongo.db.SurveyAnswer.create_index([("survey_template_id", 1)], unique=True)
+        pyMongo.db.SurveyAnswer.create_index([("survey_template_id", 1)], unique=False)
         # TODO: 也许survey_template_id和mturk_id要一个联合索引
 
     if 'SurveySummary' not in collection_list:
@@ -96,6 +96,13 @@ def configure_errorhandlers(application):
         # print(e.args)
         print('exception', Exception)
         # print('resssponses', e.name)
+        # unauthorized error
+        # if e == 401:
+        #     return jsonify(
+        #         error_msg='please login',
+        #         error_name='unauthorized'
+        #     ), 401
+
         code = 500
         if isinstance(e, HTTPException):
             code = e.code

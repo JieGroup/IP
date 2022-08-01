@@ -115,6 +115,49 @@ class Time:
         return current_time
 
     @classmethod
+    def has_expiration_time_expired(
+        cls,
+        expiration_time: int
+    ) -> bool:
+        '''
+        Check if expiration time expire
+
+        Parameters
+        ----------
+        expiration_time : str
+
+        Returns
+        -------
+        bool
+        '''
+        cur_time = cls.get_current_utc_time()
+        if cur_time > expiration_time:
+            return True
+
+        return False
+
+    @classmethod
+    def change_time_to_readable_str(
+        cls,
+        creation_time: int,
+    ) -> str:
+        '''
+        Change timestamp from integer to readable string
+
+        Parameters
+        ----------
+        creation_time : str
+
+        Returns
+        -------
+        str
+        '''
+        timestamp_obj = datetime.fromtimestamp(creation_time)
+        timestamp = timestamp_obj.strftime("%m/%d/%Y, %H:%M:%S")
+
+        return timestamp
+
+    @classmethod
     def change_time_period_to_sec(
         cls,
         time_period: str

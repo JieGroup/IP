@@ -213,8 +213,8 @@ const rules = {
     minLength: minLength(1),
   },
 };
-
-const validate = reactive(useVuelidate(rules, toRefs(formData)));
+// const validate = reactive(useVuelidate(rules, toRefs(formData)));
+const validate = useVuelidate(rules, toRefs(formData));
 
 const store_info = (username, password) => {
   infoStore.setUsername(username)
@@ -222,7 +222,7 @@ const store_info = (username, password) => {
 }
 
 const login = async () => {
-  login_data = {
+  let login_data = {
     'username': formData.username,
     'password': formData.password
   }

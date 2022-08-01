@@ -14,7 +14,8 @@ import TransactionList from "../views/transaction-list/Main.vue";
 import TransactionDetail from "../views/transaction-detail/Main.vue";
 import SellerList from "../views/seller-list/Main.vue";
 import SellerDetail from "../views/seller-detail/Main.vue";
-import Reviews from "../views/reviews/Main.vue";
+// import Reviews from "../views/reviews/Main.vue";
+
 import Inbox from "../views/inbox/Main.vue";
 import FileManager from "../views/file-manager/Main.vue";
 import PointOfSale from "../views/point-of-sale/Main.vue";
@@ -71,7 +72,9 @@ import CreateForm from "../views/create-form/Main.vue";
 import CreateFormRes from "../views/create-form-res/Main.vue";
 import AnswerForm from "../views/answer-form/Main.vue";
 import AnswerFormDone from "../views/answer-form-done/Main.vue";
+import TemplateForm from "../views/template-form/Main.vue";
 import GetVoterAnswers from "../views/get-voter-answers/Main.vue";
+import Histories from "../views/histories/Main.vue"
 import Chart from "../views/chart/Main.vue";
 import Slider from "../views/slider/Main.vue";
 import ImageZoom from "../views/image-zoom/Main.vue";
@@ -167,9 +170,9 @@ const routes = [
         component: SellerDetail,
       },
       {
-        path: "reviews",
-        name: "side-menu-reviews",
-        component: Reviews,
+        path: "histories",
+        name: "side-menu-histories",
+        component: Histories,
       },
       {
         path: "inbox",
@@ -440,6 +443,11 @@ const routes = [
         path: "get-voter-answers",
         name: "side-menu-get-voter-answers",
         component: GetVoterAnswers,
+      },
+      {
+        path: "template-form",
+        name: "side-menu-template-form",
+        component: TemplateForm,
       },
       {
         path: "chart",
@@ -1169,3 +1177,4 @@ const router = createRouter({
 });
 
 export default router;
+// export { router }

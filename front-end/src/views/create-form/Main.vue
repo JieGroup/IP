@@ -67,13 +67,29 @@
             >
               <XCircleIcon class="text-danger" />
               <div class="ml-4 mr-4">
-                <div class="font-medium">Create form failed! {{ formError }} {{ formError.error }}</div>
+                <div class="font-medium">Create form failed!</div>
                 <div class="text-slate-500 mt-1">
                   Please check the fileld form.
                 </div>
               </div>
             </div>
             <!-- END: Failed Notification Content -->
+
+            <!-- BEGIN: Failed Notification Content -->
+            <div
+              id="duplicate-topic-name"
+              class="toastify-content hidden flex"
+            >
+              <XCircleIcon class="text-danger" />
+              <div class="ml-4 mr-4">
+                <div class="font-medium">Create form failed!</div>
+                <div class="text-slate-500 mt-1">
+                  Duplicate topic name
+                </div>
+              </div>
+            </div>
+            <!-- END: Failed Notification Content -->
+
             <!-- BEGIN: Request Error Content -->
             <div
               id="request-error-content"
@@ -155,6 +171,7 @@ const is_fix_form_validate = (data_valid) => {
   // fix_form_data.validate is the value of 
   // the vuelidate we used
   const validate = fix_form_data.validate
+  console.log('butonton', validate)
   validate.$touch();
   if (validate.$invalid === true) {
     data_valid = false
@@ -232,7 +249,6 @@ const send_form = async (templateData) => {
       position: "right",
       stopOnFocus: true,
     }).showToast();
-
   } catch (err) {
     console.log(`send_form err 0.5: ${err}`)
     let processed_err = process_axios_error(err)

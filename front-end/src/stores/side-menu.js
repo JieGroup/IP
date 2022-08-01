@@ -37,8 +37,8 @@ export const useSideMenuStore = defineStore("sideMenu", {
       },
       {
         icon: "ShoppingBagIcon",
-        pageName: "side-menu-reviews",
-        title: "History",
+        pageName: "side-menu-histories",
+        title: "Histories",
       },
       "devider",
       {

@@ -22,6 +22,8 @@ from app._typing import (
     Survey_New_Answers
 )
 
+from flask import g
+
 from typing import (
     Any,
     Union
@@ -127,6 +129,7 @@ class SurveyTemplate:
     @classmethod
     def create_survey_template(
         cls, 
+        survey_template_name: str,
         survey_update_method: Survey_Update_Method,
         time_period: str,
         number_of_copies: int,
@@ -173,17 +176,35 @@ class SurveyTemplate:
         # Store the new template
         survey_template_id = get_unique_id()
         print('zheli')
+        creation_time = Time.get_current_utc_time()
         expiration_time = Time.get_expiration_utc_time(time_period)
         print('zheli2')
         create_document(
             database_type='survey_template',
             survey_template_id=survey_template_id,
+            survey_template_name=survey_template_name,
             survey_update_method=survey_update_method,
+            creation_time=creation_time,
             expiration_time=expiration_time,
+            time_period=time_period,
             number_of_copies=number_of_copies,
             max_rounds=max_rounds,
             survey_topics=survey_topics
         )
+
+        user_id = g.current_user['user_id']
+        # record the survey template created by current user
+        # delete searching process when user wants to check
+        # its history
+        update_document(
+            database_type='user',
+            user_id=user_id,
+            survey_template_id=survey_template_id,
+            survey_template_name=survey_template_name,
+            creation_time=creation_time,
+            expiration_time=expiration_time,
+        )
+
         print('zheli3')
         return {
             'survey_template_id': survey_template_id

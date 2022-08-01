@@ -4,6 +4,8 @@ from app.api import api
 
 from flask import request
 
+from flask import abort
+
 from app.authentication.api import token_auth
 
 from app.process.api import VoterAnswerSurvey
@@ -40,6 +42,8 @@ def voter_start_answering():
     -------
     dict
     '''
+    # raise ValueError
+    # abort(401)
     data = request.get_json()
     if not data:
         raise ValueError('You must post JSON data.')

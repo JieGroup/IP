@@ -149,6 +149,7 @@ const rules = {
     required: requiredIf(() => props.subSurveyTopicValue.answer_type === 'continuous')
   },
 };
-const validate = reactive(useVuelidate(rules, toRefs(formData)));
+// const validate = reactive(useVuelidate(rules, toRefs(formData)));
+const validate = useVuelidate(rules, toRefs(formData));
 props.answerFormData[props.subSurveyTopicKey] = validate;
 </script>
