@@ -94,10 +94,51 @@ def drop_db_collections() -> None:
     '''
 
     for collecion_names in pyMongo.db.list_collection_names():
-        if collecion_names == 'User' or collecion_names == 'SurveyTemplate':
+        # if collecion_names == 'User' or collecion_names == 'SurveyTemplate':
+        #     continue
+        if collecion_names == 'SurveyTemplate':
             continue
 
         pyMongo.db.drop_collection(collecion_names)
+
+def get_headers() -> dict:
+    '''
+    Create headers for registering
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    dict
+    '''
+    global client
+
+    return {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+
+def get_form_type_headers() -> dict:
+    '''
+    Create headers for registering
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    dict
+    '''
+    global client
+
+    return {
+        # 'Accept': 'application/json',
+        # 'Content-Type': 'multipart/form-data'
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
 
 def get_basic_auth_headers(
     username: str, 
@@ -153,6 +194,8 @@ def get_token_auth_headers(
         'Content-Type': 'application/json'
     }
 
+
+
 def register_account(
     username: str
 ) -> str:
@@ -189,7 +232,7 @@ def register_account(
         email='123@123.com',
         hashed_password=hashed_password,
         authority_level='user',
-        comfirm_email=True
+        confirm_email=True
     )
     # else:
         # user_id = user_document['user_id']

@@ -34,17 +34,17 @@ class Config(object):
     # MESSAGES_PER_PAGE = 10
 
     # gmail for email validation
-    # gmail account: apolloumn.email@gmail.com
-    # gmail password: apolloumn
-    # app password: wvduhthxrmktdxjb
-    # MAIL_SERVER ='smtp.gmail.com'
-    # MAIL_PORT = 465
-    # MAIL_USERNAME = 'apolloumn.email@gmail.com'
-    # MAIL_PASSWORD = 'wvduhthxrmktdxjb'
-    # MAIL_USE_SSL = True
-    # MAIL_DEFAULT_SENDER = 'apolloumn.email@gmail.com'
-    # SECURITY_PASSWORD_SALT = 'zxsdfasdvasdafwe'
-
+    # gmail account: IntervalPrivacy@gmail.com
+    # gmail password: wvduhthxrmktdxjb   (This is for login the gmail account)
+    # stmp app password: acbvrlhgtuvlgjtt  (This is used as the MAIL_PASSWORD to send email)
+    # tutorial: https://www.youtube.com/watch?v=1YXVdyVuFGA
+    MAIL_SERVER ='smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USERNAME = 'IntervalPrivacy@gmail.com'
+    MAIL_PASSWORD = 'acbvrlhgtuvlgjtt'
+    MAIL_USE_SSL = True
+    MAIL_DEFAULT_SENDER = 'IntervalPrivacy@gmail.com'
+    SECURITY_PASSWORD_SALT = 'wvduhthxrmktdxjb'
 
 class ProductionConfig(Config):
 

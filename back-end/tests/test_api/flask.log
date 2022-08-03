@@ -1,0 +1,68 @@
+2022-08-02 17:14:43,529 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Need at least 1 uppercase letter', 'error_name': 'ValueError'}
+2022-08-02 17:14:44,796 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Need at least 1 uppercase letter', 'error_name': 'ValueError'}
+2022-08-02 17:14:44,796 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Need at least 1 uppercase letter', 'error_name': 'ValueError'}
+2022-08-02 17:17:30,834 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "missing a required argument: 'authority_level'", 'error_name': 'TypeError'}
+2022-08-02 17:17:32,384 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "missing a required argument: 'authority_level'", 'error_name': 'TypeError'}
+2022-08-02 17:17:32,384 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "missing a required argument: 'authority_level'", 'error_name': 'TypeError'}
+2022-08-02 17:18:32,678 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "got an unexpected keyword argument 'created_template'", 'error_name': 'TypeError'}
+2022-08-02 17:18:34,017 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "got an unexpected keyword argument 'created_template'", 'error_name': 'TypeError'}
+2022-08-02 17:18:34,017 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "got an unexpected keyword argument 'created_template'", 'error_name': 'TypeError'}
+2022-08-02 17:19:29,458 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'activate.html', 'error_name': 'TemplateNotFound'}
+2022-08-02 17:19:31,877 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'activate.html', 'error_name': 'TemplateNotFound'}
+2022-08-02 17:19:31,877 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'activate.html', 'error_name': 'TemplateNotFound'}
+2022-08-02 17:23:23,829 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Please use a different username.', 'error_name': 'ValueError'}
+2022-08-02 17:23:25,138 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Please use a different username.', 'error_name': 'ValueError'}
+2022-08-02 17:23:25,138 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Please use a different username.', 'error_name': 'ValueError'}
+2022-08-02 17:24:05,818 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Please use a different username.', 'error_name': 'ValueError'}
+2022-08-02 17:24:07,448 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'type of the return value must be NoneType; got bool instead', 'error_name': 'TypeError'}
+2022-08-02 17:24:07,448 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'type of the return value must be NoneType; got bool instead', 'error_name': 'TypeError'}
+2022-08-02 18:11:46,264 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'type of the return value must be bool; got str instead', 'error_name': 'TypeError'}
+2022-08-02 18:53:22,254 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "got an unexpected keyword argument 'password'", 'error_name': 'TypeError'}
+2022-08-02 18:54:54,378 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'type of the return value must be dict; got str instead', 'error_name': 'TypeError'}
+2022-08-02 19:08:01,306 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-02 19:08:59,238 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-02 19:09:53,783 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-02 19:11:52,756 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-02 19:13:13,232 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "local variable 'token' referenced before assignment", 'error_name': 'UnboundLocalError'}
+2022-08-02 19:13:40,743 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "local variable 'token' referenced before assignment", 'error_name': 'UnboundLocalError'}
+2022-08-02 19:14:45,027 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-02 19:15:08,885 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-02 19:15:53,714 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-02 19:16:31,434 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-02 19:17:37,173 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-02 19:21:43,818 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-02 19:22:11,614 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-02 19:23:34,118 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-02 19:24:31,141 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-02 19:25:55,966 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-02 19:27:05,720 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "400 Bad Request: The browser (or proxy) sent a request that this server could not understand.\nKeyError: 'token'", 'error_name': 'BadRequestKeyError'}
+2022-08-02 19:27:30,155 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "400 Bad Request: The browser (or proxy) sent a request that this server could not understand.\nKeyError: 'token'", 'error_name': 'BadRequestKeyError'}
+2022-08-02 19:31:47,692 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "400 Bad Request: The browser (or proxy) sent a request that this server could not understand.\nKeyError: 'token'", 'error_name': 'BadRequestKeyError'}
+2022-08-02 19:32:21,462 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "400 Bad Request: The browser (or proxy) sent a request that this server could not understand.\nKeyError: 'token'", 'error_name': 'BadRequestKeyError'}
+2022-08-02 19:33:08,608 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-02 19:37:21,615 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-02 19:38:02,767 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "400 Bad Request: The browser (or proxy) sent a request that this server could not understand.\nKeyError: 'token'", 'error_name': 'BadRequestKeyError'}
+2022-08-02 19:38:40,853 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "400 Bad Request: The browser (or proxy) sent a request that this server could not understand.\nKeyError: 'token'", 'error_name': 'BadRequestKeyError'}
+2022-08-02 19:41:03,196 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "400 Bad Request: The browser (or proxy) sent a request that this server could not understand.\nKeyError: 'token'", 'error_name': 'BadRequestKeyError'}
+2022-08-02 19:42:01,229 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "400 Bad Request: The browser (or proxy) sent a request that this server could not understand.\nKeyError: 'token'", 'error_name': 'BadRequestKeyError'}
+2022-08-02 19:42:37,040 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'Request' object has no attribute 'text'", 'error_name': 'AttributeError'}
+2022-08-02 19:42:58,850 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "400 Bad Request: The browser (or proxy) sent a request that this server could not understand.\nKeyError: 'token'", 'error_name': 'BadRequestKeyError'}
+2022-08-02 19:43:28,432 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "400 Bad Request: The browser (or proxy) sent a request that this server could not understand.\nKeyError: 'token'", 'error_name': 'BadRequestKeyError'}
+2022-08-02 19:44:04,938 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "400 Bad Request: The browser (or proxy) sent a request that this server could not understand.\nKeyError: 'token'", 'error_name': 'BadRequestKeyError'}
+2022-08-02 19:46:14,028 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "400 Bad Request: Did not attempt to load JSON data because the request Content-Type was not 'application/json'.", 'error_name': 'BadRequest'}
+2022-08-02 19:48:28,573 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "400 Bad Request: Did not attempt to load JSON data because the request Content-Type was not 'application/json'.", 'error_name': 'BadRequest'}
+2022-08-02 19:49:08,381 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "400 Bad Request: The browser (or proxy) sent a request that this server could not understand.\nKeyError: 'token'", 'error_name': 'BadRequestKeyError'}
+2022-08-02 19:49:34,977 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'token not matched', 'error_name': 'ValueError'}
+2022-08-02 19:50:28,436 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "400 Bad Request: The browser (or proxy) sent a request that this server could not understand.\nKeyError: 'token'", 'error_name': 'BadRequestKeyError'}
+2022-08-02 19:50:48,883 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'int() takes at most 2 arguments (3 given)', 'error_name': 'TypeError'}
+2022-08-02 19:52:37,832 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'int() takes at most 2 arguments (3 given)', 'error_name': 'TypeError'}
+2022-08-02 19:53:13,163 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'int() takes at most 2 arguments (3 given)', 'error_name': 'TypeError'}
+2022-08-02 19:53:43,949 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'int() takes at most 2 arguments (3 given)', 'error_name': 'TypeError'}
+2022-08-02 19:54:40,330 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'int() takes at most 2 arguments (3 given)', 'error_name': 'TypeError'}
+2022-08-02 19:56:13,033 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'int() takes at most 2 arguments (3 given)', 'error_name': 'TypeError'}
+2022-08-02 19:56:30,345 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'int() takes at most 2 arguments (3 given)', 'error_name': 'TypeError'}
+2022-08-02 19:57:44,513 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'int() takes at most 2 arguments (3 given)', 'error_name': 'TypeError'}
+2022-08-02 19:58:33,915 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'int() takes at most 2 arguments (3 given)', 'error_name': 'TypeError'}
+2022-08-02 20:00:36,729 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'int() takes at most 2 arguments (3 given)', 'error_name': 'TypeError'}
+2022-08-02 20:01:17,450 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'int() takes at most 2 arguments (3 given)', 'error_name': 'TypeError'}
+2022-08-02 20:02:08,719 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'int() takes at most 2 arguments (3 given)', 'error_name': 'TypeError'}

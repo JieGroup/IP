@@ -48,6 +48,7 @@ Form of the data that transfer to back-end
 */
 
 const fix_form_data_keys = new Set([
+  'survey_template_name',
   'survey_update_method',
   'time_period',
   'number_of_copies',

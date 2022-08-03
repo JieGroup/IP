@@ -39,7 +39,7 @@ def create_survey_template() -> None:
         Defines how we update topic new ranges. 'static' means the voter would only answer
         the all topics once. 'uniform' means the topics would be dynamically generated and voter
         may need to answer each topic more than one time.
-    time_period : int
+    time_period : str
         Defines how long we should keep the survey template in database
     number_of_copies : int
         Defines the max number of survey to issue

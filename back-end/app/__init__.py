@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+import logging
+
 from flask import Flask
+from flask import current_app
 
 from app.extensions import (
     cors, 
@@ -13,7 +16,7 @@ from app.authentication import authentication_bp
 def create_app(config_class=None):
     '''Factory Pattern: Create Flask app.'''
     # pymysql.install_as_MySQLdb()
-    application = Flask(__name__)
+    application = Flask(__name__, template_folder='./process/templates/')
 
     # Initialization flask app
     configure_app(application, config_class)
@@ -24,6 +27,11 @@ def create_app(config_class=None):
     configure_after_handlers(application)
     configure_errorhandlers(application)
     
+    handler = logging.FileHandler('flask.log', encoding='UTF-8')   # 设置日志字符集和存储路径名字
+    logging_format = logging.Formatter(                            # 设置日志格式
+        '%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s')
+    handler.setFormatter(logging_format)
+    application.logger.addHandler(handler)
     return application
 
 
@@ -102,6 +110,10 @@ def configure_errorhandlers(application):
         #         error_msg='please login',
         #         error_name='unauthorized'
         #     ), 401
+        current_app.logger.warning({
+            'error_msg': str(e),
+            'error_name': type(e).__name__
+        })
 
         code = 500
         if isinstance(e, HTTPException):

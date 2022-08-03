@@ -32,6 +32,36 @@
             </template>
             </div> -->
 
+            <div class="input-form mt-3">
+            <label
+                for="validation-form-0"
+                class="form-label w-full flex flex-col sm:flex-row"
+            >
+                Survey template name
+                <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
+                >Required, at least 1 characters</span
+                >
+            </label>
+            <input
+                id="validation-form-0"
+                v-model.trim="validate.survey_template_name.$model"
+                type="text"
+                name="survey_template_name"
+                class="form-control"
+                :class="{ 'border-danger': validate.survey_template_name.$error }"
+                placeholder="The name of current template"
+            />
+            <template v-if="validate.survey_template_name.$error">
+                <div
+                v-for="(error, index) in validate.survey_template_name.$errors"
+                :key="index"
+                class="text-danger mt-2"
+                >
+                {{ error.$message }}
+                </div>
+            </template>
+            </div>
+
             <div class="mt-3">
             <label>Survey update method</label>
             <div class="mt-2">
@@ -245,6 +275,7 @@ const props = defineProps({
 const emit = defineEmits([])
 
 const formData = reactive({
+  survey_template_name: "",
   survey_update_method: "static",
   max_rounds: 1,
   number_of_copies: "",
@@ -252,6 +283,9 @@ const formData = reactive({
 });
 
 const rules = {
+  survey_template_name: {
+    required
+  },  
   survey_update_method: {
     required
   },

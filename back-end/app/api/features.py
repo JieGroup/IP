@@ -44,6 +44,7 @@ def ceshiyixia() -> None:
     dict
         Details will be formed in dictonary structure
     '''
+    raise ValueError('ceshi')
     return 'ceshiyixia'
 
 @api.route('/get_survey_template', methods=['POST'])

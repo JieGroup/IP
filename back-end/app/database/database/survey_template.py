@@ -114,6 +114,7 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
         time_period: str,
         number_of_copies: int,
         max_rounds: int,
+        participated_voters: list,
         survey_topics: Survey_Topics
     ) -> InsertOneResult:
         '''
@@ -129,6 +130,8 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
         time_period : str
         number_of_copies : int
         max_rounds : int
+        participated_voters : list
+            empty list
         survey_topics : Survey_Topics
 
         Returns
@@ -144,6 +147,7 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
             'time_period': time_period,
             'number_of_copies': number_of_copies,
             'max_rounds': max_rounds,
+            'participated_voters': participated_voters,
             'survey_topics': survey_topics,
         }
         
@@ -152,13 +156,25 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
     @classmethod
     def update_document(
         cls, 
-    ) -> None:
-
+        survey_template_id: str,
+        mturk_id: str
+    ) -> UpdateResult:
         '''
-        Currently not needed. User can only create new template once
-        '''
+        Update participated_voters of current template
 
-        pass
+        Parameters
+        ----------
+        survey_template_id : str
+        mturk_id : str
+
+        Returns
+        -------
+        UpdateResult
+        '''
+        return pyMongo.db.SurveyTemplate.update_one({'survey_template_id': survey_template_id}, {'$push': {
+            'participated_voters': mturk_id,
+        }})
+        
     
     @classmethod
     def delete_document(

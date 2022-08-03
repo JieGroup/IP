@@ -2,6 +2,7 @@ from typing import Final
 
 class Constant:
 
+    EMAIL_PATTERN = '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
     TOKEN_EXPIRATION_PERIOD: Final[int] = 5000
     UPDATE_TOKEN_INTERVAL: Final[int] = 900
 

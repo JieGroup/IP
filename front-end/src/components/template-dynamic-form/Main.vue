@@ -9,142 +9,106 @@
       <!-- BEGIN: Validation Form -->
       <!-- <form class="validate-form"> -->
 
-        <div class="input-form">
+        <div class="input-form mt-3">
         <label
-            for="validation-form-1"
-            class="form-label w-full flex flex-col sm:flex-row"
+          for="validation-form-1"
+          class="form-label w-full flex flex-col sm:flex-row"
         >
-            Topic name
-            <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-            >Required, at least 1 character</span
-            >
+          Topic name
         </label>
         <input
-            id="validation-form-1"
-            v-model.trim="validate.topic_name.$model"
-            type="text"
-            name="topic_name"
-            class="form-control"
-            :class="{ 'border-danger': validate.topic_name.$error }"
-            placeholder="Type your topic name. E.g. age"
+          id="validation-form-1"
+          v-model.trim="surveyTemplateDynamicDataKey"
+          type="text"
+          name="topic name"
+          class="form-control"
+          readonly="readonly"
         />
-        <template v-if="validate.topic_name.$error">
-            <div
-            v-for="(error, index) in validate.topic_name.$errors"
-            :key="index"
-            class="text-danger mt-2"
-            >
-            {{ error.$message }}
-            </div>
-        </template>
         </div>
 
         <div class="input-form mt-3">
         <label
-            for="validation-form-2"
-            class="form-label w-full flex flex-col sm:flex-row"
+          for="validation-form-2"
+          class="form-label w-full flex flex-col sm:flex-row"
         >
-            Topic question
-            <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-            >Required, at least 5 characters</span
-            >
+          Topic question
         </label>
         <input
-            id="validation-form-2"
-            v-model.trim="validate.topic_question.$model"
-            type="text"
-            name="topic_question"
-            class="form-control"
-            :class="{ 'border-danger': validate.topic_question.$error }"
-            placeholder="Question about this topic. E.g. what is your age?"
+          id="validation-form-2"
+          v-model.trim="surveyTemplateDynamicDataValue.topic_question"
+          type="text"
+          name="topic_question"
+          class="form-control"
+          readonly="readonly"
         />
-        <template v-if="validate.topic_question.$error">
-            <div
-            v-for="(error, index) in validate.topic_question.$errors"
-            :key="index"
-            class="text-danger mt-2"
-            >
-            {{ error.$message }}
-            </div>
-        </template>
         </div>
 
-        <div class="mt-3">
-        <label>Answer type</label>
-        <div class="mt-2">
-            <TomSelect v-model="validate.answer_type.$model" :options="{
-                        placeholder: 'Select answer type',
-                        }" class="w-full">
-              <optgroup label="Answer Type">
-                  <option value="categorical">Categorical</option>
-                  <option value="continuous">Continuous</option>
-              </optgroup>
-            </TomSelect>
-        </div>
+        <div class="input-form mt-3">
+        <label
+          for="validation-form-3"
+          class="form-label w-full flex flex-col sm:flex-row"
+        >
+          Answer type
+        </label>
+        <input
+          id="validation-form-3"
+          v-model.trim="surveyTemplateDynamicDataValue.answer_type"
+          type="text"
+          name="topic_question"
+          class="form-control"
+          readonly="readonly"
+        />
         </div>
 
-        <div v-if="validate.answer_type.$model === 'categorical'" class="input-form mt-3">
-        <CategoricalAnsOpt v-for="(item, index) in categorical_answer_options"
-                          :key="item.unique_id" 
-                          :categorical_answer_option_index="index"
-                          :categorical_answer_option_data="item"
-                          @parent_delete_categorical_answer_option="delete_categorical_answer_option"/>
-        <br />
-        <div class="input-form">
+        <div v-if="surveyTemplateDynamicDataValue.answer_type === 'categorical'" class="input-form mt-3">
+        <!-- <TemplateCategoricalAnsOpt :categorical_answer_option_data="surveyTemplateDynamicDataValue.categorical_range"/> -->
+
+        <TemplateCategoricalAnsOpt v-for="(item, index) in surveyTemplateDynamicDataValue.categorical_range.inclusion"
+                                  :key="index" 
+                                  :categorical_answer_option_data="item"/>
+        <!-- <br /> -->
+        <!-- <div class="input-form"> -->
           <!-- <br> -->
-          <input class="form-check-input" type="checkbox" id="disabledFieldsetCheck" disabled>
-          <label class="form-check-label" for="disabledFieldsetCheck" @click="add_categorical_answer_option">
+          <!-- <input class="form-check-input" type="checkbox" id="disabledFieldsetCheck" disabled> -->
+          <!-- <label class="form-check-label" for="disabledFieldsetCheck" @click="add_categorical_answer_option"> -->
             <!-- <u class="block mt-1">add new option</u> -->
-            <u>add new option</u>
+            <!-- <u>add new option</u> -->
             <!-- <u class="block mt-1">This line of text will render as underlined</u> -->
-          </label>
-        </div>
+          <!-- </label> -->
+        <!-- </div> -->
         </div>
 
-        <div v-if="validate.answer_type.$model === 'continuous'" class="input-form mt-3">
-          <ContinuousAnsOpt :continuous_answer_option_data="continuous_answer_options"/>
+        <div v-if="surveyTemplateDynamicDataValue.answer_type === 'continuous'" class="input-form mt-3">
+          <TemplateContinuousAnsOpt :continuous_answer_option_data="surveyTemplateDynamicDataValue.continuous_range"/>
         </div>
 
         <div class="input-form mt-3">
-        <label
+          <label
             for="validation-form-4"
             class="form-label w-full flex flex-col sm:flex-row"
-        >
+          >
             Unit
-            <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-            >Required, at least 1 character</span
-            >
-        </label>
-        <input
+          </label>
+          <input
             id="validation-form-4"
-            v-model.trim="validate.unit.$model"
-            type='text'
+            v-model.trim="surveyTemplateDynamicDataValue.unit"
+            type="text"
             name="unit"
             class="form-control"
-            :class="{ 'border-danger': validate.unit.$error }"
-            placeholder="Type your unit. E.g. m/s"
-        />
-        <template v-if="validate.unit.$error">
-            <div
-            v-for="(error, index) in validate.unit.$errors"
-            :key="index"
-            class="text-danger mt-2"
-            >
-            {{ error.$message }}
-            </div>
-        </template>
+            readonly="readonly"
+          />
         </div>
 
         <!-- <button type="submit" class="btn btn-primary mt-5">
         Submit
         </button> -->
         <!-- <button @click="add_dynamic_form" class="btn btn-success mr-1 mb-2"> -->
-        <button type='button' @click="add_dynamic_form" class="btn btn-success mt-5">
+        <!-- <button type='button' @click="add_dynamic_form" class="btn btn-success mt-5">
           <PlusIcon class="w-5 h-5" />
         </button>
         <button type='button' @click="delete_dynamic_form" class="btn btn-danger mt-5">
           <TrashIcon class="w-5 h-5" />
-        </button>
+        </button> -->
       <!-- </form> -->
       <br />
       <!-- END: Validation Form -->
@@ -167,103 +131,26 @@ import {
 import { useVuelidate } from "@vuelidate/core";
 import Toastify from "toastify-js";
 import dom from "@left4code/tw-starter/dist/js/dom";
-import CategoricalAnsOpt from "@/components/categorical-ans-opt/Main.vue";
-import ContinuousAnsOpt from "@/components/continuous-ans-opt/Main.vue";
+import TemplateCategoricalAnsOpt from "@/components/template-categorical-ans-opt/Main.vue";
+import TemplateContinuousAnsOpt from "@/components/template-continuous-ans-opt/Main.vue";
 
-// receive variable from parent
+
 const props = defineProps({
-  dynamic_form_index: {
-    type: [Number],
+  surveyTemplateDynamicDataKey: {
     default: null,
   },
-  dynamic_form_data: {
-    default: null,
-  },
+  surveyTemplateDynamicDataValue: {
+    default: null
+  }
 });
 
-// const { dynamic_form_index, dynamic_form_data } = toRefs(props);
-let categorical_answer_options = reactive([
-  {
-    unique_id: 0,
-  },
-  {
-    unique_id: 1,
-  },
-  {
-    unique_id: 2,  
-  }
-])
-let unique_id = categorical_answer_options.length
-let continuous_answer_options = reactive([{}])
+console.log('template-dynamic-form', props.surveyTemplateDynamicDataKey, props.surveyTemplateDynamicDataValue)
+// let surveyTemplateFixData = reactive({})
 
-const emits = defineEmits([
-  'parent_add_dynamic_form', 
-  'parent_delete_dynamic_form'
-])
-
-const add_dynamic_form = () => {
-  emits('parent_add_dynamic_form')
-  console.log('zizujian add')
-}
-
-const delete_dynamic_form = () => {
-  console.log('indexxxx', props.dynamic_form_index)
-  emits('parent_delete_dynamic_form', props.dynamic_form_index)
-}
-
-const add_categorical_answer_option = () => {
-  categorical_answer_options.push({unique_id: unique_id})
-  unique_id += 1
-}
-
-const delete_categorical_answer_option = (categorical_answer_options_index) => {
-  console.log('zizujian', categorical_answer_options_index)
-  if (categorical_answer_options_index !== 0){
-    // array.splice(index, howmany)
-    categorical_answer_options.splice(categorical_answer_options_index, 1)
-  }
-}
-
-const formData = reactive({
-  topic_name: "",
-  topic_question: "",
-  answer_type: "categorical",
-  categorical_answer_options: categorical_answer_options,
-  continuous_answer_options: continuous_answer_options,
-  unit: "",
-});
-
-const rules = {
-  topic_name: {
-    required,
-    minLength: minLength(1),
-  },
-  topic_question: {
-    required,
-    minLength: minLength(5),
-  },
-  answer_type: {
-    required
-  },
-  categorical_answer_options: {
-    required: requiredIf(() => formData.answer_type === 'categorical')
-  },
-  continuous_answer_options: {
-    required: requiredIf(() => formData.answer_type === 'continuous')
-  },
-  unit: {
-    required,
-    minLength: minLength(1),
-  },
-};
-
-// const validate = reactive(useVuelidate(rules, toRefs(formData)));
-const validate = useVuelidate(rules, toRefs(formData));
-props.dynamic_form_data.validate = validate;
-// dynamic_form_data.value = validate
-console.log('validate', validate)
-console.log('dynamic----', props.dynamic_form_data.validate)
-console.log('vaaaa', validate.value)
-console.log('dynamic', props.dynamic_form_data.validate)
-// console.log('dynamicaaaa', props.dynamic_form_data.value)
+// onBeforeMount(() => {
+//     for (let key in props.surveyTemplateFixData) {
+//         surveyTemplateFixData[key] = props.surveyTemplateFixData[key]
+//     }
+//     console.log('template-fix-form-2', surveyTemplateFixData)
+// })
 </script>

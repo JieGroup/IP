@@ -2,7 +2,9 @@
   <div class="intro-y flex items-center mt-8">
     <h2 class="text-lg font-medium mr-auto">Form Validation</h2>
   </div>
-
+  <button @click="submit_ceshi_answer" type="button" class="btn btn-primary mt-3">
+    ceshi store
+    </button>
   <div class="grid grid-cols-12 gap-6 mt-5">
     <div class="intro-y col-span-12 lg:col-span-6">
       <!-- BEGIN: Form Validation -->
@@ -37,9 +39,7 @@
               <button @click="back_to_start_answering" type="button" class="btn btn-primary mt-3">
               Back
               </button>
-              <!-- <button @click="submit_ceshi_answer" type="button" class="btn btn-primary mt-3">
-              submit_ceshi_answer
-              </button> -->
+              
               <br />
               <br />
 
@@ -220,10 +220,7 @@ let answerFormData = reactive({})
 let formTemplateData = reactive({})
 
 //判断answer store
-const voterAnswer = voterAnswerStore();
-const storedSurveyTopics = computed(() => voterAnswer.surveyTopics);
-const storedSurveyAnswerID = computed(() => voterAnswer.surveyAnswerID);
-const storedSurveyUpdateMethod = computed(() => voterAnswer.surveyUpdateMethod);
+const storedVoterAnswer = voterAnswerStore();
 
 //判断voterToken
 const authenticationStore = useAuthenticationStore();
@@ -332,12 +329,22 @@ const back_to_start_answering = () => {
 // ref, computed 取值要加.value
 
 const submit_ceshi_answer = () => {
-  send_voter_submit_answers()
+  // store_cur_template_info()
+  // load_prev_template_info()
+  let ceshi = {
+    'asdsa': {
+      'asdsad': 123,
+      'ddd': 456
+    }
+  }
+  storedVoterAnswer.setsurveyTopics(JSON.stringify(ceshi));
+  let res = storedVoterAnswer.surveyTopics
+  console.log('submit_ceshi_answer_res', res)
 }
 
 const send_to_server = () => {
   console.log('formTemplateData send_to_server', formTemplateData)
-  console.log('topics and token value', storedSurveyTopics.value)
+  // console.log('topics and token value', storedSurveyTopics.value)
   if (Object.keys(formTemplateData).length > 0){
     send_voter_submit_answers()
   } else {
@@ -348,9 +355,10 @@ const send_to_server = () => {
 const store_cur_template_info = (templateData) => {
   // change data in storage
   console.log('~~~~~~store_cur_template_info', templateData)
-  voterAnswer.setsurveyTopics(templateData.updated_survey_topics);
-  voterAnswer.setsurveyAnswerID(templateData.survey_answer_id);
-  voterAnswer.setsurveyUpdateMethod(templateData.survey_update_method);
+  // object needs to be json stringify
+  storedVoterAnswer.setsurveyTopics(JSON.stringify(templateData.updated_survey_topics));
+  storedVoterAnswer.setsurveyAnswerID(templateData.survey_answer_id);
+  storedVoterAnswer.setsurveyUpdateMethod(templateData.survey_update_method);
 
   // change variables in current page
   formTemplateData.surveyTopics = templateData.updated_survey_topics;
@@ -470,20 +478,21 @@ const send_voter_submit_answers = async () => {
 const load_prev_template_info = () => {
   console.log('##### load_prev_template_info', voterAnswer.surveyTopics)
   // console.log('##### json parse', JSON.parse(voterAnswer.surveyTopics))
-  for (let key in voterAnswer.surveyTopics) {
-    console.log('dasdsad', key)
-  }
-  console.log('storedSurveyTopics.value', storedSurveyTopics.value)
-  formTemplateData.surveyTopics = storedSurveyTopics.value;
-  formTemplateData.surveyAnswerID = storedSurveyAnswerID.value;
-  formTemplateData.surveyUpdateMethod = storedSurveyUpdateMethod.value;
-  
+  // for (let key in storedVoterAnswer.surveyTopics) {
+  //   console.log('dasdsad', key)
+  // }
+  console.log('storedSurveyTopics.value', storedVoterAnswer.surveyTopics, JSON.parse(storedVoterAnswer.surveyTopics))
+  formTemplateData.surveyTopics = storedVoterAnswer.surveyTopics;
+  formTemplateData.surveyAnswerID = storedVoterAnswer.surveyAnswerID;
+  formTemplateData.surveyUpdateMethod = storedVoterAnswer.surveyUpdateMethod;
 }
 
 onMounted(() => {
   // Indicates the voter is answering the survey topics
   // The voter might refresh the page
-  console.log('storage', storedSurveyTopics, storedSurveyAnswerID, storedSurveyUpdateMethod)
+
+  console.log('storage', storedVoterAnswer.surveyTopics, storedVoterAnswer.surveyAnswerID, storedVoterAnswer.surveyUpdateMethod)
+  console.log('storage_json_parse', JSON.parse(storedVoterAnswer.surveyTopics))
   // if (storedSurveyTopics.value !== null){
   //   console.log('jinlai')
   //   // isStartAnswer = false

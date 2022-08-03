@@ -163,6 +163,7 @@ class SurveyTemplate:
         '''
         # Change time_period from str(number of day) to int(seconds)
         print('0.7')
+        temp_time_period = time_period
         time_period = Time.change_time_period_to_sec(time_period=time_period)
         print('1')
         # Check the survey topics uploaded by user
@@ -186,9 +187,10 @@ class SurveyTemplate:
             survey_update_method=survey_update_method,
             creation_time=creation_time,
             expiration_time=expiration_time,
-            time_period=time_period,
+            time_period=temp_time_period,
             number_of_copies=number_of_copies,
             max_rounds=max_rounds,
+            participated_voters=[],
             survey_topics=survey_topics
         )
 

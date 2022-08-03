@@ -28,18 +28,17 @@
         <div class="p-5">
           <Preview>
             <!-- BEGIN: Validation Form -->
-            <button @click="send_to_server" type="button" class="btn btn-primary mt-3">
+            <!-- <button @click="send_to_server" type="button" class="btn btn-primary mt-3">
             Send
-            </button>
+            </button> -->
             <br />
             <br />
             <TemplateIpFixForm :surveyTemplateFixData="surveyTemplateData"/>
-            <!-- <TemplateIpDynamicForm  v-for="(item, index) in dynamic_form_array"
-                            :key="item.unique_id" 
-                            :dynamic_form_index="index"
-                            :dynamic_form_data="item"
-                            @parent_add_dynamic_form="add_dynamic_form" 
-                            @parent_delete_dynamic_form="delete_dynamic_form"/> -->
+            surveyTemplateData.survey_topics {{ surveyTemplateData.survey_topics }}
+            <TemplateIpDynamicForm  v-for="(value, key, index) in surveyTemplateData.survey_topics"
+                                    :key="index"
+                                    :surveyTemplateDynamicDataKey="key" 
+                                    :surveyTemplateDynamicDataValue="value"/>
             <!-- dynamic_form_array -->
             <!-- {{ dynamic_form_array }} -->
             <!-- <IpDynamicForm @add_dynamic_form="add_dynamic_form" 
@@ -112,8 +111,6 @@
         </div>
       </PreviewComponent>
       <!-- END: Form Validation -->
-      <button @click='tiaozhuan'>wowowow
-      </button>
     </div>
   </div>
 </template>
@@ -134,20 +131,21 @@ import Toastify from "toastify-js";
 import { useRoute, useRouter } from "vue-router";
 import dom from "@left4code/tw-starter/dist/js/dom";
 import TemplateIpFixForm from "@/components/template-fix-form/Main.vue";
-// import TemplateIpDynamicForm from "@/components/template-dynamic-form/Main.vue";
+import TemplateIpDynamicForm from "@/components/template-dynamic-form/Main.vue";
 import { axios } from "@/utils/axios";
 import { linkTo, process_template_data, is_data_valid } from "./index"
 import { process_axios_response, process_axios_error, get_api_url } from "@/utils/axios_utils"
 
+
+/*
+This page gets the survey template data from
+back-end, then calls TemplateIpFixForm and
+TemplateIpDynamicForm to show the data
+in form format
+*/
+
 const router = useRouter();
 console.log('create-form', router)
-
-// let requestError = reactive({
-//   error: ''
-// })
-// let formError = reactive({
-//   error: ''
-// })
 
 let fix_form_data = reactive({})
 let unique_id = 0

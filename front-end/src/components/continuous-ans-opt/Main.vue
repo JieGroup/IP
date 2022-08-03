@@ -1,10 +1,10 @@
 <template>
-  <div class="input-form">
+    <div class="input-form">
     <label
         for="validation-form-31"
         class="form-label w-full flex flex-col sm:flex-row"
     >
-      <!-- Answer minimum -->
+      Answer minimum
       <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
       >Required, at least 1 number</span
       >
@@ -27,12 +27,15 @@
         {{ error.$message }}
         </div>
     </template>
+    </div>
 
+    <br />
+    <div class="input-form">
     <label
         for="validation-form-32"
         class="form-label w-full flex flex-col sm:flex-row"
     >
-        <!-- Answer maximum -->
+        Answer maximum
         <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
         >Required, at least 1 number</span
         >
@@ -55,7 +58,7 @@
         {{ error.$message }}
         </div>
     </template>
-  </div>
+    </div>
 </template>
 
 

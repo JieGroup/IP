@@ -17,12 +17,12 @@ from app.process.utils import (
     get_hashed_password,
     get_unique_id,
     validate_password,
-    generate_confirmation_token,
+    generate_email_confirmation_token,
     send_email,
     get_user_id_from_token,
     if_token_user_id_equals_user_id,
-    is_token_matched,
-    decode_token
+    check_if_email_token_matched,
+    decode_email_token
 )
 
 from typeguard import typechecked
@@ -59,7 +59,7 @@ class User:
         username: str,
         email: str,
         password: str,
-    ) -> None:
+    ) -> str:
         '''
         Handle creating new account
 
@@ -74,7 +74,7 @@ class User:
 
         Returns
         -------
-        bool
+        str
         '''
         # Check if the username is duplicated
         user_document = search_document(
@@ -98,10 +98,13 @@ class User:
             email=email,
             hashed_password=hashed_password,
             confirm_email=False,
-            created_template={}
+            designed_survey_template={}
         )
         
-        token = generate_confirmation_token(email)
+        token = generate_email_confirmation_token(
+            username=username,
+            email=email
+        )
         confirm_url = url_for(
             'api.confirm_email', 
             token=token, 
@@ -114,14 +117,95 @@ class User:
             message=message, 
             html_template=html_template
         )
-        response = {}
-        response['token'] = token
-        response['message'] = 'create successfully'
-        return response
+        return token
 
     @classmethod
-    def get_user(
-        cls, user_id: str
+    def resend_email_confirmation_link(
+        cls,
+        username: str,
+        email: str
+    ) -> str:
+        '''
+        Resend the confirmation link to user's email
+
+        Parameters
+        ----------
+        username : str
+            Unique str
+        email : str
+
+        Returns
+        -------
+        str
+        '''
+        token = generate_email_confirmation_token(
+            username=username,
+            email=email
+        )
+        
+        confirm_url = url_for(
+            'api.confirm_email', 
+            token=token, 
+            _external=True
+        )
+        html_template = render_template('activate.html', confirm_url=confirm_url)
+        message = "Please confirm your email"
+        send_email(
+            target_email=email, 
+            message=message, 
+            html_template=html_template
+        )
+        return token
+    
+    @classmethod
+    def confirm_email(
+        cls, token: str
+    ) -> str:
+        '''
+        A confirmation link would be sent to user's email.
+        User needs to confirm the email
+
+        Parameters
+        ----------
+        token : str
+            Unique str
+
+        Returns
+        -------
+        str
+        '''
+        check_if_email_token_matched(token)
+        decoded_token = decode_email_token(token)
+        username = decoded_token['username']
+        email = decoded_token['email']
+        user_document = search_document(
+            database_type='user',
+            username=username,
+            check_response=False
+        )
+        user_id = user_document['user_id']
+
+        msg = ''
+        if user_document:
+            if user_document['confirm_email'] == False:
+                if user_document['email'] == email:
+                    update_document(
+                        database_type='user',
+                        user_id=user_id,
+                        confirm_email=True
+                    )
+                    msg = 'You have confirmed your account. Thanks!'
+                else:
+                    msg = 'The confirmation link is invalid or has expired.'
+            else:
+                msg = 'Account already confirmed. Please login.'
+        else:
+            msg = 'The confirmation link is invalid or has expired.'
+        return msg
+    
+    @classmethod
+    def get_own_info(
+        cls
     ) -> None:
         '''
         Request to get information about the user_id
@@ -135,164 +219,20 @@ class User:
         -------
         dict
         '''
-        token_user_id = get_user_id_from_token()
-        if if_token_user_id_equals_user_id(
-            token_user_id=token_user_id,
-            user_id=user_id
-        ):
-            current_user_information = g.current_user
-            # delete ObjectID to jsonify
-            del current_user_information['_id']
-            return {
-                'user': current_user_information
-            }
-        else:
-            raise ValueError('Wrong UserId')    
-    
-    @classmethod
-    def update_user(
-        cls, 
-        user_id: str,
-        username: str,
-        email: str
-    ) -> None:
-        '''
-        update information about this user_id
-
-        Parameters
-        ----------
-        user_id : str
-            Unique user_id
-        username : str
-        email : str
-
-        Returns
-        -------
-        None
-        '''
-        if search_document(
-            database_type='user',
-            username=username,
-            check_response=False
-        ):
-            raise ValueError('Please use a different username.')
-        if search_document(
-            database_type='user',
-            email=email,
-            check_response=False
-        ):
-            raise ValueError('Please use a different email address.')
-
-        update_document(
-            database_type='user',
-
-        )
-
-        token_user_id = get_user_id_from_token()
-        if if_token_user_id_equals_user_id(
-            token_user_id=token_user_id,
-            user_id=user_id
-        ):
-            current_user_information = g.current_user
-            # delete ObjectID to jsonify
-            del current_user_information['_id']
-            response = {
-                'user': current_user_information
-            }
-            return jsonify(response)
-        else:
-            raise 'WrongUserId' 
-    
-    @classmethod
-    def comfirm_email(
-        cls, token: str
-    ) -> bool:
-
-        '''
-        A comfirmation link would be sent to user's email.
-        User needs to comfirm the email
-
-        Parameters
-        ----------
-        token : str
-            Unique str
-
-        Returns
-        -------
-        bool
-        '''
-
-        is_token_matched(token)
-        email = decode_token(token)
-        user_document = search_document(
-            database_type='user',
-            email=email,
-            check_response=False
-        )
-
-        msg = ''
-        if user_document:
-            if user_document['confirm_email'] == False:
-                if user_document['email'] == email:
-                    update_document(
-                        database_type='user',
-                        confirm_email=True
-                    )
-                    msg = 'You have confirmed your account. Thanks!'
-                else:
-                    msg = 'The confirmation link is invalid or has expired.'
-            else:
-                msg = 'Account already confirmed. Please login.'
-        else:
-            msg = 'The confirmation link is invalid or has expired.'
-        return msg
-    
-    @classmethod
-    def resend_comfirmation_link(
-        cls
-    ) -> bool:
-        '''
-        Resend the comfirmation link to user's email
-
-        Parameters
-        ----------
-        token : str
-            Unique str
-
-        Returns
-        -------
-        bool
-        '''
-        user_document = search_document(
-            database_type='user'
-        )
-        email = user_document['email']
-
-        token = generate_confirmation_token(email)
-        
-        confirm_url = url_for(
-            'user.confirm_email', 
-            token=token, 
-            _external=True
-        )
-        html_template = render_template('activate.html', confirm_url=confirm_url)
-        message = "Please confirm your email"
-        send_email(
-            target_email=email, 
-            message=message, 
-            html_template=html_template
-        )
-
+        current_user_information = g.current_user
+        # delete ObjectID to jsonify
+        del current_user_information['_id']
         return {
-            'message': 'Resend successfully!'
+            'user_document': current_user_information
         }
     
     @classmethod
-    def forgot_pwd(
+    def reset_pwd(
         cls, 
         username: str,
-        email: str
-    ) -> dict:
+        email: str,
+        password: str,
+    ) -> str:
         '''
         Reset the password
 
@@ -302,13 +242,16 @@ class User:
             username
         email : str
             email
+        password : str
+            password
 
         Returns
         -------
-        dict
+        str
         '''
         user_document = search_document(
-            database_type='user'
+            database_type='user',
+            username=username
         )
 
         if not user_document:
@@ -316,8 +259,16 @@ class User:
         if user_document['email'] != email:
             raise ValueError('Please type in the correct username and email.')
 
-        token = generate_confirmation_token(email)
-        reset_url = url_for('user.forgot_new', token=token, _external=True)
+        token = generate_email_confirmation_token(
+            username=username,
+            email=email
+        )
+        
+        reset_url = url_for(
+            'api.update_new_pwd', 
+            token=token, 
+            _external=True
+        )
         html_template = render_template(
             'reset.html',
             username=username,
@@ -329,16 +280,14 @@ class User:
             message=message, 
             html_template=html_template
         )
-
-        return {
-            'message': 'A password reset email has been sent via email.'
-        }
+        return token
     
     @classmethod
     def update_new_pwd(
         cls, 
         token: str,
-    ) -> dict:
+        request: object,
+    ) -> Any:
         '''
         Update the new password
 
@@ -346,49 +295,49 @@ class User:
         ----------
         token : str
             token
+        request : object
+            request from front-end
 
         Returns
         -------
-        str
+        Any
         '''
-        if not if_token_matched(token):
+        if not check_if_email_token_matched(token):
             flash('Token has expired')
             return 'Token has expired'
 
-        email = decode_token(token)
-
+        decoded_token = decode_email_token(token)
+        username = decoded_token['username']
+        email = decoded_token['email']
         user_document = search_document(
             database_type='user',
-            email=email
+            username=username
         )
         if not user_document:
             flash('Cannot Find the User according to email')
             return 'Cannot Find the User according to email'
         
         if request.method == 'POST':
-    
             password = request.form['newPassword']
-
             validate_password_indicator, return_message = validate_password(password)
             if not validate_password_indicator:
                 msg = ('New password must follow the following instructions: \n'
-                    + 'At least 8 characters. At most 25 characters\n'
+                    + 'At least 8 characters. At most 40 characters\n'
                     + 'A mixture of both uppercase and lowercase letters\n'
-                    + 'A mixture of letters and numbers' 
-                    + 'Inclusion of at least one special character, e.g., ! @'
+                    + 'A mixture of letters and numbers!' 
                 )
                 confirm_url = url_for(
-                    'user.forgot_new', 
+                    'api.update_new_pwd', 
                     token=token, 
                     msg=msg, 
                     _external=True
                 )
                 return render_template('forgot_new.html', confirm_url=confirm_url)
-
+            user_id = user_document['user_id']
             hashed_password = get_hashed_password(password)
             update_document(
                 database_type='user',
-                email=email,
+                user_id=user_id,
                 hashed_password=hashed_password
             )
 
@@ -396,10 +345,71 @@ class User:
             return 'Password successfully changed.'
         else:
             msg = 'Hello ' + user_document['username']
-            confirm_url = url_for('user.forgot_new', token=token, _external=True)
+            confirm_url = url_for(
+                'api.update_new_pwd', 
+                token=token, 
+                _external=True
+            )
             return render_template(
                 'forgot_new.html', 
                 confirm_url=confirm_url, 
                 msg=msg, 
                 token=token
             )
+
+
+    
+
+    # @classmethod
+    # def update_user(
+    #     cls, 
+    #     user_id: str,
+    #     username: str,
+    #     email: str
+    # ) -> None:
+    #     '''
+    #     update information about this user_id
+
+    #     Parameters
+    #     ----------
+    #     user_id : str
+    #         Unique user_id
+    #     username : str
+    #     email : str
+
+    #     Returns
+    #     -------
+    #     None
+    #     '''
+    #     if search_document(
+    #         database_type='user',
+    #         username=username,
+    #         check_response=False
+    #     ):
+    #         raise ValueError('Please use a different username.')
+    #     if search_document(
+    #         database_type='user',
+    #         email=email,
+    #         check_response=False
+    #     ):
+    #         raise ValueError('Please use a different email address.')
+
+    #     update_document(
+    #         database_type='user',
+
+    #     )
+
+    #     token_user_id = get_user_id_from_token()
+    #     if if_token_user_id_equals_user_id(
+    #         token_user_id=token_user_id,
+    #         user_id=user_id
+    #     ):
+    #         current_user_information = g.current_user
+    #         # delete ObjectID to jsonify
+    #         del current_user_information['_id']
+    #         response = {
+    #             'user': current_user_information
+    #         }
+    #         return jsonify(response)
+    #     else:
+    #         raise 'WrongUserId' 

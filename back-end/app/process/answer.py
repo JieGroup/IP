@@ -7,6 +7,7 @@ from typing import Any
 from app.authentication.token_auth import get_voterToken
 
 from app.database.api import (
+    delete_document,
     search_document,
     create_document,
     update_document
@@ -59,6 +60,83 @@ class VoterAnswerSurvey:
     update_survey_topics
     '''
     @classmethod
+    def __is_within_the_number_of_copies_issued(
+        cls,
+        number_of_copies: int,
+        participated_voters: list[str]
+    ) -> bool:
+        '''
+        Check if the number of answers is within 
+        the number of copies issued
+
+        Parameters
+        ----------
+        number_of_copies : int
+            The number of copies to issued
+        participated_voters : list[str]
+            Record all participated_voters
+
+        Returns
+        -------
+        bool
+        '''
+        if len(participated_voters) < number_of_copies:
+            return True
+        return False
+
+    @classmethod
+    def __has_voter_answered_survey_template(
+        cls,
+        mturk_id: str,
+        participated_voters: list[str]
+    ) -> bool:
+        '''
+        Check if the voter has answered this
+        survey template
+
+        Parameters
+        ----------
+        mturk_id : str
+            unique id
+        participated_voters : list[str]
+            Record all participated_voters
+
+        Returns
+        -------
+        bool
+        '''
+        if mturk_id in set(participated_voters):
+            return True
+        return False
+    
+    @classmethod
+    def __is_voter_a_new_voter(
+        cls,
+        mturk_id: str,
+    ) -> bool:
+        '''
+        Check if the voter is a new voter
+
+        Parameters
+        ----------
+        mturk_id : str
+            unique id
+
+        Returns
+        -------
+        bool
+        '''
+        voter_document = search_document(
+            database_type='voter',
+            mturk_id=mturk_id,
+            check_response=False
+        )
+        if voter_document == None:
+            return True
+        return False
+
+
+    @classmethod
     def start_answering(
         cls, 
         survey_template_id: str,
@@ -82,7 +160,6 @@ class VoterAnswerSurvey:
         -------
         dict
         '''
-        print('44444')
         # check if survey_template_document is None
         # if is None, raise SurveyTemplateNotFound error
         survey_template_document = search_document(
@@ -94,7 +171,26 @@ class VoterAnswerSurvey:
                 'cannot find corresponding survey template document'
             )
         
-        # TODO: check if number of copies exceed limit, not urgent
+        # check if number of copies exceed limit
+        if not cls.__is_within_the_number_of_copies_issued(
+            number_of_copies=survey_template_document['number_of_copies'],
+            participated_voters=survey_template_document['participated_voters']
+        ):
+            raise ValueError(
+                'Reach the limit of number of copies'
+            )
+        
+        # check if current voter is a new voter
+        # if the voter is a new voter, create
+        # corresponding documents
+        if cls.__is_voter_a_new_voter(
+            mturk_id=mturk_id
+        ):
+            create_document(
+                database_type='voter',
+                mturk_id=mturk_id,
+                participated_survey_template_ids={}
+            )
 
         # create survey_answer document
         survey_answer_id = get_unique_id()
@@ -104,7 +200,22 @@ class VoterAnswerSurvey:
             survey_template_id=survey_template_id,
             mturk_id=mturk_id,
         )
-        print('55555')
+
+        # update voter participated_survey_template_ids
+        update_document(
+            database_type='voter',
+            mturk_id=mturk_id,
+            survey_template_id=survey_template_id,
+            survey_answer_id=survey_answer_id
+        )
+
+        # update participated_voters of current template
+        update_document(
+            database_type='survey_template',
+            survey_template_id=survey_template_id,
+            mturk_id=mturk_id
+        )
+
         survey_update_method = survey_template_document['survey_update_method']
         survey_topics = survey_template_document['survey_topics']
         # get choices list from survey template topics 
@@ -117,6 +228,7 @@ class VoterAnswerSurvey:
             survey_new_answers=survey_topics
         )
         print('99999')
+
         get_voterToken(
             survey_template_id=survey_template_id,
             mturk_id=mturk_id

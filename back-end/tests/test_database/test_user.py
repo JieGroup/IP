@@ -50,7 +50,7 @@ class TestTemplate:
             )
         return
 
-    @pytest.mark.parametrize("user_id, username, email, hashed_password, authority_level, comfirm_email, designed_survey_template, expected", 
+    @pytest.mark.parametrize("user_id, username, email, hashed_password, authority_level, confirm_email, designed_survey_template, expected", 
         [
             (
                 '412312', 
@@ -74,7 +74,7 @@ class TestTemplate:
             ),
         ]
     )
-    def test_create_document(self, user_id, username, email, hashed_password, authority_level, comfirm_email, designed_survey_template, expected):
+    def test_create_document(self, user_id, username, email, hashed_password, authority_level, confirm_email, designed_survey_template, expected):
         '''simply test if survey template create document can be used'''
         assert expected == type(create_document(
             database_type='user',
@@ -83,7 +83,7 @@ class TestTemplate:
             email=email,
             hashed_password=hashed_password,
             authority_level=authority_level,
-            comfirm_email=comfirm_email,
+            confirm_email=confirm_email,
             designed_survey_template=designed_survey_template
         ))
         return

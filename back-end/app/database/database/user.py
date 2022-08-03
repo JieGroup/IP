@@ -100,14 +100,11 @@ class User(AbstractDatabase, BaseDatabase):
             return pyMongo.db.User.find_one({
                 'username': kwargs['username']
             })
-        elif 'email' in kwargs:
-            return pyMongo.db.User.find_one({
-                'email': kwargs['email']
-            })
-        else:
-            raise ValueError(
-                'wrong key used in searching user document'
-            )
+        # elif 'email' in kwargs:
+        #     return pyMongo.db.User.find_one({
+        #         'email': kwargs['email']
+        #     })
+        return None
 
     @classmethod
     def create_document(
@@ -116,8 +113,8 @@ class User(AbstractDatabase, BaseDatabase):
         username: str,
         email: str,
         hashed_password: str,
-        authority_level: str,
-        comfirm_email: bool,
+        confirm_email: bool,
+        authority_level: str='user',
         designed_survey_template: dict={}
     ) -> InsertOneResult:
         '''
@@ -130,7 +127,7 @@ class User(AbstractDatabase, BaseDatabase):
         email : str
         hashed_password : str
         authority_level : str
-        comfirm_email : bool
+        confirm_email : bool
         designed_survey_template : dict
 
         Returns
@@ -143,7 +140,7 @@ class User(AbstractDatabase, BaseDatabase):
             'email': email,
             'hashed_password': hashed_password,
             'authority_level': authority_level,
-            'comfirm_email': comfirm_email,
+            'confirm_email': confirm_email,
             'designed_survey_template': designed_survey_template
         }
 
