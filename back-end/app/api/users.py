@@ -11,7 +11,10 @@ from flask import request, g, render_template, flash
 # from Items import db
 from app import pyMongo
 
-from app.authentication import token_auth, basic_auth
+from app.authentication.api import (
+    basic_auth,
+    token_auth
+)
 
 from app.process.api import User
 
@@ -31,10 +34,12 @@ from app.api.utils import (
     is_request_user_id_valid
 )
 
+from typing import Any
+
 
 @api.route('/create_user', methods=['POST'])
 @handle_response
-def create_user() -> str:
+def create_user() -> dict:
     '''
     Register new user
     1. Check if the username and the email are valid
@@ -51,7 +56,7 @@ def create_user() -> str:
 
     Returns
     -------
-    str
+    dict
 
     Notes
     -----
@@ -86,7 +91,7 @@ def create_user() -> str:
 
 @api.route('/resend_email_confirmation_link/', methods=['POST'])
 @handle_response
-def resend_email_confirmation_link() -> str:
+def resend_email_confirmation_link() -> dict:
     '''
     Resend the email confirmation link to user's email
 
@@ -96,7 +101,7 @@ def resend_email_confirmation_link() -> str:
 
     Returns
     -------
-    str
+    dict
     '''
     data = request.get_json()
     if not data:
@@ -146,7 +151,7 @@ def confirm_email(token):
 @api.route('/get_own_info', methods=['GET'])
 @token_auth.login_required
 @handle_response
-def get_own_info():
+def get_own_info() -> dict:
     '''
     Request to get information about the user itself
 
@@ -162,7 +167,7 @@ def get_own_info():
 
 @api.route('/reset_pwd', methods=['POST'])
 @handle_response
-def reset_pwd() -> str:
+def reset_pwd() -> dict:
     '''
     Reset the password
 
@@ -177,7 +182,7 @@ def reset_pwd() -> str:
 
     Returns
     -------
-    str
+    dict
     '''
     data = request.get_json()
     if not data:
@@ -206,11 +211,8 @@ def reset_pwd() -> str:
 
 
 @api.route('/update_new_pwd/<string:token>', methods=['POST', 'GET'])
-@handle_response
-def update_new_pwd(token):
-# @api.route('/update_new_pwd', methods=['GET', 'POST'])
 # @handle_response
-# def update_new_pwd():
+def update_new_pwd(token) -> Any:
     '''
     Update new password
 
@@ -221,7 +223,7 @@ def update_new_pwd(token):
 
     Returns
     -------
-    str
+    Any
     '''
     print('jin update_new_pwd')
     if request.method == 'POST':

@@ -100,7 +100,7 @@ def configure_errorhandlers(application):
     from flask.json import jsonify
     @application.errorhandler(Exception)
     def handle_error(e):
-        print('errorrr', e, type(e).__name__, dir(e))
+        print('errorrrzaizhe', e, type(e).__name__, dir(e))
         # print(e.args)
         print('exception', Exception)
         # print('resssponses', e.name)

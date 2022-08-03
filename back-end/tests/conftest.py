@@ -35,6 +35,13 @@ from app.process.api import (
 app = None
 app_context = None
 client = None
+
+username_1 = 'unittest1'
+password_1 = 'Xie1@456'
+
+username_2 = 'unittest2'
+password_2 = 'Xie1@456'
+
 def pytest_runtest_setup() -> None:
     '''
     Execute before every test
@@ -101,7 +108,7 @@ def drop_db_collections() -> None:
 
         pyMongo.db.drop_collection(collecion_names)
 
-def get_headers() -> dict:
+def get_empty_headers() -> dict:
     '''
     Create headers for registering
 
@@ -162,9 +169,9 @@ def get_basic_auth_headers(
         'Content-Type': 'application/json'
     }
 
-def get_token_auth_headers(
-    # username: str, 
-    # password: str
+def get_user_token_auth_headers(
+    username: str, 
+    password: str
 ) -> dict:
     '''
     Create headers for the JSON Web Token
@@ -179,22 +186,40 @@ def get_token_auth_headers(
     '''
     global client
 
-    # headers = get_basic_auth_headers(
-    #     username=username, 
-    #     password=password
-    # )
-    # response = client.post('/auth/tokens', headers=headers)
-    # assert response.status_code == 200
-    # json_response = json.loads(response.get_data(as_text=True))
-    # assert json_response is not None
-    # token = json_response['token']
+    headers = get_basic_auth_headers(
+        username=username, 
+        password=password
+    )
+    response = client.post('/auth/get_userToken', headers=headers)
+    assert response.status_code == 200
+    json_response = json.loads(response.get_data(as_text=True))
+    assert json_response is not None
+    token = json_response['userToken']
     return {
-        # 'Authorization': 'Bearer ' + token,
+        'Authorization': 'Bearer ' + token,
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     }
 
+def get_voter_token_auth_headers(
+    voterToken: str, 
+) -> dict:
+    '''
+    Create headers for the JSON Web Token
 
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    dict
+    '''
+    return {
+        'Authorization': 'Bearer ' + voterToken,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
 
 def register_account(
     username: str
@@ -251,12 +276,14 @@ def get_two_accounts() -> tuple[str, str]:
     -------
     tuple[str, str]
     '''
+    global username_1
+    global username_2
     user_id_1 = register_account(
-        username='unittest1'
+        username=username_1
     )
 
     user_id_2 = register_account(
-        username='unittest2'
+        username=username_2
     )
 
     return (user_id_1, user_id_2)

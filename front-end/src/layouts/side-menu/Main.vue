@@ -5,9 +5,10 @@
     <MobileMenu />
     <div class="flex mt-[4.7rem] md:mt-0">
       <!-- BEGIN: Side Menu -->
+      <!-- :to="{ name: 'side-menu-dashboard-overview-4' }" -->
       <nav class="side-nav">
         <router-link
-          :to="{ name: 'side-menu-dashboard-overview-4' }"
+          :to="{ name: 'side-menu-answer-form' }"
           tag="a"
           class="intro-x flex items-center pl-5 pt-4"
         >

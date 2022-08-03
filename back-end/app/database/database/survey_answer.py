@@ -85,7 +85,7 @@ class SurveyAnswer(AbstractDatabase, BaseDatabase):
 
     @classmethod
     def search_document(
-        cls, survey_answer_id: str
+        cls, survey_answer_id: str, **kwargs
     ) -> Union[None, dict[str, Any]]:
         '''
         Search unique SurveyAnswer document.

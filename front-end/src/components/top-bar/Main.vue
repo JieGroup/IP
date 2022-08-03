@@ -10,8 +10,8 @@
     </nav>
     <!-- END: Breadcrumb -->
     <!-- BEGIN: Search -->
-    <div class="intro-x relative mr-3 sm:mr-6">
-      <div class="search hidden sm:block">
+    <!-- <div class="intro-x relative mr-3 sm:mr-6"> -->
+      <!-- <div class="search hidden sm:block">
         <input
           type="text"
           class="search__input form-control border-transparent"
@@ -20,11 +20,11 @@
           @blur="hideSearchDropdown"
         />
         <SearchIcon class="search__icon dark:text-slate-500" />
-      </div>
-      <a class="notification sm:hidden" href="">
+      </div> -->
+      <!-- <a class="notification sm:hidden" href="">
         <SearchIcon class="notification__icon dark:text-slate-500" />
-      </a>
-      <div class="search-result" :class="{ show: searchDropdown }">
+      </a> -->
+      <!-- <div class="search-result" :class="{ show: searchDropdown }">
         <div class="search-result__content">
           <div class="search-result__content__title">Pages</div>
           <div class="mb-5">
@@ -99,10 +99,10 @@
           </a>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- END: Search -->
     <!-- BEGIN: Notifications -->
-    <Dropdown class="intro-x mr-auto sm:mr-6">
+    <!-- <Dropdown class="intro-x mr-auto sm:mr-6">
       <DropdownToggle
         tag="div"
         role="button"
@@ -145,7 +145,7 @@
           </div>
         </DropdownContent>
       </DropdownMenu>
-    </Dropdown>
+    </Dropdown> -->
     <!-- END: Notifications -->
     <!-- BEGIN: Account Menu -->
     <Dropdown class="intro-x w-8 h-8">
@@ -163,18 +163,18 @@
         <DropdownContent class="bg-primary text-white">
           <DropdownHeader tag="div" class="!font-normal">
             <div class="font-medium">{{ $f()[0].users[0].name }}</div>
-            <div class="text-xs text-white/70 mt-0.5 dark:text-slate-500">
+            <!-- <div class="text-xs text-white/70 mt-0.5 dark:text-slate-500">
               {{ $f()[0].jobs[0] }}
-            </div>
+            </div> -->
           </DropdownHeader>
           <DropdownDivider class="border-white/[0.08]" />
-          <DropdownItem class="hover:bg-white/5">
-            <UserIcon @click="to_profile" class="w-4 h-4 mr-2" /> Profile
+          <DropdownItem @click="to_profile" class="hover:bg-white/5">
+            <UserIcon class="w-4 h-4 mr-2" /> Profile
           </DropdownItem>
           <!-- <DropdownItem class="hover:bg-white/5">
             <EditIcon class="w-4 h-4 mr-2" /> Add Account
           </DropdownItem> -->
-          <DropdownItem class="hover:bg-white/5">
+          <DropdownItem @click="to_reset_pwd" class="hover:bg-white/5">
             <!-- <router-link
               :to="{ name: 'side-menu-change-password' }"
               tag="a"
@@ -182,8 +182,8 @@
             >
               
             </router-link> -->
-
-            <LockIcon @click="to_reset_pwd" class="w-4 h-4 mr-2" /> Reset Password
+             <!-- <LockIcon @click="to_reset_pwd" class="w-4 h-4 mr-2" /> Reset Password -->
+            <LockIcon class="w-4 h-4 mr-2" /> Reset Password
             <!-- <button type="button" @click="to_reset_pwd" class="w-4 h-4 mr-2"> 
               Reset Password 
             </button> -->
@@ -207,12 +207,12 @@
             <span class="hidden xl:block text-white text-lg ml-3"> Interval Privacy </span>
           </router-link> -->
 
-          <DropdownItem class="hover:bg-white/5">
-            <HelpCircleIcon @click="to_faq" class="w-4 h-4 mr-2" /> Help
+          <DropdownItem @click="to_faq" class="hover:bg-white/5">
+            <HelpCircleIcon class="w-4 h-4 mr-2" /> Help
           </DropdownItem>
           <DropdownDivider class="border-white/[0.08]" />
-          <DropdownItem class="hover:bg-white/5">
-            <ToggleRightIcon @click="logout" class="w-4 h-4 mr-2" /> Logout
+          <DropdownItem @click="logout" class="hover:bg-white/5">
+            <ToggleRightIcon class="w-4 h-4 mr-2" /> Logout
           </DropdownItem>
         </DropdownContent>
       </DropdownMenu>
@@ -232,19 +232,19 @@ const router = useRouter();
 const authenticationStore = useAuthenticationStore()
 
 const to_profile = () => {
-  linkTo('/profile-overview-3', router)
+  linkTo('side-menu-profile-overview-3', router, {})
 }
 const to_reset_pwd = () => {
-  linkTo('/change-password', router)
+  linkTo('side-menu-change-password', router, {})
 }
 const to_faq = () => {
-  linkTo('/faq-layout-3', router)
+  linkTo('side-menu-faq-layout-3', router, {})
 }
 const logout = () => {
   // clean msg stored in authenticationStore
   authenticationStore.logoutAction()
   // go back to main page
-  linkTo('/', router)
+  linkTo('side-menu-answer-form', router, {})
 }
 
 const searchDropdown = ref(false);

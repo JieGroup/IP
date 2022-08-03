@@ -66,3 +66,26 @@
 2022-08-02 20:00:36,729 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'int() takes at most 2 arguments (3 given)', 'error_name': 'TypeError'}
 2022-08-02 20:01:17,450 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'int() takes at most 2 arguments (3 given)', 'error_name': 'TypeError'}
 2022-08-02 20:02:08,719 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'int() takes at most 2 arguments (3 given)', 'error_name': 'TypeError'}
+2022-08-02 22:01:00,129 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'type of the return value must be str; got dict instead', 'error_name': 'TypeError'}
+2022-08-02 23:03:24,465 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'token is not valid', 'error_name': 'ValueError'}
+2022-08-02 23:03:25,950 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'token is not valid', 'error_name': 'ValueError'}
+2022-08-02 23:03:25,950 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'token is not valid', 'error_name': 'ValueError'}
+2022-08-02 23:03:27,382 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'token is not valid', 'error_name': 'ValueError'}
+2022-08-02 23:03:27,382 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'token is not valid', 'error_name': 'ValueError'}
+2022-08-02 23:03:27,382 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'token is not valid', 'error_name': 'ValueError'}
+2022-08-02 23:03:28,875 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'token is not valid', 'error_name': 'ValueError'}
+2022-08-02 23:03:28,875 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'token is not valid', 'error_name': 'ValueError'}
+2022-08-02 23:03:28,875 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'token is not valid', 'error_name': 'ValueError'}
+2022-08-02 23:03:28,875 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'token is not valid', 'error_name': 'ValueError'}
+2022-08-02 23:07:45,654 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'survey_template_name'", 'error_name': 'KeyError'}
+2022-08-02 23:08:48,070 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "got an unexpected keyword argument 'check_response'", 'error_name': 'TypeError'}
+2022-08-02 23:26:19,342 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "got an unexpected keyword argument 'check_response'", 'error_name': 'TypeError'}
+2022-08-02 23:34:29,520 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'cannot input empty survey_new_answers', 'error_name': 'ValueError'}
+2022-08-02 23:34:32,210 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'cannot input empty survey_new_answers', 'error_name': 'ValueError'}
+2022-08-02 23:34:32,210 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'cannot input empty survey_new_answers', 'error_name': 'ValueError'}
+2022-08-03 00:09:52,991 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Reach the limit of number of copies', 'error_name': 'ValueError'}
+2022-08-03 00:09:52,991 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Reach the limit of number of copies', 'error_name': 'ValueError'}
+2022-08-03 00:11:05,745 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Reach the limit of number of copies', 'error_name': 'ValueError'}
+2022-08-03 00:12:09,283 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Reach the limit of number of copies', 'error_name': 'ValueError'}
+2022-08-03 00:12:34,684 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Reach the limit of number of copies', 'error_name': 'ValueError'}
+2022-08-03 00:16:17,993 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Reach the limit of number of copies', 'error_name': 'ValueError'}

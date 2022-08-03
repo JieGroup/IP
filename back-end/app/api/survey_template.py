@@ -25,7 +25,7 @@ from typing import Any
 
 
 @api.route('/create_survey_template', methods=['POST'])
-# @token_auth.login_required
+@token_auth.login_required
 @handle_response
 def create_survey_template() -> None:
     '''

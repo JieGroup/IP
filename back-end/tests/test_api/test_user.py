@@ -6,7 +6,7 @@ import requests
 from app.database.api import search_document
 
 from tests.conftest import (
-    get_headers,
+    get_empty_headers,
     get_test_client,
     get_token_auth_headers,
     get_form_type_headers
@@ -51,7 +51,7 @@ def register(
         data=data
     )
     assert response.status_code == 200
-    email_token = json.loads(response.get_data(as_text=True))
+    email_token = json.loads(response.get_data(as_text=True))['token']
 
     response = client.get(
         get_api_url('confirm_email') + f'/{email_token}'
@@ -66,107 +66,6 @@ def register(
 
 
 class TestUser():
-
-    # @pytest.mark.parametrize(
-    #     "username, email, password", 
-    #     [
-    #         # (   
-    #         #     'username_1',
-    #         #     'email_1@123.com',
-    #         #     'Password_1'
-    #         # ),
-    #         # (   
-    #         #     'username_2',
-    #         #     'email_2@123.com',
-    #         #     'Password_2'
-    #         # ),
-    #         # (   
-    #         #     'username_3',
-    #         #     'IntervalPrivacy@gmail.com',
-    #         #     'Password_2'
-    #         # ),
-    #         (   
-    #             'username_4',
-    #             'IntervalPrivacy@gmail.com',
-    #             'Password_2'
-    #         ),
-    #     ]
-    # )
-    # def test_register(self, username, email, password):
-        
-    #     client = get_test_client()
-    #     headers = get_headers()
-    #     register(
-    #         client=client,
-    #         headers=headers,
-    #         username=username,
-    #         email=email,
-    #         password=password
-    #     )
-
-
-    # @pytest.mark.parametrize(
-    #     "username, email, password", 
-    #     [
-    #         # (   
-    #         #     'username_1',
-    #         #     'email_1@123.com',
-    #         #     'Password_1'
-    #         # ),
-    #         # (   
-    #         #     'username_2',
-    #         #     'email_2@123.com',
-    #         #     'Password_2'
-    #         # ),
-    #         # (   
-    #         #     'username_3',
-    #         #     'IntervalPrivacy@gmail.com',
-    #         #     'Password_2'
-    #         # ),
-    #         (   
-    #             'username_4',
-    #             'IntervalPrivacy@gmail.com',
-    #             'Password_2'
-    #         ),
-    #     ]
-    # )
-    # def test_resend_email_confirmation_link(self, username, email, password):
-        
-    #     client = get_test_client()
-    #     headers = get_headers()
-    #     data = json.dumps({
-    #         'username': username,
-    #         'email': email,
-    #         'password': password,
-    #     })
-    #     response = client.post(
-    #         get_api_url('create_user'), 
-    #         headers=headers, 
-    #         data=data
-    #     )
-    #     assert response.status_code == 200
-
-    #     data = json.dumps({
-    #         'username': username,
-    #         'email': email,
-    #     })
-    #     response = client.post(
-    #         get_api_url('resend_email_confirmation_link'), 
-    #         headers=headers, 
-    #         data=data
-    #     )
-    #     assert response.status_code == 200
-    #     email_token = json.loads(response.get_data(as_text=True))
-
-    #     response = client.get(
-    #         get_api_url('confirm_email') + f'/{email_token}'
-    #     )
-    #     user_document = search_document(
-    #         database_type='user',
-    #         username=username
-    #     )
-    #     assert user_document['username'] == username
-    #     assert user_document['confirm_email'] == True
 
     @pytest.mark.parametrize(
         "username, email, password", 
@@ -193,10 +92,111 @@ class TestUser():
             ),
         ]
     )
+    def test_register(self, username, email, password):
+        
+        client = get_test_client()
+        headers = get_empty_headers()
+        register(
+            client=client,
+            headers=headers,
+            username=username,
+            email=email,
+            password=password
+        )
+
+
+    @pytest.mark.parametrize(
+        "username, email, password", 
+        [
+            # (   
+            #     'username_1',
+            #     'email_1@123.com',
+            #     'Password_1'
+            # ),
+            # (   
+            #     'username_2',
+            #     'email_2@123.com',
+            #     'Password_2'
+            # ),
+            # (   
+            #     'username_3',
+            #     'IntervalPrivacy@gmail.com',
+            #     'Password_2'
+            # ),
+            (   
+                'username_4',
+                'IntervalPrivacy@gmail.com',
+                'Password_2'
+            ),
+        ]
+    )
+    def test_resend_email_confirmation_link(self, username, email, password):
+        
+        client = get_test_client()
+        headers = get_empty_headers()
+        data = json.dumps({
+            'username': username,
+            'email': email,
+            'password': password,
+        })
+        response = client.post(
+            get_api_url('create_user'), 
+            headers=headers, 
+            data=data
+        )
+        assert response.status_code == 200
+
+        data = json.dumps({
+            'username': username,
+            'email': email,
+        })
+        response = client.post(
+            get_api_url('resend_email_confirmation_link'), 
+            headers=headers, 
+            data=data
+        )
+        assert response.status_code == 200
+        email_token = json.loads(response.get_data(as_text=True))['token']
+
+        response = client.get(
+            get_api_url('confirm_email') + f'/{email_token}'
+        )
+        user_document = search_document(
+            database_type='user',
+            username=username
+        )
+        assert user_document['username'] == username
+        assert user_document['confirm_email'] == True
+
+    @pytest.mark.parametrize(
+        "username, email, password", 
+        [
+            (   
+                'username_1',
+                'email_1@123.com',
+                'Password_1'
+            ),
+            (   
+                'username_2',
+                'email_2@123.com',
+                'Password_2'
+            ),
+            (   
+                'username_3',
+                'IntervalPrivacy@gmail.com',
+                'Password_2'
+            ),
+            (   
+                'username_4',
+                'IntervalPrivacy@gmail.com',
+                'Password_2'
+            ),
+        ]
+    )
     def test_reset_pwd(self, username, email, password):
         
         client = get_test_client()
-        headers = get_headers()
+        headers = get_empty_headers()
         register(
             client=client,
             headers=headers,
@@ -217,7 +217,7 @@ class TestUser():
             data=data
         )
         assert response.status_code == 200
-        email_token = json.loads(response.get_data(as_text=True))
+        email_token = json.loads(response.get_data(as_text=True))['token']
 
         response = client.get(
             get_api_url('update_new_pwd') + f'/{email_token}', 

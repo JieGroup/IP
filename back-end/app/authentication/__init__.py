@@ -2,7 +2,7 @@ from flask import Blueprint
 
 authentication_bp = Blueprint('authentication', __name__, url_prefix='/auth')
 
-from app.authentication.api import (
+from app.authentication import (
     basic_auth,
     token_auth
 )

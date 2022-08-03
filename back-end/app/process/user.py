@@ -59,7 +59,7 @@ class User:
         username: str,
         email: str,
         password: str,
-    ) -> str:
+    ) -> dict:
         '''
         Handle creating new account
 
@@ -74,7 +74,7 @@ class User:
 
         Returns
         -------
-        str
+        dict
         '''
         # Check if the username is duplicated
         user_document = search_document(
@@ -117,14 +117,16 @@ class User:
             message=message, 
             html_template=html_template
         )
-        return token
+        return {
+            'token': token
+        }
 
     @classmethod
     def resend_email_confirmation_link(
         cls,
         username: str,
         email: str
-    ) -> str:
+    ) -> dict:
         '''
         Resend the confirmation link to user's email
 
@@ -136,7 +138,7 @@ class User:
 
         Returns
         -------
-        str
+        dict
         '''
         token = generate_email_confirmation_token(
             username=username,
@@ -155,7 +157,9 @@ class User:
             message=message, 
             html_template=html_template
         )
-        return token
+        return {
+            'token': token
+        }
     
     @classmethod
     def confirm_email(
@@ -206,7 +210,7 @@ class User:
     @classmethod
     def get_own_info(
         cls
-    ) -> None:
+    ) -> dict:
         '''
         Request to get information about the user_id
 
@@ -232,7 +236,7 @@ class User:
         username: str,
         email: str,
         password: str,
-    ) -> str:
+    ) -> dict:
         '''
         Reset the password
 
@@ -247,7 +251,7 @@ class User:
 
         Returns
         -------
-        str
+        dict
         '''
         user_document = search_document(
             database_type='user',
@@ -280,7 +284,9 @@ class User:
             message=message, 
             html_template=html_template
         )
-        return token
+        return {
+            'token': token
+        }
     
     @classmethod
     def update_new_pwd(

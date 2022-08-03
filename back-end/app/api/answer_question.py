@@ -65,6 +65,7 @@ def voter_start_answering():
 
 
 @api.route('/voter_submit_answers', methods=['POST'])
+@token_auth.login_required
 @handle_response
 def voter_submit_answers():
     '''

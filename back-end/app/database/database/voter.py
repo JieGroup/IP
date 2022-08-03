@@ -75,7 +75,7 @@ class Voter(AbstractDatabase, BaseDatabase):
         
     @classmethod
     def search_document(
-        cls, mturk_id: MTurkID
+        cls, mturk_id: MTurkID, **kwargs
     ) -> Union[None, dict[str, Any]]:
         '''
         Search unique Voter document
@@ -104,6 +104,7 @@ class Voter(AbstractDatabase, BaseDatabase):
         Parameters
         ----------
         mturk_id : str
+        participated_survey_template_ids : dict
 
         Returns
         -------
@@ -111,10 +112,8 @@ class Voter(AbstractDatabase, BaseDatabase):
         '''
         voter_document = {
             'mturk_id': mturk_id,
-            # TODO: participated_survey_template_id currently not updated
             'participated_survey_template_ids': participated_survey_template_ids
         }
-
         return pyMongo.db.Voter.insert_one(voter_document)
 
     @classmethod
@@ -122,7 +121,6 @@ class Voter(AbstractDatabase, BaseDatabase):
         cls, 
         mturk_id: MTurkID, 
         survey_template_id: str, 
-        survey_answer_id: str
     ) -> UpdateResult:
         '''
         Voter can participate in many survey template answer.
@@ -132,14 +130,13 @@ class Voter(AbstractDatabase, BaseDatabase):
         ----------
         mturk_id : MTurkID
         survey_template_id : str
-        survey_answer_id : str
 
         Returns
         -------
         UpdateResult
         '''
         return pyMongo.db.Voter.update_one({'mturk_id': mturk_id}, {'$set':{
-                f'participated_survey_template_ids.{survey_template_id}.{survey_answer_id}': True
+                f'participated_survey_template_ids.{survey_template_id}': True
             }})
     
     @classmethod

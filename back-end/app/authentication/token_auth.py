@@ -24,7 +24,7 @@ token_auth = HTTPTokenAuth()
 @authentication_bp.route('/get_userToken', methods=['POST'])
 @basic_auth.login_required
 @handle_response
-def get_userToken() -> None:
+def get_userToken() -> dict:
     '''
     When user login its account:
         1. pass the verification of username and password(decorator)
@@ -37,7 +37,7 @@ def get_userToken() -> None:
 
     Returns
     -------
-    None
+    dict
 
     Notes
     -----
@@ -47,19 +47,21 @@ def get_userToken() -> None:
         cur_user_info=g.current_user
     ):  
         raise ValueError('not verify email yet')
-    
+    print('login_1')
     userToken = JwtManipulation.get_jwt(
         role='user',
         cur_user_info=g.current_user
     )
+    print('login_2')
     g.userToken = userToken
-    return 
+    return {}
 
 # @authentication_bp.route('/get_voter_token', methods=['POST'])
+@handle_response
 def get_voterToken(
     survey_template_id: str,
     mturk_id: MTurkID,
-) -> None:
+) -> dict:
     '''
     Form voterToken based on survey_template_id
     and mturk_id, which contrains the voter can
@@ -71,7 +73,7 @@ def get_voterToken(
 
     Returns
     -------
-    None
+    dict
     '''
     voterToken = JwtManipulation.get_jwt(
         role='voter',
@@ -80,9 +82,9 @@ def get_voterToken(
             'mturk_id': mturk_id
         }
     )
-    
+    print('voterToken', voterToken)
     g.voterToken = voterToken
-    return None
+    return {}
 
 
 @token_auth.verify_token

@@ -78,6 +78,7 @@ import Histories from "../views/histories/Main.vue"
 import Chart from "../views/chart/Main.vue";
 import Slider from "../views/slider/Main.vue";
 import ImageZoom from "../views/image-zoom/Main.vue";
+import { useAuthenticationStore } from '@/stores/authentication'
 
 const routes = [
 
@@ -106,14 +107,14 @@ const routes = [
     path: "/",
     component: SideMenu,
     children: [
-      {
-        path: "/",
-        name: "side-menu-dashboard-overview-1",
-        component: DashboardOverview1,
-        meta: {
-          show: false
-        }
-      },
+      // {
+      //   path: "/",
+      //   name: "side-menu-dashboard-overview-1",
+      //   component: DashboardOverview1,
+      //   meta: {
+      //     show: false
+      //   }
+      // },
       // {
       //   path: "dashboard-overview-2",
       //   name: "side-menu-dashboard-overview-2",
@@ -124,11 +125,11 @@ const routes = [
       //   name: "side-menu-dashboard-overview-3",
       //   component: DashboardOverview3,
       // },
-      {
-        path: "dashboard-overview-4",
-        name: "side-menu-dashboard-overview-4",
-        component: DashboardOverview4,
-      },
+      // {
+      //   path: "dashboard-overview-4",
+      //   name: "side-menu-dashboard-overview-4",
+      //   component: DashboardOverview4,
+      // },
       {
         path: "categories",
         name: "side-menu-categories",
@@ -173,6 +174,9 @@ const routes = [
         path: "histories",
         name: "side-menu-histories",
         component: Histories,
+        meta: { 
+          requiresAuth: true,
+        }
       },
       {
         path: "inbox",
@@ -423,6 +427,9 @@ const routes = [
         path: "create-form",
         name: "side-menu-create-form",
         component: CreateForm,
+        meta: { 
+          requiresAuth: true,
+        }
       },
       {
         path: "create-form-res",
@@ -430,7 +437,7 @@ const routes = [
         component: CreateFormRes,
       },
       {
-        path: "answer-form",
+        path: "/",
         name: "side-menu-answer-form",
         component: AnswerForm,
       },
@@ -1175,6 +1182,33 @@ const router = createRouter({
     return savedPosition || { left: 0, top: 0 };
   },
 });
+
+router.beforeEach((to, from, next) => {
+  const authenticationStore = useAuthenticationStore();
+  const userToken = authenticationStore.userToken;
+  const isUserAuthenticated = authenticationStore.isUserAthenticated
+  // if (to.meta.authority) {
+  //   const hasauthority = authority.checkAuthority(to.meta.authority)
+  //   if (!hasauthority) next({ name: 'Home' })
+  // }
+
+  if (to.matched.some(record => record.meta.requiresAuth) 
+      && (!userToken || userToken === null || isUserAuthenticatedValue === flase)) {
+    console.log("zzzz");
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath }
+    })
+  } else if (userToken && to.name == 'login') {
+    // cant go back to login page when after logining in
+    next({
+      path: from.fullPath
+    })
+  } else {
+    next() // stay in the same page
+  }
+});
+
 
 export default router;
 // export { router }

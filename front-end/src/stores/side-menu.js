@@ -3,15 +3,20 @@ import { defineStore } from "pinia";
 export const useSideMenuStore = defineStore("sideMenu", {
   state: () => ({
     menu: [
-      {
-        icon: "HomeIcon",
-        pageName: "side-menu-dashboard-overview-4",
-        title: "Overview",
-      },
+      // {
+      //   icon: "HomeIcon",
+      //   pageName: "side-menu-dashboard-overview-4",
+      //   title: "Overview",
+      // },
       {
         icon: "LogInIcon",
         pageName: "login",
         title: "Login",
+      },
+      {
+        icon: "TrelloIcon",
+        pageName: "side-menu-profile-overview-3",
+        title: "Profile",
       },
       "devider",
       {
@@ -24,17 +29,13 @@ export const useSideMenuStore = defineStore("sideMenu", {
         pageName: "side-menu-answer-form",
         title: "Answer Form",
       },
-      {
-        icon: "SidebarIcon",
-        pageName: "side-menu-get-voter-answers",
-        title: "Get Voter Answers",
-      },
+      // {
+      //   icon: "SidebarIcon",
+      //   pageName: "side-menu-get-voter-answers",
+      //   title: "Get Voter Answers",
+      // },
       "devider",
-      {
-        icon: "TrelloIcon",
-        pageName: "side-menu-profile-overview-3",
-        title: "Profile",
-      },
+      
       {
         icon: "ShoppingBagIcon",
         pageName: "side-menu-histories",

@@ -6,7 +6,8 @@ from .conftest import (
     create_document,
     search_document,
     update_document,
-    delete_document
+    delete_document,
+    delete_multiple_documents
 )
 
 from pymongo.cursor import Cursor
@@ -115,3 +116,33 @@ class TestSurveyAnswer:
 
         assert document['survey_template_id'] == tem_id
         assert document['mturk_id'] == mturk_id
+
+    @pytest.mark.parametrize("ans_id, tem_id, mturk_id", [
+        ('412312', '512412', '7766'),
+        ('66767', '124123', '6123412')
+    ])
+    def test_delete_multiple_documents(self, ans_id, tem_id, mturk_id):
+        '''
+        1. Create a document
+        2. Check if we can search the above document
+        '''
+        create_document(
+            database_type='survey_answer',
+            survey_answer_id=ans_id,
+            survey_template_id=tem_id,
+            mturk_id=mturk_id
+        )
+
+        create_document(
+            database_type='survey_answer',
+            survey_answer_id=ans_id+'123',
+            survey_template_id=tem_id,
+            mturk_id=mturk_id+'123'
+        )
+
+        res = delete_multiple_documents(
+            database_type='survey_answer',
+            survey_template_id=tem_id
+        )
+        assert res.deleted_count == 2
+        

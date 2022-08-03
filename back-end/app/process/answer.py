@@ -171,6 +171,7 @@ class VoterAnswerSurvey:
                 'cannot find corresponding survey template document'
             )
         
+        print('Debug survey_template_document', survey_template_document)
         # check if number of copies exceed limit
         if not cls.__is_within_the_number_of_copies_issued(
             number_of_copies=survey_template_document['number_of_copies'],
@@ -180,6 +181,7 @@ class VoterAnswerSurvey:
                 'Reach the limit of number of copies'
             )
         
+        print('11')
         # check if current voter is a new voter
         # if the voter is a new voter, create
         # corresponding documents
@@ -191,7 +193,7 @@ class VoterAnswerSurvey:
                 mturk_id=mturk_id,
                 participated_survey_template_ids={}
             )
-
+        print('22')
         # create survey_answer document
         survey_answer_id = get_unique_id()
         create_document(
@@ -206,9 +208,8 @@ class VoterAnswerSurvey:
             database_type='voter',
             mturk_id=mturk_id,
             survey_template_id=survey_template_id,
-            survey_answer_id=survey_answer_id
         )
-
+        print('33')
         # update participated_voters of current template
         update_document(
             database_type='survey_template',

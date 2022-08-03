@@ -48,9 +48,9 @@ def ceshiyixia() -> None:
     return 'ceshiyixia'
 
 @api.route('/get_survey_template', methods=['POST'])
-# @token_auth.login_required
+@token_auth.login_required
 @handle_response
-def get_survey_template() -> None:
+def get_survey_template() -> dict:
     '''
     Get all details about specific survey template
 
@@ -76,12 +76,11 @@ def get_survey_template() -> None:
     )
 
     survey_template_id = data['survey_template_id']
-    survey_template_document = search_document(
+    return search_document(
         database_type='survey_template',
         survey_template_id=survey_template_id
     )
-    del survey_template_document['_id']
-    return survey_template_document
+
 
 @api.route('/get_default_survey_template', methods=['GET'])
 @handle_response
@@ -103,7 +102,7 @@ def get_default_survey_template() -> None:
 
 
 @api.route('/get_user_histories', methods=['POST'])
-# @token_auth.login_required
+@token_auth.login_required
 @handle_response
 def get_user_histories() -> list:
     '''
@@ -134,7 +133,7 @@ def get_user_histories() -> list:
     return get_user_histories_helper()
 
 @api.route('/get_voter_answers_of_template', methods=['POST'])
-# @token_auth.login_required
+@token_auth.login_required
 @handle_response
 def get_voter_answers_of_template() -> list:
     '''

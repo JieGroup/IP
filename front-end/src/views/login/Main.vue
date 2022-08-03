@@ -23,7 +23,7 @@
 
 
           <router-link
-            :to="{ name: 'side-menu-dashboard-overview-4' }"
+            :to="{ name: 'side-menu-answer-form' }"
             tag="a"
             class="intro-x flex items-center pl-5 pt-4"
           >

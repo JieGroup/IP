@@ -35,24 +35,38 @@ from app.database.api import (
 )
 
 def get_survey_template_helper(
-        survey_template_id: str
-    ) -> None:
+    survey_template_id: str
+) -> dict:
+    '''
+    Get all details about specific survey template
 
-        return search_document(
-            database_type='survey_template',
-            survey_template_id=survey_template_id,
-        )
+    Parameters
+    ----------
+    survey_template_id : str
+        An unique string corresponding to a survey template.
+
+    Returns
+    -------
+    dict
+        Details will be formed in dictonary structure
+    '''
+    survey_template_document = search_document(
+        database_type='survey_template',
+        survey_template_id=survey_template_id,
+    )
+    del survey_template_document['_id']
+    return {
+        'survey_template_document': survey_template_document
+    }
 
 def get_default_survey_template_helper():
-
     '''
     Implement later
     '''
-
     return
 
 
-def get_user_histories_helper():  
+def get_user_histories_helper() -> dict[str, list]:  
     '''
     get user history of created survey template
         1. get all created survey template from db
@@ -76,7 +90,7 @@ def get_user_histories_helper():
 
     Returns
     -------
-    list
+    dict[str, list]
     '''
     designed_survey_templates = g.current_user['designed_survey_templates']
 
@@ -107,11 +121,13 @@ def get_user_histories_helper():
         _, sub_res = heapq.heappop(histories)
         sorted_histories.append(sub_res)
 
-    return sorted_histories
+    return {
+        'histories': sorted_histories
+    }
 
 def get_voter_answers(
     survey_template_id: str
-) -> list:
+) -> dict[str, list]:
     '''
     get all voter answers of a survey_template_id
 
@@ -122,7 +138,7 @@ def get_voter_answers(
 
     Returns
     -------
-    list
+    dict[str, list]
     '''
     multiple_documents = search_multiple_documents(
         database_type='survey_answer',
@@ -136,4 +152,6 @@ def get_voter_answers(
         res.append(doc)
         res.append('\n')
     
-    return res
+    return {
+        'voter_answers': res
+    }

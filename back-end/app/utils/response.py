@@ -30,12 +30,14 @@ def handle_response(
         '''
         print('daohandlele')
         res = func(*args, **kwargs)
-        print('g handle_response', g)
-        # print('g.current_user', g.current_user)
-        if 'userToken' in g:
-            res['userToken'] = g.userToken
-        if 'voterToken' in g:
-            res['voterToken'] = g.voterToken
+        print('g handle_response', res, type(res))
+        if type(res) == dict:
+            print('zhelisss')
+            if 'userToken' in g:
+                res['userToken'] = g.userToken
+            if 'voterToken' in g:
+                print('~~~~~~~~~~~~`')
+                res['voterToken'] = g.voterToken
         res = Serialization.make_data_serializable(res)
         return json.dumps(res)
 
