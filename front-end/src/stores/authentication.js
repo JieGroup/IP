@@ -1,7 +1,13 @@
 import { defineStore } from "pinia";
-// console.log('sha', localStorage.getItem('userToken'))
-// console.log('sha', localStorage.getItem('userToken').split('.')[1])
-// console.log('shatokenstore', JSON.parse(atob(localStorage.getItem('userToken').split('.')[1])))
+
+console.log(localStorage.getItem("userToken"), localStorage.getItem("userToken") === null, localStorage.getItem("userToken") === '', localStorage.getItem("userToken") === undefined)
+if (localStorage.getItem("userToken") !== null){
+
+  console.log('sha', localStorage.getItem("userToken") !== null, localStorage.getItem('userToken'))
+console.log('sha2', localStorage.getItem('userToken').split('.')[1])
+console.log('shatokenstore', JSON.parse(atob(localStorage.getItem('userToken').split('.')[1])))
+}
+
 // console.log('sha', JSON.parse(atob(localStorage.getItem('userToken').split('.')[1])).authority_level )
 
 export const useAuthenticationStore = defineStore("authentication", {
@@ -64,9 +70,17 @@ export const useAuthenticationStore = defineStore("authentication", {
       localStorage.setItem("userToken", userToken);
       this.userTokenValue = userToken;
     },
+    deleteUserToken() {
+      localStorage.removeItem('userToken');
+      this.userTokenValue = null;
+    },
     setVoterToken(voterToken) {
       localStorage.setItem("voterToken", voterToken);
       this.voterTokenValue = voterToken;
+    },
+    deleteVoterToken() {
+      localStorage.removeItem('voterToken');
+      this.voterTokenValue = null;
     },
     setUserAuthority(authority_level) {
       this.userAuthorityValue = authority_level
@@ -95,8 +109,7 @@ export const useAuthenticationStore = defineStore("authentication", {
     },
     logoutAction () {
       console.log('logoutAction triggered')
-      localStorage.removeItem('userToken');
-      this.setUserToken(null)
+      this.deleteUserToken()
       this.setUserAuthority(null)
       this.setUserName(null)
       this.setUserID(null)

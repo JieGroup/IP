@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 
+// console.log('localStorage.getItem("surveyTopics")', localStorage.getItem("surveyTopics"))
 export const voterAnswerStore = defineStore("voterAnswer", {
   state: () => ({
     surveyTopicsValue: 
@@ -32,13 +33,25 @@ export const voterAnswerStore = defineStore("voterAnswer", {
       localStorage.setItem("surveyTopics", surveyTopics);
       this.surveyTopicsValue = surveyTopics;
     },
+    deletesurveyTopics() {
+      localStorage.removeItem("surveyTopics");
+      this.surveyTopicsValue = null;
+    },
     setsurveyAnswerID(surveyAnswerID) {
       localStorage.setItem("surveyAnswerID", surveyAnswerID);
       this.surveyAnswerIDValue = surveyAnswerID;
     },
+    deletesurveyAnswerID() {
+      localStorage.removeItem("surveyAnswerID");
+      this.surveyAnswerIDValue = null;
+    },
     setsurveyUpdateMethod(surveyUpdateMethod) {
       localStorage.setItem("surveyUpdateMethod", surveyUpdateMethod);
       this.surveyUpdateMethodValue = surveyUpdateMethod;
+    },
+    deletesurveyUpdateMethod() {
+      localStorage.removeItem("surveyUpdateMethod");
+      this.surveyUpdateMethodValue = null;
     },
   },
 });

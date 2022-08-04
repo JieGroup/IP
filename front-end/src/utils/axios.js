@@ -11,7 +11,7 @@ import { update } from 'lodash';
 axios.defaults.timeout = 50000  // 超时时间
 axios.defaults.baseURL = 'http://127.0.0.1:5000'
 // axios.defaults.baseURL = 'http://3.145.140.55'
-// axios.defaults.baseURL = 'http://synspot-env.eba-mvtmbnb2.us-east-2.elasticbeanstalk.com/'
+// axios.defaults.baseURL = 'http://intervalprivacy-env.eba-cicbmrrm.us-east-1.elasticbeanstalk.com'
 
 
 // console.log('useRouter', router);

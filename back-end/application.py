@@ -6,9 +6,9 @@ application = create_app(Config)
 
 
 
-# @application.route('/')
-# def hello_world():
-#     return 'Hello, World!'
+@application.route('/')
+def hello_world():
+    return 'Hello, World!'
 
 # @application.route('/ceshierror', methods=['GET', 'POST'])
 # def ceshierror():

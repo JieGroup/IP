@@ -253,10 +253,10 @@ const back_to_start_answering = () => {
     delete answerFormData[key]
   }
   isStartAnswer.value = true
-  authenticationStore.setVoterToken(null)
-  storedVoterAnswer.setsurveyTopics(null);
-  storedVoterAnswer.setsurveyAnswerID(null);
-  storedVoterAnswer.setsurveyUpdateMethod(null);
+  authenticationStore.deleteVoterToken();
+  storedVoterAnswer.deletesurveyTopics()
+  storedVoterAnswer.deletesurveyAnswerID();
+  storedVoterAnswer.deletesurveyUpdateMethod();
 }
 
 // ref, computed 取值要加.value
@@ -441,7 +441,23 @@ onMounted(() => {
   // The voter might refresh the page
 
   console.log('storage', storedVoterAnswer.surveyTopics, storedVoterAnswer.surveyAnswerID, storedVoterAnswer.surveyUpdateMethod)
-  console.log('storage_json_parse', JSON.parse(storedVoterAnswer.surveyTopics))
+  console.log(JSON.parse(JSON.stringify(storedVoterAnswer.surveyTopics)))
+  console.log('storage_json_parse', storedVoterAnswer.surveyTopics, typeof storedVoterAnswer.surveyTopics === 'string')
+
+  // if (storedVoterAnswer.surveyTopics === null && isStartAnswer.value === true){
+  //   //
+
+  // } else {
+  // let a = JSON.parse(null)
+  // let b = JSON.parse('')
+  // console.log('123123', a, b)
+  try {
+    JSON.parse(storedVoterAnswer.surveyTopics)
+  } catch (error) {
+    console.log('------DEBUG JSON.parse error', error)
+    back_to_start_answering()
+  }
+  // }
   if (JSON.parse(storedVoterAnswer.surveyTopics) !== null || isStartAnswer.value === false){
     console.log('jinlai')
     isStartAnswer.value = false

@@ -57,13 +57,13 @@ const is_url_belonging_voter_answering = (url) => {
 
 const update_token = (data) => {
     const authenticationStore = useAuthenticationStore();
-    console.log('update_token', data)
+    console.log('update_token')
     if ('userToken' in data) {
-      console.log('update_userToken', data)
+      console.log('update_userToken')
       authenticationStore.setUserToken(data.userToken)
     }
     if ('voterToken' in data) {
-      console.log('update_voterToken', data)
+      console.log('update_voterToken')
       authenticationStore.setVoterToken(data.voterToken)
     }
 }

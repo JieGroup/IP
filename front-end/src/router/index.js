@@ -1209,7 +1209,7 @@ router.beforeEach((to, from, next) => {
       path: from.fullPath
     })
   } else {
-    console.log('bugeijin', userToken, isUserAuthenticated)
+    // console.log('bugeijin', userToken, isUserAuthenticated)
     next() // stay in the same page
   }
 });
