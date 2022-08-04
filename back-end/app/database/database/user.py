@@ -160,7 +160,7 @@ class User(AbstractDatabase, BaseDatabase):
         # record the survey template created by current user
         elif 'survey_template_id' in kwargs:
             survey_template_id = kwargs['survey_template_id']
-            survey_template_name = kwargs['survey_template_id']
+            survey_template_name = kwargs['survey_template_name']
             creation_time = kwargs['creation_time']
             expiration_time = kwargs['expiration_time']
             return pyMongo.db.User.update_one({'user_id': user_id}, {'$set':{

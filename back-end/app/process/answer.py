@@ -193,6 +193,7 @@ class VoterAnswerSurvey:
                 mturk_id=mturk_id,
                 participated_survey_template_ids={}
             )
+            print('1.5')
         print('22')
         # create survey_answer document
         survey_answer_id = get_unique_id()
@@ -202,13 +203,17 @@ class VoterAnswerSurvey:
             survey_template_id=survey_template_id,
             mturk_id=mturk_id,
         )
-
+        print('22.5')
         # update voter participated_survey_template_ids
         update_document(
             database_type='voter',
             mturk_id=mturk_id,
             survey_template_id=survey_template_id,
         )
+        print(search_document(
+            database_type='voter',
+            mturk_id=mturk_id
+        ))
         print('33')
         # update participated_voters of current template
         update_document(
@@ -266,7 +271,7 @@ class VoterAnswerSurvey:
             Otherwise return new topics
         '''
         # check if survey_answer_id in database
-        print('2')
+        print('!!survey_new_answers', survey_new_answers)
         survey_answer_document = search_document(
             database_type='survey_answer',
             survey_answer_id=survey_answer_id
@@ -289,7 +294,7 @@ class VoterAnswerSurvey:
         cur_rounds_num = get_cur_rounds_num(
             survey_prev_answers=survey_prev_answers
         )
-        print('4')
+        print('44444')
         # Validate the new answers
         ValidateAnswer.validate_survey_answers(
             cur_rounds_num=cur_rounds_num,

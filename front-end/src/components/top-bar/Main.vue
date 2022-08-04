@@ -161,20 +161,21 @@
       </DropdownToggle>
       <DropdownMenu class="w-56">
         <DropdownContent class="bg-primary text-white">
-          <DropdownHeader tag="div" class="!font-normal">
-            <div class="font-medium">{{ $f()[0].users[0].name }}</div>
+          <DropdownHeader v-if="authenticationStore.isUserAthenticated === true" tag="div" class="!font-normal">
+            <!-- <div class="font-medium">{{ $f()[0].users[0].name }}</div> -->
+            <div class="font-medium">{{ authenticationStore.userName }}</div>
             <!-- <div class="text-xs text-white/70 mt-0.5 dark:text-slate-500">
               {{ $f()[0].jobs[0] }}
             </div> -->
           </DropdownHeader>
           <DropdownDivider class="border-white/[0.08]" />
-          <DropdownItem @click="to_profile" class="hover:bg-white/5">
+          <DropdownItem v-if="authenticationStore.isUserAthenticated === true" @click="to_profile" class="hover:bg-white/5">
             <UserIcon class="w-4 h-4 mr-2" /> Profile
           </DropdownItem>
           <!-- <DropdownItem class="hover:bg-white/5">
             <EditIcon class="w-4 h-4 mr-2" /> Add Account
           </DropdownItem> -->
-          <DropdownItem @click="to_reset_pwd" class="hover:bg-white/5">
+          <DropdownItem v-if="authenticationStore.isUserAthenticated === true" @click="to_reset_pwd" class="hover:bg-white/5">
             <!-- <router-link
               :to="{ name: 'side-menu-change-password' }"
               tag="a"
@@ -211,7 +212,7 @@
             <HelpCircleIcon class="w-4 h-4 mr-2" /> Help
           </DropdownItem>
           <DropdownDivider class="border-white/[0.08]" />
-          <DropdownItem @click="logout" class="hover:bg-white/5">
+          <DropdownItem v-if="authenticationStore.isUserAthenticated === true" @click="logout" class="hover:bg-white/5">
             <ToggleRightIcon class="w-4 h-4 mr-2" /> Logout
           </DropdownItem>
         </DropdownContent>

@@ -84,7 +84,7 @@ class SurveyTemplate(AbstractDatabase, BaseDatabase):
 
     @classmethod
     def search_document(
-        cls, survey_template_id: str
+        cls, survey_template_id: str, **kwargs
     ) -> Union[None, dict[str, Any]]:
         '''
         Search and return SurveyAnswer document

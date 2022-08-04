@@ -16,12 +16,12 @@ from typeguard import typechecked
 
 basic_auth = HTTPBasicAuth()
 
-@basic_auth.verify_password
+# @basic_auth.verify_password
 @typechecked
 def verify_password(
     username: str, 
     password: str
-) -> bool:
+) -> None:
     '''
     verify username and password
 
@@ -32,17 +32,19 @@ def verify_password(
 
     Returns
     -------
-    bool
+    None
     '''
+    print('11')
     user_document = search_document(
         database_type='user',
         username=username,
     )
+    print('22')
     if not is_password_valid(
         hashed_password=user_document['hashed_password'],
         password=password
     ):
         raise ValueError('password wrong')
-
+    print('33')
     g.current_user = user_document
-    return True
+    return

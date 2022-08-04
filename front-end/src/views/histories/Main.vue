@@ -60,6 +60,7 @@
               <input class="form-check-input" type="checkbox" />
             </th> -->
             <th class="whitespace-nowrap">Template Name</th>
+            <th class="whitespace-nowrap">Template ID</th>
             <!-- <th class="whitespace-nowrap">POSTED TIME</th> -->
             <!-- <th class="whitespace-nowrap">RATING</th> -->
             <th class="text-center whitespace-nowrap">POSTED TIME</th>
@@ -68,12 +69,15 @@
             <th class="text-center whitespace-nowrap">ACTIONS</th>
           </tr>
         </thead>
+        <!-- historiesData: {{ historiesData }} -->
+        <!-- startIndex {{ startIndex}} {{ endIndex }} -->
         <tbody>
           <tr
             v-for="(item, index) in $_.slice(historiesData, startIndex, endIndex)"
             :key="index"
             class="intro-x"
           >
+            <!-- history item {{ item }} -->
             <!-- <td class="w-10">
               <input class="form-check-input" type="checkbox" />
             </td> -->
@@ -91,6 +95,25 @@
                 <a href="" class="font-medium whitespace-nowrap ml-4">{{
                   item.survey_template_name
                 }}</a>
+              </div>
+            </td>
+            <td class="!py-4">
+              <div class="flex items-center">
+                <!-- <div class="w-10 h-10 image-fit zoom-in">
+                  <Tippy
+                    tag="img"
+                    alt="Midone - HTML Admin Template"
+                    class="rounded-lg border-1 border-white shadow-md"
+                    :src="faker.images[0]"
+                    :content="`Uploaded at ${faker.dates[0]}`"
+                  />
+                </div> -->
+                <!-- <a href="" class="font-medium whitespace-nowrap ml-4">{{
+                  item.survey_template_id
+                }}</a> -->
+                <!-- <a href="" class="font-medium whitespace-nowrap ml-4">{{ -->
+                  {{ item.survey_template_id }}
+                <!-- }}</a> -->
               </div>
             </td>
             <!-- <td class="whitespace-nowrap">
@@ -197,15 +220,53 @@
         <option value=35>35</option>
         <option value=50>50</option> -->
 
-        <option value=1>1</option>
-        <option value=2>2</option>
-        <option value=3>3</option>
         <option value=5>5</option>
+        <option value=10>10</option>
+        <option value=20>20</option>
+        <!-- <option value=5>5</option> -->
       </select>
       <!-- itemPerPage {{ itemPerPage }} -->
     </div>
     <!-- END: Pagination -->
   </div>
+  <!-- BEGIN: Request Success Content -->
+  <div
+    id="success-notification-content"
+    class="toastify-content hidden flex"
+  >
+    <CheckCircleIcon class="text-success" />
+    <div class="ml-4 mr-4">
+      <div class="font-medium">Send request successfully!</div>
+      <div class="text-slate-500 mt-1">
+        Please wait for the response
+      </div>
+    </div>
+  </div>
+  <!-- END: Request Success Content -->
+  <!-- BEGIN: Request Error Content -->
+  <div
+    id="request-error-content"
+    class="toastify-content hidden flex"
+  >
+    <CheckCircleIcon class="text-danger" />
+    <div class="ml-4 mr-4">
+      <div class="font-medium">Request error!</div>
+      <div class="text-slate-500 mt-1">
+        <!-- {{ request_error }}
+        error_name: {{ request_error['error_name'] }}
+        error_msg: {{ request_error.error_msg }}
+        error_status: {{ request_error.error_status }} -->
+        <!-- <div> -->
+        The error may caused by the following reasons:
+        <br/>
+          1. Still no voter answer this survey template
+          <br />
+          2. The survey template has beed deleted
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+  <!-- END: Request Error Content -->
   <!-- BEGIN: Delete Confirmation Modal -->
   <Modal
     :show="deleteConfirmationModal"
@@ -253,7 +314,7 @@ const pageNumber = ref(1);
 const pageNumberArray = reactive({
   'pageNumberArray': []
 });
-const itemPerPage = ref(1)
+const itemPerPage = ref(5)
 
 const go_to_template_page = (surveyTemplateID) => {
   // let surveyTemplateID
@@ -275,14 +336,14 @@ const download_file = async (survey_template_name, survey_template_id) => {
   // uniform categorical: 62e220af6648301fab9ab217
   // uniform continuous: 62e220d76648301fab9ab219
   // uniform categorical + continuous: 62e2210d6648301fab9ab21b
-    survey_template_id = '62e220016648301fab9ab211';
+    // survey_template_id = '62e220016648301fab9ab211';
     let response = await axios({
       method: 'post',
       url: get_api_url('get_voter_answers_of_template'), 
       data: {
         'survey_template_id': survey_template_id
       },
-      responseType: 'blob'
+      // responseType: 'blob'
     });
 
     // let data = [
@@ -328,10 +389,12 @@ const download_file = async (survey_template_name, survey_template_id) => {
     // console.log(c)
     // [JSON.stringify(data)]
     // [JSON.stringify(data)]
-
+    console.log('voter_answersresponse', response)
     let data = process_axios_response(response);
-    console.log('data', data)
-    const blob = new Blob([JSON.stringify(data)], { type: "text/csv", endings: "native"} );//处理文档流
+    console.log('voter_answersdatae', data)
+    let voter_answers = data.voter_answers
+    console.log('voter_answers+data', voter_answers)
+    const blob = new Blob([JSON.stringify(voter_answers)], { type: "text/csv", endings: "native"} );//处理文档流
     
     console.log('blob', blob, typeof blob)
     const fileName = `${survey_template_name}.csv`;
@@ -343,9 +406,6 @@ const download_file = async (survey_template_name, survey_template_id) => {
     down.click();
     URL.revokeObjectURL(down.href); // 释放URL 对象
     document.body.removeChild(down)
-
-    // console.log('response', response)
-    // console.log('asda', response.data)
     
     // console.log(`send_form response: ${processed_response}`)
     /*
@@ -360,7 +420,6 @@ const download_file = async (survey_template_name, survey_template_id) => {
         false: expire
     }
     */
-    // historiesData.push(...processed_response)
     Toastify({
       node: dom("#success-notification-content")
         .clone()
@@ -389,25 +448,6 @@ const download_file = async (survey_template_name, survey_template_id) => {
       stopOnFocus: true,
     }).showToast();
   }
-
-  // let data = {
-  //   'survey_template_id': '1',
-  //   'creation_time': '1 days ago',
-  //   'status': true,
-  // };
-  // let data = 'asdfasdfsadf'
-  // // { type: 'application/pdf' }
-  // const blob = new Blob([data]);//处理文档流
-  // console.log('blob', blob, typeof blob)
-  // const fileName = '帮助文档.pdf';
-  // const down = document.createElement('a');
-  // down.download = fileName;
-  // down.style.display = 'none';//隐藏,没必要展示出来
-  // down.href = URL.createObjectURL(blob);
-  // document.body.appendChild(down);
-  // down.click();
-  // URL.revokeObjectURL(down.href); // 释放URL 对象
-  // document.body.removeChild(down)
 }
 const change_itemPerPage = () => {
   console.log('change_itemPerPage', itemPerPage.value)
@@ -486,17 +526,35 @@ const page_count = () => {
     itemPerPage
   */
   let total_histories_num = historiesData.length;
+  console.log('total_histories_num', total_histories_num, historiesData.length)
   let pageCount = Math.ceil(total_histories_num / itemPerPage.value)
+  console.log('page_count', pageCount)
   return pageCount;
 }
 
-const get_histories = async () => {
+// const get_histories = async () => {
+  
+// }
+
+onMounted(() => {
+  console.log('history-mounted')
+
+})
+
+onBeforeMount(async () => {
+  console.log('history-before-mounted')
+  /*
+    1. get history items from back-end
+    2. update the startIndex and endIndex
+  */
   try {
     let response = await axios.post(get_api_url('get_user_histories'));
     console.log('response', response)
     console.log('asda', response.data)
     let processed_response = process_axios_response(response);
-    console.log(`send_form response: ${processed_response}`)
+    console.log(`processed_response response:`, processed_response)
+    let histories = processed_response.histories
+    console.log('send_form response:', histories)
     /*
     History data form:
     {
@@ -509,18 +567,34 @@ const get_histories = async () => {
         false: expire
     }
     */
-    historiesData.push(...processed_response)
-    Toastify({
-      node: dom("#success-notification-content")
-        .clone()
-        .removeClass("hidden")[0],
-      duration: 10000,
-      newWindow: true,
-      close: true,
-      gravity: "top",
-      position: "right",
-      stopOnFocus: true,
-    }).showToast();
+    historiesData.push(...histories)
+    console.log('fuzhi', historiesData, historiesData.length, historiesData.value)
+    let pageCount = page_count()
+    // item num is less than the itemPerPage
+    if (pageCount === 1) {
+      startIndex.value = 0
+      endIndex.value = historiesData.length
+    } else if (pageCount > 1) {
+      // item num is greater than the itemPerPage
+      startIndex.value = 0
+      endIndex.value = itemPerPage.value
+    }
+    let temp = []
+    for (let i = 0; i < pageCount; i++) {
+      temp.push([])
+    }
+    pageNumberArray.pageNumberArray = temp
+    // Toastify({
+    //   node: dom("#success-notification-content")
+    //     .clone()
+    //     .removeClass("hidden")[0],
+    //   duration: 10000,
+    //   newWindow: true,
+    //   close: true,
+    //   gravity: "top",
+    //   position: "right",
+    //   stopOnFocus: true,
+    // }).showToast();
   } catch (err) {
     console.log(`send_form err 0.5: ${err}`)
     let processed_err = process_axios_error(err)
@@ -538,111 +612,84 @@ const get_histories = async () => {
       stopOnFocus: true,
     }).showToast();
   }
-}
+  console.log('after_history')
+  // let Data = [
+  //   {
+  //     'survey_template_name': 'as',
+  //     'survey_template_id': '1',
+  //     'creation_time': '1 days ago',
+  //     'status': true,
+  //   },
+  //   {
+  //     'survey_template_name': 'as',
+  //     'survey_template_id': '2',
+  //     'creation_time': '2 days ago',
+  //     'status': false,
+  //   },
+  //   {
+  //     'survey_template_name': 'as',
+  //     'survey_template_id': '3',
+  //     'creation_time': '2 days ago',
+  //     'status': false,
+  //   },
+  //   {
+  //     'survey_template_name': 'as',
+  //     'survey_template_id': '4',
+  //     'creation_time': '2 days ago',
+  //     'status': false,
+  //   },
+  //   {
+  //     'survey_template_name': 'as',
+  //     'survey_template_id': '5',
+  //     'creation_time': '2 days ago',
+  //     'status': false,
+  //   },
+  //   {
+  //     'survey_template_name': 'as',
+  //     'survey_template_id': '6',
+  //     'creation_time': '2 days ago',
+  //     'status': false,
+  //   },
+  //   {
+  //     'survey_template_name': 'as',
+  //     'survey_template_id': '7',
+  //     'creation_time': '2 days ago',
+  //     'status': false,
+  //   },
+  //   {
+  //     'survey_template_name': 'as',
+  //     'survey_template_id': '8',
+  //     'creation_time': '2 days ago',
+  //     'status': false,
+  //   },
+  //   {
+  //     'survey_template_name': 'as',
+  //     'survey_template_id': '9',
+  //     'creation_time': '2 days ago',
+  //     'status': false,
+  //   },
+  //   {
+  //     'survey_template_name': 'as',
+  //     'survey_template_id': '10',
+  //     'creation_time': '2 days ago',
+  //     'status': false,
+  //   },
+  //   {
+  //     'survey_template_name': 'as',
+  //     'survey_template_id': '11',
+  //     'creation_time': '2 days ago',
+  //     'status': false,
+  //   },
+  //   {
+  //     'survey_template_name': 'as',
+  //     'survey_template_id': '12',
+  //     'creation_time': '2 days ago',
+  //     'status': false,
+  //   }
 
-onMounted(() => {
-  console.log('history-mounted')
-
-})
-
-onBeforeMount(() => {
-  console.log('history-before-mounted')
-  /*
-    1. get history items from back-end
-    2. update the startIndex and endIndex
-  */
-  // get_histories()
-  let Data = [
-    {
-      'survey_template_name': 'as',
-      'survey_template_id': '1',
-      'creation_time': '1 days ago',
-      'status': true,
-    },
-    {
-      'survey_template_name': 'as',
-      'survey_template_id': '2',
-      'creation_time': '2 days ago',
-      'status': false,
-    },
-    {
-      'survey_template_name': 'as',
-      'survey_template_id': '3',
-      'creation_time': '2 days ago',
-      'status': false,
-    },
-    {
-      'survey_template_name': 'as',
-      'survey_template_id': '4',
-      'creation_time': '2 days ago',
-      'status': false,
-    },
-    {
-      'survey_template_name': 'as',
-      'survey_template_id': '5',
-      'creation_time': '2 days ago',
-      'status': false,
-    },
-    {
-      'survey_template_name': 'as',
-      'survey_template_id': '6',
-      'creation_time': '2 days ago',
-      'status': false,
-    },
-    {
-      'survey_template_name': 'as',
-      'survey_template_id': '7',
-      'creation_time': '2 days ago',
-      'status': false,
-    },
-    {
-      'survey_template_name': 'as',
-      'survey_template_id': '8',
-      'creation_time': '2 days ago',
-      'status': false,
-    },
-    {
-      'survey_template_name': 'as',
-      'survey_template_id': '9',
-      'creation_time': '2 days ago',
-      'status': false,
-    },
-    {
-      'survey_template_name': 'as',
-      'survey_template_id': '10',
-      'creation_time': '2 days ago',
-      'status': false,
-    },
-    {
-      'survey_template_name': 'as',
-      'survey_template_id': '11',
-      'creation_time': '2 days ago',
-      'status': false,
-    },
-    {
-      'survey_template_name': 'as',
-      'survey_template_id': '12',
-      'creation_time': '2 days ago',
-      'status': false,
-    }
-
-  ]
-  historiesData.push(...Data)
-  let pageCount = page_count()
-  // item num is less than the itemPerPage
-  if (pageCount === 1) {
-    startIndex.value = 0
-    endIndex.value = historiesData.length
-  } else if (pageCount > 1) {
-    // item num is greater than the itemPerPage
-    startIndex.value = 0
-    endIndex.value = itemPerPage.value
-  }
-  let temp = []
-  for (let i = 0; i < pageCount; i++) {
-    temp.push([])
-  }
-  pageNumberArray.pageNumberArray = temp
+  // ]
+  // historiesData.push(...Data)
+  
 })
 // let Data = [
 //   {

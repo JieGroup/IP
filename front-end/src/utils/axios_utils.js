@@ -59,10 +59,12 @@ const update_token = (data) => {
     const authenticationStore = useAuthenticationStore();
     console.log('update_token', data)
     if ('userToken' in data) {
-        authenticationStore.setUserToken(data.userToken)
+      console.log('update_userToken', data)
+      authenticationStore.setUserToken(data.userToken)
     }
     if ('voterToken' in data) {
-        authenticationStore.setVoterToken(data.voterToken)
+      console.log('update_voterToken', data)
+      authenticationStore.setVoterToken(data.voterToken)
     }
 }
 

@@ -96,13 +96,17 @@ class ValidateAnswer:
         Current round's answer always is the subset of the last round's
         answer
         '''
-        if cls.__is_cur_rounds_num_equals_one(
-            cur_rounds_num=cur_rounds_num
-        ):
+        answer_type = topic_info['answer_type']
+        if answer_type == 'categorical':
             return topic_info
-        else:
-            rounds_key = f'rounds_{cur_rounds_num-1}'
-            return survey_prev_answers[rounds_key][topic_name]
+        elif answer_type == 'continuous':
+            if cls.__is_cur_rounds_num_equals_one(
+                cur_rounds_num=cur_rounds_num
+            ):
+                return topic_info
+            else:
+                rounds_key = f'rounds_{cur_rounds_num-1}'
+                return survey_prev_answers[rounds_key][topic_name]
 
     @classmethod
     def validate_survey_answers(
@@ -138,7 +142,7 @@ class ValidateAnswer:
             raise SurveyAnswerError(
                 f'New answer contains extra key'
             )
-
+        print('survey_topics', survey_topics)
         for topic_name, topic_info in survey_topics.items():
             # Check if topic_name is in survey_new_answers
             if topic_name not in survey_new_answers:

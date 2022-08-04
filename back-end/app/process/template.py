@@ -179,7 +179,7 @@ class SurveyTemplate:
         print('zheli')
         creation_time = Time.get_current_utc_time()
         expiration_time = Time.get_expiration_utc_time(time_period)
-        print('zheli2')
+        print('zheli2', survey_template_name, survey_template_id)
         create_document(
             database_type='survey_template',
             survey_template_id=survey_template_id,

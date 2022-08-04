@@ -1,29 +1,12 @@
 <template>
   <div class="intro-y flex items-center mt-8">
-    <h2 class="text-lg font-medium mr-auto">Form Validation</h2>
+    <h2 class="text-lg font-medium mr-auto">Survey Template</h2>
   </div>
   <div class="grid grid-cols-12 gap-6 mt-5">
     <div class="intro-y col-span-12 lg:col-span-6">
       <!-- BEGIN: Form Validation -->
       <!-- <PreviewComponent class="intro-y box" v-slot="{ toggle }"> -->
       <PreviewComponent class="intro-y box">
-        <!-- <div
-          class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400"
-        > -->
-          <!-- <h2 class="font-medium text-base mr-auto">Implementation</h2>
-          <div
-            class="form-check form-switch w-full sm:w-auto sm:ml-auto mt-3 sm:mt-0"
-          >
-            <label class="form-check-label ml-0" for="show-example-1"
-              >Show example code</label
-            >
-            <input
-              @click="toggle"
-              class="form-check-input mr-0 ml-3"
-              type="checkbox"
-            />
-          </div> -->
-        <!-- </div> -->
 
         <div class="p-5">
           <Preview>
@@ -34,7 +17,7 @@
             <br />
             <br />
             <TemplateIpFixForm :surveyTemplateFixData="surveyTemplateData"/>
-            surveyTemplateData.survey_topics {{ surveyTemplateData.survey_topics }}
+            <!-- surveyTemplateData.survey_topics {{ surveyTemplateData.survey_topics }} -->
             <TemplateIpDynamicForm  v-for="(value, key, index) in surveyTemplateData.survey_topics"
                                     :key="index"
                                     :surveyTemplateDynamicDataKey="key" 
@@ -164,56 +147,48 @@ let surveyTemplateData = reactive({
 })
 
 
-onBeforeMount(() => {
-  let params = router.currentRoute.value.params
-  console.log('12123', params)
-  let surveyTemplateID = params.surveyTemplateID
-  
-  let surveyTemplateIDData = {
-    'survey_template_id': surveyTemplateID
-  }
-
-  
+const get_survey_template = async (surveyTemplateIDData) => {
   try {
-    // let response = await axios.post(get_api_url('get_survey_template'), surveyTemplateIDData);
+    let response = await axios.post(get_api_url('get_survey_template'), surveyTemplateIDData);
     // console.log('response', response)
     // console.log('asda', response.data)
-    // let processed_response = process_axios_response(response);
+    let processed_response = process_axios_response(response);
+    let survey_template_document = processed_response.survey_template_document
     // console.log(`get_survey_template: ${processed_response}`)
 
-    let Data = {
-      survey_template_name: 'survey_template_name',
-      survey_template_id: 'survey_template_id',
-      survey_update_method: 'survey_update_method',
-      creation_time: 'creation_time',
-      expiration_time: 'expiration_time',
-      time_period: 'time_period',
-      number_of_copies: 400,
-      max_rounds: 3,
-      survey_topics: {
-        topic_name_1: {
-          answer_type: 'categorical',
-          categorical_range: {
-              inclusion: ['a', 'b', 'c']
-          },
-          topic_question: 'topic_q',
-          unit: 'km'
-        },
-        topic_name_2: {
-          answer_type: 'continuous',
-          continuous_range: {
-            'min': 1,
-            'max': 4    
-          },
-          topic_question: 'topic_q2',
-          unit: 'kg'       
-        }
-      }
-    }
+    // let Data = {
+    //   survey_template_name: 'survey_template_name',
+    //   survey_template_id: 'survey_template_id',
+    //   survey_update_method: 'survey_update_method',
+    //   creation_time: 'creation_time',
+    //   expiration_time: 'expiration_time',
+    //   time_period: 'time_period',
+    //   number_of_copies: 400,
+    //   max_rounds: 3,
+    //   survey_topics: {
+    //     topic_name_1: {
+    //       answer_type: 'categorical',
+    //       categorical_range: {
+    //           inclusion: ['a', 'b', 'c']
+    //       },
+    //       topic_question: 'topic_q',
+    //       unit: 'km'
+    //     },
+    //     topic_name_2: {
+    //       answer_type: 'continuous',
+    //       continuous_range: {
+    //         'min': 1,
+    //         'max': 4    
+    //       },
+    //       topic_question: 'topic_q2',
+    //       unit: 'kg'       
+    //     }
+    //   }
+    // }
     // surveyTemplateData = Data
     // surveyTemplateData = toRefs(surveyTemplateData)
-    for (let key in Data) {
-      surveyTemplateData[key] = Data[key]
+    for (let key in survey_template_document) {
+      surveyTemplateData[key] = survey_template_document[key]
     }
     // surveyTemplateData = {...Data}
     console.log('template-form', surveyTemplateData)
@@ -247,162 +222,20 @@ onBeforeMount(() => {
     }).showToast();
   }
 
+
+}
+onBeforeMount(() => {
+  let params = router.currentRoute.value.params
+  console.log('12123', params)
+  let surveyTemplateID = params.surveyTemplateID
+  
+  let surveyTemplateIDData = {
+    'survey_template_id': surveyTemplateID
+  }
+  get_survey_template(surveyTemplateIDData)
+  
+  
+
 })
 
-
-
-
-
-// const add_dynamic_form = () => {
-//   unique_id += 1
-//   dynamic_form_array.push({unique_id: unique_id})
-//   console.log(`add_dynamic_form - dynamic_form_array, ${dynamic_form_array}`)
-// }
-
-// const delete_dynamic_form = (dynamic_form_index) => {  
-//   if (dynamic_form_index !== 0){
-//     // array.splice(index, howmany)
-//     dynamic_form_array.splice(dynamic_form_index, 1)
-//   }
-//   console.log(`delete_dynamic_form - dynamic_form_array, ${dynamic_form_array}`)
-// }
-
-// const is_fix_form_validate = (data_valid) => {
-//   // fix_form_data.validate is the value of 
-//   // the vuelidate we used
-//   const validate = fix_form_data.validate
-//   console.log('butonton', validate)
-//   validate.$touch();
-//   if (validate.$invalid === true) {
-//     data_valid = false
-//   }
-//   console.log(`is_fix_form_validate ${data_valid}`)
-//   return data_valid
-// };
-
-// const is_dynamic_form_validate = (data_valid) => {
-//   dynamic_form_array.forEach((item, index) => {
-//     // item is the value of the vuelidate we used
-//     const validate = item.validate
-//     validate.$touch();
-//     if (validate.$invalid === true) {
-//       data_valid = false
-//     }
-//     // data_invalid = validate.$invalid
-//   });
-//   console.log(`is_dynamic_form_validate ${data_valid}`)
-//   return data_valid
-// };
-
-// const notification = (data_valid) => {
-//   if (data_valid) {
-//     // pass
-//   } else {
-//     formError.error = 'Form error'
-//     Toastify({
-//       node: dom("#failed-notification-content")
-//         .clone()
-//         .removeClass("hidden")[0],
-//       duration: 3000,
-//       newWindow: true,
-//       close: true,
-//       gravity: "top",
-//       position: "right",
-//       stopOnFocus: true,
-//     }).showToast();
-//   }
-// }
-
-// const is_form_valid = () => {
-//   let fix_data_valid = true
-//   let dynamic_data_valid = true
-//   fix_data_valid = is_fix_form_validate(fix_data_valid)
-//   dynamic_data_valid = is_dynamic_form_validate(dynamic_data_valid)
-//   return fix_data_valid && dynamic_data_valid
-// }
-
-
-// const send_form = async (templateData) => {
-//   let surveyTemplateID = ''
-//   try {
-//     let response = await axios.post(get_api_url('create_survey_template'), templateData);
-//     console.log('response', response)
-//     console.log('asda', response.data)
-//     let processed_response = process_axios_response(response);
-//     console.log(`send_form response: ${processed_response}`)
-//     surveyTemplateID = processed_response.survey_template_id
-//     Toastify({
-//       node: dom("#success-notification-content")
-//         .clone()
-//         .removeClass("hidden")[0],
-//       duration: 10000,
-//       newWindow: true,
-//       close: true,
-//       gravity: "top",
-//       position: "right",
-//       stopOnFocus: true,
-//     }).showToast();
-
-//   } catch (err) {
-//     console.log(`send_form err 0.5: ${err}`)
-//     let processed_err = process_axios_error(err)
-//     requestError.error = processed_err
-//     console.log(`send_form err: ${processed_err}`)
-
-//     Toastify({
-//       node: dom("#request-error-content")
-//         .clone()
-//         .removeClass("hidden")[0],
-//       duration: 10000,
-//       newWindow: true,
-//       close: true,
-//       gravity: "top",
-//       position: "right",
-//       stopOnFocus: true,
-//     }).showToast();
-//   }
-
-//   // Go to response page
-//   let params = {
-//     'surveyTemplateID': surveyTemplateID
-//   }
-//   linkTo('side-menu-create-form-res', router, params)
-// }
-
-// const send_to_server = () => {
-//   let validation = is_form_valid()
-//   notification(validation)
-//   console.log('!!fix_form_data', fix_form_data)
-//   console.log('!!dynamic_form_array', dynamic_form_array)
-//   if (validation === true) {
-//     let err_msg = is_data_valid(
-//       fix_form_data,
-//       dynamic_form_array
-//     )
-//     console.log('err_msg', err_msg)
-//     if (err_msg !== null) {
-//       formError.error = err_msg
-//       console.log('formError', formError)
-//       Toastify({
-//         node: dom("#failed-notification-content")
-//           .clone()
-//           .removeClass("hidden")[0],
-//         duration: 6000,
-//         newWindow: true,
-//         close: true,
-//         gravity: "top",
-//         position: "right",
-//         stopOnFocus: true,
-//       }).showToast();
-//       return null
-//     }
-//     console.log('zenmezaizhe')
-//     let templateData = process_template_data(
-//       fix_form_data,
-//       dynamic_form_array
-//     )
-//     console.log('!!templateData', templateData)
-//     send_form(templateData)
-//   }
-// };
 </script>

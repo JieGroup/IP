@@ -7,9 +7,9 @@
 2022-08-02 17:18:32,678 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "got an unexpected keyword argument 'created_template'", 'error_name': 'TypeError'}
 2022-08-02 17:18:34,017 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "got an unexpected keyword argument 'created_template'", 'error_name': 'TypeError'}
 2022-08-02 17:18:34,017 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "got an unexpected keyword argument 'created_template'", 'error_name': 'TypeError'}
-2022-08-02 17:19:29,458 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'activate.html', 'error_name': 'TemplateNotFound'}
-2022-08-02 17:19:31,877 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'activate.html', 'error_name': 'TemplateNotFound'}
-2022-08-02 17:19:31,877 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'activate.html', 'error_name': 'TemplateNotFound'}
+2022-08-02 17:19:29,458 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'confirm_email.html', 'error_name': 'TemplateNotFound'}
+2022-08-02 17:19:31,877 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'confirm_email.html', 'error_name': 'TemplateNotFound'}
+2022-08-02 17:19:31,877 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'confirm_email.html', 'error_name': 'TemplateNotFound'}
 2022-08-02 17:23:23,829 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Please use a different username.', 'error_name': 'ValueError'}
 2022-08-02 17:23:25,138 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Please use a different username.', 'error_name': 'ValueError'}
 2022-08-02 17:23:25,138 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Please use a different username.', 'error_name': 'ValueError'}

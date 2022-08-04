@@ -39,7 +39,7 @@ axios.interceptors.request.use(config => {
     const userToken = authenticationStore.userToken;
     config.headers.Authorization = `Bearer ${userToken}`
   }
-  console.log('request config2')
+  console.log('request config2', config)
   return config
 }, function (error) {
   // handle error

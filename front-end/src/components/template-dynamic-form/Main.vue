@@ -66,16 +66,7 @@
         <TemplateCategoricalAnsOpt v-for="(item, index) in surveyTemplateDynamicDataValue.categorical_range.inclusion"
                                   :key="index" 
                                   :categorical_answer_option_data="item"/>
-        <!-- <br /> -->
-        <!-- <div class="input-form"> -->
-          <!-- <br> -->
-          <!-- <input class="form-check-input" type="checkbox" id="disabledFieldsetCheck" disabled> -->
-          <!-- <label class="form-check-label" for="disabledFieldsetCheck" @click="add_categorical_answer_option"> -->
-            <!-- <u class="block mt-1">add new option</u> -->
-            <!-- <u>add new option</u> -->
-            <!-- <u class="block mt-1">This line of text will render as underlined</u> -->
-          <!-- </label> -->
-        <!-- </div> -->
+
         </div>
 
         <div v-if="surveyTemplateDynamicDataValue.answer_type === 'continuous'" class="input-form mt-3">
@@ -99,17 +90,6 @@
           />
         </div>
 
-        <!-- <button type="submit" class="btn btn-primary mt-5">
-        Submit
-        </button> -->
-        <!-- <button @click="add_dynamic_form" class="btn btn-success mr-1 mb-2"> -->
-        <!-- <button type='button' @click="add_dynamic_form" class="btn btn-success mt-5">
-          <PlusIcon class="w-5 h-5" />
-        </button>
-        <button type='button' @click="delete_dynamic_form" class="btn btn-danger mt-5">
-          <TrashIcon class="w-5 h-5" />
-        </button> -->
-      <!-- </form> -->
       <br />
       <!-- END: Validation Form -->
     </div>
@@ -145,12 +125,5 @@ const props = defineProps({
 });
 
 console.log('template-dynamic-form', props.surveyTemplateDynamicDataKey, props.surveyTemplateDynamicDataValue)
-// let surveyTemplateFixData = reactive({})
 
-// onBeforeMount(() => {
-//     for (let key in props.surveyTemplateFixData) {
-//         surveyTemplateFixData[key] = props.surveyTemplateFixData[key]
-//     }
-//     console.log('template-fix-form-2', surveyTemplateFixData)
-// })
 </script>

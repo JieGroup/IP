@@ -11,9 +11,10 @@ from app.utils.api import handle_response
 from app.database.api import search_document
 
 from app.authentication import authentication_bp
-from app.authentication.basic_auth import basic_auth
+from app.authentication.basic_auth import basic_auth, verify_password
 from app.authentication.utils import has_user_confirmed_email
 from app.authentication.jwt import JwtManipulation
+from app.api.utils import check_if_data_is_valid
 from typeguard import typechecked
 
 from app._typing import MTurkID
@@ -22,7 +23,7 @@ from app._typing import MTurkID
 token_auth = HTTPTokenAuth()
 
 @authentication_bp.route('/get_userToken', methods=['POST'])
-@basic_auth.login_required
+# @basic_auth.login_required
 @handle_response
 def get_userToken() -> dict:
     '''
@@ -43,6 +44,26 @@ def get_userToken() -> dict:
     -----
     token will be handled in the handle_response
     '''
+    data = request.get_json()
+    if not data:
+        raise ValueError('You must post JSON data.')
+    print('zheli', data)
+    expected_data = {
+        'username': str,
+        'password': str,
+    }
+    check_if_data_is_valid(
+        data=data,
+        expected_data=expected_data
+    )
+
+    username = data['username']
+    password = data['password']
+    verify_password(
+        username=username,
+        password=password
+    )
+    
     if not has_user_confirmed_email(
         cur_user_info=g.current_user
     ):  

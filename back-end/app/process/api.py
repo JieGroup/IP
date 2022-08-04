@@ -93,6 +93,7 @@ def get_user_histories_helper() -> dict[str, list]:
     dict[str, list]
     '''
     designed_survey_templates = g.current_user['designed_survey_templates']
+    print('designed_survey_templates', designed_survey_templates)
 
     histories = []
     for survey_template_id, item in designed_survey_templates.items():

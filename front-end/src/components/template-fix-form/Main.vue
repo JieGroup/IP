@@ -2,19 +2,53 @@
     <div>
         <!-- BEGIN: Validation Form -->
         <form class="validate-form">
-            surveyTemplateFixData: {{ surveyTemplateFixData }}
+            <!-- surveyTemplateFixData: {{ surveyTemplateFixData }} -->
 
-            ceshi max rounds {{ surveyTemplateFixData.max_rounds }}
+            <!-- ceshi max rounds {{ surveyTemplateFixData.max_rounds }} -->
 
             <div class="input-form mt-3">
             <label
-                for="validation-form-2"
+                for="validation-form-0"
+                class="form-label w-full flex flex-col sm:flex-row"
+            >
+                Survey Template Name
+            </label>
+            <input
+                id="validation-form-0"
+                v-model.trim="surveyTemplateFixData.survey_template_name"
+                type="text"
+                name="survey_template_name"
+                class="form-control"
+                readonly="readonly"
+            />
+            </div>
+
+            <div class="input-form mt-3">
+            <label
+                for="validation-form-0-5"
+                class="form-label w-full flex flex-col sm:flex-row"
+            >
+                Survey Template ID
+            </label>
+            <input
+                id="validation-form-0-5"
+                v-model.trim="surveyTemplateFixData.survey_template_id"
+                type="text"
+                name="survey_template_id"
+                class="form-control"
+                readonly="readonly"
+            />
+            </div>
+
+            <div class="input-form mt-3">
+            <label
+                for="validation-form-1"
                 class="form-label w-full flex flex-col sm:flex-row"
             >
                 Survey update method
             </label>
             <input
-                id="validation-form-2"
+                id="validation-form-1"
                 v-model.trim="surveyTemplateFixData.survey_update_method"
                 type="text"
                 name="survey_update_method"
@@ -22,6 +56,7 @@
                 readonly="readonly"
             />
             </div>
+
 
             <div class="input-form mt-3">
             <label
@@ -39,7 +74,7 @@
                 readonly="readonly"
             />
             </div>
-
+            
             <div class="input-form mt-3">
             <label
                 for="validation-form-3"
@@ -105,45 +140,5 @@ const props = defineProps({
 });
 
 console.log('template-fix-form', props.surveyTemplateFixData)
-// let surveyTemplateFixData = reactive({})
 
-// onBeforeMount(() => {
-//     for (let key in props.surveyTemplateFixData) {
-//         surveyTemplateFixData[key] = props.surveyTemplateFixData[key]
-//     }
-//     console.log('template-fix-form-2', surveyTemplateFixData)
-// })
-// surveyTemplateFixData = {...props.surveyTemplateFixData}
-// const emit = defineEmits([])
-
-// const formData = reactive({
-//   survey_update_method: "static",
-//   max_rounds: 1,
-//   number_of_copies: "",
-//   time_period: "3"
-// });
-
-// const rules = {
-//   survey_update_method: {
-//     required
-//   },
-//   max_rounds: {
-//     required: requiredIf(() => formData.survey_update_method === 'uniform'),
-//     integer,
-//     maxValue: maxValue(5),
-//     minValue: minValue(1)
-//   },
-//   number_of_copies: {
-//     required,
-//     integer,
-//     maxValue: maxValue(500),
-//     minValue: minValue(0)
-//   },
-//   time_period: {
-//     required,
-//   },
-// };
-
-// const validate = useVuelidate(rules, toRefs(formData));
-// props.fix_form_data.validate = validate;
 </script>

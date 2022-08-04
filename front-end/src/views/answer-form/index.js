@@ -46,19 +46,26 @@ const process_startFormData = (startFormDataValidate) => {
 
 const process_answerFormData = (surveyTopics, surveyAnswerID, surveyUpdateMethod, answerFormData) => {
   console.log('process_answerFormData', surveyTopics, surveyAnswerID, surveyUpdateMethod)
-  console.log('answerFormData', answerFormData, answerFormData.categorical_1)
+  console.log('answerFormData', answerFormData, answerFormData.value)
   console.log(typeof answerFormData)
   let tempData = {
     survey_answer_id: surveyAnswerID,
     survey_new_answers: {}
   };
+  // answerFormData.$touch();
+  // if (answerFormData.$invalid) {
+  //   return false
+  // }
   for (let key in surveyTopics) {
     console.log('keyyyy', key)
     let newSubAns = {}
     let answer_type = surveyTopics[key].answer_type
     console.log('answerFormData[key]', answerFormData[key])
+    answerFormData[key].$touch();
+    if (answerFormData[key].$invalid) {
+      return false
+    }
     console.log('surveyTopics[key]', surveyTopics[key])
-    answerFormData.$touch();
     if (answer_type === 'continuous') {
       if (surveyUpdateMethod === 'static') {
         // input specific value, no choices

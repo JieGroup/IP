@@ -74,14 +74,18 @@ class ValidateCategoricalAnswer(ValidateBase):
         -------
         None
         '''
+        print('shaas', cur_topic_ans, 'inclusion' in cur_topic_ans)
+        for key in cur_topic_ans:
+            print('keyshism', key, type(key))
+        print('exclusion' in cur_topic_ans)
         if 'inclusion' in cur_topic_ans:
-            cur_topic_ans = cur_topic_ans['inclusion']
+            cur_topic_ans_val = cur_topic_ans['inclusion']
         elif 'exclusion' in cur_topic_ans:
-            cur_topic_ans = cur_topic_ans['exclusion']
-            
+            cur_topic_ans_val = cur_topic_ans['exclusion']
+        print('asdfsacur_topic_ans', cur_topic_ans, range_criteria)
         if not cls.__is_cur_topic_ans_valid(
             range=range_criteria[Constant.CATEGORICAL_RANGE_KEY]['inclusion'],
-            cur_topic_ans=cur_topic_ans
+            cur_topic_ans=cur_topic_ans_val
         ):
             raise SurveyAnswerError(f'{topic_name} answer not in range')
             

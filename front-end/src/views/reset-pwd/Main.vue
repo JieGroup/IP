@@ -46,7 +46,7 @@
               class="-intro-x text-white font-medium text-4xl leading-tight mt-10"
             >
               A few more clicks to <br />
-              register to your account.
+              reset your password.
             </div>
             <div
               class="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400"
@@ -64,7 +64,7 @@
             <h2
               class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left"
             >
-              Register
+              Reset Password
             </h2>
             <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">
               A few more clicks to sign in to your account. Manage all your
@@ -116,7 +116,7 @@
                 name="password"
                 class="intro-x login__input form-control py-3 px-4 block mt-4"
                 :class="{ 'border-danger': validate.password.$error }"
-                placeholder="password"
+                placeholder="new password"
               />
               <template v-if="validate.password.$error">
                 <div
@@ -145,13 +145,13 @@
             </div> -->
             <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
               <button
-                @click="register"
+                @click="reset_pwd"
                 class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top"
               >
-                Register
+                Reset
               </button>
               <button
-                @click="resend_email_confirmation_link"
+                @click="reset_pwd"
                 class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top"
               >
                 Resend
@@ -179,27 +179,13 @@
         >
           <CheckCircleIcon class="text-success" />
           <div class="ml-4 mr-4">
-            <div class="font-medium">Send registration successfully!</div>
+            <div class="font-medium">Send reset link successfully!</div>
             <div class="text-slate-500 mt-1">
-              Please go to your email to confirm the registration
+              Please go to your email to reset the password!
             </div>
           </div>
         </div>
         <!-- END: Request Success Content -->
-        <!-- BEGIN: Resend Success Content -->
-        <div
-          id="resend-success-content"
-          class="toastify-content hidden flex"
-        >
-          <CheckCircleIcon class="text-success" />
-          <div class="ml-4 mr-4">
-            <div class="font-medium">Resend confimation email successfully!</div>
-            <div class="text-slate-500 mt-1">
-              Please go to your email to confirm the registration
-            </div>
-          </div>
-        </div>
-        <!-- END: Resend Success Content -->
         <!-- BEGIN: Request Error Content -->
         <div
           id="request-error-content"
@@ -207,7 +193,7 @@
         >
           <CheckCircleIcon class="text-danger" />
           <div class="ml-4 mr-4">
-            <div class="font-medium">Error!</div>
+            <div class="font-medium">Network request error!</div>
             <div class="text-slate-500 mt-1">
               <!-- {{ request_error }}
               error_name: {{ request_error['error_name'] }}
@@ -215,14 +201,6 @@
               error_status: {{ request_error.error_status }} -->
               <!-- <div> -->
               Please check your input and send again
-              <br />
-              New password must follow the following instructions:
-                <br />
-                At least 6 characters. At most 40 characters
-                <br />
-                A mixture of both uppercase and lowercase letters
-                <br />
-                A mixture of letters and numbers
               <!-- </div> -->
             </div>
           </div>
@@ -256,14 +234,9 @@ import dom from "@left4code/tw-starter/dist/js/dom";
 import { process_axios_error, get_auth_url, get_api_url } from "@/utils/axios_utils"
 import { axios } from "@/utils/axios";
 // import { axios } from "@/utils/axios";
+import { linkTo } from "./index"
 
 const router = useRouter();
-
-// const infoStore = useInfoStore()
-// const username = computed(() => infoStore.username);
-// const password = computed(() => infoStore.password);
-
-// const authenticationStore = useAuthenticationStore()
 
 const check_pwd = helpers.regex(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/);
 
@@ -275,8 +248,8 @@ const formData = reactive({
 
 const rules = {
   username: {
-    // required,
-    // minLength: minLength(1),
+    required,
+    minLength: minLength(1),
   },
   password: {
     required,
@@ -288,8 +261,8 @@ const rules = {
                                     A mixture of letters and numbers`, check_pwd)
   },
   email: {
-    // required,
-    // minLength: minLength(1),
+    required,
+    minLength: minLength(1),
   },
 };
 // const validate = reactive(useVuelidate(rules, toRefs(formData)));
@@ -300,11 +273,8 @@ const validate = useVuelidate(rules, toRefs(formData));
 //   infoStore.setPassword(password)
 // }
 
-const register = async () => {
-  validate.value.$touch();
-  console.log(validate)
-  console.log('???', validate.value.$invalid);
-  let register_data = {
+const reset_pwd = async () => {
+  let reset_pwd_data = {
     'username': formData.username,
     'email': formData.email,
     'password': formData.password
@@ -325,7 +295,7 @@ const register = async () => {
     try{
       // let username = formData.username
       // let password = formData.password
-      let response = await axios.post(get_api_url('create_user'), register_data)
+      let response = await axios.post(get_api_url('reset_pwd'), reset_pwd_data)
       // store_info(username, password)
       // authenticationStore.loginAction(response.data.userToken)
       Toastify({
@@ -340,63 +310,7 @@ const register = async () => {
         stopOnFocus: true,
       }).showToast();
 
-      // to_login_page()
-    } catch (err) {
-      let processed_err = process_axios_error(err)
-      console.log(`login processed err: ${processed_err}`)
-
-      Toastify({
-        node: dom("#request-error-content")
-          .clone()
-          .removeClass("hidden")[0],
-        duration: 10000,
-        newWindow: true,
-        close: true,
-        gravity: "top",
-        position: "right",
-        stopOnFocus: true,
-      }).showToast();
-    }
-  }
-}
-
-const resend_email_confirmation_link = async () => {
-  let register_data = {
-    'username': formData.username,
-    'email': formData.email,
-  }
-  if (validate.value.$invalid) {
-    Toastify({
-      node: dom("#request-error-content")
-        .clone()
-        .removeClass("hidden")[0],
-      duration: 10000,
-      newWindow: true,
-      close: true,
-      gravity: "top",
-      position: "right",
-      stopOnFocus: true,
-    }).showToast();
-  } else {
-    try{
-      // let username = formData.username
-      // let password = formData.password
-      let response = await axios.post(get_api_url('resend_email_confirmation_link'), register_data)
-      // store_info(username, password)
-      // authenticationStore.loginAction(response.data.userToken)
-      Toastify({
-        node: dom("#resend-success-content")
-          .clone()
-          .removeClass("hidden")[0],
-        duration: 10000,
-        newWindow: true,
-        close: true,
-        gravity: "top",
-        position: "right",
-        stopOnFocus: true,
-      }).showToast();
-
-      // to_login_page()
+      to_login_page()
     } catch (err) {
       let processed_err = process_axios_error(err)
       console.log(`login processed err: ${processed_err}`)
@@ -421,6 +335,7 @@ const to_login_page = () => {
 }
 
 onMounted(() => {
+  console.log('reset_monunted')
   dom("body").removeClass("main").removeClass("error-page").addClass("login");
 });
 </script>

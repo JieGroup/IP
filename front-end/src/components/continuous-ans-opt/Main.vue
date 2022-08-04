@@ -74,7 +74,8 @@ import {
   integer,
   requiredIf,
   minValue,
-  maxValue
+  maxValue,
+  helpers
 } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import Toastify from "toastify-js";
@@ -96,26 +97,14 @@ const form_data = reactive({
   continuous_answer_max: "",
 });
 
-// const minValueError = computed(() => {
-//   let error = [{
-//     $message: 'Minimum answer needs to be smaller than maximum answer'
-//   }];
-//   validate.continuous_answer_max.$error = error
-// });
 
-// const min_smaller_than_max = () => {
-//   let res = form_data.continuous_answer_min <= form_data.continuous_answer_max
-//   if (res === false) {
-//     error_msg = 'Minimum answer needs to be smaller than maximum answer'
-//   }
-//   return true
-// }
-// const min_smaller_than_max = () => form_data.continuous_answer_min <= form_data.continuous_answer_max
+const min_smaller_than_max = () => form_data.continuous_answer_min < form_data.continuous_answer_max
 
 console.log('maxxx', form_data.continuous_answer_max)
 const rules = {
   continuous_answer_min: {
     required,
+    min_smaller_than_max: helpers.withMessage(`Min value must be smaller than the max value`, min_smaller_than_max)
     // maxValue: maxValue(form_data.continuous_answer_max),
   },
   continuous_answer_max: {

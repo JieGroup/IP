@@ -123,7 +123,7 @@ def resend_email_confirmation_link() -> dict:
         email=email
     )
 
-@api.route('/confirm_email/<token>', methods=['GET'])
+@api.route('/confirm_email/<token>', methods=['GET', 'POST'])
 @handle_response
 def confirm_email(token):
     '''
@@ -143,10 +143,11 @@ def confirm_email(token):
         render_template would change html to special
         format str
     '''
-    msg = User.confirm_email(
+    print('confirm_email!!!')
+    return User.confirm_email(
         token=token
     )
-    return render_template('confirm.html', msg=msg)
+
 
 @api.route('/get_own_info', methods=['GET'])
 @token_auth.login_required
@@ -225,18 +226,20 @@ def update_new_pwd(token) -> Any:
     -------
     Any
     '''
-    print('jin update_new_pwd')
-    if request.method == 'POST':
-        print('~~~post', request, dir(request))
-        print('>??', request.form, type(request.form) == werkzeug.datastructures.ImmutableMultiDict)
-        if type(request.form) == werkzeug.datastructures.ImmutableMultiDict:
-            data_form = request.form.to_dict()
-        else:
-            data_form = request.form
+    # print('jin update_new_pwd')
+    # if request.method == 'POST':
+    #     print('~~~post', request, dir(request))
+    #     print('>??', request.form, type(request.form) == werkzeug.datastructures.ImmutableMultiDict)
+    #     if type(request.form) == werkzeug.datastructures.ImmutableMultiDict:
+    #         data_form = request.form.to_dict()
+    #     else:
+    #         data_form = request.form
         
-        # would have a "\" append in the end
-        token = data_form['token']
-        print('~~~post', request, token)
+    #     # would have a "\" append in the end
+    #     token = data_form['token']
+    #     if token[-1] == '/':
+    #         token = token[:-1]
+    #     print('~~~post', request, token)
     # print('update_new_pwd', request, request.method)
     return User.update_new_pwd(
         token=token,

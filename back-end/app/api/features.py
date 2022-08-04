@@ -76,10 +76,14 @@ def get_survey_template() -> dict:
     )
 
     survey_template_id = data['survey_template_id']
-    return search_document(
+    survey_template_document = search_document(
         database_type='survey_template',
         survey_template_id=survey_template_id
     )
+    del survey_template_document['_id']
+    return {
+        'survey_template_document': survey_template_document
+    }
 
 
 @api.route('/get_default_survey_template', methods=['GET'])
@@ -161,13 +165,15 @@ def get_voter_answers_of_template() -> list:
         data=data,
         expected_data=expected_data
     )
-
+    print('data_get_voter_answers_of_template', data)
     survey_template_id = data['survey_template_id']
 
     survey_template_document = search_document(
         database_type='survey_template',
-        survey_template_id=survey_template_id
+        survey_template_id=survey_template_id,
+        check_response=False
     )
+    print('get_voter_answers_of_template', survey_template_document)
     expiration_time = survey_template_document['expiration_time']
 
     # If the survey template is expired,

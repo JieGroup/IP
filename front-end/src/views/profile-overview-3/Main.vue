@@ -1,6 +1,6 @@
 <template>
   <div class="intro-y flex items-center mt-8">
-    <h2 class="text-lg font-medium mr-auto">Profile Layout</h2>
+    <h2 class="text-lg font-medium mr-auto">Profile</h2>
   </div>
   <div class="grid grid-cols-12 gap-6 mt-5">
     <!-- BEGIN: Profile Menu -->
@@ -17,10 +17,10 @@
             />
           </div>
           <div class="ml-4 mr-auto">
-            <div class="font-medium text-base">{{ $f()[0].users[0].name }}</div>
-            <div class="text-slate-500">{{ $f()[0].jobs[0] }}</div>
+            <div class="font-medium text-base">{{ authenticationStore.userName }}</div>
+            <!-- <div class="text-slate-500">{{ $f()[0].jobs[0] }}</div> -->
           </div>
-          <Dropdown>
+          <!-- <Dropdown>
             <DropdownToggle tag="a" class="w-5 h-5 block" href="javascript:;">
               <MoreHorizontalIcon class="w-5 h-5 text-slate-500" />
             </DropdownToggle>
@@ -63,23 +63,23 @@
                 </DropdownFooter>
               </DropdownContent>
             </DropdownMenu>
-          </Dropdown>
+          </Dropdown> -->
         </div>
         <div class="p-5 border-t border-slate-200/60 dark:border-darkmode-400">
-          <a class="flex items-center text-primary font-medium" href="">
+          <!-- <a class="flex items-center text-primary font-medium" href="">
             <ActivityIcon class="w-4 h-4 mr-2" /> Personal Information
           </a>
           <a class="flex items-center mt-5" href="">
             <BoxIcon class="w-4 h-4 mr-2" /> Account Settings
-          </a>
-          <a class="flex items-center mt-5" href="">
+          </a> -->
+          <a @click="to_reset_pwd_page" class="flex items-center mt-5" href="">
             <LockIcon class="w-4 h-4 mr-2" /> Change Password
           </a>
-          <a class="flex items-center mt-5" href="">
+          <!-- <a class="flex items-center mt-5" href="">
             <SettingsIcon class="w-4 h-4 mr-2" /> User Settings
-          </a>
+          </a> -->
         </div>
-        <div class="p-5 border-t border-slate-200/60 dark:border-darkmode-400">
+        <!-- <div class="p-5 border-t border-slate-200/60 dark:border-darkmode-400">
           <a class="flex items-center" href="">
             <ActivityIcon class="w-4 h-4 mr-2" /> Email Settings
           </a>
@@ -92,8 +92,8 @@
           <a class="flex items-center mt-5" href="">
             <SettingsIcon class="w-4 h-4 mr-2" /> Tax Information
           </a>
-        </div>
-        <div
+        </div> -->
+        <!-- <div
           class="p-5 border-t border-slate-200/60 dark:border-darkmode-400 flex"
         >
           <button type="button" class="btn btn-primary py-1 px-2">
@@ -105,9 +105,9 @@
           >
             New Quick Link
           </button>
-        </div>
+        </div> -->
       </div>
-      <div class="intro-y box p-5 bg-primary text-white mt-5">
+      <!-- <div class="intro-y box p-5 bg-primary text-white mt-5">
         <div class="flex items-center">
           <div class="font-medium text-lg">Important Update</div>
           <div
@@ -135,13 +135,13 @@
             Dismiss
           </button>
         </div>
-      </div>
+      </div> -->
     </div>
     <!-- END: Profile Menu -->
     <div class="col-span-12 lg:col-span-8 2xl:col-span-9">
       <div class="grid grid-cols-12 gap-6">
         <!-- BEGIN: Daily Sales -->
-        <div class="intro-y box col-span-12 2xl:col-span-6">
+        <!-- <div class="intro-y box col-span-12 2xl:col-span-6">
           <div
             class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400"
           >
@@ -218,10 +218,10 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- END: Daily Sales -->
         <!-- BEGIN: Announcement -->
-        <div class="intro-y box col-span-12 2xl:col-span-6">
+        <!-- <div class="intro-y box col-span-12 2xl:col-span-6">
           <div
             class="flex items-center px-5 py-3 border-b border-slate-200/60 dark:border-darkmode-400"
           >
@@ -295,10 +295,10 @@
               </div>
             </div>
           </TinySlider>
-        </div>
+        </div> -->
         <!-- END: Announcement -->
         <!-- BEGIN: Projects -->
-        <div class="intro-y box col-span-12 2xl:col-span-6">
+        <!-- <div class="intro-y box col-span-12 2xl:col-span-6">
           <div
             class="flex items-center px-5 py-3 border-b border-slate-200/60 dark:border-darkmode-400"
           >
@@ -387,10 +387,10 @@
               </div>
             </div>
           </TinySlider>
-        </div>
+        </div> -->
         <!-- END: Projects -->
         <!-- BEGIN: Today Schedules -->
-        <div class="intro-y box col-span-12 2xl:col-span-6">
+        <!-- <div class="intro-y box col-span-12 2xl:col-span-6">
           <div
             class="flex items-center px-5 py-3 border-b border-slate-200/60 dark:border-darkmode-400"
           >
@@ -473,10 +473,10 @@
               </div>
             </div>
           </TinySlider>
-        </div>
+        </div> -->
         <!-- END: Today Schedules -->
         <!-- BEGIN: Top Products -->
-        <TabGroup class="intro-y box col-span-12 2xl:col-span-6">
+        <!-- <TabGroup class="intro-y box col-span-12 2xl:col-span-6">
           <div
             class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400"
           >
@@ -585,10 +585,10 @@
               </TabPanel>
             </TabPanels>
           </div>
-        </TabGroup>
+        </TabGroup> -->
         <!-- END: Top Products -->
         <!-- BEGIN: Work In Progress -->
-        <TabGroup class="intro-y box col-span-12 2xl:col-span-6">
+        <!-- <TabGroup class="intro-y box col-span-12 2xl:col-span-6">
           <div
             class="flex items-center px-5 py-5 sm:py-0 border-b border-slate-200/60 dark:border-darkmode-400"
           >
@@ -686,10 +686,10 @@
               </TabPanel>
             </TabPanels>
           </div>
-        </TabGroup>
+        </TabGroup> -->
         <!-- END: Work In Progress -->
         <!-- BEGIN: Latest Tasks -->
-        <TabGroup class="intro-y box col-span-12 2xl:col-span-6">
+        <!-- <TabGroup class="intro-y box col-span-12 2xl:col-span-6">
           <div
             class="flex items-center px-5 py-5 sm:py-0 border-b border-slate-200/60 dark:border-darkmode-400"
           >
@@ -779,10 +779,10 @@
               </TabPanel>
             </TabPanels>
           </div>
-        </TabGroup>
+        </TabGroup> -->
         <!-- END: Latest Tasks -->
         <!-- BEGIN: General Statistics -->
-        <div class="intro-y box col-span-12 2xl:col-span-6">
+        <!-- <div class="intro-y box col-span-12 2xl:col-span-6">
           <div
             class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400"
           >
@@ -856,7 +856,7 @@
               <ReportLineChart :height="212" />
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- END: General Statistics -->
       </div>
     </div>
@@ -865,11 +865,16 @@
 
 <script setup>
 import { ref, provide } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useAuthenticationStore } from "@/stores/authentication"
 import ReportLineChart from "@/components/report-line-chart/Main.vue";
+import { linkTo } from "./index"
 
+const router = useRouter();
 const announcementRef = ref();
 const newProjectsRef = ref();
 const todaySchedulesRef = ref();
+const authenticationStore = useAuthenticationStore()
 
 provide("bind[announcementRef]", (el) => {
   announcementRef.value = el;
@@ -882,6 +887,10 @@ provide("bind[newProjectsRef]", (el) => {
 provide("bind[todaySchedulesRef]", (el) => {
   todaySchedulesRef.value = el;
 });
+
+const to_reset_pwd_page = () => {
+  linkTo('ResetPwd', router, {})
+}
 
 const prevAnnouncement = () => {
   const el = announcementRef.value;

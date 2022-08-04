@@ -1,4 +1,8 @@
 import { defineStore } from "pinia";
+// console.log('sha', localStorage.getItem('userToken'))
+// console.log('sha', localStorage.getItem('userToken').split('.')[1])
+// console.log('shatokenstore', JSON.parse(atob(localStorage.getItem('userToken').split('.')[1])))
+// console.log('sha', JSON.parse(atob(localStorage.getItem('userToken').split('.')[1])).authority_level )
 
 export const useAuthenticationStore = defineStore("authentication", {
   state: () => ({
@@ -14,15 +18,19 @@ export const useAuthenticationStore = defineStore("authentication", {
         : false,
     userAuthorityValue: 
       localStorage.getItem('userToken') !== null
-        ? JSON.parse(atob(window.localStorage.getItem('userToken').split('.')[1])).authority 
+        ? JSON.parse(atob(localStorage.getItem('userToken').split('.')[1])).authority_level 
         : 'user',
-    voterAuthorityValue: 
-      localStorage.getItem('voterToken') !== null
-        ? JSON.parse(atob(window.localStorage.getItem('voterToken').split('.')[1])).authority 
-        : 'voter',
+    // voterAuthorityValue: 
+    //   localStorage.getItem('voterToken') !== null
+    //     ? JSON.parse(atob(localStorage.getItem('voterToken').split('.')[1])).authority_level 
+    //     : 'voter',
     userIdValue: 
       localStorage.getItem('userToken') !== null
-        ? JSON.parse(atob(window.localStorage.getItem('userToken').split('.')[1])).user_id 
+        ? JSON.parse(atob(localStorage.getItem('userToken').split('.')[1])).user_id 
+        : null,
+    userNameValue: 
+      localStorage.getItem('userToken') !== null
+        ? JSON.parse(atob(localStorage.getItem('userToken').split('.')[1])).username 
         : null,
   }),
   getters: {
@@ -41,9 +49,12 @@ export const useAuthenticationStore = defineStore("authentication", {
     userAuthority(state) {
       return state.userAuthorityValue;
     },
-    voterAuthority(state) {
-      return state.voterAuthorityValue;
+    userName(state){
+      return state.userNameValue;
     },
+    // voterAuthority(state) {
+    //   return state.voterAuthorityValue;
+    // },
     userId(state) {
       return state.userIdValue;
     },
@@ -57,18 +68,39 @@ export const useAuthenticationStore = defineStore("authentication", {
       localStorage.setItem("voterToken", voterToken);
       this.voterTokenValue = voterToken;
     },
+    setUserAuthority(authority_level) {
+      this.userAuthorityValue = authority_level
+    },
+    setUserName(username) {
+      this.userNameValue = username
+    },
+    setUserID(user_id) {
+      this.userIdValue = user_id
+    },
+    setIsUserAthenticated(isUserAthenticated) {
+      this.isUserAuthenticatedValue = isUserAthenticated
+    },
     loginAction (userToken) {
       console.log('loginAction triggered')
       const parsed_token = JSON.parse(atob(localStorage.getItem('userToken').split('.')[1]));
-      this.userIdValue = parsed_token.user_id;
+      console.log(`loginAction${parsed_token}`)
+      let authority_level = parsed_token.authority_level;
+      let username = parsed_token.username;
+      let user_id = parsed_token.user_id;
       this.setUserToken(userToken)
-      this.isUserAuthenticatedValue = true;
+      this.setUserAuthority(authority_level)
+      this.setUserName(username)
+      this.setUserID(user_id)
+      this.setIsUserAthenticated(true)
     },
     logoutAction () {
       console.log('logoutAction triggered')
-      this.userIdValue = null;
       localStorage.removeItem('userToken');
-      this.isUserAuthenticatedValue = false;
+      this.setUserToken(null)
+      this.setUserAuthority(null)
+      this.setUserName(null)
+      this.setUserID(null)
+      this.setIsUserAthenticated(false)
     },
   },
 });

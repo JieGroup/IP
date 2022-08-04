@@ -51,7 +51,7 @@
             <div
               class="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400"
             >
-              Manage all your e-commerce accounts in one place
+              Create survey with Interval Privacy to protect user privacy
             </div>
           </div>
         </div>
@@ -67,8 +67,7 @@
               Sign In
             </h2>
             <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">
-              A few more clicks to sign in to your account. Manage all your
-              e-commerce accounts in one place
+              A few more clicks to sign in to your account. Create survey with Interval Privacy to protect user privacy
             </div>
             <div class="intro-x mt-8">
               <input
@@ -78,7 +77,7 @@
                 name="username"
                 class="intro-x login__input form-control py-3 px-4 block"
                 :class="{ 'border-danger': validate.username.$error }"
-                :placeholder="validate.username.$model"
+                placeholder="username"
               />
               <template v-if="validate.username.$error">
                 <div
@@ -97,7 +96,7 @@
                 name="password"
                 class="intro-x login__input form-control py-3 px-4 block mt-4"
                 :class="{ 'border-danger': validate.password.$error }"
-                :placeholder="validate.password.$model"
+                placeholder="password"
               />
               <template v-if="validate.password.$error">
                 <div
@@ -117,12 +116,15 @@
                   id="remember-me"
                   type="checkbox"
                   class="form-check-input border mr-2"
+                  value='yes'
+                  v-model="remember_me"
                 />
                 <label class="cursor-pointer select-none" for="remember-me"
                   >Remember me</label
                 >
+                <!-- {{ remember_me }} -->
               </div>
-              <a href="">Forgot Password?</a>
+              <a href="" @click="to_reset_pwd_page">Forgot Password?</a>
             </div>
             <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
               <button
@@ -133,6 +135,7 @@
               </button>
               <button
                 class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top"
+                @click="to_register_page"
               >
                 Register
               </button>
@@ -152,6 +155,20 @@
           </div>
         </div>
         <!-- END: Login Form -->
+        <!-- BEGIN: Request Success Content -->
+        <div
+          id="request-success-content"
+          class="toastify-content hidden flex"
+        >
+          <CheckCircleIcon class="text-success" />
+          <div class="ml-4 mr-4">
+            <div class="font-medium">Login successfully!</div>
+            <div class="text-slate-500 mt-1">
+              Welcome!
+            </div>
+          </div>
+        </div>
+        <!-- END: Request Success Content -->
         <!-- BEGIN: Request Error Content -->
           <div
             id="request-error-content"
@@ -159,7 +176,7 @@
           >
             <CheckCircleIcon class="text-danger" />
             <div class="ml-4 mr-4">
-              <div class="font-medium">Network request error!</div>
+              <div class="font-medium">Request error!</div>
               <div class="text-slate-500 mt-1" >
                 Please check your input!
               </div>
@@ -172,7 +189,7 @@
 </template>
 
 <script setup>
-import { reactive, toRefs } from "vue";
+import { reactive, toRefs, ref } from "vue";
 import {
   required,
   minLength,
@@ -184,23 +201,30 @@ import {
 } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import { computed, onMounted } from "vue";
+import Toastify from "toastify-js";
+import { useRoute, useRouter } from "vue-router";
 import DarkModeSwitcher from "@/components/dark-mode-switcher/Main.vue";
 import dom from "@left4code/tw-starter/dist/js/dom";
 import { useInfoStore } from "@/stores/user-info"
 import { useAuthenticationStore } from "@/stores/authentication"
-import { process_axios_error, get_auth_url } from "@/utils/axios_utils"
+import { process_axios_error, get_auth_url, get_api_url } from "@/utils/axios_utils"
 import { axios } from "@/utils/axios";
 // import { axios } from "@/utils/axios";
+import { linkTo } from "./index"
+
+const router = useRouter();
 
 const infoStore = useInfoStore()
-const username = computed(() => infoStore.username);
-const password = computed(() => infoStore.password);
+// const username = computed(() => infoStore.username);
+// const password = computed(() => infoStore.password);
 
 const authenticationStore = useAuthenticationStore()
 
+const remember_me = ref(false)
+
 const formData = reactive({
-  username: username,
-  password: password,
+  username: '',
+  password: '',
 });
 
 const rules = {
@@ -216,26 +240,32 @@ const rules = {
 // const validate = reactive(useVuelidate(rules, toRefs(formData)));
 const validate = useVuelidate(rules, toRefs(formData));
 
-const store_info = (username, password) => {
+const store_user_info = (username, password, remember) => {
+  infoStore.setRemember(remember)
   infoStore.setUsername(username)
   infoStore.setPassword(password)
 }
+
+const load_user_info = () => {
+  console.log('????', infoStore.remember, infoStore.remember === true, typeof infoStore.remember)
+  if (infoStore.remember === 'true') {
+    console.log('@@@@')
+    formData.username = infoStore.username
+    formData.password = infoStore.password
+  }
+  remember_me.value = infoStore.remember
+} 
 
 const login = async () => {
   let login_data = {
     'username': formData.username,
     'password': formData.password
   }
-  try{
-    let username = formData.username
-    let password = formData.password
-    let response = await axios.post(get_auth_url('login'), login_data)
-    store_info(username, password)
-    authenticationStore.loginAction(response.data.userToken)
-  } catch (err) {
-    let processed_err = process_axios_error(err)
-    console.log(`login processed err: ${processed_err}`)
-
+  console.log('login_data', login_data, validate.value.$invalid)
+  let username = formData.username
+  let password = formData.password
+  store_user_info(username, password, remember_me.value)
+  if (validate.value.$invalid) {
     Toastify({
       node: dom("#request-error-content")
         .clone()
@@ -247,10 +277,52 @@ const login = async () => {
       position: "right",
       stopOnFocus: true,
     }).showToast();
+  } else {
+    try{
+      
+      let response = await axios.post(get_auth_url('get_userToken'), login_data)
+      authenticationStore.loginAction(response.data.userToken)
+      Toastify({
+        node: dom("#request-success-content")
+          .clone()
+          .removeClass("hidden")[0],
+        duration: 10000,
+        newWindow: true,
+        close: true,
+        gravity: "top",
+        position: "right",
+        stopOnFocus: true,
+      }).showToast();
+      linkTo('side-menu-create-form', router, {})
+    } catch (err) {
+      let processed_err = process_axios_error(err)
+      console.log(`login processed err: ${processed_err}`)
+
+      Toastify({
+        node: dom("#request-error-content")
+          .clone()
+          .removeClass("hidden")[0],
+        duration: 10000,
+        newWindow: true,
+        close: true,
+        gravity: "top",
+        position: "right",
+        stopOnFocus: true,
+      }).showToast();
+    }
   }
 }
 
+const to_register_page = () => {
+  linkTo('register', router, {})
+}
+
+const to_reset_pwd_page = () => {
+  linkTo('ResetPwd', router, {})
+}
+
 onMounted(() => {
+  load_user_info()
   dom("body").removeClass("main").removeClass("error-page").addClass("login");
 });
 </script>

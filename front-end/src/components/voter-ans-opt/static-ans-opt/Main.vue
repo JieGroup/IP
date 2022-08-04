@@ -14,7 +14,7 @@
           for="validation-form-1"
           class="form-label w-full flex flex-col sm:flex-row"
         >
-          Q: {{ subSurveyTopicValue.topic_question }}
+          Question: {{ subSurveyTopicValue.topic_question }}
           <br />
           Unit: {{ subSurveyTopicValue.unit }}
           <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
@@ -30,8 +30,8 @@
           :class="{ 'border-danger': validate.continuous_range.$error }"
           placeholder="Please type in your answer between the min value and max value"
         />
-        {{ validate.continuous_range.$model }}
-        {{ validate.continuous_range.$error }}
+        <!-- {{ validate.continuous_range.$model }} -->
+        <!-- {{ validate.continuous_range.$error }} -->
         <template v-if="validate.continuous_range.$error">
           <div
           v-for="(error, index) in validate.continuous_range.$errors"
@@ -50,7 +50,7 @@
             for="validation-form-2"
             class="form-label w-full flex flex-col sm:flex-row"
         >
-            Q: {{ subSurveyTopicValue.topic_question }}
+            Question: {{ subSurveyTopicValue.topic_question }}
             <br />
             Unit: {{ subSurveyTopicValue.unit }}
         </label>
@@ -67,7 +67,7 @@
           </TomSelect>
         </div>
         </div>
-        zhe zhe{{validate.categorical_range.$model}}
+        <!-- zhe zhe{{validate.categorical_range.$model}} -->
         <!-- END: Categorical Topic Options -->
       <br />
       </form>

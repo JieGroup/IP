@@ -1,0 +1,52 @@
+2022-08-03 17:18:59,624 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-03 17:18:59,633 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-03 17:21:34,870 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Please use a different username.', 'error_name': 'ValueError'}
+2022-08-03 17:22:31,467 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-03 17:40:22,775 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-03 17:42:18,836 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-03 17:42:49,526 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-03 17:48:51,041 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-03 17:52:35,498 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
+2022-08-03 18:15:39,268 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'token not matched', 'error_name': 'ValueError'}
+2022-08-03 18:22:46,101 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'token not matched', 'error_name': 'ValueError'}
+2022-08-03 18:37:04,894 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Please type in the correct username and email.', 'error_name': 'ValueError'}
+2022-08-03 19:04:04,654 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'NoneType' object is not subscriptable", 'error_name': 'TypeError'}
+2022-08-03 19:09:27,732 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot find the document', 'error_name': 'ValueError'}
+2022-08-03 19:14:32,694 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot find the document', 'error_name': 'ValueError'}
+2022-08-03 19:15:20,289 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot find the document', 'error_name': 'ValueError'}
+2022-08-03 19:16:40,108 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot find the document', 'error_name': 'ValueError'}
+2022-08-03 19:23:44,153 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'type of the return value must be NoneType; got bool instead', 'error_name': 'TypeError'}
+2022-08-03 19:38:21,375 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'password wrong', 'error_name': 'ValueError'}
+2022-08-03 19:40:12,024 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot find the document', 'error_name': 'ValueError'}
+2022-08-03 19:42:30,504 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot find the document', 'error_name': 'ValueError'}
+2022-08-03 19:42:37,651 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot find the document', 'error_name': 'ValueError'}
+2022-08-03 19:45:03,300 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot update the document', 'error_name': 'ValueError'}
+2022-08-03 19:47:01,624 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Reach the limit of number of copies', 'error_name': 'ValueError'}
+2022-08-03 19:57:35,108 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot update the document', 'error_name': 'ValueError'}
+2022-08-03 19:58:59,372 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot update the document, modified_count is 0', 'error_name': 'ValueError'}
+2022-08-03 20:44:10,782 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot find the document', 'error_name': 'ValueError'}
+2022-08-03 20:45:10,655 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot find the document', 'error_name': 'ValueError'}
+2022-08-03 20:45:37,763 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot find the document', 'error_name': 'ValueError'}
+2022-08-03 20:48:35,580 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot find the document', 'error_name': 'ValueError'}
+2022-08-03 20:50:42,897 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot find the document', 'error_name': 'ValueError'}
+2022-08-03 20:50:47,928 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Data type wrong: not serializable', 'error_name': 'DataTypeError'}
+2022-08-03 20:52:55,788 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot find the document', 'error_name': 'ValueError'}
+2022-08-03 20:54:29,936 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Cannot find the document', 'error_name': 'ValueError'}
+2022-08-03 20:55:49,667 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "got an unexpected keyword argument 'check_response'", 'error_name': 'TypeError'}
+2022-08-03 20:56:35,318 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'NoneType' object is not subscriptable", 'error_name': 'TypeError'}
+2022-08-03 20:57:21,522 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'NoneType' object is not subscriptable", 'error_name': 'TypeError'}
+2022-08-03 20:58:43,486 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'NoneType' object is not subscriptable", 'error_name': 'TypeError'}
+2022-08-03 21:04:53,374 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Data type wrong: not serializable', 'error_name': 'DataTypeError'}
+2022-08-03 21:07:32,201 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'NoneType' object is not subscriptable", 'error_name': 'TypeError'}
+2022-08-03 21:11:23,744 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'NoneType' object is not subscriptable", 'error_name': 'TypeError'}
+2022-08-03 21:59:23,304 - WARNING - __init__.py - handle_error - 113 - {'error_msg': 'Please provide a number of max_rounds between 1 and 3', 'error_name': 'ValueError'}
+2022-08-03 22:05:27,332 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'inclusion'", 'error_name': 'KeyError'}
+2022-08-03 22:48:09,068 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'inclusion'", 'error_name': 'KeyError'}
+2022-08-03 22:50:57,743 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'inclusion'", 'error_name': 'KeyError'}
+2022-08-03 22:52:22,619 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'inclusion'", 'error_name': 'KeyError'}
+2022-08-03 22:53:18,797 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'inclusion'", 'error_name': 'KeyError'}
+2022-08-03 22:54:06,592 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'inclusion'", 'error_name': 'KeyError'}
+2022-08-03 22:55:20,638 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'inclusion'", 'error_name': 'KeyError'}
+2022-08-03 22:56:04,016 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'inclusion'", 'error_name': 'KeyError'}
+2022-08-03 22:56:32,917 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'inclusion'", 'error_name': 'KeyError'}
+2022-08-03 22:56:58,194 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'inclusion'", 'error_name': 'KeyError'}

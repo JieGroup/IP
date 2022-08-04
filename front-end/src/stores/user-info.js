@@ -2,16 +2,23 @@ import { defineStore } from "pinia";
 
 export const useInfoStore = defineStore("info", {
   state: () => ({
+    RememberValue:
+      localStorage.getItem("remember") === null
+        ? 'false'
+        : localStorage.getItem("remember"),
     usernameValue: 
       localStorage.getItem("username") === null
-        ? 'username'
+        ? ''
         : localStorage.getItem("username"),
     passwordValue: 
       localStorage.getItem("password") === null
-        ? 'password'
+        ? ''
         : localStorage.getItem("password")
   }),
   getters: {
+    remember(state) {
+      return state.RememberValue;
+    },
     username(state) {
       return state.usernameValue;
     },
@@ -20,6 +27,10 @@ export const useInfoStore = defineStore("info", {
     },
   },
   actions: {
+    setRemember(remember) {
+      localStorage.setItem("remember", remember);
+      this.RememberValue = remember;
+    },
     setUsername(username) {
       localStorage.setItem("username", username);
       this.usernameValue = username;

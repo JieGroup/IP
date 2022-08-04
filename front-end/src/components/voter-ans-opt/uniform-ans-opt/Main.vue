@@ -14,7 +14,7 @@
             for="validation-form-1"
             class="form-label w-full flex flex-col sm:flex-row"
         >
-            Q: {{ subSurveyTopicValue.topic_question }}
+            Question: {{ subSurveyTopicValue.topic_question }}
             <br />
             Unit: {{ subSurveyTopicValue.unit }}
         </label>
@@ -23,7 +23,7 @@
                       placeholder: 'Select answer',
                       }" class="w-full">
             <optgroup label="Answer">
-              <option v-for="(option, index) in continuousChoicesList" 
+              <option v-for="(option, index) in reform_choices(props.subSurveyTopicValue.choices_list, 'continuous')" 
                       :key="option"
                       :value="index">{{ option }}</option>
             </optgroup>
@@ -38,7 +38,7 @@
             for="validation-form-1"
             class="form-label w-full flex flex-col sm:flex-row"
         >
-            Q: {{ subSurveyTopicValue.topic_question }}
+            Question: {{ subSurveyTopicValue.topic_question }}
             <br />
             Unit: {{ subSurveyTopicValue.unit }}
         </label>
@@ -47,7 +47,7 @@
                       placeholder: 'Select answer',
                       }" class="w-full">
             <optgroup label="Answer">
-              <option v-for="(option, index) in categoricalChoicesList" 
+              <option v-for="(option, index) in reform_choices(props.subSurveyTopicValue.choices_list, 'categorical')" 
                       :key="index"
                       :value="index">{{ option }}</option>
             </optgroup>
@@ -94,20 +94,21 @@ const props = defineProps({
   }
 });
 
-const continuousChoicesList = computed(() => {
-  if (props.subSurveyTopicValue.answer_type === 'continuous'){
-      return reform_choices(props.subSurveyTopicValue.choices_list, 'continuous')
-  } else {
-      return []
-  }
-});
-const categoricalChoicesList = computed(() => {
-  if (props.subSurveyTopicValue.answer_type === 'categorical'){
-      return reform_choices(props.subSurveyTopicValue.choices_list, 'categorical')
-  } else {
-      return []
-  }
-});
+// console.log('uniform-ans-opt', props.subSurveyTopicValue)
+// const continuousChoicesList = computed(() => {
+//   if (props.subSurveyTopicValue.answer_type === 'continuous'){
+//       return reform_choices(props.subSurveyTopicValue.choices_list, 'continuous')
+//   } else {
+//       return []
+//   }
+// });
+// const categoricalChoicesList = computed(() => {
+//   if (props.subSurveyTopicValue.answer_type === 'categorical'){
+//       return reform_choices(props.subSurveyTopicValue.choices_list, 'categorical')
+//   } else {
+//       return []
+//   }
+// });
 
 const formData = reactive({
   continuous_range: 0,

@@ -88,10 +88,10 @@ class BaseDatabaseStrategy:
         '''
         if not res:
             raise ValueError('Cannot update the document')
-        elif res.modified_count == 0:
-            raise ValueError('Cannot update the document')
+        # elif res.modified_count == 0:
+        #     raise ValueError('Cannot update the document, modified_count is 0')
         elif res.matched_count == 0:
-            raise ValueError('Cannot find the document')
+            raise ValueError('Cannot find the document, matched_count is 0')
         return
 
     @final

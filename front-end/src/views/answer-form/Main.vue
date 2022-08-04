@@ -1,10 +1,8 @@
 <template>
   <div class="intro-y flex items-center mt-8">
-    <h2 class="text-lg font-medium mr-auto">Form Validation</h2>
+    <h2 class="text-lg font-medium mr-auto">Answer Survey</h2>
   </div>
-  <button @click="submit_ceshi_answer" type="button" class="btn btn-primary mt-3">
-    ceshi store
-    </button>
+
   <div class="grid grid-cols-12 gap-6 mt-5">
     <div class="intro-y col-span-12 lg:col-span-6">
       <!-- BEGIN: Form Validation -->
@@ -40,12 +38,12 @@
               Back
               </button>
               
-              <br />
-              <br />
+              <!-- <br />
+              <br /> -->
 
               <!-- BEGIN: Start Answering Topics -->
               <div v-if="isStartAnswer === true" class="input-form mt-3">
-              WOW: {{ isStartAnswer }} {{ isStartAnswer.value }}
+              <!-- WOW: {{ isStartAnswer }} {{ isStartAnswer.value }} -->
               <label
                   for="validation-form-2"
                   class="form-label w-full flex flex-col sm:flex-row"
@@ -73,11 +71,8 @@
                   {{ error.$message }}
                   </div>
               </template>
-              </div>
-
               <br />
-
-              <div class="input-form mt-3">
+              <br />
               <label
                   for="validation-form-2"
                   class="form-label w-full flex flex-col sm:flex-row"
@@ -106,22 +101,28 @@
                   </div>
               </template>
               </div>
+
+              
+
+              <!-- <div class="input-form mt-3">
+              
+              </div> -->
               <!-- END: Start Answering Topics -->
 
               <!-- BEGIN: Voter Submit Answers -->
+              <!-- formTemplateData{{ formTemplateData }} -->
               <div v-if="isStartAnswer === false" class="input-form mt-3">
-                isStartAnswer shi false
                 <div v-if="formTemplateData.surveyUpdateMethod === 'static'" class="input-form mt-3">
-                  <StaticOpt  v-for="(item, key) in formTemplateData.surveyTopics"
-                              :key="key"
+                  <StaticOpt  v-for="(item, key, index) in formTemplateData.surveyTopics"
+                              :key="unique_key_num+index"
                               :subSurveyTopicKey="key"
                               :subSurveyTopicValue="item"
                               :answerFormData="answerFormData"/>
                 </div>
 
                 <div v-if="formTemplateData.surveyUpdateMethod === 'uniform'" class="input-form mt-3">
-                  <UniformOpt  v-for="(item, key) in formTemplateData.surveyTopics"
-                              :key="key"
+                  <UniformOpt  v-for="(item, key, index) in formTemplateData.surveyTopics"
+                              :key="unique_key_num+index"
                               :subSurveyTopicKey="key"
                               :subSurveyTopicValue="item"
                               :answerFormData="answerFormData"/>
@@ -129,10 +130,6 @@
               </div>
               <!-- BEGIN: Voter Submit Answers -->
 
-              <button type='button' @click='test_error'>
-                test_error
-              </button>
-              zhe!! {{ request_error }}
               <!-- <button @click="ceshierror">
                 ceshierror
               </button> -->
@@ -149,7 +146,7 @@
                   </div>
                 </div>
               </div>
-              <!-- END: Request Error Content -->
+              <!-- END: Request Success Content -->
               <!-- BEGIN: Request Error Content -->
               <div
                 id="request-error-content"
@@ -157,33 +154,34 @@
               >
                 <CheckCircleIcon class="text-danger" />
                 <div class="ml-4 mr-4">
-                  <div class="font-medium">Network request error!</div>
+                  <div class="font-medium">Request error!</div>
                   <div class="text-slate-500 mt-1">
                     <!-- {{ request_error }}
                     error_name: {{ request_error['error_name'] }}
                     error_msg: {{ request_error.error_msg }}
                     error_status: {{ request_error.error_status }} -->
                     <!-- <div> -->
-                    Please check your input and send again
+                    The error may caused by the following reasons:
+                    <br/>
+                      1. Incorrect or incomplete input form
+                      <br/>
+                      2. Answer reaches the limit of number of copies
                     <!-- </div> -->
                   </div>
                 </div>
               </div>
-              
               <!-- END: Request Error Content -->
             </Preview>
           </div>
         </PreviewComponent>
       </form>
       <!-- END: Form Validation -->
-      <button @click='tiaozhuan'>wowowow
-      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, isReactive } from "vue";
 import { reactive, toRefs, computed, onMounted } from "vue";
 import {
   required,
@@ -226,6 +224,8 @@ const storedVoterAnswer = voterAnswerStore();
 const authenticationStore = useAuthenticationStore();
 // const voterToken = computed(() => authenticationStore.voterToken);
 
+let unique_key_num = ref(100000);
+
 let startFormData = reactive({
   survey_template_id: "",
   mturk_id: "",
@@ -242,76 +242,6 @@ const rules = {
 };
 // const startFormDataValidate = reactive(useVuelidate(rules, toRefs(startFormData)));
 const startFormDataValidate = useVuelidate(rules, toRefs(startFormData));
-console.log('~~~~~', startFormDataValidate)
-
-const tiaozhuan = () => {
-  console.log('!!!!ceshi', startFormDataValidate)
-  startFormDataValidate.value.$touch()
-  // startFormDataValidate.$touch()
-
-}
-
-const test_error = () => {
-  request_error.value = 'ceshishishi'
-  console.log('request_error', request_error)
-  // Object.assign(request_error, 'ceshideyo')
-  // Object.assign(request_error.error, 'ceshideyo')
-  Toastify({
-    text: 'shaaaa',
-    node: dom("#request-error-content")
-      .clone()
-      .removeClass("hidden")[0],
-    duration: 10000,
-    newWindow: true,
-    close: true,
-    gravity: "top",
-    position: "right",
-    stopOnFocus: true,
-  }).showToast();
-
-  Toastify({
-
-    // <div class="ml-4 mr-4">
-    //             <div class="font-medium">Network request error!</div>
-    //             <div class="text-slate-500 mt-1" >
-
-    text: "ceshi0",
-    className: 'toastify-content hidden flex',
-    className: 'ml-4 mr-4',
-    duration: 3000,
-    // gravity: "bottom", // `top` or `bottom`
-    // position: 'center', // `left`, `center` or `right`
-    // backgroundColor: "linear-gradient(to right, red, orange)",
-    newWindow: true,
-    close: true,
-    gravity: "top",
-    position: "right",
-    stopOnFocus: true,
-  }).showToast();
-
-  Toastify({
-    text: "ceshi1",
-    duration: 3000,
-    // destination: "https://github.com/apvarun/toastify-js",
-    newWindow: true,
-    close: true,
-    gravity: "top", // `top` or `bottom`
-    position: "left", // `left`, `center` or `right`
-    stopOnFocus: true, // Prevents dismissing of toast on hover
-    style: {
-      background: "linear-gradient(to right, #00b09b, #96c93d)",
-    },
-    onClick: function(){} // Callback after click
-  }).showToast();
-
-  Toastify({
-  text: "ceshi2",
-  className: "info",
-  style: {
-    background: "linear-gradient(to right, #00b09b, #96c93d)",
-  }
-}).showToast();
-}
 
 const back_to_start_answering = () => {
   // go back to start_answering
@@ -324,23 +254,12 @@ const back_to_start_answering = () => {
   }
   isStartAnswer.value = true
   authenticationStore.setVoterToken(null)
+  storedVoterAnswer.setsurveyTopics(null);
+  storedVoterAnswer.setsurveyAnswerID(null);
+  storedVoterAnswer.setsurveyUpdateMethod(null);
 }
 
 // ref, computed 取值要加.value
-
-const submit_ceshi_answer = () => {
-  // store_cur_template_info()
-  // load_prev_template_info()
-  let ceshi = {
-    'asdsa': {
-      'asdsad': 123,
-      'ddd': 456
-    }
-  }
-  storedVoterAnswer.setsurveyTopics(JSON.stringify(ceshi));
-  let res = storedVoterAnswer.surveyTopics
-  console.log('submit_ceshi_answer_res', res)
-}
 
 const send_to_server = () => {
   console.log('formTemplateData send_to_server', formTemplateData)
@@ -352,24 +271,36 @@ const send_to_server = () => {
   }
 }
 
-const store_cur_template_info = (templateData) => {
+const load_prev_template_info = () => {
+  console.log('##### load_prev_template_info', storedVoterAnswer)
+  // console.log('##### json parse', JSON.parse(voterAnswer.surveyTopics))
+  // for (let key in storedVoterAnswer.surveyTopics) {
+  //   console.log('dasdsad', key)
+  // }
+  console.log('storedSurveyTopics.value', storedVoterAnswer.surveyTopics, JSON.parse(storedVoterAnswer.surveyTopics))
+  formTemplateData.surveyTopics = JSON.parse(storedVoterAnswer.surveyTopics);
+  formTemplateData.surveyAnswerID = storedVoterAnswer.surveyAnswerID;
+  formTemplateData.surveyUpdateMethod = storedVoterAnswer.surveyUpdateMethod;
+}
+
+const store_cur_template_info = (templateDataFromBackEnd) => {
   // change data in storage
-  console.log('~~~~~~store_cur_template_info', templateData)
+  console.log('~~~~~~store_cur_template_info', templateDataFromBackEnd)
   // object needs to be json stringify
-  storedVoterAnswer.setsurveyTopics(JSON.stringify(templateData.updated_survey_topics));
-  storedVoterAnswer.setsurveyAnswerID(templateData.survey_answer_id);
-  storedVoterAnswer.setsurveyUpdateMethod(templateData.survey_update_method);
+  storedVoterAnswer.setsurveyTopics(JSON.stringify(templateDataFromBackEnd.updated_survey_topics));
+  storedVoterAnswer.setsurveyAnswerID(templateDataFromBackEnd.survey_answer_id);
+  storedVoterAnswer.setsurveyUpdateMethod(templateDataFromBackEnd.survey_update_method);
 
   // change variables in current page
-  formTemplateData.surveyTopics = templateData.updated_survey_topics;
-  formTemplateData.surveyAnswerID = templateData.survey_answer_id;
-  formTemplateData.surveyUpdateMethod = templateData.survey_update_method;
+  formTemplateData.surveyTopics = templateDataFromBackEnd.updated_survey_topics;
+  formTemplateData.surveyAnswerID = templateDataFromBackEnd.survey_answer_id;
+  formTemplateData.surveyUpdateMethod = templateDataFromBackEnd.survey_update_method;
 
-  console.log('change data in storage', formTemplateData)
+  console.log('change data in storage', formTemplateData, isReactive(formTemplateData))
 }
 
 const send_voter_start_answering = async () => {
-  // static categorical: 62e220016648301fab9ab211
+  // static categorical: 62eb182d048f31af26c30f05
   // static categorical_multiple: 62e2e89b6be732eba69f0b6a
   // static continuous: 62e220226648301fab9ab213
   // static categorical + continuous: 62e2204c6648301fab9ab215
@@ -385,24 +316,7 @@ const send_voter_start_answering = async () => {
   let startFormData = process_startFormData(
     startFormDataValidate
   )
-  try{
-    let res = await axios.post(get_api_url('voter_start_answering'), startFormData);
-    console.log('bucuowu')
-    res = process_axios_response(res);
-    // update indicator and variables
-    isStartAnswer.value = false
-    store_cur_template_info(res)
-    console.log('$$$$', res)
-    console.log('formTemplateData', formTemplateData)
-  } catch (err) {
-    console.log('sttt', err)
-    let processed_err = process_axios_error(err)
-    console.log('----- Debugdone', processed_err)
-    // request_error.error_name = processed_err.error_name
-    // request_error.error_msg = processed_err.error_msg
-    // request_error.error_status = processed_err.error_status
-
-    console.log('fuzhi', request_error)
+  if (startFormDataValidate.value.$invalid) {
     Toastify({
       node: dom("#request-error-content")
         .clone()
@@ -414,7 +328,37 @@ const send_voter_start_answering = async () => {
       position: "right",
       stopOnFocus: true,
     }).showToast();
-  } 
+  } else {
+    try{
+      let res = await axios.post(get_api_url('voter_start_answering'), startFormData);
+      console.log('bucuowu')
+      res = process_axios_response(res);
+      // update indicator and variables
+      isStartAnswer.value = false
+      store_cur_template_info(res)
+      console.log('$$$$', res)
+      console.log('formTemplateData', formTemplateData)
+    } catch (err) {
+      console.log('sttt', err)
+      let processed_err = process_axios_error(err)
+      console.log('----- Debugdone', processed_err)
+      // request_error.error_name = processed_err.error_name
+      // request_error.error_msg = processed_err.error_msg
+      // request_error.error_status = processed_err.error_status
+      console.log('fuzhi', request_error)
+      Toastify({
+        node: dom("#request-error-content")
+          .clone()
+          .removeClass("hidden")[0],
+        duration: 10000,
+        newWindow: true,
+        close: true,
+        gravity: "top",
+        position: "right",
+        stopOnFocus: true,
+      }).showToast();
+    } 
+  }
 }
 
 const send_voter_submit_answers = async () => {
@@ -426,41 +370,7 @@ const send_voter_submit_answers = async () => {
     formTemplateData.surveyUpdateMethod,
     answerFormData
   )
-  let answer_id = formTemplateData.surveyAnswerID
-  try{
-    let res = await axios.post(get_api_url('voter_submit_answers'), processed_answerFormData)
-    res = process_axios_response(res)
-    console.log('voter_submit_answers_rrrese', res, formTemplateData)
-
-    Toastify({
-      node: dom("#request-success-content")
-        .clone()
-        .removeClass("hidden")[0],
-      duration: 10000,
-      newWindow: true,
-      close: true,
-      gravity: "top",
-      position: "right",
-      stopOnFocus: true,
-    }).showToast();
-    
-    // Finish all rounds of survey
-    if (Object.keys(res.updated_survey_topics).length === 0) {
-      back_to_start_answering()
-      let params = {
-        surveyAnswerID: answer_id
-      }
-      linkTo('side-menu-answer-form-done', router, params)
-    } else {
-      store_cur_template_info(res)
-    }
-  } catch (err) {
-    let processed_err = process_axios_error(err)
-    // request_error.error_name = processed_err.error_name
-    // request_error.error_msg = processed_err.error_msg
-    // request_error.error_status = processed_err.error_status
-
-    console.log('fuzhi', request_error)
+  if (processed_answerFormData === false) {
     Toastify({
       node: dom("#request-error-content")
         .clone()
@@ -472,20 +382,59 @@ const send_voter_submit_answers = async () => {
       position: "right",
       stopOnFocus: true,
     }).showToast();
-  } 
+  } else {
+    let answer_id = formTemplateData.surveyAnswerID
+    try{
+      let res = await axios.post(get_api_url('voter_submit_answers'), processed_answerFormData)
+      res = process_axios_response(res)
+      console.log('voter_submit_answers_rrrese', res, formTemplateData)
+      unique_key_num.value = unique_key_num.value + 100000;
+      Toastify({
+        node: dom("#request-success-content")
+          .clone()
+          .removeClass("hidden")[0],
+        duration: 10000,
+        newWindow: true,
+        close: true,
+        gravity: "top",
+        position: "right",
+        stopOnFocus: true,
+      }).showToast();
+      
+      // Finish all rounds of survey
+      if (Object.keys(res.updated_survey_topics).length === 0) {
+        back_to_start_answering()
+        let params = {
+          surveyAnswerID: answer_id
+        }
+        linkTo('side-menu-answer-form-done', router, params)
+      } else {
+        console.log('update survey answer')
+        store_cur_template_info(res)
+      }
+    } catch (err) {
+      let processed_err = process_axios_error(err)
+      // request_error.error_name = processed_err.error_name
+      // request_error.error_msg = processed_err.error_msg
+      // request_error.error_status = processed_err.error_status
+
+      console.log('fuzhi', request_error)
+      Toastify({
+        node: dom("#request-error-content")
+          .clone()
+          .removeClass("hidden")[0],
+        duration: 10000,
+        newWindow: true,
+        close: true,
+        gravity: "top",
+        position: "right",
+        stopOnFocus: true,
+      }).showToast();
+    } 
+  }
 }
 
-const load_prev_template_info = () => {
-  console.log('##### load_prev_template_info', voterAnswer.surveyTopics)
-  // console.log('##### json parse', JSON.parse(voterAnswer.surveyTopics))
-  // for (let key in storedVoterAnswer.surveyTopics) {
-  //   console.log('dasdsad', key)
-  // }
-  console.log('storedSurveyTopics.value', storedVoterAnswer.surveyTopics, JSON.parse(storedVoterAnswer.surveyTopics))
-  formTemplateData.surveyTopics = storedVoterAnswer.surveyTopics;
-  formTemplateData.surveyAnswerID = storedVoterAnswer.surveyAnswerID;
-  formTemplateData.surveyUpdateMethod = storedVoterAnswer.surveyUpdateMethod;
-}
+
 
 onMounted(() => {
   // Indicates the voter is answering the survey topics
@@ -493,124 +442,14 @@ onMounted(() => {
 
   console.log('storage', storedVoterAnswer.surveyTopics, storedVoterAnswer.surveyAnswerID, storedVoterAnswer.surveyUpdateMethod)
   console.log('storage_json_parse', JSON.parse(storedVoterAnswer.surveyTopics))
-  // if (storedSurveyTopics.value !== null){
-  //   console.log('jinlai')
-  //   // isStartAnswer = false
-  //   // Object.assign(isStartAnswer, false)
-  //   isStartAnswer.value = false
-  //   console.log('isStartAnswer', isStartAnswer)
-  //   // load_prev_template_info()
-  // } else {
-  //   // New answer to a survey template
-  //   // pass
-  // }
+  if (JSON.parse(storedVoterAnswer.surveyTopics) !== null || isStartAnswer.value === false){
+    console.log('jinlai')
+    isStartAnswer.value = false
+    console.log('isStartAnswer', isStartAnswer)
+    load_prev_template_info()
+  } else {
+    // New answer to a survey template
+    // pass
+  }
 });
-
-
-// let fix_form_data = reactive({})
-// let unique_id = 0
-// let dynamic_form_array = reactive([{unique_id: unique_id}])
-
-// const add_dynamic_form = () => {
-//   console.log('jiajiajia')
-//   unique_id += 1
-//   dynamic_form_array.push({unique_id: unique_id})
-//   console.log('dynamic_form_array', dynamic_form_array, unique_id)
-// }
-
-// const delete_dynamic_form = (dynamic_form_index) => {
-//   console.log('shemeqingkuang-000', dynamic_form_array)
-//   console.log('wudi,duide', dynamic_form_index)
-  
-//   if (dynamic_form_index !== 0){
-//     // array.splice(index, howmany)
-//     dynamic_form_array.splice(dynamic_form_index, 1)
-//   }
-//   console.log('shemeqingkuang', dynamic_form_array)
-// }
-
-// const is_fix_form_validate = (data_valid) => {
-//   // fix_form_data.validate is the value of 
-//   // the vuelidate we used
-//   const validate = fix_form_data.validate
-//   validate.$touch();
-//   console.log('fixxxxx', validate.$invalid, data_valid, validate)
-//   if (validate.$invalid === true) {
-//     data_valid = false
-//   }
-//   // data_invalid = validate.$invalid
-//   return data_valid
-// };
-
-// const is_dynamic_form_validate = (data_valid) => {
-//   console.log('dynamic_form_arrayaa', dynamic_form_array);
-//   dynamic_form_array.forEach((item, index) => {
-//     console.log('dynamic_form_arrayaabb', item, index);
-//     console.log('sdfasdf', item['validate'])
-//     console.log('sdfasdfsdfsa', item.validate)
-//     // item is the value of the vuelidate we used
-//     const validate = item.validate
-//     validate.$touch();
-//     console.log('dynamic!!!!!!', validate.$invalid, data_valid)
-//     if (validate.$invalid === true) {
-//       data_valid = false
-//     }
-//     // data_invalid = validate.$invalid
-//   });
-  
-//   return data_valid
-// };
-
-// const notification = (data_valid) => {
-//   if (data_valid) {
-//     Toastify({
-//       node: dom("#success-notification-content")
-//         .clone()
-//         .removeClass("hidden")[0],
-//       duration: 3000,
-//       newWindow: true,
-//       close: true,
-//       gravity: "top",
-//       position: "right",
-//       stopOnFocus: true,
-//     }).showToast();
-//   } else {
-//     Toastify({
-//       node: dom("#failed-notification-content")
-//         .clone()
-//         .removeClass("hidden")[0],
-//       duration: 3000,
-//       newWindow: true,
-//       close: true,
-//       gravity: "top",
-//       position: "right",
-//       stopOnFocus: true,
-//     }).showToast();
-//   }
-// }
-
-// const is_form_valid = () => {
-//   let fix_data_valid = true
-//   let dynamic_data_valid = true
-//   fix_data_valid = is_fix_form_validate(fix_data_valid)
-//   dynamic_data_valid = is_dynamic_form_validate(dynamic_data_valid)
-//   console.log('total@@@@@@', fix_data_valid, dynamic_data_valid)
-//   return fix_data_valid && dynamic_data_valid
-// }
-
-
-// const send_to_server = () => {
-//   let validation = is_form_valid()
-//   notification(validation)
-//   console.log('fix_form_data', fix_form_data)
-//   console.log('dynamic_form_array', dynamic_form_array)
-//   if (validation === true) {
-//     let templateData = process_template_data(
-//       fix_form_data,
-//       dynamic_form_array
-//     )
-//     console.log('templateData', templateData)
-//     send_form(templateData)
-//   }
-// }
 </script>

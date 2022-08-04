@@ -18,6 +18,7 @@ from app.process.utils import (
     get_unique_id,
     validate_password,
     generate_email_confirmation_token,
+    generate_reset_pwd_token,
     send_email,
     get_user_id_from_token,
     if_token_user_id_equals_user_id,
@@ -110,7 +111,7 @@ class User:
             token=token, 
             _external=True
         )
-        html_template = render_template('activate.html', confirm_url=confirm_url)
+        html_template = render_template('confirm_email.html', confirm_url=confirm_url)
         message = "Please confirm your email"
         send_email(
             target_email=email, 
@@ -150,7 +151,7 @@ class User:
             token=token, 
             _external=True
         )
-        html_template = render_template('activate.html', confirm_url=confirm_url)
+        html_template = render_template('confirm_email.html', confirm_url=confirm_url)
         message = "Please confirm your email"
         send_email(
             target_email=email, 
@@ -180,6 +181,7 @@ class User:
         '''
         check_if_email_token_matched(token)
         decoded_token = decode_email_token(token)
+        print('confirm_email_decoded_token', decoded_token)
         username = decoded_token['username']
         email = decoded_token['email']
         user_document = search_document(
@@ -188,7 +190,7 @@ class User:
             check_response=False
         )
         user_id = user_document['user_id']
-
+        print('confirm_email_decoded_token', user_document)
         msg = ''
         if user_document:
             if user_document['confirm_email'] == False:
@@ -206,6 +208,7 @@ class User:
         else:
             msg = 'The confirmation link is invalid or has expired.'
         return msg
+        # return render_template('confirm_email_done.html', msg=msg)
     
     @classmethod
     def get_own_info(
@@ -263,19 +266,26 @@ class User:
         if user_document['email'] != email:
             raise ValueError('Please type in the correct username and email.')
 
-        token = generate_email_confirmation_token(
+        token = generate_reset_pwd_token(
             username=username,
-            email=email
+            email=email,
+            password=password
         )
         
+        # confirm_url = url_for(
+        #     'api.confirm_email', 
+        #     token=token, 
+        #     _external=True
+        # )
+        # html_template = render_template('confirm_email.html', confirm_url=confirm_url)
+
         reset_url = url_for(
             'api.update_new_pwd', 
             token=token, 
             _external=True
         )
         html_template = render_template(
-            'reset.html',
-            username=username,
+            'confirm_reset_pwd.html',
             reset_url=reset_url
         )
         message = "Reset your password"
@@ -315,53 +325,67 @@ class User:
         decoded_token = decode_email_token(token)
         username = decoded_token['username']
         email = decoded_token['email']
+        password = decoded_token['password']
         user_document = search_document(
             database_type='user',
             username=username
         )
-        if not user_document:
-            flash('Cannot Find the User according to email')
-            return 'Cannot Find the User according to email'
-        
-        if request.method == 'POST':
-            password = request.form['newPassword']
-            validate_password_indicator, return_message = validate_password(password)
-            if not validate_password_indicator:
-                msg = ('New password must follow the following instructions: \n'
-                    + 'At least 8 characters. At most 40 characters\n'
-                    + 'A mixture of both uppercase and lowercase letters\n'
-                    + 'A mixture of letters and numbers!' 
-                )
-                confirm_url = url_for(
-                    'api.update_new_pwd', 
-                    token=token, 
-                    msg=msg, 
-                    _external=True
-                )
-                return render_template('forgot_new.html', confirm_url=confirm_url)
-            user_id = user_document['user_id']
-            hashed_password = get_hashed_password(password)
-            update_document(
-                database_type='user',
-                user_id=user_id,
-                hashed_password=hashed_password
-            )
 
-            flash('Password successfully changed.')
-            return 'Password successfully changed.'
-        else:
-            msg = 'Hello ' + user_document['username']
-            confirm_url = url_for(
-                'api.update_new_pwd', 
-                token=token, 
-                _external=True
-            )
-            return render_template(
-                'forgot_new.html', 
-                confirm_url=confirm_url, 
-                msg=msg, 
-                token=token
-            )
+        user_id = user_document['user_id']
+        print('gaidepwd', password)
+        hashed_password = get_hashed_password(password)
+        update_document(
+            database_type='user',
+            user_id=user_id,
+            hashed_password=hashed_password
+        )
+        
+        flash('Password successfully changed.')
+        return 'Password successfully changed.'
+        # return render_template('forgot_new.html', confirm_url=confirm_url)
+        # if not user_document:
+        #     flash('Cannot Find the User according to email')
+        #     return 'Cannot Find the User according to email'
+        
+        # if request.method == 'POST':
+        #     password = request.form['newPassword']
+        #     validate_password_indicator, return_message = validate_password(password)
+        #     if not validate_password_indicator:
+        #         msg = ('New password must follow the following instructions: \n'
+        #             + 'At least 8 characters. At most 40 characters\n'
+        #             + 'A mixture of both uppercase and lowercase letters\n'
+        #             + 'A mixture of letters and numbers!' 
+        #         )
+        #         confirm_url = url_for(
+        #             'api.update_new_pwd', 
+        #             token=token, 
+        #             msg=msg, 
+        #             _external=True
+        #         )
+        #         return render_template('forgot_new.html', confirm_url=confirm_url)
+        #     user_id = user_document['user_id']
+        #     hashed_password = get_hashed_password(password)
+        #     update_document(
+        #         database_type='user',
+        #         user_id=user_id,
+        #         hashed_password=hashed_password
+        #     )
+
+        #     flash('Password successfully changed.')
+        #     return 'Password successfully changed.'
+        # else:
+        #     msg = 'Hello ' + user_document['username']
+        #     confirm_url = url_for(
+        #         'api.update_new_pwd', 
+        #         token=token, 
+        #         _external=True
+        #     )
+        #     return render_template(
+        #         'forgot_new.html', 
+        #         confirm_url=confirm_url, 
+        #         msg=msg, 
+        #         token=token
+        #     )
 
 
     

@@ -45,6 +45,7 @@ import FaqLayout2 from "../views/faq-layout-2/Main.vue";
 import FaqLayout3 from "../views/faq-layout-3/Main.vue";
 import Login from "../views/login/Main.vue";
 import Register from "../views/register/Main.vue";
+import ResetPwd from "../views/reset-pwd/Main.vue"
 import ErrorPage from "../views/error-page/Main.vue";
 import UpdateProfile from "../views/update-profile/Main.vue";
 import ChangePassword from "../views/change-password/Main.vue";
@@ -73,7 +74,6 @@ import CreateFormRes from "../views/create-form-res/Main.vue";
 import AnswerForm from "../views/answer-form/Main.vue";
 import AnswerFormDone from "../views/answer-form-done/Main.vue";
 import TemplateForm from "../views/template-form/Main.vue";
-import GetVoterAnswers from "../views/get-voter-answers/Main.vue";
 import Histories from "../views/histories/Main.vue"
 import Chart from "../views/chart/Main.vue";
 import Slider from "../views/slider/Main.vue";
@@ -247,6 +247,9 @@ const routes = [
         path: "profile-overview-3",
         name: "side-menu-profile-overview-3",
         component: ProfileOverview3,
+        meta: { 
+          requiresAuth: true,
+        }
       },
       {
         path: "wizard-layout-1",
@@ -445,11 +448,6 @@ const routes = [
         path: "answer-form-done",
         name: "side-menu-answer-form-done",
         component: AnswerFormDone,
-      },
-      {
-        path: "get-voter-answers",
-        name: "side-menu-get-voter-answers",
-        component: GetVoterAnswers,
       },
       {
         path: "template-form",
@@ -1162,6 +1160,12 @@ const routes = [
     component: Register,
   },
   {
+    path: "/resetPwd",
+    name: "ResetPwd",
+    component: ResetPwd,
+
+  },
+  {
     path: "/error-page",
     name: "error-page",
     component: ErrorPage,
@@ -1193,7 +1197,7 @@ router.beforeEach((to, from, next) => {
   // }
 
   if (to.matched.some(record => record.meta.requiresAuth) 
-      && (!userToken || userToken === null || isUserAuthenticatedValue === flase)) {
+      && (!userToken || userToken === null || isUserAuthenticated === false)) {
     console.log("zzzz");
     next({
       path: '/login',
@@ -1205,6 +1209,7 @@ router.beforeEach((to, from, next) => {
       path: from.fullPath
     })
   } else {
+    console.log('bugeijin', userToken, isUserAuthenticated)
     next() // stay in the same page
   }
 });
