@@ -1161,7 +1161,7 @@ const routes = [
   },
   {
     path: "/resetPwd",
-    name: "ResetPwd",
+    name: "resetPwd",
     component: ResetPwd,
 
   },

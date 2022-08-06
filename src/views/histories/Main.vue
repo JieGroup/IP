@@ -92,7 +92,7 @@
                     :content="`Uploaded at ${faker.dates[0]}`"
                   />
                 </div> -->
-                <a href="" class="font-medium whitespace-nowrap ml-4">{{
+                <a class="font-medium whitespace-nowrap ml-4">{{
                   item.survey_template_name
                 }}</a>
               </div>

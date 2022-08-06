@@ -124,7 +124,7 @@
                 >
                 <!-- {{ remember_me }} -->
               </div>
-              <a href="" @click="to_reset_pwd_page">Forgot Password?</a>
+              <a @click="to_reset_pwd_page">Forgot Password?</a>
             </div>
             <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
               <button
@@ -318,7 +318,7 @@ const to_register_page = () => {
 }
 
 const to_reset_pwd_page = () => {
-  linkTo('ResetPwd', router, {})
+  linkTo('resetPwd', router, {})
 }
 
 onMounted(() => {

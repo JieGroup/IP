@@ -275,8 +275,8 @@ const formData = reactive({
 
 const rules = {
   username: {
-    // required,
-    // minLength: minLength(1),
+    required,
+    minLength: minLength(1),
   },
   password: {
     required,
@@ -288,8 +288,8 @@ const rules = {
                                     A mixture of letters and numbers`, check_pwd)
   },
   email: {
-    // required,
-    // minLength: minLength(1),
+    required,
+    minLength: minLength(1),
   },
 };
 // const validate = reactive(useVuelidate(rules, toRefs(formData)));

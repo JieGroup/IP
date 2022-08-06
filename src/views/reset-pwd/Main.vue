@@ -274,6 +274,7 @@ const validate = useVuelidate(rules, toRefs(formData));
 // }
 
 const reset_pwd = async () => {
+  validate.value.$touch();
   let reset_pwd_data = {
     'username': formData.username,
     'email': formData.email,
@@ -310,7 +311,7 @@ const reset_pwd = async () => {
         stopOnFocus: true,
       }).showToast();
 
-      to_login_page()
+      // to_login_page()
     } catch (err) {
       let processed_err = process_axios_error(err)
       console.log(`login processed err: ${processed_err}`)

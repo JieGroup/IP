@@ -72,7 +72,7 @@
           <a class="flex items-center mt-5" href="">
             <BoxIcon class="w-4 h-4 mr-2" /> Account Settings
           </a> -->
-          <a @click="to_reset_pwd_page" class="flex items-center mt-5" href="">
+          <a @click="to_reset_pwd_page" class="flex items-center mt-5">
             <LockIcon class="w-4 h-4 mr-2" /> Change Password
           </a>
           <!-- <a class="flex items-center mt-5" href="">
@@ -889,7 +889,7 @@ provide("bind[todaySchedulesRef]", (el) => {
 });
 
 const to_reset_pwd_page = () => {
-  linkTo('ResetPwd', router, {})
+  linkTo('resetPwd', router, {})
 }
 
 const prevAnnouncement = () => {
