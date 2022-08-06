@@ -1,7 +1,0 @@
-2022-08-02 21:22:44,730 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
-2022-08-02 21:25:15,279 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
-2022-08-02 21:25:58,154 - WARNING - __init__.py - handle_error - 113 - {'error_msg': '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.', 'error_name': 'NotFound'}
-2022-08-02 21:27:17,090 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'NoneType' object does not support item assignment", 'error_name': 'TypeError'}
-2022-08-02 21:31:19,824 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'NoneType' object does not support item assignment", 'error_name': 'TypeError'}
-2022-08-02 21:33:53,728 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'NoneType' object does not support item assignment", 'error_name': 'TypeError'}
-2022-08-02 21:34:34,911 - WARNING - __init__.py - handle_error - 113 - {'error_msg': "'NoneType' object does not support item assignment", 'error_name': 'TypeError'}
