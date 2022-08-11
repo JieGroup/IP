@@ -66,7 +66,7 @@
               <div class="ml-4 mr-4">
                 <div class="font-medium">Create form failed!</div>
                 <div class="text-slate-500 mt-1">
-                  Duplicate topic name
+                  Duplicate topic of this question
                 </div>
               </div>
             </div>
@@ -128,7 +128,6 @@ in form format
 */
 
 const router = useRouter();
-console.log('create-form', router)
 
 let fix_form_data = reactive({})
 let unique_id = 0

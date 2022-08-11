@@ -29,7 +29,7 @@
           <Preview>
             <!-- BEGIN: Validation Form -->
             <button @click="send_to_server" type="button" class="btn btn-primary mt-3">
-            Send
+            Create
             </button>
             <br />
             <br />
@@ -84,7 +84,7 @@
               <div class="ml-4 mr-4">
                 <div class="font-medium">Create form failed!</div>
                 <div class="text-slate-500 mt-1">
-                  Duplicate topic name
+                  Duplicate topic of this question
                 </div>
               </div>
             </div>
@@ -138,7 +138,6 @@ import { linkTo, process_template_data, is_data_valid } from "./index"
 import { process_axios_response, process_axios_error, get_api_url } from "@/utils/axios_utils"
 
 const router = useRouter();
-console.log('create-form', router)
 
 let requestError = reactive({
   error: ''
@@ -224,7 +223,7 @@ const tiaozhuan = () => {
   let params = {
     'surveyTemplateID': 'zzzzz'
   }
-  linkTo('side-menu-create-form-res', router, params)
+  linkTo('side-menu-create-new-survey-res', router, params)
 }
 
 const send_form = async (templateData) => {
@@ -270,7 +269,7 @@ const send_form = async (templateData) => {
   let params = {
     'surveyTemplateID': surveyTemplateID
   }
-  linkTo('side-menu-create-form-res', router, params)
+  linkTo('side-menu-create-new-survey-res', router, params)
 }
 
 const send_to_server = () => {

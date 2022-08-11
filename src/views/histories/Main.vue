@@ -59,7 +59,7 @@
             <!-- <th class="whitespace-nowrap">
               <input class="form-check-input" type="checkbox" />
             </th> -->
-            <th class="whitespace-nowrap">Template Name</th>
+            <th class="whitespace-nowrap">Title</th>
             <th class="whitespace-nowrap">Template ID</th>
             <!-- <th class="whitespace-nowrap">POSTED TIME</th> -->
             <!-- <th class="whitespace-nowrap">RATING</th> -->

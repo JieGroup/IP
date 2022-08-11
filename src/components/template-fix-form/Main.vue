@@ -11,7 +11,7 @@
                 for="validation-form-0"
                 class="form-label w-full flex flex-col sm:flex-row"
             >
-                Survey Template Name
+                Title
             </label>
             <input
                 id="validation-form-0"
@@ -45,11 +45,11 @@
                 for="validation-form-1"
                 class="form-label w-full flex flex-col sm:flex-row"
             >
-                Survey update method
+                Mode
             </label>
             <input
                 id="validation-form-1"
-                v-model.trim="surveyTemplateFixData.survey_update_method"
+                v-model.trim="mode"
                 type="text"
                 name="survey_update_method"
                 class="form-control"
@@ -80,7 +80,7 @@
                 for="validation-form-3"
                 class="form-label w-full flex flex-col sm:flex-row"
             >
-                Number of copies
+                Number of respondents
             </label>
             <input
                 id="validation-form-3"
@@ -97,7 +97,7 @@
                 for="validation-form-4"
                 class="form-label w-full flex flex-col sm:flex-row"
             >
-                Expiration time
+                Expiration
             </label>
             <input
                 id="validation-form-4"
@@ -116,7 +116,7 @@
 
 
 <script setup>
-import { reactive, toRefs, onBeforeMount } from "vue";
+import { reactive, toRefs, onBeforeMount, ref } from "vue";
 import {
   required,
   minLength,
@@ -138,6 +138,18 @@ const props = defineProps({
     default: null,
   },
 });
+
+const change_survey_update_method_to_user_friendly_text = () => {
+    if (surveyTemplateFixData.survey_update_method === 'static'){
+        return 'Non-private'
+    }
+    else if (surveyTemplateFixData.survey_update_method === 'uniform'){
+        return 'Private'
+    }
+}
+
+const mode = ref(change_survey_update_method_to_user_friendly_text())
+
 
 console.log('template-fix-form', props.surveyTemplateFixData)
 

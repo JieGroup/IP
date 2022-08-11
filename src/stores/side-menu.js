@@ -21,8 +21,8 @@ export const useSideMenuStore = defineStore("sideMenu", {
       "devider",
       {
         icon: "SidebarIcon",
-        pageName: "side-menu-create-form",
-        title: "Create Form",
+        pageName: "side-menu-create-new-survey",
+        title: "Create New Survey",
       },
       {
         icon: "SidebarIcon",

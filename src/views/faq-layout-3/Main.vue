@@ -9,10 +9,9 @@
         <div class="px-4 pb-3 pt-5">
           <a
             class="flex rounded-lg items-center px-4 py-2 bg-primary text-white font-medium"
-            href=""
           >
             <ActivityIcon class="w-4 h-4 mr-2" />
-            <div class="flex-1 truncate">About Our Products</div>
+            <div class="flex-1 truncate">About this survey tool</div>
           </a>
           <!-- <a class="flex items-center px-4 py-2 mt-1" href="">
             <BoxIcon class="w-4 h-4 mr-2" />
@@ -76,26 +75,39 @@
         <div
           class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400"
         >
-          <h2 class="font-medium text-base mr-auto">About Our Products</h2>
+          <h2 class="font-medium text-base mr-auto">About this survey tool</h2>
         </div>
         <AccordionGroup class="accordion-boxed p-5">
+
           <AccordionItem>
             <Accordion>
-              Design your own survey to project voter's privacy
+              Why use our survey tool
             </Accordion>
             <AccordionPanel
               class="text-slate-600 dark:text-slate-500 leading-relaxed"
             >
-              Interval Privacy is led by Professor Jie Ding. 
-              He received his Ph.D. degree in Engineering Sciences from Harvard University, Cambridge, in 2017. 
-              He obtained his B.S. degree from Tsinghua University, Beijing, in 2012. 
-              He joined the faculty of the University of Minnesota, Twin Cities, in 2018, where he has been an Assistant Professor at the School of Statistics, with a graduate faculty appointment at the Department of Electrical and Computer Engineering. 
-              His research is on the foundations of machine learning, statistics, and signal processing.
+              This survey tool is being developed as a research product that
+              aims to provide a data-private, collection-efficient, and 
+              inference-accurate way of surveying.
             </AccordionPanel>
           </AccordionItem>
+
           <AccordionItem>
             <Accordion>
-              How to Create Survey?
+              How does our engine work
+            </Accordion>
+            <AccordionPanel
+              class="text-slate-600 dark:text-slate-500 leading-relaxed"
+            >
+              Our engine is based on novel ways of collecting respondent data. 
+              A user can generate optimized, personalize, and privacy-preserving questions
+              for any cohort of respondents, using advanced statistical and machine learning algorithms.
+            </AccordionPanel>
+          </AccordionItem>
+
+          <AccordionItem>
+            <Accordion>
+              How to Create Survey
             </Accordion>
             <AccordionPanel
               class="text-slate-600 dark:text-slate-500 leading-relaxed"
@@ -109,6 +121,7 @@
               4. Design your own survey template
             </AccordionPanel>
           </AccordionItem>
+
           <AccordionItem>
             <Accordion> How To Retrieve Survey Answers </Accordion>
             <AccordionPanel
@@ -125,6 +138,7 @@
               By clicking 'View Details', you can view your designed template.
             </AccordionPanel>
           </AccordionItem>
+
           <AccordionItem>
             <Accordion> How to Answer Survey </Accordion>
             <AccordionPanel
@@ -137,6 +151,7 @@
               4. Record the Survey Answer ID to get your payment
             </AccordionPanel>
           </AccordionItem>
+
         </AccordionGroup>
       </div>
       <!-- <div class="intro-y box mt-5">

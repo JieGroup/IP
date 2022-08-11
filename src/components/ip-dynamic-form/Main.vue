@@ -14,7 +14,7 @@
             for="validation-form-1"
             class="form-label w-full flex flex-col sm:flex-row"
         >
-            Topic name
+            Topic of this question
             <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
             >Required, at least 1 character</span
             >
@@ -26,7 +26,7 @@
             name="topic_name"
             class="form-control"
             :class="{ 'border-danger': validate.topic_name.$error }"
-            placeholder="Type your topic name. E.g. age"
+            placeholder="A keyword of this question, e.g., salary"
         />
         <template v-if="validate.topic_name.$error">
             <div
@@ -56,7 +56,7 @@
             name="topic_question"
             class="form-control"
             :class="{ 'border-danger': validate.topic_question.$error }"
-            placeholder="Question about this topic. E.g. what is your age?"
+            placeholder="What to ask from respondents, e.g., 'What is your age?'"
         />
         <template v-if="validate.topic_question.$error">
             <div
@@ -70,12 +70,12 @@
         </div>
 
         <div class="mt-3">
-        <label>Answer type</label>
+        <label>Collected data type</label>
         <div class="mt-2">
             <TomSelect v-model="validate.answer_type.$model" :options="{
-                        placeholder: 'Select answer type',
+                        placeholder: 'Select a data type to collect',
                         }" class="w-full">
-              <optgroup label="Answer Type">
+              <optgroup label="Collected data type">
                   <option value="categorical">Categorical</option>
                   <option value="continuous">Continuous</option>
               </optgroup>
@@ -95,7 +95,7 @@
           <input class="form-check-input" type="checkbox" id="disabledFieldsetCheck" disabled>
           <label class="form-check-label" for="disabledFieldsetCheck" @click="add_categorical_answer_option">
             <!-- <u class="block mt-1">add new option</u> -->
-            <u>add new option</u>
+            <u>Add new option</u>
             <!-- <u class="block mt-1">This line of text will render as underlined</u> -->
           </label>
         </div>

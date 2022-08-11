@@ -8,9 +8,9 @@
                 for="validation-form-0"
                 class="form-label w-full flex flex-col sm:flex-row"
             >
-                Survey template name
+                Title
                 <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-                >Required, at least 1 characters</span
+                >Required, at least 1 character</span
                 >
             </label>
             <input
@@ -20,7 +20,7 @@
                 name="survey_template_name"
                 class="form-control"
                 :class="{ 'border-danger': validate.survey_template_name.$error }"
-                placeholder="The name of current template"
+                placeholder="Survey title shown to the respondents, e.g., 'Salary Survey'"
             />
             <template v-if="validate.survey_template_name.$error">
                 <div
@@ -34,14 +34,14 @@
             </div>
 
             <div class="mt-3">
-            <label>Survey update method</label>
+            <label>Mode</label>
             <div class="mt-2">
                 <TomSelect v-model="validate.survey_update_method.$model" :options="{
-                            placeholder: 'Select survey update method',
+                            placeholder: 'Select the mode of generating questions',
                             }" class="w-full">
-                <optgroup label="Update method">
-                    <option value="static">Static</option>
-                    <option value="uniform">Uniform</option>
+                <optgroup label="mode">
+                    <option value="static">Non-private</option>
+                    <option value="uniform">Private</option>
                 </optgroup>
                 </TomSelect>
             </div>
@@ -64,7 +64,7 @@
                 name="max_rounds"
                 class="form-control"
                 :class="{ 'border-danger': validate.max_rounds.$error }"
-                placeholder="The number of times the voter can answer the topic. E.g.1"
+                placeholder="How many times a question may be repeated, e.g., 3"
             />
             <template v-if="validate.max_rounds.$error">
                 <div
@@ -82,9 +82,9 @@
                 for="validation-form-3"
                 class="form-label w-full flex flex-col sm:flex-row"
             >
-                Number of copies
+                Number of respondents
                 <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-                >Required, integer only & maximum 500 copies</span
+                >Required, integer only & maximum 500</span
                 >
             </label>
             <input
@@ -94,7 +94,7 @@
                 name="number_of_copies"
                 class="form-control"
                 :class="{ 'border-danger': validate.number_of_copies.$error }"
-                placeholder="The maximum number of surveys issued. E.g. 200"
+                placeholder="The maximum number of respondents, e.g., 300"
             />
             <template v-if="validate.number_of_copies.$error">
                 <div
@@ -108,12 +108,12 @@
             </div>
 
             <div class="mt-3">
-            <label>Expiration time</label>
+            <label>Expiration</label>
             <div class="mt-2">
                 <TomSelect v-model="validate.time_period.$model" :options="{
-                            placeholder: 'Select survey expiration time',
+                            placeholder: 'How long will this survey be open to respondents',
                             }" class="w-full">
-                <optgroup label="Expiration Time">
+                <optgroup label="Expiration">
                     <option value='3'>3 days</option>
                     <option value='7'>7 days</option>
                     <option value='15'>15 days</option>

@@ -69,8 +69,8 @@ import Datepicker from "../views/datepicker/Main.vue";
 import TomSelect from "../views/tom-select/Main.vue";
 import FileUpload from "../views/file-upload/Main.vue";
 import WysiwygEditor from "../views/wysiwg-editor/Main.vue";
-import CreateForm from "../views/create-form/Main.vue";
-import CreateFormRes from "../views/create-form-res/Main.vue";
+import CreateNewSurvey from "../views/create-new-survey/Main.vue";
+import CreateNewSurveyRes from "../views/create-new-survey-res/Main.vue";
 import AnswerForm from "../views/answer-form/Main.vue";
 import AnswerFormDone from "../views/answer-form-done/Main.vue";
 import TemplateForm from "../views/template-form/Main.vue";
@@ -427,16 +427,16 @@ const routes = [
         component: WysiwygEditor,
       },
       {
-        path: "create-form",
-        name: "side-menu-create-form",
+        path: "create-new-survey",
+        name: "side-menu-create-new-survey",
         component: CreateForm,
         meta: { 
           requiresAuth: true,
         }
       },
       {
-        path: "create-form-res",
-        name: "side-menu-create-form-res",
+        path: "create-new-survey-res",
+        name: "side-menu-create-new-survey-res",
         component: CreateFormRes,
       },
       {

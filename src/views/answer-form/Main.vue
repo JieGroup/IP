@@ -165,7 +165,7 @@
                     <br/>
                       1. Incorrect or incomplete input form
                       <br/>
-                      2. Answer reaches the limit of number of copies
+                      2. The number of respondents has been reached
                     <!-- </div> -->
                   </div>
                 </div>

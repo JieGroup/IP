@@ -4,7 +4,7 @@
         for="validation-form-31"
         class="form-label w-full flex flex-col sm:flex-row"
     >
-      Answer minimum
+      Minimum value
       <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
       >Required, at least 1 number</span
       >
@@ -16,7 +16,7 @@
         name="continuous_answer_min"
         class="form-control"
         :class="{ 'border-danger': validate.continuous_answer_min.$error }"
-        placeholder="Type your minimum range. E.g. 0"
+        placeholder="Minimum value of the answer, e.g., 1"
     />
     <template v-if="validate.continuous_answer_min.$error">
         <div
@@ -35,7 +35,7 @@
         for="validation-form-32"
         class="form-label w-full flex flex-col sm:flex-row"
     >
-        Answer maximum
+        Maximum value
         <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
         >Required, at least 1 number</span
         >
@@ -47,7 +47,7 @@
         name="continuous_answer_max"
         class="form-control"
         :class="{ 'border-danger': validate.continuous_answer_max.$error }"
-        placeholder="Type your maximum range. E.g. 10000"
+        placeholder="Maximum value of the answer, e.g., 1000"
     />
     <template v-if="validate.continuous_answer_max.$error">
         <div

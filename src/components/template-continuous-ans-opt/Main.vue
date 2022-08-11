@@ -22,7 +22,7 @@
         for="validation-form-32"
         class="form-label w-full flex flex-col sm:flex-row"
     >
-        Answer maximum
+        Maximum value
     </label>
     <input
         id="validation-form-32"

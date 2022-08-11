@@ -14,7 +14,7 @@
           for="validation-form-1"
           class="form-label w-full flex flex-col sm:flex-row"
         >
-          Topic name
+          Topic of this question
         </label>
         <input
           id="validation-form-1"
@@ -48,7 +48,7 @@
           for="validation-form-3"
           class="form-label w-full flex flex-col sm:flex-row"
         >
-          Answer type
+          Collected data type
         </label>
         <input
           id="validation-form-3"

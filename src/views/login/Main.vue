@@ -143,7 +143,7 @@
             <div
               class="intro-x mt-10 xl:mt-24 text-slate-600 dark:text-slate-500 text-center xl:text-left"
             >
-              By signin up, you agree to our
+              By signing up, you agree to our
               <a class="text-primary dark:text-slate-200" href=""
                 >Terms and Conditions</a
               >
@@ -293,7 +293,7 @@ const login = async () => {
         position: "right",
         stopOnFocus: true,
       }).showToast();
-      linkTo('side-menu-create-form', router, {})
+      linkTo('side-menu-create-new-survey', router, {})
     } catch (err) {
       let processed_err = process_axios_error(err)
       console.log(`login processed err: ${processed_err}`)
