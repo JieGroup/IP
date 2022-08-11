@@ -6,7 +6,7 @@
     >
       Minimum value
       <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-      >Required, at least 1 number</span
+      >Required, 1 integer, best guess if unbounded</span
       >
     </label>
     <input
@@ -37,7 +37,7 @@
     >
         Maximum value
         <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-        >Required, at least 1 number</span
+        >Required, 1 integer, best guess if unbounded</span
         >
     </label>
     <input
@@ -104,11 +104,13 @@ console.log('maxxx', form_data.continuous_answer_max)
 const rules = {
   continuous_answer_min: {
     required,
+    integer,
     min_smaller_than_max: helpers.withMessage(`Min value must be smaller than the max value`, min_smaller_than_max)
     // maxValue: maxValue(form_data.continuous_answer_max),
   },
   continuous_answer_max: {
-    required
+    required,
+    integer
   },
 };
 

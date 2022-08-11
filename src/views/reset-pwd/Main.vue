@@ -156,16 +156,30 @@
               >
                 Resend
               </button>
+              <br />
+              <br />
+              <button
+                @click="to_login_page"
+                class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top"
+              >
+                Login
+              </button>
             </div>
             <div
               class="intro-x mt-10 xl:mt-24 text-slate-600 dark:text-slate-500 text-center xl:text-left"
             >
               By signing up, you agree to our
-              <a class="text-primary dark:text-slate-200" href=""
+              <a 
+                @click="to_terms_and_conditions"
+                class="text-primary dark:text-slate-200" 
+                href="javascript:;"
                 >Terms and Conditions</a
               >
               &
-              <a class="text-primary dark:text-slate-200" href=""
+              <a 
+                @click="to_privacy_policy"
+                class="text-primary dark:text-slate-200" 
+                href="javascript:;"
                 >Privacy Policy</a
               >
             </div>
@@ -333,6 +347,20 @@ const reset_pwd = async () => {
 
 const to_login_page = () => {
   linkTo('login', router, {})
+}
+
+const to_terms_and_conditions = () => {
+  let params = {
+    'faq_indicator': 'terms_and_conditions'
+  }
+  linkTo('side-menu-faq-layout-3', router, params)
+}
+
+const to_privacy_policy = () => {
+  let params = {
+    'faq_indicator': 'privacy_policy'
+  }
+  linkTo('side-menu-faq-layout-3', router, params)
 }
 
 onMounted(() => {

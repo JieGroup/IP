@@ -150,22 +150,37 @@
               >
                 Register
               </button>
+
               <button
                 @click="resend_email_confirmation_link"
                 class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top"
               >
                 Resend
               </button>
+              <br />
+              <br />
+              <button
+                @click="to_login_page"
+                class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top"
+              >
+                Login
+              </button>
             </div>
             <div
               class="intro-x mt-10 xl:mt-24 text-slate-600 dark:text-slate-500 text-center xl:text-left"
             >
               By signing up, you agree to our
-              <a class="text-primary dark:text-slate-200" href=""
+              <a 
+                @click="to_terms_and_conditions"
+                class="text-primary dark:text-slate-200" 
+                href="javascript:;"
                 >Terms and Conditions</a
               >
               &
-              <a class="text-primary dark:text-slate-200" href=""
+              <a 
+                @click="to_privacy_policy"
+                class="text-primary dark:text-slate-200" 
+                href="javascript:;"
                 >Privacy Policy</a
               >
             </div>
@@ -256,6 +271,7 @@ import dom from "@left4code/tw-starter/dist/js/dom";
 import { process_axios_error, get_auth_url, get_api_url } from "@/utils/axios_utils"
 import { axios } from "@/utils/axios";
 // import { axios } from "@/utils/axios";
+import { linkTo } from "./index"
 
 const router = useRouter();
 
@@ -418,6 +434,20 @@ const resend_email_confirmation_link = async () => {
 
 const to_login_page = () => {
   linkTo('login', router, {})
+}
+
+const to_terms_and_conditions = () => {
+  let params = {
+    'faq_indicator': 'terms_and_conditions'
+  }
+  linkTo('side-menu-faq-layout-3', router, params)
+}
+
+const to_privacy_policy = () => {
+  let params = {
+    'faq_indicator': 'privacy_policy'
+  }
+  linkTo('side-menu-faq-layout-3', router, params)
 }
 
 onMounted(() => {

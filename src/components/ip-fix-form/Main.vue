@@ -123,8 +123,13 @@
                 </TomSelect>
             </div>
             </div>
-
+            <br />
+            Please create question(s) below. 
         </form>
+        <div
+          class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-400/60 dark:border-darkmode-800"
+        >
+        </div>
         <!-- END: Validation Form -->
     </div>
 </template>

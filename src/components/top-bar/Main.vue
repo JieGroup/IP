@@ -236,7 +236,7 @@ const to_profile = () => {
   linkTo('side-menu-profile-overview-3', router, {})
 }
 const to_reset_pwd = () => {
-  linkTo('side-menu-change-password', router, {})
+  linkTo('resetPwd', router, {})
 }
 const to_faq = () => {
   linkTo('side-menu-faq-layout-3', router, {})
@@ -245,7 +245,7 @@ const logout = () => {
   // clean msg stored in authenticationStore
   authenticationStore.logoutAction()
   // go back to main page
-  linkTo('side-menu-answer-form', router, {})
+  linkTo('login', router, {})
 }
 
 const searchDropdown = ref(false);

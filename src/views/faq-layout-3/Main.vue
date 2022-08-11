@@ -7,21 +7,65 @@
     <div class="intro-y col-span-12 lg:col-span-4 xl:col-span-3">
       <div class="box mt-5">
         <div class="px-4 pb-3 pt-5">
+
           <a
+            v-if="faq_indicator === 'about'"
             class="flex rounded-lg items-center px-4 py-2 bg-primary text-white font-medium"
+
+            @click='to_about'
           >
             <ActivityIcon class="w-4 h-4 mr-2" />
             <div class="flex-1 truncate">About this survey tool</div>
           </a>
-          <!-- <a class="flex items-center px-4 py-2 mt-1" href="">
+          <a
+            v-else
+            class="flex items-center px-4 py-2 mt-1"
+            @click='to_about'
+          >
+            <ActivityIcon class="w-4 h-4 mr-2" />
+            <div class="flex-1 truncate">About this survey tool</div>
+          </a>
+
+          <a v-if="faq_indicator === 'terms_and_conditions'" 
+             class="flex rounded-lg items-center px-4 py-2 bg-primary text-white font-medium"
+             @click='to_terms_and_conditions'>
             <BoxIcon class="w-4 h-4 mr-2" />
-            <div class="flex-1 truncate">Related License</div>
+            <div class="flex-1 truncate">Terms and Conditions</div>
           </a>
-          <a class="flex items-center px-4 py-2 mt-1" href="">
+          <a v-else 
+             class="flex items-center px-4 py-2 mt-1" 
+             @click='to_terms_and_conditions'>
+            <BoxIcon class="w-4 h-4 mr-2" />
+            <div class="flex-1 truncate">Terms and Conditions</div>
+          </a>
+
+          <a v-if="faq_indicator === 'privacy_policy'" 
+             class="flex rounded-lg items-center px-4 py-2 bg-primary text-white font-medium"
+             @click='to_privacy_policy'>
             <LockIcon class="w-4 h-4 mr-2" />
-            <div class="flex-1 truncate">Single Application License</div>
+            <div class="flex-1 truncate">Privacy Policy</div>
           </a>
-          <a class="flex items-center px-4 py-2 mt-1" href="">
+          <a v-else 
+             class="flex items-center px-4 py-2 mt-1" 
+             @click='to_privacy_policy'>
+            <LockIcon class="w-4 h-4 mr-2" />
+            <div class="flex-1 truncate">Privacy Policy</div>
+          </a>
+
+          <a v-if="faq_indicator === 'contact_us'" 
+             class="flex rounded-lg items-center px-4 py-2 bg-primary text-white font-medium"
+             @click='to_contact_us'>
+            <BoxIcon class="w-4 h-4 mr-2" />
+            <div class="flex-1 truncate">Contact Us</div>
+          </a>
+          <a v-else 
+             class="flex items-center px-4 py-2 mt-1" 
+             @click='to_contact_us'>
+            <BoxIcon class="w-4 h-4 mr-2" />
+            <div class="flex-1 truncate">Contact Us</div>
+          </a>
+
+          <!-- <a class="flex items-center px-4 py-2 mt-1" href="">
             <SettingsIcon class="w-4 h-4 mr-2" />
             <div class="flex-1 truncate">Multi Application License</div>
           </a> -->
@@ -71,7 +115,7 @@
     <!-- END: FAQ Menu -->
     <!-- BEGIN: FAQ Content -->
     <div class="intro-y col-span-12 lg:col-span-8 xl:col-span-9">
-      <div class="intro-y box lg:mt-5">
+      <div v-if="faq_indicator === 'about'" class="intro-y box lg:mt-5">
         <div
           class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400"
         >
@@ -147,19 +191,23 @@
               1. Click 'Answer Form' icon in the left bar
               <br/>
               2. Type in the Survey Template ID and your Mturk ID
+              <br/>
               3. Keep answering the Survey until it shows 'Thank you for your participation'
+              <br/>
               4. Record the Survey Answer ID to get your payment
             </AccordionPanel>
           </AccordionItem>
-
         </AccordionGroup>
       </div>
-      <!-- <div class="intro-y box mt-5">
+      <!-- END: FAQ Content -->
+      <!-- START: Terms and Conditions Content -->
+      <!-- faq_indicator {{ faq_indicator }} -->
+      <div v-if="faq_indicator === 'terms_and_conditions'" class="intro-y box mt-5">
         <div
           class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400"
         >
           <h2 class="font-medium text-base mr-auto">
-            Single Application License
+            Terms and Conditions
           </h2>
         </div>
         <AccordionGroup class="accordion-boxed p-5">
@@ -220,8 +268,10 @@
             </AccordionPanel>
           </AccordionItem>
         </AccordionGroup>
-      </div> -->
-      <!-- <div class="intro-y box mt-5">
+      </div>
+      <!-- END: Terms and Conditions Content -->
+      <!-- START: Privacy Policy -->
+      <div v-if="faq_indicator === 'privacy_policy'" class="intro-y box mt-5">
         <div
           class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400"
         >
@@ -287,8 +337,100 @@
             </AccordionPanel>
           </AccordionItem>
         </AccordionGroup>
-      </div> -->
+      </div>
+      <!-- END: Privacy Policy -->
+
+      <!-- START: Contact Us -->
+      <div v-if="faq_indicator === 'contact_us'" class="intro-y box mt-5">
+        <div
+          class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400"
+        >
+          <h2 class="font-medium text-base mr-auto">
+            Contact Us
+          </h2>
+        </div>
+        <AccordionGroup class="accordion-boxed p-5">
+          <AccordionItem>
+            <Accordion>
+              Contact
+            </Accordion>
+            <AccordionPanel
+              class="text-slate-600 dark:text-slate-500 leading-relaxed"
+            >
+              The survey tool is actively maintained by a group of researchers. 
+              If you have any technical questions or comments, 
+              please feel free to contact us at IntervalPrivacy@gmail.com
+            </AccordionPanel>
+          </AccordionItem>
+          <AccordionItem>
+            <Accordion>
+              Application support
+            </Accordion>
+            <AccordionPanel
+              class="text-slate-600 dark:text-slate-500 leading-relaxed"
+            >
+              If you are interested in adding new functionalities for domain-specific applications, 
+              please feel free to contact us at IntervalPrivacy@gmail.com
+            </AccordionPanel>
+          </AccordionItem>
+        </AccordionGroup>
+      </div>
+      <!-- END: Contact Us -->
     </div>
     <!-- END: FAQ Content -->
   </div>
 </template>
+
+<script setup>
+import { reactive, toRefs, ref } from "vue";
+import {
+  required,
+  minLength,
+  maxLength,
+  email,
+  url,
+  integer,
+  requiredIf
+} from "@vuelidate/validators";
+import { useVuelidate } from "@vuelidate/core";
+import { computed, onMounted } from "vue";
+import Toastify from "toastify-js";
+import { useRoute, useRouter } from "vue-router";
+import DarkModeSwitcher from "@/components/dark-mode-switcher/Main.vue";
+import dom from "@left4code/tw-starter/dist/js/dom";
+import { useInfoStore } from "@/stores/user-info"
+import { useAuthenticationStore } from "@/stores/authentication"
+import { process_axios_error, get_auth_url, get_api_url } from "@/utils/axios_utils"
+import { axios } from "@/utils/axios";
+// import { axios } from "@/utils/axios";
+
+const router = useRouter();
+
+let faq_indicator = ref('about')
+
+const to_about = () => {
+  faq_indicator.value = 'about'
+}
+
+const to_terms_and_conditions = () => {
+  faq_indicator.value = 'terms_and_conditions'
+  console.log('faq', faq_indicator)
+}
+
+const to_privacy_policy = () => {
+  faq_indicator.value = 'privacy_policy'
+}
+
+const to_contact_us = () => {
+  faq_indicator.value = 'contact_us'
+}
+
+let params = router.currentRoute.value.params
+
+onMounted(() => {
+  console.log('layout-params', params)
+  if ('faq_indicator' in params){
+    faq_indicator.value = params.faq_indicator
+  }
+});
+</script>

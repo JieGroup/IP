@@ -1,15 +1,46 @@
 <template>
-    <div
+    
+    <!-- <div
       class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400"
     >
-    </div>
+    </div> -->
     <br />
     <!-- <br /> -->
     <div>
       <!-- BEGIN: Validation Form -->
       <!-- <form class="validate-form"> -->
+        
+        <div class="input-form mt-3">
+        <label
+            for="validation-form-2"
+            class="form-label w-full flex flex-col sm:flex-row"
+        >
+            Question {{ dynamic_form_index+1 }}
+            <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
+            >Required, at least 5 characters</span
+            >
+        </label>
+        <input
+            id="validation-form-2"
+            v-model.trim="validate.topic_question.$model"
+            type="text"
+            name="topic_question"
+            class="form-control"
+            :class="{ 'border-danger': validate.topic_question.$error }"
+            placeholder="What to ask from respondents, e.g., 'What is your age?'"
+        />
+        <template v-if="validate.topic_question.$error">
+            <div
+            v-for="(error, index) in validate.topic_question.$errors"
+            :key="index"
+            class="text-danger mt-2"
+            >
+            {{ error.$message }}
+            </div>
+        </template>
+        </div>
 
-        <div class="input-form">
+        <div class="input-form mt-3">
         <label
             for="validation-form-1"
             class="form-label w-full flex flex-col sm:flex-row"
@@ -38,36 +69,7 @@
             </div>
         </template>
         </div>
-
-        <div class="input-form mt-3">
-        <label
-            for="validation-form-2"
-            class="form-label w-full flex flex-col sm:flex-row"
-        >
-            Topic question
-            <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-            >Required, at least 5 characters</span
-            >
-        </label>
-        <input
-            id="validation-form-2"
-            v-model.trim="validate.topic_question.$model"
-            type="text"
-            name="topic_question"
-            class="form-control"
-            :class="{ 'border-danger': validate.topic_question.$error }"
-            placeholder="What to ask from respondents, e.g., 'What is your age?'"
-        />
-        <template v-if="validate.topic_question.$error">
-            <div
-            v-for="(error, index) in validate.topic_question.$errors"
-            :key="index"
-            class="text-danger mt-2"
-            >
-            {{ error.$message }}
-            </div>
-        </template>
-        </div>
+        
 
         <div class="mt-3">
         <label>Collected data type</label>
@@ -141,10 +143,25 @@
         <!-- <button @click="add_dynamic_form" class="btn btn-success mr-1 mb-2"> -->
         <button type='button' @click="add_dynamic_form" class="btn btn-success mt-5">
           <PlusIcon class="w-5 h-5" />
+          <u>Create another question</u>
         </button>
+        
+
+        <br />
         <button type='button' @click="delete_dynamic_form" class="btn btn-danger mt-5">
           <TrashIcon class="w-5 h-5" />
+          <u>Remove the above question</u>
         </button>
+
+        <br />
+        <button type='button' @click="duplicate_dynamic_form" class="btn btn-danger mt-5">
+          <PlusIcon class="w-5 h-5" />
+          <u>Duplicate the above question</u>
+        </button>
+      <div
+        class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-400/60 dark:border-darkmode-800"
+      >
+      </div>  
       <!-- </form> -->
       <br />
       <!-- END: Validation Form -->
@@ -198,7 +215,8 @@ let continuous_answer_options = reactive([{}])
 
 const emits = defineEmits([
   'parent_add_dynamic_form', 
-  'parent_delete_dynamic_form'
+  'parent_delete_dynamic_form',
+  'parent_duplicate_dynamic_form'
 ])
 
 const add_dynamic_form = () => {
@@ -209,6 +227,11 @@ const add_dynamic_form = () => {
 const delete_dynamic_form = () => {
   console.log('indexxxx', props.dynamic_form_index)
   emits('parent_delete_dynamic_form', props.dynamic_form_index)
+}
+
+const duplicate_dynamic_form = () => {
+  console.log('duplicate')
+  emits('parent_duplicate_dynamic_form', props.dynamic_form_index)
 }
 
 const add_categorical_answer_option = () => {

@@ -1,6 +1,6 @@
 <template>
   <div class="intro-y flex items-center mt-8">
-    <h2 class="text-lg font-medium mr-auto">Create Form</h2>
+    <h2 class="text-lg font-medium mr-auto">Create New Survey</h2>
   </div>
   <div class="grid grid-cols-12 gap-6 mt-5">
     <div class="intro-y col-span-12 lg:col-span-6">
@@ -28,18 +28,19 @@
         <div class="p-5">
           <Preview>
             <!-- BEGIN: Validation Form -->
-            <button @click="send_to_server" type="button" class="btn btn-primary mt-3">
+            <!-- <button @click="send_to_server" type="button" class="btn btn-primary mt-3">
             Create
-            </button>
-            <br />
-            <br />
+            </button> -->
+            <!-- <br />
+            <br /> -->
             <IpFixForm :fix_form_data="fix_form_data"/>
             <IpDynamicForm  v-for="(item, index) in dynamic_form_array"
                             :key="item.unique_id" 
                             :dynamic_form_index="index"
                             :dynamic_form_data="item"
                             @parent_add_dynamic_form="add_dynamic_form" 
-                            @parent_delete_dynamic_form="delete_dynamic_form"/>
+                            @parent_delete_dynamic_form="delete_dynamic_form"
+                            @parent_duplicate_dynamic_form="duplicate_dynamic_form"/>
             <!-- dynamic_form_array -->
             <!-- {{ dynamic_form_array }} -->
             <!-- <IpDynamicForm @add_dynamic_form="add_dynamic_form" 
@@ -47,6 +48,9 @@
             <!-- END: Validation Form -->
 
             <!-- BEGIN: Success Notification Content -->
+            <button @click="send_to_server" type="button" class="btn btn-primary mt-3">
+            Create
+            </button>
             <div
               id="success-notification-content"
               class="toastify-content hidden flex"
@@ -136,6 +140,7 @@ import IpDynamicForm from "@/components/ip-dynamic-form/Main.vue";
 import { axios } from "@/utils/axios";
 import { linkTo, process_template_data, is_data_valid } from "./index"
 import { process_axios_response, process_axios_error, get_api_url } from "@/utils/axios_utils"
+import _ from "lodash";
 
 const router = useRouter();
 
@@ -162,6 +167,18 @@ const delete_dynamic_form = (dynamic_form_index) => {
     dynamic_form_array.splice(dynamic_form_index, 1)
   }
   console.log(`delete_dynamic_form - dynamic_form_array, ${dynamic_form_array}`)
+}
+
+const duplicate_dynamic_form = (dynamic_form_index) => {
+  // let duplicate_ele = JSON.parse(JSON.stringify(dynamic_form_array[dynamic_form_index]));
+  let duplicate_ele = _.cloneDeep(dynamic_form_array[dynamic_form_index])
+  unique_id += 1
+  duplicate_ele.unique_id = unique_id
+  console.log('duplicate_ele', duplicate_ele, dynamic_form_array[dynamic_form_index])
+  console.log('whole', dynamic_form_array)
+  // 索引位置，要删除元素的数量，元素
+  dynamic_form_array.splice(dynamic_form_index+1, 0, duplicate_ele)
+  console.log('after_duplicate_ele', dynamic_form_array)
 }
 
 const is_fix_form_validate = (data_valid) => {

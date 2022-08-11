@@ -124,7 +124,7 @@
                 >
                 <!-- {{ remember_me }} -->
               </div>
-              <a @click="to_reset_pwd_page">Forgot Password?</a>
+              <a href="javascript:;" @click="to_reset_pwd_page">Forgot Password?</a>
             </div>
             <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
               <button
@@ -144,11 +144,17 @@
               class="intro-x mt-10 xl:mt-24 text-slate-600 dark:text-slate-500 text-center xl:text-left"
             >
               By signing up, you agree to our
-              <a class="text-primary dark:text-slate-200" href=""
+              <a 
+                @click="to_terms_and_conditions"
+                class="text-primary dark:text-slate-200" 
+                href="javascript:;"
                 >Terms and Conditions</a
               >
               &
-              <a class="text-primary dark:text-slate-200" href=""
+              <a 
+                @click="to_privacy_policy"
+                class="text-primary dark:text-slate-200" 
+                href="javascript:;"
                 >Privacy Policy</a
               >
             </div>
@@ -319,6 +325,20 @@ const to_register_page = () => {
 
 const to_reset_pwd_page = () => {
   linkTo('resetPwd', router, {})
+}
+
+const to_terms_and_conditions = () => {
+  let params = {
+    'faq_indicator': 'terms_and_conditions'
+  }
+  linkTo('side-menu-faq-layout-3', router, params)
+}
+
+const to_privacy_policy = () => {
+  let params = {
+    'faq_indicator': 'privacy_policy'
+  }
+  linkTo('side-menu-faq-layout-3', router, params)
 }
 
 onMounted(() => {

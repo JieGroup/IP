@@ -102,7 +102,11 @@ const routes = [
   //   ],
   // },
 
-
+  {
+    path: "/",
+    name: "login",
+    component: Login,
+  },
   {
     path: "/",
     component: SideMenu,
@@ -429,7 +433,7 @@ const routes = [
       {
         path: "create-new-survey",
         name: "side-menu-create-new-survey",
-        component: CreateForm,
+        component: CreateNewSurvey,
         meta: { 
           requiresAuth: true,
         }
@@ -437,10 +441,10 @@ const routes = [
       {
         path: "create-new-survey-res",
         name: "side-menu-create-new-survey-res",
-        component: CreateFormRes,
+        component: CreateNewSurveyRes,
       },
       {
-        path: "/",
+        path: "answer-form",
         name: "side-menu-answer-form",
         component: AnswerForm,
       },
@@ -1149,11 +1153,7 @@ const routes = [
   // },
 
 
-  {
-    path: "/login",
-    name: "login",
-    component: Login,
-  },
+  
   {
     path: "/register",
     name: "register",
@@ -1200,7 +1200,7 @@ router.beforeEach((to, from, next) => {
       && (!userToken || userToken === null || isUserAuthenticated === false)) {
     console.log("zzzz");
     next({
-      path: '/login',
+      path: '/',
       query: { redirect: to.fullPath }
     })
   } else if (userToken && to.name == 'login') {

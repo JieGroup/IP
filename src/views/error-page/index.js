@@ -1,6 +1,7 @@
-const linkTo = (path, router) => {
+const linkTo = (name, router, params) => {
   router.push({
-      path: path,
+    name: name,
+    params: params
   });
 };
 
