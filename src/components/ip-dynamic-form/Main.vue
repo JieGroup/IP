@@ -171,7 +171,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { reactive, toRefs } from "vue";
+import { reactive, toRefs, onMounted } from "vue";
 import {
   required,
   minLength,
@@ -280,9 +280,23 @@ const rules = {
   },
 };
 
-// const validate = reactive(useVuelidate(rules, toRefs(formData)));
-const validate = useVuelidate(rules, toRefs(formData));
+const validate = reactive(useVuelidate(rules, toRefs(formData)));
 props.dynamic_form_data.validate = validate;
+
+
+onMounted(() => {
+//   console.log('asdfasdf', props.dynamic_form_data)
+//   if ('validate' in props.dynamic_form_data) {
+//     // const validate = props.dynamic_form_data.validate
+// //
+//   } else {
+//     console.log('???SDfasdfsafd')
+//     props.dynamic_form_data.validate = validate;
+//     const validate = useVuelidate(rules, toRefs(formData));
+//   }
+  
+});
+
 // dynamic_form_data.value = validate
 console.log('validate', validate)
 console.log('dynamic----', props.dynamic_form_data.validate)

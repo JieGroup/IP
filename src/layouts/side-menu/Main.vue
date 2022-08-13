@@ -163,12 +163,17 @@ const route = useRoute();
 const router = useRouter();
 const formattedMenu = ref([]);
 const sideMenuStore = useSideMenuStore();
+console.log('!@#!@#!@#', route, route.path)
 const sideMenu = computed(() => nestedMenu(sideMenuStore.menu, route));
-
+console.log('!!!!', sideMenu.value, $h.toRaw(sideMenu.value))
 provide("forceActiveMenu", (pageName) => {
   route.forceActiveMenu = pageName;
   formattedMenu.value = $h.toRaw(sideMenu.value);
 });
+
+provide("formattedMenu", formattedMenu)
+
+watch(formattedMenu, ()=>{console.log('?????????', formattedMenu)})
 
 watch(
   computed(() => route.path),
@@ -177,7 +182,7 @@ watch(
     formattedMenu.value = $h.toRaw(sideMenu.value);
   }
 );
-
+console.log('￥￥￥￥￥', formattedMenu)
 onMounted(() => {
   dom("body").removeClass("error-page").removeClass("login").addClass("main");
   formattedMenu.value = $h.toRaw(sideMenu.value);

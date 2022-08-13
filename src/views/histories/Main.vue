@@ -600,17 +600,17 @@ onBeforeMount(async () => {
     let processed_err = process_axios_error(err)
     console.log(`send_form err: ${processed_err}`)
 
-    Toastify({
-      node: dom("#request-error-content")
-        .clone()
-        .removeClass("hidden")[0],
-      duration: 10000,
-      newWindow: true,
-      close: true,
-      gravity: "top",
-      position: "right",
-      stopOnFocus: true,
-    }).showToast();
+    // Toastify({
+    //   node: dom("#request-error-content")
+    //     .clone()
+    //     .removeClass("hidden")[0],
+    //   duration: 10000,
+    //   newWindow: true,
+    //   close: true,
+    //   gravity: "top",
+    //   position: "right",
+    //   stopOnFocus: true,
+    // }).showToast();
   }
   console.log('after_history')
   // let Data = [

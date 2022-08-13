@@ -69,10 +69,10 @@ axios.interceptors.response.use(response => {
           authenticationStore.logoutAction()
           // go to login page
           console.log('useRouter222', router)
-          if (router.currentRoute.path !== '/login') {
+          if (router.currentRoute.path !== '/') {
             // Vue.toasted.error('401: 认证已失效，请先登录', { icon: 'fingerprint' })
             router.replace({
-              path: '/login',
+              path: '/',
               query: { redirect: router.currentRoute.path },
             })
 

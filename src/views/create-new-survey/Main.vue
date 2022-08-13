@@ -116,13 +116,16 @@
         </div>
       </PreviewComponent>
       <!-- END: Form Validation -->
+      <button @click="ceshi">
+        ceshi
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { reactive, toRefs } from "vue";
+import { reactive, toRefs, inject } from "vue";
 import {
   required,
   minLength,
@@ -154,6 +157,12 @@ let formError = reactive({
 let fix_form_data = reactive({})
 let unique_id = 0
 let dynamic_form_array = reactive([{unique_id: unique_id}])
+
+let formattedMenu = inject('formattedMenu')
+const ceshi = () => {
+  // let formattedMenu = inject('formattedMenu')
+  console.log('ceshi', formattedMenu)
+}
 
 const add_dynamic_form = () => {
   unique_id += 1
