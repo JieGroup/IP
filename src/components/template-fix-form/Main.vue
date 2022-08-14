@@ -40,7 +40,7 @@
             />
             </div>
 
-            <div class="input-form mt-3">
+            <div v-if="surveyTemplateFixData.survey_update_method === 'static'" class="input-form mt-3">
             <label
                 for="validation-form-1"
                 class="form-label w-full flex flex-col sm:flex-row"
@@ -49,7 +49,23 @@
             </label>
             <input
                 id="validation-form-1"
-                v-model.trim="mode"
+                value="Non-private"
+                type="text"
+                name="survey_update_method"
+                class="form-control"
+                readonly="readonly"
+            />
+            </div>
+            <div v-else class="input-form mt-3">
+            <label
+                for="validation-form-1"
+                class="form-label w-full flex flex-col sm:flex-row"
+            >
+                Mode
+            </label>
+            <input
+                id="validation-form-1"
+                value="Private"
                 type="text"
                 name="survey_update_method"
                 class="form-control"
@@ -116,7 +132,8 @@
 
 
 <script setup>
-import { reactive, toRefs, onBeforeMount, ref } from "vue";
+import { reactive, toRefs, onMounted, ref, toRaw } from "vue";
+
 import {
   required,
   minLength,
@@ -138,19 +155,27 @@ const props = defineProps({
     default: null,
   },
 });
+// console.log('jjjjjjjjjjjjjj1')
+// const change_survey_update_method_to_user_friendly_text = () => {
+//     console.log('Obj', props.surveyTemplateFixData)
+//     const rawObject = JSON.parse(JSON.stringify(props.surveyTemplateFixData))
+//     console.log('rawObj', rawObject, rawObject[0])
+//     console.log('jjjj1.5', props.surveyTemplateFixData, rawObject.survey_update_method)
+//     if (props.surveyTemplateFixData.survey_update_method === 'static'){
+//         return 'Non-private'
+//     }
+//     else if (props.surveyTemplateFixData.survey_update_method === 'uniform'){
+//         return 'Private'
+//     }
+// }
 
-const change_survey_update_method_to_user_friendly_text = () => {
-    if (surveyTemplateFixData.survey_update_method === 'static'){
-        return 'Non-private'
-    }
-    else if (surveyTemplateFixData.survey_update_method === 'uniform'){
-        return 'Private'
-    }
-}
+// console.log('jjjjjjjjjjjjjj2', change_survey_update_method_to_user_friendly_text())
+// const mode = ref(change_survey_update_method_to_user_friendly_text())
 
-const mode = ref(change_survey_update_method_to_user_friendly_text())
-
-
+// onMounted(() => {
+//   console.log('jjjjjjjjjjjjjj3', change_survey_update_method_to_user_friendly_text())
+//   const mode = ref(change_survey_update_method_to_user_friendly_text())
+// });
 console.log('template-fix-form', props.surveyTemplateFixData)
 
 </script>

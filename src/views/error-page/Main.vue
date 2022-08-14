@@ -43,7 +43,7 @@ import { linkTo } from './index'
 
 const router = useRouter();
 const to_homepage = () => {
-  linkTo('side-menu-answer-form', router, {})
+  linkTo('side-menu-faq-layout-3', router, {})
 }
 
 onMounted(() => {

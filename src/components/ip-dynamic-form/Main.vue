@@ -47,7 +47,7 @@
         >
             Topic of this question
             <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-            >Required, at least 1 character</span
+            >Required, Unique, at least 1 character</span
             >
         </label>
         <input
@@ -114,7 +114,7 @@
         >
             Unit
             <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-            >Required, at least 1 character</span
+            >Optional</span
             >
         </label>
         <input
@@ -141,23 +141,25 @@
         Submit
         </button> -->
         <!-- <button @click="add_dynamic_form" class="btn btn-success mr-1 mb-2"> -->
-        <button type='button' @click="add_dynamic_form" class="btn btn-success mt-5">
+          
+          <!-- btn btn-success mt-5 -->
+        <button type='button' @click="add_dynamic_form" class="btn btn-success-soft mt-5">
           <PlusIcon class="w-5 h-5" />
           <u>Create another question</u>
         </button>
         
 
         <br />
-        <button type='button' @click="delete_dynamic_form" class="btn btn-danger mt-5">
+        <button type='button' @click="delete_dynamic_form" class="btn btn-danger-soft mt-5">
           <TrashIcon class="w-5 h-5" />
           <u>Remove the above question</u>
         </button>
 
-        <br />
-        <button type='button' @click="duplicate_dynamic_form" class="btn btn-danger mt-5">
-          <PlusIcon class="w-5 h-5" />
+        <!-- <br />
+        <button type='button' @click="duplicate_dynamic_form" class="btn btn-primary-soft mt-5">
+          <Share2Icon class="w-5 h-5" />
           <u>Duplicate the above question</u>
-        </button>
+        </button> -->
       <div
         class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-400/60 dark:border-darkmode-800"
       >
@@ -171,7 +173,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { reactive, toRefs, onMounted } from "vue";
+import { reactive, toRefs, onMounted, onBeforeMount } from "vue";
 import {
   required,
   minLength,
@@ -275,27 +277,35 @@ const rules = {
     required: requiredIf(() => formData.answer_type === 'continuous')
   },
   unit: {
-    required,
-    minLength: minLength(1),
+    // required,
+    // minLength: minLength(1),
   },
 };
 
-const validate = reactive(useVuelidate(rules, toRefs(formData)));
+let validate = reactive(useVuelidate(rules, toRefs(formData)));
 props.dynamic_form_data.validate = validate;
 
-
-onMounted(() => {
-//   console.log('asdfasdf', props.dynamic_form_data)
-//   if ('validate' in props.dynamic_form_data) {
-//     // const validate = props.dynamic_form_data.validate
-// //
-//   } else {
-//     console.log('???SDfasdfsafd')
-//     props.dynamic_form_data.validate = validate;
-//     const validate = useVuelidate(rules, toRefs(formData));
+// if ('validate' in props.dynamic_form_data) {
+//   console.log('!!!!!!!!diyici', props.dynamic_form_data.validate)
+//   // if validate is in props.dynamic_form_data,
+//   // it means this item is produced by duplicated comment
+//   validate = props.dynamic_form_data.validate
+//   for (let key in props.dynamic_form_data.validate) {
+//     validate[key] = props.dynamic_form_data.validate[key]
 //   }
+// } else {
+//   console.log('######dierci')
+//   console.log('???SDfasdfsafd')
+//   // const validate = reactive(useVuelidate(rules, toRefs(formData)));
+//   // props.dynamic_form_data.validate = validate;
+//   props.dynamic_form_data.validate = validate;
+// }
+
+// onBeforeMount(() => {
+
   
-});
+  
+// });
 
 // dynamic_form_data.value = validate
 console.log('validate', validate)

@@ -44,6 +44,7 @@ import FaqLayout1 from "../views/faq-layout-1/Main.vue";
 import FaqLayout2 from "../views/faq-layout-2/Main.vue";
 import FaqLayout3 from "../views/faq-layout-3/Main.vue";
 import Login from "../views/login/Main.vue";
+import Logout from "../views/logout/Main.vue";
 import Register from "../views/register/Main.vue";
 import ResetPwd from "../views/reset-pwd/Main.vue"
 import ErrorPage from "../views/error-page/Main.vue";
@@ -71,14 +72,45 @@ import FileUpload from "../views/file-upload/Main.vue";
 import WysiwygEditor from "../views/wysiwg-editor/Main.vue";
 import CreateNewSurvey from "../views/create-new-survey/Main.vue";
 import CreateNewSurveyRes from "../views/create-new-survey-res/Main.vue";
-import AnswerForm from "../views/answer-form/Main.vue";
-import AnswerFormDone from "../views/answer-form-done/Main.vue";
+import AnswerSurvey from "../views/answer-survey/Main.vue";
+import AnswerSurveyDone from "../views/answer-survey-done/Main.vue";
 import TemplateForm from "../views/template-form/Main.vue";
 import Histories from "../views/histories/Main.vue"
 import Chart from "../views/chart/Main.vue";
 import Slider from "../views/slider/Main.vue";
 import ImageZoom from "../views/image-zoom/Main.vue";
 import { useAuthenticationStore } from '@/stores/authentication'
+
+
+// const router_before_check = (to, from, next) => {
+//   const authenticationStore = useAuthenticationStore();
+//   const userToken = authenticationStore.userToken;
+//   const isUserAuthenticated = authenticationStore.isUserAthenticated
+//   // if (to.meta.authority) {
+//   //   const hasauthority = authority.checkAuthority(to.meta.authority)
+//   //   if (!hasauthority) next({ name: 'Home' })
+//   // }
+
+//   if (to.matched.some(record => record.meta.requiresAuth) 
+//       && (!userToken || userToken === null || isUserAuthenticated === false)) {
+//     console.log("zzzz");
+//     next({
+//       path: '/',
+//       query: { redirect: to.fullPath }
+//     })
+//   } else if (userToken && to.name == 'login') {
+//     // cant go back to login page when after logining in
+//     console.log('zzzz2')
+//     next({
+//       path: '/faq-layout-3'
+//     })
+//   } 
+//   else {
+//     console.log('zzzz3')
+//     // console.log('bugeijin', userToken, isUserAuthenticated)
+//     next() // stay in the same page
+//   }
+// };
 
 const routes = [
 
@@ -106,7 +138,15 @@ const routes = [
     path: "/",
     name: "login",
     component: Login,
+    // beforeEnter: router_before_check
   },
+  {
+    path: "/logout",
+    name: "logout",
+    component: Logout,
+    // beforeEnter: router_before_check
+  },
+  
   {
     path: "/",
     component: SideMenu,
@@ -180,7 +220,8 @@ const routes = [
         component: Histories,
         meta: { 
           requiresAuth: true,
-        }
+        },
+        // beforeEnter: router_before_check
       },
       {
         path: "inbox",
@@ -236,6 +277,7 @@ const routes = [
         path: "users-layout-3",
         name: "side-menu-users-layout-3",
         component: UsersLayout3,
+        // beforeEnter: router_before_check
       },
       {
         path: "profile-overview-1",
@@ -319,6 +361,7 @@ const routes = [
         path: "faq-layout-3",
         name: "side-menu-faq-layout-3",
         component: FaqLayout3,
+        // beforeEnter: router_before_check
       },
       {
         path: "update-profile",
@@ -436,27 +479,31 @@ const routes = [
         component: CreateNewSurvey,
         meta: { 
           requiresAuth: true,
-        }
+        },
+        // beforeEnter: router_before_check
       },
       {
         path: "create-new-survey-res",
         name: "side-menu-create-new-survey-res",
         component: CreateNewSurveyRes,
+        // beforeEnter: router_before_check
       },
       {
-        path: "answer-form",
-        name: "side-menu-answer-form",
-        component: AnswerForm,
+        path: "answer-survey",
+        name: "side-menu-answer-survey",
+        component: AnswerSurvey,
       },
       {
-        path: "answer-form-done",
-        name: "side-menu-answer-form-done",
-        component: AnswerFormDone,
+        path: "answer-survey-done",
+        name: "side-menu-answer-survey-done",
+        component: AnswerSurveyDone,
+        // beforeEnter: router_before_check
       },
       {
         path: "template-form",
         name: "side-menu-template-form",
         component: TemplateForm,
+        // beforeEnter: router_before_check
       },
       {
         path: "chart",
@@ -1158,17 +1205,20 @@ const routes = [
     path: "/register",
     name: "register",
     component: Register,
+    // beforeEnter: router_before_check
   },
   {
     path: "/resetPwd",
     name: "resetPwd",
     component: ResetPwd,
+    // beforeEnter: router_before_check
 
   },
   {
     path: "/error-page",
     name: "error-page",
     component: ErrorPage,
+    // beforeEnter: router_before_check
   },
   {
     path: "/:pathMatch(.*)*",
@@ -1205,10 +1255,13 @@ router.beforeEach((to, from, next) => {
     })
   } else if (userToken && to.name == 'login') {
     // cant go back to login page when after logining in
+    console.log('zzzz2')
     next({
-      path: from.fullPath
+      path: '/faq-layout-3'
     })
-  } else {
+  } 
+  else {
+    console.log('zzzz3')
     // console.log('bugeijin', userToken, isUserAuthenticated)
     next() // stay in the same page
   }

@@ -14,6 +14,11 @@ export const useSideMenuStore = defineStore("sideMenu", {
         title: "Login",
       },
       {
+        icon: "LogOutIcon",
+        pageName: "logout",
+        title: "Logout",
+      },
+      {
         icon: "TrelloIcon",
         pageName: "side-menu-profile-overview-3",
         title: "Profile",
@@ -24,11 +29,11 @@ export const useSideMenuStore = defineStore("sideMenu", {
         pageName: "side-menu-create-new-survey",
         title: "Create New Survey",
       },
-      {
-        icon: "SidebarIcon",
-        pageName: "side-menu-answer-form",
-        title: "Answer Form",
-      },
+      // {
+      //   icon: "SidebarIcon",
+      //   pageName: "side-menu-answer-form",
+      //   title: "Answer Form",
+      // },
       // {
       //   icon: "SidebarIcon",
       //   pageName: "side-menu-get-voter-answers",

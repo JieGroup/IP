@@ -20,9 +20,9 @@ const findActiveMenu = (subMenu, route) => {
 };
 
 const nestedMenu = (menu, route) => {
-  menu.forEach((item, key) => {
+  menu.forEach((item, index) => {
     if (typeof item !== "string") {
-      let menuItem = menu[key];
+      let menuItem = menu[index];
       menuItem.active =
         ((route.forceActiveMenu !== undefined &&
           item.pageName === route.forceActiveMenu) ||

@@ -99,4 +99,19 @@ const rules = {
 // const validate = reactive(useVuelidate(rules, toRefs(form_data)));
 const validate = useVuelidate(rules, toRefs(form_data));
 props.categorical_answer_option_data.validate = validate;
+console.log('bbbbbb', validate.specific_option)
+// if ('validate' in props.categorical_answer_option_data) {
+//   console.log('!!!!!!!!categorical_answer_option_data', props.categorical_answer_option_data.validate)
+//   // if validate is in props.dynamic_form_data,
+//   // it means this item is produced by duplicated comment
+//   validate = props.categorical_answer_option_data.validate
+//   for (let key in props.categorical_answer_option_data.validate) {
+//     validate[key] = props.categorical_answer_option_data.validate[key]
+//   }
+// } else {
+//   console.log('######diercicategorical_answer_option_data')
+//   // const validate = reactive(useVuelidate(rules, toRefs(formData)));
+//   // props.dynamic_form_data.validate = validate;
+//   props.categorical_answer_option_data.validate = validate;
+// }
 </script>

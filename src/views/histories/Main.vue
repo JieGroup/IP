@@ -154,8 +154,13 @@
               <div
                 class="flex items-center justify-center" @click='download_file(item.survey_template_name, item.survey_template_id)'
               >
+                <a
+                  class="flex items-center text-primary whitespace-nowrap"
+                  href="javascript:;"
+                >
                 <!-- Download -->
                 <CheckSquareIcon class="w-4 h-4 mr-1" /> Download
+                </a>
               </div>
             </td>
             <td class="table-report__action w-56">
@@ -428,7 +433,7 @@ const download_file = async (survey_template_name, survey_template_id) => {
       newWindow: true,
       close: true,
       gravity: "top",
-      position: "right",
+      position: "center",
       stopOnFocus: true,
     }).showToast();
   } catch (err) {
@@ -444,7 +449,7 @@ const download_file = async (survey_template_name, survey_template_id) => {
       newWindow: true,
       close: true,
       gravity: "top",
-      position: "right",
+      position: "center",
       stopOnFocus: true,
     }).showToast();
   }
@@ -592,7 +597,7 @@ onBeforeMount(async () => {
     //   newWindow: true,
     //   close: true,
     //   gravity: "top",
-    //   position: "right",
+    //   position: "center",
     //   stopOnFocus: true,
     // }).showToast();
   } catch (err) {
@@ -608,7 +613,7 @@ onBeforeMount(async () => {
     //   newWindow: true,
     //   close: true,
     //   gravity: "top",
-    //   position: "right",
+    //   position: "center",
     //   stopOnFocus: true,
     // }).showToast();
   }

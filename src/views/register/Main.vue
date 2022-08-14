@@ -23,7 +23,7 @@
 
 
           <router-link
-            :to="{ name: 'side-menu-answer-form' }"
+            :to="{ name: 'side-menu-faq-layout-3' }"
             tag="a"
             class="intro-x flex items-center pl-5 pt-4"
           >
@@ -334,7 +334,7 @@ const register = async () => {
       newWindow: true,
       close: true,
       gravity: "top",
-      position: "right",
+      position: "center",
       stopOnFocus: true,
     }).showToast();
   } else {
@@ -352,7 +352,7 @@ const register = async () => {
         newWindow: true,
         close: true,
         gravity: "top",
-        position: "right",
+        position: "center",
         stopOnFocus: true,
       }).showToast();
 
@@ -369,7 +369,7 @@ const register = async () => {
         newWindow: true,
         close: true,
         gravity: "top",
-        position: "right",
+        position: "center",
         stopOnFocus: true,
       }).showToast();
     }
@@ -390,7 +390,7 @@ const resend_email_confirmation_link = async () => {
       newWindow: true,
       close: true,
       gravity: "top",
-      position: "right",
+      position: "center",
       stopOnFocus: true,
     }).showToast();
   } else {
@@ -408,7 +408,7 @@ const resend_email_confirmation_link = async () => {
         newWindow: true,
         close: true,
         gravity: "top",
-        position: "right",
+        position: "center",
         stopOnFocus: true,
       }).showToast();
 
@@ -425,7 +425,7 @@ const resend_email_confirmation_link = async () => {
         newWindow: true,
         close: true,
         gravity: "top",
-        position: "right",
+        position: "center",
         stopOnFocus: true,
       }).showToast();
     }

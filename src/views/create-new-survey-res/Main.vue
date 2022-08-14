@@ -4,12 +4,21 @@
       <AccordionGroup class="accordion-boxed">
         <AccordionItem>
             <Accordion>
-              Your Survey Template ID:
+              Please use the following link to deliver the survey:
+            </Accordion>
+            <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
+                https://grand-liger-cad265.netlify.app/answer-survey/?surveyTemplateID={{ surveyTemplateID }}
+            </AccordionPanel>
+        </AccordionItem>
+        <AccordionItem>
+            <Accordion>
+              Your Survey Template ID: {{ surveyTemplateID }}
             </Accordion>
             <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
                 {{ surveyTemplateID }}
             </AccordionPanel>
         </AccordionItem>
+        
         <!-- <AccordionItem>
             <Accordion>
                 Understanding IP Addresses, Subnets, and CIDR Notation

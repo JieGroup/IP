@@ -12,7 +12,7 @@ const init = (el, props) => {
       newWindow: true,
       close: true,
       gravity: "top",
-      position: "right",
+      position: "center",
       stopOnFocus: true,
       ...props.options,
       node: clonedEl,

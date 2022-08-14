@@ -101,13 +101,14 @@
             >
               <CheckCircleIcon class="text-danger" />
               <div class="ml-4 mr-4">
-                <div class="font-medium">Network request error!: {{ requestError.error }}</div>
+                <div class="font-medium">Error!: {{ requestError.error }}</div>
                 <div class="text-slate-500 mt-1" >
                   <!-- {{ requestError }}
                   error_name: {{ requestError['error_name'] }}
                   error_msg: {{ requestError.error_msg }}
                   error_status: {{ requestError.error_status }} -->
                   Please check your input!
+                  1. Topic of this question must be unique
                 </div>
               </div>
             </div>
@@ -116,16 +117,16 @@
         </div>
       </PreviewComponent>
       <!-- END: Form Validation -->
-      <button @click="ceshi">
+      <!-- <button @click="ceshi">
         ceshi
-      </button>
+      </button> -->
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { reactive, toRefs, inject } from "vue";
+import { reactive, toRefs, inject, isRef } from "vue";
 import {
   required,
   minLength,
@@ -180,14 +181,18 @@ const delete_dynamic_form = (dynamic_form_index) => {
 
 const duplicate_dynamic_form = (dynamic_form_index) => {
   // let duplicate_ele = JSON.parse(JSON.stringify(dynamic_form_array[dynamic_form_index]));
+  console.log('duplicate_ele_before', dynamic_form_array[dynamic_form_index], isRef(dynamic_form_array[dynamic_form_index]))
   let duplicate_ele = _.cloneDeep(dynamic_form_array[dynamic_form_index])
+  console.log('duplicate_ele', duplicate_ele, isRef(duplicate_ele))
+  let duplicate_ele_reactive = reactive(duplicate_ele)
+  console.log('to_refs_duplicate_ele', duplicate_ele_reactive, isRef(duplicate_ele_reactive))
   unique_id += 1
-  duplicate_ele.unique_id = unique_id
-  console.log('duplicate_ele', duplicate_ele, dynamic_form_array[dynamic_form_index])
-  console.log('whole', dynamic_form_array)
+  duplicate_ele_reactive.unique_id = unique_id
+  // console.log('duplicate_ele', duplicate_ele, dynamic_form_array[dynamic_form_index])
+  // console.log('whole', dynamic_form_array)
   // 索引位置，要删除元素的数量，元素
-  dynamic_form_array.splice(dynamic_form_index+1, 0, duplicate_ele)
-  console.log('after_duplicate_ele', dynamic_form_array)
+  dynamic_form_array.splice(dynamic_form_index+1, 0, duplicate_ele_reactive)
+  console.log('whole_after_duplicate_ele', dynamic_form_array)
 }
 
 const is_fix_form_validate = (data_valid) => {
@@ -207,10 +212,16 @@ const is_dynamic_form_validate = (data_valid) => {
   dynamic_form_array.forEach((item, index) => {
     // item is the value of the vuelidate we used
     const validate = item.validate
+    console.log('--debug', validate, validate.categorical_answer_options.$model)
     validate.$touch();
     if (validate.$invalid === true) {
       data_valid = false
     }
+    
+    validate.categorical_answer_options.$model.forEach((sub_item, index) => {
+      sub_item.validate.$touch()
+    })
+    // validate.categorical_answer_options.$model.validate.$touch()
     // data_invalid = validate.$invalid
   });
   console.log(`is_dynamic_form_validate ${data_valid}`)
@@ -230,7 +241,7 @@ const notification = (data_valid) => {
       newWindow: true,
       close: true,
       gravity: "top",
-      position: "right",
+      position: "center",
       stopOnFocus: true,
     }).showToast();
   }
@@ -269,7 +280,7 @@ const send_form = async (templateData) => {
       newWindow: true,
       close: true,
       gravity: "top",
-      position: "right",
+      position: "center",
       stopOnFocus: true,
     }).showToast();
   } catch (err) {
@@ -286,7 +297,7 @@ const send_form = async (templateData) => {
       newWindow: true,
       close: true,
       gravity: "top",
-      position: "right",
+      position: "center",
       stopOnFocus: true,
     }).showToast();
   }
@@ -320,7 +331,7 @@ const send_to_server = () => {
         newWindow: true,
         close: true,
         gravity: "top",
-        position: "right",
+        position: "center",
         stopOnFocus: true,
       }).showToast();
       return null

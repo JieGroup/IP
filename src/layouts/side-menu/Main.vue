@@ -8,7 +8,7 @@
       <!-- :to="{ name: 'side-menu-dashboard-overview-4' }" -->
       <nav class="side-nav">
         <router-link
-          :to="{ name: 'side-menu-answer-form' }"
+          :to="{ name: 'side-menu-faq-layout-3' }"
           tag="a"
           class="intro-x flex items-center pl-5 pt-4"
         >
@@ -154,6 +154,7 @@ import { useSideMenuStore } from "@/stores/side-menu";
 import TopBar from "@/components/top-bar/Main.vue";
 import MobileMenu from "@/components/mobile-menu/Main.vue";
 import DarkModeSwitcher from "@/components/dark-mode-switcher/Main.vue";
+import { useAuthenticationStore } from "@/stores/authentication"
 import MainColorSwitcher from "@/components/main-color-switcher/Main.vue";
 import SideMenuTooltip from "@/components/side-menu-tooltip/Main.vue";
 import { linkTo, nestedMenu, enter, leave } from "./index";
@@ -165,6 +166,7 @@ const formattedMenu = ref([]);
 const sideMenuStore = useSideMenuStore();
 console.log('!@#!@#!@#', route, route.path)
 const sideMenu = computed(() => nestedMenu(sideMenuStore.menu, route));
+const authenticationStore = useAuthenticationStore()
 console.log('!!!!', sideMenu.value, $h.toRaw(sideMenu.value))
 provide("forceActiveMenu", (pageName) => {
   route.forceActiveMenu = pageName;
@@ -179,12 +181,44 @@ watch(
   computed(() => route.path),
   () => {
     delete route.forceActiveMenu;
-    formattedMenu.value = $h.toRaw(sideMenu.value);
+    formattedMenu.value = check_authentication($h.toRaw(sideMenu.value));
   }
 );
-console.log('￥￥￥￥￥', formattedMenu)
+
+const check_authentication = (sideMenu_value) => {
+  let processed_sideMenu_value = [];
+  if (authenticationStore.isUserAthenticated === true){
+    // if user is authenticated, we dont want to let
+    // it see the Login again
+    sideMenu_value.forEach((item, index) => {
+      if (item.pageName === 'login'){
+        // pass
+      } else {
+        processed_sideMenu_value.push(item)
+      }
+    })
+  } else {
+    // if user is not authenticated, it can only
+    // see the login and FAQ
+    sideMenu_value.forEach((item, index) => {
+      if (item.pageName === 'side-menu-profile-overview-3'
+          || item.pageName === 'side-menu-create-new-survey'
+          || item.pageName === 'side-menu-histories'
+          || item.pageName === 'logout'
+          || item === 'devider'){
+        // pass
+      } else {
+        processed_sideMenu_value.push(item)
+      }
+    })
+  }
+  console.log('processed_sideMenu_value', processed_sideMenu_value)
+  return processed_sideMenu_value
+}
+
 onMounted(() => {
   dom("body").removeClass("error-page").removeClass("login").addClass("main");
-  formattedMenu.value = $h.toRaw(sideMenu.value);
+  formattedMenu.value = check_authentication($h.toRaw(sideMenu.value));
+  console.log('￥￥￥￥￥', formattedMenu.value)
 });
 </script>

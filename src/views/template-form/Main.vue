@@ -199,7 +199,7 @@ const get_survey_template = async (surveyTemplateIDData) => {
     //   newWindow: true,
     //   close: true,
     //   gravity: "top",
-    //   position: "right",
+    //   position: "center",
     //   stopOnFocus: true,
     // }).showToast();
   } catch (err) {
@@ -216,7 +216,7 @@ const get_survey_template = async (surveyTemplateIDData) => {
       newWindow: true,
       close: true,
       gravity: "top",
-      position: "right",
+      position: "center",
       stopOnFocus: true,
     }).showToast();
   }

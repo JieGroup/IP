@@ -23,7 +23,7 @@
 
 
           <router-link
-            :to="{ name: 'side-menu-answer-form' }"
+            :to="{ name: 'side-menu-faq-layout-3' }"
             tag="a"
             class="intro-x flex items-center pl-5 pt-4"
           >
@@ -303,7 +303,7 @@ const reset_pwd = async () => {
       newWindow: true,
       close: true,
       gravity: "top",
-      position: "right",
+      position: "center",
       stopOnFocus: true,
     }).showToast();
   } else {
@@ -321,7 +321,7 @@ const reset_pwd = async () => {
         newWindow: true,
         close: true,
         gravity: "top",
-        position: "right",
+        position: "center",
         stopOnFocus: true,
       }).showToast();
 
@@ -338,7 +338,7 @@ const reset_pwd = async () => {
         newWindow: true,
         close: true,
         gravity: "top",
-        position: "right",
+        position: "center",
         stopOnFocus: true,
       }).showToast();
     }
