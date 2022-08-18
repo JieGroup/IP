@@ -45,40 +45,31 @@
               <div v-if="isStartAnswer === true" class="input-form mt-3">
               <!-- WOW: {{ isStartAnswer }} {{ isStartAnswer.value }} -->
               <label
-                for="validation-form-2"
-                class="form-label w-full flex flex-col sm:flex-row"
+                  for="validation-form-2"
+                  class="form-label w-full flex flex-col sm:flex-row"
               >
-                Survey ID
-                <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
-                >Required</span
-                >
+                  Survey ID
+                  <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
+                  >Required</span
+                  >
               </label>
               <input
-                v-if="isfixSurveyID === true"
-                v-model.trim="startFormDataValidate.survey_template_id.$model"
-                type="text"
-                name="survey_template_id"
-                class="form-control"
-                readonly="readonly"
-              />
-              <input
-                v-else
-                id="validation-form-2"
-                v-model.trim="startFormDataValidate.survey_template_id.$model"
-                type="text"
-                name="survey_template_id"
-                class="form-control"
-                :class="{ 'border-danger': startFormDataValidate.survey_template_id.$error }"
-                placeholder="The survey id that you need to answer."
+                  id="validation-form-2"
+                  v-model.trim="startFormDataValidate.survey_template_id.$model"
+                  type="text"
+                  name="survey_template_id"
+                  class="form-control"
+                  :class="{ 'border-danger': startFormDataValidate.survey_template_id.$error }"
+                  placeholder="The survey id that you need to answer."
               />
               <template v-if="startFormDataValidate.survey_template_id.$error">
-                <div
-                v-for="(error, index) in startFormDataValidate.survey_template_id.$errors"
-                :key="index"
-                class="text-danger mt-2"
-                >
-                {{ error.$message }}
-                </div>
+                  <div
+                  v-for="(error, index) in startFormDataValidate.survey_template_id.$errors"
+                  :key="index"
+                  class="text-danger mt-2"
+                  >
+                  {{ error.$message }}
+                  </div>
               </template>
               <br />
               <br />
@@ -220,7 +211,6 @@ const route = useRoute();
 // })
 let request_error = ref(false)
 
-let isfixSurveyID = ref(false);
 let isStartAnswer = ref(true);
 // let unique_id = 0
 // voter's answers
@@ -298,9 +288,9 @@ const store_cur_template_info = (templateDataFromBackEnd) => {
   // change data in storage
   console.log('~~~~~~store_cur_template_info', templateDataFromBackEnd)
   // object needs to be json stringify
-  // storedVoterAnswer.setsurveyTopics(JSON.stringify(templateDataFromBackEnd.updated_survey_topics));
-  // storedVoterAnswer.setsurveyAnswerID(templateDataFromBackEnd.survey_answer_id);
-  // storedVoterAnswer.setsurveyUpdateMethod(templateDataFromBackEnd.survey_update_method);
+  storedVoterAnswer.setsurveyTopics(JSON.stringify(templateDataFromBackEnd.updated_survey_topics));
+  storedVoterAnswer.setsurveyAnswerID(templateDataFromBackEnd.survey_answer_id);
+  storedVoterAnswer.setsurveyUpdateMethod(templateDataFromBackEnd.survey_update_method);
 
   // change variables in current page
   formTemplateData.surveyTopics = templateDataFromBackEnd.updated_survey_topics;
@@ -402,7 +392,7 @@ const send_voter_submit_answers = async () => {
       unique_key_num.value = unique_key_num.value + 100000;
       const dom_ele = dom("#request-success-content").clone().removeClass("hidden")[0]
       dom_ele.children[1].querySelector(".font-medium").innerHTML = 'Submitted successfully!'
-      console.log('sssssshuishi', dom_ele.children[1].querySelector(".font-medium").innerHTML)
+
       Toastify({
         node: dom_ele,
         duration: 10000,
@@ -459,7 +449,6 @@ onMounted(() => {
   // if (storedVoterAnswer.surveyTopics === null && isStartAnswer.value === true){
   //   //
   if (route.query !== null && 'surveyTemplateID' in route.query){
-    isfixSurveyID.value = true
     startFormData.survey_template_id = route.query.surveyTemplateID
   }
   // } else {
@@ -473,14 +462,14 @@ onMounted(() => {
     back_to_start_answering()
   }
   // }
-  // if (JSON.parse(storedVoterAnswer.surveyTopics) !== null || isStartAnswer.value === false){
-  //   console.log('jinlai')
-  //   isStartAnswer.value = false
-  //   console.log('isStartAnswer', isStartAnswer)
-  //   load_prev_template_info()
-  // } else {
-  //   // New answer to a survey template
-  //   // pass
-  // }
+  if (JSON.parse(storedVoterAnswer.surveyTopics) !== null || isStartAnswer.value === false){
+    console.log('jinlai')
+    isStartAnswer.value = false
+    console.log('isStartAnswer', isStartAnswer)
+    load_prev_template_info()
+  } else {
+    // New answer to a survey template
+    // pass
+  }
 });
 </script>

@@ -39,7 +39,7 @@
                 readonly="readonly"
             />
             </div>
-
+            {{ get_survey_share_link(surveyTemplateFixData.survey_template_id) }}
             <div class="input-form mt-3">
             <label
                 for="validation-form-0-6"
@@ -49,7 +49,7 @@
             </label>
             <input
                 id="validation-form-0-6"
-                v-model.trim="surveyLink"
+                v-model.trim="surveyTemplateFixData.survey_template_id"
                 type="text"
                 name="survey_link"
                 class="form-control"
@@ -149,7 +149,7 @@
 
 
 <script setup>
-import { reactive, toRefs, onMounted, ref, toRaw } from "vue";
+import { reactive, toRefs, onMounted, ref, toRaw, onBeforeMount } from "vue";
 
 import {
   required,
@@ -194,7 +194,26 @@ const props = defineProps({
 //   console.log('jjjjjjjjjjjjjj3', change_survey_update_method_to_user_friendly_text())
 //   const mode = ref(change_survey_update_method_to_user_friendly_text())
 // });
-console.log('template-fix-form', props.surveyTemplateFixData)
+
+// props.surveyTemplateFixData.forEach((item, index) => {
+//     console.log('1231231', item, index)
+// });
+
+const arr = reactive([])
+
+
+const a = 5;
+const ceshi = JSON.parse(JSON.stringify(props.surveyTemplateFixData))
+
+const ceshi2 = toRaw(props.surveyTemplateFixData)
+console.log('xianzaiceshi', toRaw(props.surveyTemplateFixData), ceshi2.survey_template_id)
+console.log('--------------------template-fix-form', props.surveyTemplateFixData, props.surveyTemplateFixData['survey_template_id'])
+// onBeforeMount
 let surveyLink = ref(get_survey_share_link(props.surveyTemplateFixData.survey_template_id))
+console.log('surveyLink', surveyLink)
+// onBeforeMount(() => {
+//     let surveyLink = ref(get_survey_share_link(props.surveyTemplateFixData.survey_template_id))
+// })
+
 
 </script>

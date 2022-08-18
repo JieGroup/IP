@@ -337,18 +337,19 @@ const register = async () => {
     'email': formData.email,
     'password': formData.password
   }
+  validate.value.$touch();
   if (validate.value.$invalid) {
-    Toastify({
-      node: dom("#request-error-content")
-        .clone()
-        .removeClass("hidden")[0],
-      duration: 10000,
-      newWindow: true,
-      close: true,
-      gravity: "top",
-      position: "center",
-      stopOnFocus: true,
-    }).showToast();
+    // Toastify({
+    //   node: dom("#request-error-content")
+    //     .clone()
+    //     .removeClass("hidden")[0],
+    //   duration: 10000,
+    //   newWindow: true,
+    //   close: true,
+    //   gravity: "top",
+    //   position: "center",
+    //   stopOnFocus: true,
+    // }).showToast();
   } else {
     try{
       // let username = formData.username
@@ -371,12 +372,17 @@ const register = async () => {
       // to_login_page()
     } catch (err) {
       let processed_err = process_axios_error(err)
-      console.log(`login processed err: ${processed_err}`)
-
+      console.log('login processed err:', processed_err)
+      const dom_ele = dom("#request-error-content").clone().removeClass("hidden")[0]
+      if ('error_msg' in processed_err) {
+        dom_ele.children[1].querySelector(".font-medium").innerHTML = 'Register failed'
+        dom_ele.children[1].querySelector(".text-slate-500.mt-1").innerHTML = processed_err.error_msg
+      } else {
+        dom_ele.children[1].querySelector(".font-medium").innerHTML = 'Register failed'
+      }
+      
       Toastify({
-        node: dom("#request-error-content")
-          .clone()
-          .removeClass("hidden")[0],
+        node: dom_ele,
         duration: 10000,
         newWindow: true,
         close: true,

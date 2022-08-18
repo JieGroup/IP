@@ -8,6 +8,23 @@
     <div>
       <!-- BEGIN: Validation Form -->
       <!-- <form class="validate-form"> -->
+        
+        <div class="input-form mt-3">
+        <label
+          for="validation-form-2"
+          class="form-label w-full flex flex-col sm:flex-row"
+        >
+          Topic question
+        </label>
+        <input
+          id="validation-form-2"
+          v-model.trim="surveyTemplateDynamicDataValue.topic_question"
+          type="text"
+          name="topic_question"
+          class="form-control"
+          readonly="readonly"
+        />
+        </div>
 
         <div class="input-form mt-3">
         <label
@@ -21,23 +38,6 @@
           v-model.trim="surveyTemplateDynamicDataKey"
           type="text"
           name="topic name"
-          class="form-control"
-          readonly="readonly"
-        />
-        </div>
-
-        <div class="input-form mt-3">
-        <label
-          for="validation-form-2"
-          class="form-label w-full flex flex-col sm:flex-row"
-        >
-          Topic question
-        </label>
-        <input
-          id="validation-form-2"
-          v-model.trim="surveyTemplateDynamicDataValue.topic_question"
-          type="text"
-          name="topic_question"
           class="form-control"
           readonly="readonly"
         />
