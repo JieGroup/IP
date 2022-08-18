@@ -7,12 +7,13 @@
               Please use the following link to deliver the survey:
             </Accordion>
             <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
-                https://grand-liger-cad265.netlify.app/answer-survey/?surveyTemplateID={{ surveyTemplateID }}
+                {{ get_survey_share_link(surveyTemplateID) }}
+
             </AccordionPanel>
         </AccordionItem>
         <AccordionItem>
             <Accordion>
-              Your Survey Template ID: {{ surveyTemplateID }}
+              Your Survey ID: {{ surveyTemplateID }}
             </Accordion>
             <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
                 {{ surveyTemplateID }}
@@ -86,14 +87,16 @@ import { ref } from "vue";
 // import { axios } from "@/utils/axios";
 // import { linkTo, process_template_data, is_data_valid } from "./index"
 // import { process_axios_response, process_axios_error, get_api_url } from "@/utils/axios_utils"
-import {useRouter} from 'vue-router'
+import { useRouter } from 'vue-router'
+import { get_survey_share_link } from "@/utils/axios_utils"
 // receive variable from parent
 // const props = defineProps({
 //   test: {
 //     default: null,
 //   },
 // });
-const router = useRouter()
+const router = useRouter();
+
 let params = router.currentRoute.value.params
 
 let surveyTemplateID = ref('')

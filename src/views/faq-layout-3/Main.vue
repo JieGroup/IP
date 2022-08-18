@@ -190,7 +190,7 @@
             >
               1. Click 'Answer Form' icon in the left bar
               <br/>
-              2. Type in the Survey Template ID and your Mturk ID
+              2. Type in the Survey ID and your Mturk ID
               <br/>
               3. Keep answering the Survey until it shows 'Thank you for your participation'
               <br/>

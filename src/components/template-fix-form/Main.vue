@@ -28,13 +28,30 @@
                 for="validation-form-0-5"
                 class="form-label w-full flex flex-col sm:flex-row"
             >
-                Survey Template ID
+                Survey ID
             </label>
             <input
                 id="validation-form-0-5"
                 v-model.trim="surveyTemplateFixData.survey_template_id"
                 type="text"
                 name="survey_template_id"
+                class="form-control"
+                readonly="readonly"
+            />
+            </div>
+
+            <div class="input-form mt-3">
+            <label
+                for="validation-form-0-6"
+                class="form-label w-full flex flex-col sm:flex-row"
+            >
+                Survey Link
+            </label>
+            <input
+                id="validation-form-0-6"
+                v-model.trim="surveyLink"
+                type="text"
+                name="survey_link"
                 class="form-control"
                 readonly="readonly"
             />
@@ -148,6 +165,7 @@ import {
 import { useVuelidate } from "@vuelidate/core";
 import Toastify from "toastify-js";
 import dom from "@left4code/tw-starter/dist/js/dom";
+import { get_survey_share_link } from "@/utils/axios_utils"
 
 // receive variable from parent
 const props = defineProps({
@@ -177,5 +195,6 @@ const props = defineProps({
 //   const mode = ref(change_survey_update_method_to_user_friendly_text())
 // });
 console.log('template-fix-form', props.surveyTemplateFixData)
+let surveyLink = ref(get_survey_share_link(props.surveyTemplateFixData.survey_template_id))
 
 </script>

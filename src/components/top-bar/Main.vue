@@ -175,7 +175,7 @@
           <!-- <DropdownItem class="hover:bg-white/5">
             <EditIcon class="w-4 h-4 mr-2" /> Add Account
           </DropdownItem> -->
-          <DropdownItem v-if="authenticationStore.isUserAthenticated === true" @click="to_reset_pwd" class="hover:bg-white/5">
+          <!-- <DropdownItem v-if="authenticationStore.isUserAthenticated === true" @click="to_reset_pwd" class="hover:bg-white/5"> -->
             <!-- <router-link
               :to="{ name: 'side-menu-change-password' }"
               tag="a"
@@ -184,11 +184,11 @@
               
             </router-link> -->
              <!-- <LockIcon @click="to_reset_pwd" class="w-4 h-4 mr-2" /> Reset Password -->
-            <LockIcon class="w-4 h-4 mr-2" /> Reset Password
+            <!-- <LockIcon class="w-4 h-4 mr-2" /> Reset Password -->
             <!-- <button type="button" @click="to_reset_pwd" class="w-4 h-4 mr-2"> 
               Reset Password 
             </button> -->
-          </DropdownItem>
+          <!-- </DropdownItem> -->
           
 
           <!-- <a class="flex items-center mt-5" href="">

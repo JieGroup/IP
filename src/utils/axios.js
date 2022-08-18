@@ -73,23 +73,26 @@ axios.interceptors.response.use(response => {
             // Vue.toasted.error('401: 认证已失效，请先登录', { icon: 'fingerprint' })
             router.replace({
               path: '/',
-              query: { redirect: router.currentRoute.path },
+              query: { 
+                redirect: router.currentRoute.path,
+                token_expired: true
+              },
             })
 
-            Toastify({
-              text: "Please Login first",
-              duration: 10000,
-              // destination: "https://github.com/apvarun/toastify-js",
-              newWindow: true,
-              close: true,
-              gravity: "top", // `top` or `bottom`
-              position: "center", // `left`, `center` or `right`
-              stopOnFocus: true, // Prevents dismissing of toast on hover
-              style: {
-                background: "linear-gradient(to right, #00b09b, #96c93d)",
-              },
-              onClick: function(){} // Callback after click
-            }).showToast();
+            // Toastify({
+            //   text: "Please Login first",
+            //   duration: 10000,
+            //   // destination: "https://github.com/apvarun/toastify-js",
+            //   newWindow: true,
+            //   close: true,
+            //   gravity: "top", // `top` or `bottom`
+            //   position: "center", // `left`, `center` or `right`
+            //   stopOnFocus: true, // Prevents dismissing of toast on hover
+            //   style: {
+            //     background: "linear-gradient(to right, #00b09b, #96c93d)",
+            //   },
+            //   onClick: function(){} // Callback after click
+            // }).showToast();
           }
           break
         case 404:

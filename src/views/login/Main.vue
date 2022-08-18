@@ -66,6 +66,10 @@
             >
               Sign In
             </h2>
+            <button @click="ceshi_tanchu">
+          ceshiyixia!!!!!!!
+        </button>
+        asdfasdfasdfasfs
             <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">
               A few more clicks to sign in to your account. Create survey with Interval Privacy to protect user privacy
             </div>
@@ -176,18 +180,18 @@
         </div>
         <!-- END: Request Success Content -->
         <!-- BEGIN: Request Error Content -->
-          <div
-            id="request-error-content"
-            class="toastify-content hidden flex"
-          >
-            <CheckCircleIcon class="text-danger" />
-            <div class="ml-4 mr-4">
-              <div class="font-medium">Request error!</div>
-              <div class="text-slate-500 mt-1" >
-                Please check your input!
-              </div>
+        <div
+          id="request-error-content"
+          class="toastify-content hidden flex"
+        >
+          <CheckCircleIcon class="text-danger" />
+          <div class="ml-4 mr-4">
+            <div class="font-medium">Request error!</div>
+            <div class="text-slate-500 mt-1" >
+              Please check your input!
             </div>
           </div>
+        </div>
         <!-- END: Request Error Content -->
       </div>
     </div>
@@ -219,6 +223,7 @@ import { axios } from "@/utils/axios";
 import { linkTo } from "./index"
 
 const router = useRouter();
+
 
 const infoStore = useInfoStore()
 // const username = computed(() => infoStore.username);
@@ -267,31 +272,46 @@ const login = async () => {
     'username': formData.username,
     'password': formData.password
   }
-  console.log('login_data', login_data, validate.value.$invalid)
+  console.log('login_data', login_data, validate, validate.value)
   let username = formData.username
   let password = formData.password
   store_user_info(username, password, remember_me.value)
+  validate.value.$touch();
   if (validate.value.$invalid) {
-    Toastify({
-      node: dom("#request-error-content")
-        .clone()
-        .removeClass("hidden")[0],
-      duration: 10000,
-      newWindow: true,
-      close: true,
-      gravity: "top",
-      position: "center",
-      stopOnFocus: true,
-    }).showToast();
+    // Toastify({
+    //   node: dom("#request-error-content")
+    //     .clone()
+    //     .removeClass("hidden")[0],
+    //   duration: 10000,
+    //   newWindow: true,
+    //   close: true,
+    //   gravity: "top",
+    //   position: "center",
+    //   stopOnFocus: true,
+    // }).showToast();
   } else {
     try{
-      
       let response = await axios.post(get_auth_url('get_userToken'), login_data)
       authenticationStore.loginAction(response.data.userToken)
+      // Toastify({
+      //   node: dom("#request-success-content")
+      //     .clone()
+      //     .removeClass("hidden")[0],
+      //   duration: 10000,
+      //   newWindow: true,
+      //   close: true,
+      //   gravity: "top",
+      //   position: "center",
+      //   stopOnFocus: true,
+      // }).showToast();
+
+
+      const dom_ele = dom("#request-success-content").clone().removeClass("hidden")[0]
+      // dom_ele.children[1].querySelector(".font-medium").innerHTML = 'Login expired'
+      dom_ele.children[1].querySelector(".text-slate-500.mt-1").innerHTML = `Hello, ${username}`
+
       Toastify({
-        node: dom("#request-success-content")
-          .clone()
-          .removeClass("hidden")[0],
+        node: dom_ele,
         duration: 10000,
         newWindow: true,
         close: true,
@@ -299,6 +319,7 @@ const login = async () => {
         position: "center",
         stopOnFocus: true,
       }).showToast();
+
       linkTo('side-menu-create-new-survey', router, {})
     } catch (err) {
       let processed_err = process_axios_error(err)
@@ -318,6 +339,44 @@ const login = async () => {
     }
   }
 }
+
+const ceshi_tanchu = () => {
+  // Toastify({
+  //   node: dom("#request-error-content")
+  //     .clone()
+  //     .removeClass("hidden")[0],
+  //   duration: 3000,
+  //   newWindow: true,
+  //   close: true,
+  //   gravity: "top",
+  //   position: "center",
+  //   stopOnFocus: true,
+  // }).showToast();
+
+
+  console.log('dom_1', dom("#request-error-content").clone())
+  console.log('dom_2', dom("#request-error-content").clone().removeClass("hidden"))
+  console.log('dom_3', dom("#request-error-content").clone().removeClass("hidden")[0])
+  const ceshi = dom("#request-error-content").clone().removeClass("hidden")[0].children
+  console.log('dom_4', ceshi)
+  console.log('dom_5', ceshi[1])
+  console.log('dom_6', ceshi[1].querySelector(".text-slate-500.mt-1"))
+  console.log('dom_7', ceshi[1].querySelector(".font-medium").innerHTML)
+  console.log('dom_8', ceshi[1].getElementsByClassName("text-slate-500 mt-1"))
+  const dom_ele = dom("#request-error-content").clone().removeClass("hidden")[0]
+  dom_ele.children[1].querySelector(".font-medium").innerHTML = 'xinde'
+  // console.log('dom_7', dom("#request-error-content").clone().removeClass("hidden")[0].find('ml-4 mr-4').find('font-medium'))
+  Toastify({
+    node: dom_ele,
+    duration: 3000,
+    newWindow: true,
+    close: true,
+    gravity: "top",
+    position: "center",
+    stopOnFocus: true,
+  }).showToast();
+}
+
 
 const to_register_page = () => {
   linkTo('register', router, {})
@@ -342,7 +401,28 @@ const to_privacy_policy = () => {
 }
 
 onMounted(() => {
-  load_user_info()
   dom("body").removeClass("main").removeClass("error-page").addClass("login");
+  load_user_info()
+  let query = router.currentRoute.value.query
+
+  if ('token_expired' in query && query.token_expired === 'true' && authenticationStore.isUserAthenticated === false){
+    // come to this function if the token has expired and need to login one more time
+    // const ceshi = dom("#request-error-content").clone().removeClass("hidden")[0].children
+
+    const dom_ele = dom("#request-error-content").clone().removeClass("hidden")[0]
+    dom_ele.children[1].querySelector(".font-medium").innerHTML = 'Login expired'
+    dom_ele.children[1].querySelector(".text-slate-500.mt-1").innerHTML = 'Please login again'
+
+    Toastify({
+      node: dom_ele,
+      duration: 10000,
+      newWindow: true,
+      close: true,
+      gravity: "top",
+      position: "center",
+      stopOnFocus: true,
+    }).showToast();
+  }
+  
 });
 </script>

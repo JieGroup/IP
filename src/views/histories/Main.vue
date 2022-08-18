@@ -60,13 +60,14 @@
               <input class="form-check-input" type="checkbox" />
             </th> -->
             <th class="whitespace-nowrap">Title</th>
-            <th class="whitespace-nowrap">Template ID</th>
+            <th class="whitespace-nowrap">Survey ID</th>
+            <th class="whitespace-nowrap">Survey Link</th>
             <!-- <th class="whitespace-nowrap">POSTED TIME</th> -->
             <!-- <th class="whitespace-nowrap">RATING</th> -->
-            <th class="text-center whitespace-nowrap">POSTED TIME</th>
-            <th class="text-center whitespace-nowrap">STATUS</th>
-            <th class="text-center whitespace-nowrap">DOWNLOAD ANSWERS</th>
-            <th class="text-center whitespace-nowrap">ACTIONS</th>
+            <th class="text-center whitespace-nowrap">Posted Time</th>
+            <th class="text-center whitespace-nowrap">Status</th>
+            <!-- <th class="text-center whitespace-nowrap">DOWNLOAD ANSWERS</th> -->
+            <th class="text-center whitespace-nowrap">Actions</th>
           </tr>
         </thead>
         <!-- historiesData: {{ historiesData }} -->
@@ -116,6 +117,29 @@
                 <!-- }}</a> -->
               </div>
             </td>
+            <td class="!py-4">
+              <div @click="copy_survey_link(item.survey_template_id)" class="flex items-center">
+                <!-- <div class="w-10 h-10 image-fit zoom-in">
+                  <Tippy
+                    tag="img"
+                    alt="Midone - HTML Admin Template"
+                    class="rounded-lg border-1 border-white shadow-md"
+                    :src="faker.images[0]"
+                    :content="`Uploaded at ${faker.dates[0]}`"
+                  />
+                </div> -->
+                <!-- <a href="" class="font-medium whitespace-nowrap ml-4">{{
+                  item.survey_template_id
+                }}</a> -->
+                <!-- <a href="" class="font-medium whitespace-nowrap ml-4">{{ -->
+                <!-- <button @click="copy_survey_link(item.survey_template_id)">Copy Link</button> -->
+                <!-- <button type='button' @click="copy_survey_link(item.survey_template_id)" class="btn btn-primary-soft mt-5"> -->
+                  <Share2Icon  class="w-5 h-5"/>
+                  <u>Copy Link</u>
+                <!-- </button> -->
+                <!-- }}</a> -->
+              </div>
+            </td>
             <!-- <td class="whitespace-nowrap">
               <a
                 class="flex items-center underline decoration-dotted"
@@ -150,6 +174,40 @@
                 {{ item.status ? "Active" : "Removed" }}
               </div>
             </td>
+            <!-- <td class="w-40">
+              <div
+                class="flex items-center justify-center" @click='download_file(item.survey_template_name, item.survey_template_id)'
+              >
+                <a
+                  class="flex items-center text-primary whitespace-nowrap"
+                  href="javascript:;"
+                >
+                <CheckSquareIcon class="w-4 h-4 mr-1" /> Download
+                </a>
+              </div>
+            </td> -->
+            <td class="table-report__action w-56">
+              <!-- <td class="w-40">
+                <div
+                  class="flex items-center justify-center" @click='download_file(item.survey_template_name, item.survey_template_id)'
+                >
+                  <a
+                    class="flex items-center text-primary whitespace-nowrap"
+                    href="javascript:;"
+                  >
+                  <CheckSquareIcon class="w-4 h-4 mr-1" /> Download
+                  </a>
+                </div>
+              </td> -->
+              <div class="flex justify-center items-center" @click="go_to_template_page(item.survey_template_id)">
+                <a
+                  class="flex items-center text-primary whitespace-nowrap"
+                  href="javascript:;"
+                >
+                  <CheckSquareIcon class="w-4 h-4 mr-1" /> View Details
+                </a>
+              </div>
+            </td>
             <td class="w-40">
               <div
                 class="flex items-center justify-center" @click='download_file(item.survey_template_name, item.survey_template_id)'
@@ -160,16 +218,6 @@
                 >
                 <!-- Download -->
                 <CheckSquareIcon class="w-4 h-4 mr-1" /> Download
-                </a>
-              </div>
-            </td>
-            <td class="table-report__action w-56">
-              <div class="flex justify-center items-center" @click="go_to_template_page(item.survey_template_id)">
-                <a
-                  class="flex items-center text-primary whitespace-nowrap"
-                  href="javascript:;"
-                >
-                  <CheckSquareIcon class="w-4 h-4 mr-1" /> View Details
                 </a>
               </div>
             </td>
@@ -302,16 +350,18 @@
 </template>
 
 <script setup>
+import useClipboard from "vue-clipboard3";
 import { ref, reactive, onBeforeMount, onMounted } from "vue";
 import { axios } from "@/utils/axios";
 import Toastify from "toastify-js";
 import { process_axios_response, process_axios_error, get_api_url } from "@/utils/axios_utils"
 import { linkTo } from "./index"
 import { useRoute, useRouter } from "vue-router";
+import { get_survey_share_link } from "@/utils/axios_utils"
 
 const router = useRouter();
 const deleteConfirmationModal = ref(false);
-
+const { toClipboard } = useClipboard();
 const historiesData = reactive([]);
 const startIndex = ref(0);
 const endIndex = ref(0);
@@ -320,6 +370,43 @@ const pageNumberArray = reactive({
   'pageNumberArray': []
 });
 const itemPerPage = ref(5)
+
+const copy_survey_link = async (surveyTemplateID) => {
+  let survey_link = get_survey_share_link(surveyTemplateID)
+  try {
+    await toClipboard(survey_link);  //实现复制
+    const dom_ele = dom("#success-notification-content").clone().removeClass("hidden")[0]
+    dom_ele.children[1].querySelector(".font-medium").innerHTML = 'Thank you!'
+    dom_ele.children[1].querySelector(".text-slate-500.mt-1").innerHTML = `Survey link successfully copied`
+
+    Toastify({
+      node: dom_ele,
+      duration: 10000,
+      newWindow: true,
+      close: true,
+      gravity: "top",
+      position: "center",
+      stopOnFocus: true,
+    }).showToast();
+    console.log(`Success, ${surveyTemplateID}`);
+
+  } catch (e) {
+    const dom_ele = dom("#request-error-content").clone().removeClass("hidden")[0]
+    dom_ele.children[1].querySelector(".font-medium").innerHTML = 'Sorry'
+    dom_ele.children[1].querySelector(".text-slate-500.mt-1").innerHTML = `Please copy one more time`
+
+    Toastify({
+      node: dom_ele,
+      duration: 10000,
+      newWindow: true,
+      close: true,
+      gravity: "top",
+      position: "center",
+      stopOnFocus: true,
+    }).showToast();
+    console.error(e);
+  }
+}
 
 const go_to_template_page = (surveyTemplateID) => {
   // let surveyTemplateID

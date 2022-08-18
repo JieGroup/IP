@@ -48,7 +48,7 @@
                   for="validation-form-2"
                   class="form-label w-full flex flex-col sm:flex-row"
               >
-                  Survey Template ID
+                  Survey ID
                   <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
                   >Required</span
                   >
@@ -60,7 +60,7 @@
                   name="survey_template_id"
                   class="form-control"
                   :class="{ 'border-danger': startFormDataValidate.survey_template_id.$error }"
-                  placeholder="The survey template id that you need to answer."
+                  placeholder="The survey id that you need to answer."
               />
               <template v-if="startFormDataValidate.survey_template_id.$error">
                   <div
@@ -390,6 +390,9 @@ const send_voter_submit_answers = async () => {
       res = process_axios_response(res)
       console.log('voter_submit_answers_rrrese', res, formTemplateData)
       unique_key_num.value = unique_key_num.value + 100000;
+      const dom_ele = dom("#request-success-content").clone().removeClass("hidden")[0]
+      dom_ele.children[1].querySelector(".font-medium").innerHTML = 'Submitted successfully!'
+
       Toastify({
         node: dom("#request-success-content")
           .clone()

@@ -150,6 +150,9 @@
               >
                 Register
               </button>
+              <button @click="ceshi_shi">
+                ceshi_shi
+              </button>
 
               <button
                 @click="resend_email_confirmation_link"
@@ -316,6 +319,15 @@ const validate = useVuelidate(rules, toRefs(formData));
 //   infoStore.setPassword(password)
 // }
 
+const ceshi_shi = () => {
+  router.replace({
+    path: '/',
+    query: { 
+      redirect: router.currentRoute.path,
+      token_expired: 'true'
+    },
+  })
+}
 const register = async () => {
   validate.value.$touch();
   console.log(validate)
