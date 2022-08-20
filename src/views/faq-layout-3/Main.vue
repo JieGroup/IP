@@ -1,6 +1,6 @@
 <template>
   <div class="intro-y flex items-center mt-8">
-    <h2 class="text-lg font-medium mr-auto">FAQ Layout</h2>
+    <h2 class="text-lg font-medium mr-auto">FAQ</h2>
   </div>
   <div class="grid grid-cols-12 gap-6">
     <!-- BEGIN: FAQ Menu -->
@@ -15,7 +15,7 @@
             @click='to_about'
           >
             <ActivityIcon class="w-4 h-4 mr-2" />
-            <div class="flex-1 truncate">About this survey tool</div>
+            <div class="flex-1 truncate">About This Free Tool</div>
           </a>
           <a
             v-else
@@ -23,7 +23,20 @@
             @click='to_about'
           >
             <ActivityIcon class="w-4 h-4 mr-2" />
-            <div class="flex-1 truncate">About this survey tool</div>
+            <div class="flex-1 truncate">About This Free Tool</div>
+          </a>
+
+          <a v-if="faq_indicator === 'contact_us'" 
+             class="flex rounded-lg items-center px-4 py-2 bg-primary text-white font-medium"
+             @click='to_contact_us'>
+            <BoxIcon class="w-4 h-4 mr-2" />
+            <div class="flex-1 truncate">About Us</div>
+          </a>
+          <a v-else 
+             class="flex items-center px-4 py-2 mt-1" 
+             @click='to_contact_us'>
+            <BoxIcon class="w-4 h-4 mr-2" />
+            <div class="flex-1 truncate">About Us</div>
           </a>
 
           <a v-if="faq_indicator === 'terms_and_conditions'" 
@@ -50,19 +63,6 @@
              @click='to_privacy_policy'>
             <LockIcon class="w-4 h-4 mr-2" />
             <div class="flex-1 truncate">Privacy Policy</div>
-          </a>
-
-          <a v-if="faq_indicator === 'contact_us'" 
-             class="flex rounded-lg items-center px-4 py-2 bg-primary text-white font-medium"
-             @click='to_contact_us'>
-            <BoxIcon class="w-4 h-4 mr-2" />
-            <div class="flex-1 truncate">Contact Us</div>
-          </a>
-          <a v-else 
-             class="flex items-center px-4 py-2 mt-1" 
-             @click='to_contact_us'>
-            <BoxIcon class="w-4 h-4 mr-2" />
-            <div class="flex-1 truncate">Contact Us</div>
           </a>
 
           <!-- <a class="flex items-center px-4 py-2 mt-1" href="">
@@ -119,13 +119,13 @@
         <div
           class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400"
         >
-          <h2 class="font-medium text-base mr-auto">About this survey tool</h2>
+          <h2 class="font-medium text-base mr-auto">About This Free Tool</h2>
         </div>
         <AccordionGroup class="accordion-boxed p-5">
 
           <AccordionItem>
             <Accordion>
-              Why use our survey tool
+              Why use it
             </Accordion>
             <AccordionPanel
               class="text-slate-600 dark:text-slate-500 leading-relaxed"
@@ -143,58 +143,63 @@
             <AccordionPanel
               class="text-slate-600 dark:text-slate-500 leading-relaxed"
             >
-              Our engine is based on novel ways of collecting respondent data. 
-              A user can generate optimized, personalize, and privacy-preserving questions
-              for any cohort of respondents, using advanced statistical and machine learning algorithms.
+              Underpinning this survey tool are novel ways of creating surveys and collecting data
+              based on advanced AI algorithms.
+
+              Any user (you) can easily create a survey by naming the desired topics and their value 
+              ranges.
+              
+              Then, our engine will automatically create respondent-specific surveys, which can 
+              adaptively enhance respondents' privacy and optimize collection efficiency.
             </AccordionPanel>
           </AccordionItem>
 
           <AccordionItem>
             <Accordion>
-              How to Create Survey
+              How to create a survey
             </Accordion>
             <AccordionPanel
               class="text-slate-600 dark:text-slate-500 leading-relaxed"
             >
-              1. Click 'Login' icon in the left bar
+              NOTE: the whole process is completely anonymous and free
               <br/>
-              2. Login to your account
+              1. Register and log in
               <br/>
-              3. Click 'Create Form' icon in the left bar
+              2. Click 'Create New Survey' (Hint: choose "Private" mode to enhance privacy)
               <br/>
-              4. Design your own survey template
+              3. Create a survey of (privacy-sensitive) questions
             </AccordionPanel>
           </AccordionItem>
 
           <AccordionItem>
-            <Accordion> How To Retrieve Survey Answers </Accordion>
+            <Accordion> How to monitor and download survey results </Accordion>
             <AccordionPanel
               class="text-slate-600 dark:text-slate-500 leading-relaxed"
             >
-              1. Click 'Login' icon in the left bar
+              NOTE: the whole process is completely anonymous and free
               <br/>
-              2. Login to your account
+              1. Login to your account
               <br/>
-              3. Click 'Histories' icon in the left bar
+              2. Click 'My Surveys' to monitor collection and download data
               <br/>
-              4. All your designed survey template will be displayed in chronological order.
-              By clicking 'Download', you can download all survey answers of the specific survey template.
-              By clicking 'View Details', you can view your designed template.
+              All your surveys will be displayed in chronological order.
+              By clicking 'Download' of a survey, you can download all its current responses.
+              By clicking 'View Details' of a survey, you can view the parameters used to create it.
             </AccordionPanel>
           </AccordionItem>
 
           <AccordionItem>
-            <Accordion> How to Answer Survey </Accordion>
+            <Accordion> How to participate in a survey </Accordion>
             <AccordionPanel
               class="text-slate-600 dark:text-slate-500 leading-relaxed"
             >
-              1. Click 'Answer Form' icon in the left bar
+              If you are invited to participate in an existing survey:
               <br/>
-              2. Type in the Survey ID and your Mturk ID
+              1. Type your participation ID (e.g., MTurk ID, student ID) following the survey link
               <br/>
-              3. Keep answering the Survey until it shows 'Thank you for your participation'
+              2. Keep answering the survey until it shows 'Thank you'
               <br/>
-              4. Record the Survey Answer ID to get your payment
+              3. Use the provided completion code to get rewards (if any) from the survey creator
             </AccordionPanel>
           </AccordionItem>
         </AccordionGroup>
@@ -276,7 +281,7 @@
           class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400"
         >
           <h2 class="font-medium text-base mr-auto">
-            Multi Application License
+            Privacy Policy
           </h2>
         </div>
         <AccordionGroup class="accordion-boxed p-5">
@@ -346,7 +351,7 @@
           class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400"
         >
           <h2 class="font-medium text-base mr-auto">
-            Contact Us
+            About Us
           </h2>
         </div>
         <AccordionGroup class="accordion-boxed p-5">
@@ -357,20 +362,22 @@
             <AccordionPanel
               class="text-slate-600 dark:text-slate-500 leading-relaxed"
             >
-              The survey tool is actively maintained by a group of researchers. 
-              If you have any technical questions or comments, 
+              We are a group of researchers based in Minnesota, US, who are actively maintaining this survey tool.
+              If you have any technical questions or suggestions (e.g., new functions, domain customizations), 
               please feel free to contact us at IntervalPrivacy@gmail.com
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem>
             <Accordion>
-              Application support
+              Data analysis support
             </Accordion>
             <AccordionPanel
               class="text-slate-600 dark:text-slate-500 leading-relaxed"
             >
-              If you are interested in adding new functionalities for domain-specific applications, 
-              please feel free to contact us at IntervalPrivacy@gmail.com
+              The downloadable data are in json format. Please also contact us if you need technical support to 
+              process them or use them for subsequent data analysis.
+              Meanwhile, we are working to launch sample scripts to illustrate 
+              how to post-process data for advanced analysis.
             </AccordionPanel>
           </AccordionItem>
         </AccordionGroup>

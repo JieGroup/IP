@@ -17,7 +17,7 @@
             class="w-6"
             src="@/assets/images/logo.svg"
           />
-          <span class="hidden xl:block text-white text-lg ml-3"> Interval Privacy </span>
+          <span class="hidden xl:block text-white text-lg ml-3"> Private Survey </span>
         </router-link>
         <div class="side-nav__devider my-6"></div>
         <ul>

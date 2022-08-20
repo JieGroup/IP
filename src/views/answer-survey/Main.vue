@@ -86,7 +86,7 @@
                   for="validation-form-2"
                   class="form-label w-full flex flex-col sm:flex-row"
               >
-                  Mturk ID
+                  Participation ID (e.g., MTurk ID, student ID)
                   <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
                   >Required</span
                   >
@@ -98,7 +98,7 @@
                   name="mturk_id"
                   class="form-control"
                   :class="{ 'border-danger': startFormDataValidate.mturk_id.$error }"
-                  placeholder="Your Mturk ID."
+                  placeholder="Your unique participation ID."
               />
               <template v-if="startFormDataValidate.mturk_id.$error">
                   <div

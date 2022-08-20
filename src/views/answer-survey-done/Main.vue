@@ -4,8 +4,9 @@
       <AccordionGroup class="accordion-boxed">
         <AccordionItem>
             <Accordion>
-              Thank you for your participation! Please use Survey Answer ID and
-              Mturk ID to get your payment!
+              Thank you! Please use 
+              your Participation ID (used to fill the survey) and the following Completion Code
+              to get your reward (if any) from the survey creator.
             </Accordion>
             <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
                 Survey Answer ID: {{ surveyAnswerID }}

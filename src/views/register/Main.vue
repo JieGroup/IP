@@ -17,7 +17,7 @@
               class="w-6"
               src="@/assets/images/logo.svg"
             />
-            <span class="hidden xl:block text-white text-lg ml-3"> Interval Privacy </span>
+            <span class="hidden xl:block text-white text-lg ml-3"> Private Survey </span>
           </router-link> -->
 
 
@@ -32,7 +32,7 @@
               class="w-6"
               src="@/assets/images/logo.svg"
             />
-            <span class="text-white text-lg ml-3"> Interval Privacy </span>
+            <span class="text-white text-lg ml-3"> Private Survey </span>
           </router-link>
 
 
@@ -51,7 +51,7 @@
             <div
               class="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400"
             >
-              Create survey with Interval Privacy to protect user privacy
+              Protect Data Privacy + Enhance Collection Efficiency
             </div>
           </div>
         </div>
@@ -67,7 +67,7 @@
               Register
             </h2>
             <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">
-              A few more clicks to sign in to your account. Manage all your
+              Create Smart Surveys Manage all your
               e-commerce accounts in one place
             </div>
             <div class="intro-x mt-8">
