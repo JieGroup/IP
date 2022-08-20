@@ -65,6 +65,7 @@
             </DropdownMenu>
           </Dropdown> -->
         </div>
+        <input type="file" accept="image/*" @change="uploadImage" />
         <div class="p-5 border-t border-slate-200/60 dark:border-darkmode-400">
           <!-- <a class="flex items-center text-primary font-medium" href="">
             <ActivityIcon class="w-4 h-4 mr-2" /> Personal Information
@@ -72,7 +73,11 @@
           <a class="flex items-center mt-5" href="">
             <BoxIcon class="w-4 h-4 mr-2" /> Account Settings
           </a> -->
-          <a @click="to_reset_pwd_page" class="flex items-center mt-5">
+          <a @click="change_avatar" class="flex items-center mt-5" href="javascript:;">
+            <LockIcon class="w-4 h-4 mr-2" /> Change Avatar
+          </a>
+          <input type="file" accept="image/*" @change="uploadImage" />
+          <a @click="to_reset_pwd_page" class="flex items-center mt-5" href="javascript:;">
             <LockIcon class="w-4 h-4 mr-2" /> Change Password
           </a>
           <!-- <a class="flex items-center mt-5" href="">
@@ -866,9 +871,11 @@
 <script setup>
 import { ref, provide } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { process_axios_response, process_axios_error, get_api_url } from "@/utils/axios_utils"
 import { useAuthenticationStore } from "@/stores/authentication"
 import ReportLineChart from "@/components/report-line-chart/Main.vue";
 import { linkTo } from "./index"
+import { axios } from "@/utils/axios";
 
 const router = useRouter();
 const announcementRef = ref();
@@ -888,6 +895,96 @@ provide("bind[todaySchedulesRef]", (el) => {
   todaySchedulesRef.value = el;
 });
 
+const uploadImage = async (event) => {
+  let file = event.target.files[0];
+  // var file = e.target.files[0];
+  var filesize = file.size;
+  var filename = file.name;
+  if (filesize > 2101440) {
+    // 图片大于2MB
+    console.log("图片过大，请使用其它方式上传！");
+  }
+  var reader = new FileReaderSync();
+  reader.readAsDataURL(file);
+  var imgcode = null;
+  reader.onloadend = (event) => {
+    // 读取到的图片base64 数据编码 将此编码字符串传给后台即可
+    imgcode = event.target.result;
+    // console.log(imgcode);
+
+    console.log('imgcode22222', imgcode)
+    // console.log('????为什么不来啊')
+    // console.log('----------------imgcode22222', typeof imgcode, imgcode, )
+    // let response = await axios({
+    //   method: 'post',
+    //   url: get_api_url('update_avatar'), 
+    //   data: {
+    //     'filename': filename,
+    //     'filesize': filesize,
+    //     'base64': 'asdfadsaf'
+    //   },
+    //   headers: {
+    //     "Content-Type": 'multipart/form-data',
+    //   },
+    //   // headers: {
+    //   //   "Content-Type": 'multipart/form-data',
+    //   // },
+    //   // responseType: 'blob'
+    // });
+
+  // let response = await axios({
+  //   method: 'post',
+  //   url: get_api_url('update_avatar'), 
+  //   data: {
+  //     filename: filename,
+  //     filesize: filesize,
+  //     base64: imgcode
+  //   },
+  //   // headers: {
+  //   //   "Content-Type": 'multipart/form-data',
+  //   // },
+  //   // responseType: 'blob'
+  // });
+
+
+  };
+  console.log('????为什么不来啊')
+  console.log('----------------imgcode333333', typeof imgcode, imgcode, )
+  let response = await axios({
+    method: 'post',
+    url: get_api_url('update_avatar'), 
+    data: {
+      'filename': filename,
+      'filesize': filesize,
+      'base64': 'asdfadsaf'
+    },
+    headers: {
+      "Content-Type": 'multipart/form-data',
+    },
+    // headers: {
+    //   "Content-Type": 'multipart/form-data',
+    // },
+    // responseType: 'blob'
+  });
+
+  // console.log("event.target.files[0]", event.target.files[0])
+  // let fileData = new FormData();
+  // // data.append("name", "my-picture");
+  // fileData.append("file", fileInfo);
+  
+  // let response = await axios({
+  //   method: 'post',
+  //   url: get_api_url('update_avatar'), 
+  //   data: fileData,
+  //   headers: {
+  //     "Content-Type": 'multipart/form-data',
+  //   },
+  //   // responseType: 'blob'
+  // });
+
+
+
+}
 const to_reset_pwd_page = () => {
   linkTo('resetPwd', router, {})
 }

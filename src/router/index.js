@@ -74,6 +74,7 @@ import CreateNewSurvey from "../views/create-new-survey/Main.vue";
 import CreateNewSurveyRes from "../views/create-new-survey-res/Main.vue";
 import AnswerSurvey from "../views/answer-survey/Main.vue";
 import AnswerSurveyDone from "../views/answer-survey-done/Main.vue";
+import AnswerSurveyReject from "../views/answer-survey-reject/Main.vue";
 import TemplateForm from "../views/template-form/Main.vue";
 import Histories from "../views/histories/Main.vue"
 import Chart from "../views/chart/Main.vue";
@@ -497,6 +498,12 @@ const routes = [
         path: "answer-survey-done",
         name: "side-menu-answer-survey-done",
         component: AnswerSurveyDone,
+        // beforeEnter: router_before_check
+      },
+      {
+        path: "answer-survey-reject",
+        name: "side-menu-answer-survey-reject",
+        component: AnswerSurveyReject,
         // beforeEnter: router_before_check
       },
       {

@@ -150,9 +150,9 @@
               >
                 Register
               </button>
-              <button @click="ceshi_shi">
+              <!-- <button @click="ceshi_shi">
                 ceshi_shi
-              </button>
+              </button> -->
 
               <button
                 @click="resend_email_confirmation_link"

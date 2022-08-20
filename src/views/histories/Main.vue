@@ -64,6 +64,7 @@
             <th class="whitespace-nowrap">Survey Link</th>
             <!-- <th class="whitespace-nowrap">POSTED TIME</th> -->
             <!-- <th class="whitespace-nowrap">RATING</th> -->
+            <th class="text-center whitespace-nowrap">Participation</th>
             <th class="text-center whitespace-nowrap">Posted Time</th>
             <th class="text-center whitespace-nowrap">Status</th>
             <!-- <th class="text-center whitespace-nowrap">DOWNLOAD ANSWERS</th> -->
@@ -117,28 +118,28 @@
                 <!-- }}</a> -->
               </div>
             </td>
-            <td class="!py-4">
-              <div @click="copy_survey_link(item.survey_template_id)" class="flex items-center">
-                <!-- <div class="w-10 h-10 image-fit zoom-in">
-                  <Tippy
-                    tag="img"
-                    alt="Midone - HTML Admin Template"
-                    class="rounded-lg border-1 border-white shadow-md"
-                    :src="faker.images[0]"
-                    :content="`Uploaded at ${faker.dates[0]}`"
-                  />
-                </div> -->
-                <!-- <a href="" class="font-medium whitespace-nowrap ml-4">{{
-                  item.survey_template_id
-                }}</a> -->
-                <!-- <a href="" class="font-medium whitespace-nowrap ml-4">{{ -->
-                <!-- <button @click="copy_survey_link(item.survey_template_id)">Copy Link</button> -->
-                <!-- <button type='button' @click="copy_survey_link(item.survey_template_id)" class="btn btn-primary-soft mt-5"> -->
+            <td class="text-center whitespace-nowrap">
+
+              <div
+                class="flex items-center" @click='copy_survey_link(item.survey_template_id)'
+              >
+                <a
+                  class="flex items-center text-primary whitespace-nowrap"
+                  href="javascript:;"
+                >
+                <!-- Download -->
+                <Share2Icon class="w-4 h-4 mr-1" /> Copy Link
+                </a>
+              </div>
+
+              <!-- <div @click="copy_survey_link(item.survey_template_id)" class="flex items-center">
                   <Share2Icon  class="w-5 h-5"/>
                   <u>Copy Link</u>
-                <!-- </button> -->
-                <!-- }}</a> -->
-              </div>
+              </div> -->
+
+            </td>
+            <td class="text-center whitespace-nowrap">
+              {{ item.completed_number_of_copies }} / {{ item.number_of_copies }}
             </td>
             <!-- <td class="whitespace-nowrap">
               <a
@@ -376,7 +377,7 @@ const copy_survey_link = async (surveyTemplateID) => {
   try {
     await toClipboard(survey_link);  //实现复制
     const dom_ele = dom("#success-notification-content").clone().removeClass("hidden")[0]
-    dom_ele.children[1].querySelector(".font-medium").innerHTML = 'Thank you!'
+    dom_ele.children[1].querySelector(".font-medium").innerHTML = 'Copy successfully!'
     dom_ele.children[1].querySelector(".text-slate-500.mt-1").innerHTML = `Survey link successfully copied`
 
     Toastify({
@@ -512,10 +513,12 @@ const download_file = async (survey_template_name, survey_template_id) => {
         false: expire
     }
     */
+    const dom_ele = dom("#success-notification-content").clone().removeClass("hidden")[0]
+    dom_ele.children[1].querySelector(".font-medium").innerHTML = 'Download Successfully'
+    // dom_ele.children[1].querySelector(".text-slate-500.mt-1").innerHTML = 'Please login again'
+
     Toastify({
-      node: dom("#success-notification-content")
-        .clone()
-        .removeClass("hidden")[0],
+      node: dom_ele,
       duration: 10000,
       newWindow: true,
       close: true,

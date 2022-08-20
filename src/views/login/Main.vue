@@ -66,10 +66,10 @@
             >
               Sign In
             </h2>
-            <button @click="ceshi_tanchu">
+            <!-- <button @click="ceshi_tanchu">
           ceshiyixia!!!!!!!
-        </button>
-        asdfasdfasdfasfs
+        </button> -->
+        <!-- asdfasdfasdfasfs -->
             <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">
               A few more clicks to sign in to your account. Create survey with Interval Privacy to protect user privacy
             </div>

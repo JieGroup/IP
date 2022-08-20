@@ -16,12 +16,17 @@
             </button> -->
             <br />
             <br />
-            <TemplateIpFixForm :surveyTemplateFixData="surveyTemplateData"/>
+            <!-- {{ Object.keys(surveyTemplateData).length }} -->
+            <TemplateIpFixForm v-if="Object.keys(surveyTemplateData).length > 0" 
+                               :surveyTemplateFixData="surveyTemplateData"
+                               :surveyTemplateID="surveyTemplateData.survey_template_id"
+                               :key="surveyTemplateData.length"/>
             <!-- surveyTemplateData.survey_topics {{ surveyTemplateData.survey_topics }} -->
             <TemplateIpDynamicForm  v-for="(value, key, index) in surveyTemplateData.survey_topics"
                                     :key="index"
                                     :surveyTemplateDynamicDataKey="key" 
                                     :surveyTemplateDynamicDataValue="value"/>
+
             <!-- dynamic_form_array -->
             <!-- {{ dynamic_form_array }} -->
             <!-- <IpDynamicForm @add_dynamic_form="add_dynamic_form" 
@@ -100,7 +105,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { reactive, toRefs, onBeforeMount } from "vue";
+import { reactive, toRefs, onBeforeMount, onMounted } from "vue";
 import {
   required,
   minLength,
@@ -134,6 +139,7 @@ let unique_id = 0
 let dynamic_form_array = reactive([{unique_id: unique_id}])
 
 let surveyTemplateData = reactive({
+  // data: null
   // survey_template_name: "",
   // survey_template_id: '',
   // survey_update_method: '',
@@ -144,7 +150,7 @@ let surveyTemplateData = reactive({
   // max_rounds: "",
   // survey_topics: ""
 })
-
+// let surveyTemplateID_Parent = ref('')
 
 const get_survey_template = async (surveyTemplateIDData) => {
   try {
@@ -153,8 +159,8 @@ const get_survey_template = async (surveyTemplateIDData) => {
     // console.log('asda', response.data)
     let processed_response = process_axios_response(response);
     let survey_template_document = processed_response.survey_template_document
-    // console.log(`get_survey_template: ${processed_response}`)
-
+    console.log('get_survey_template: ', survey_template_document)
+    // toRef(surveyTemplateData, 'data')
     // let Data = {
     //   survey_template_name: 'survey_template_name',
     //   survey_template_id: 'survey_template_id',
@@ -186,11 +192,13 @@ const get_survey_template = async (surveyTemplateIDData) => {
     // }
     // surveyTemplateData = Data
     // surveyTemplateData = toRefs(surveyTemplateData)
+    console.log('------------------')
     for (let key in survey_template_document) {
       surveyTemplateData[key] = survey_template_document[key]
     }
+    // surveyTemplateID_Parent.value = survey_template_document['survey_template_id']
     // surveyTemplateData = {...Data}
-    console.log('template-form', surveyTemplateData)
+    console.log('??template-form', surveyTemplateData, Object.keys(surveyTemplateData).length)
     // Toastify({
     //   node: dom("#success-notification-content")
     //     .clone()
@@ -202,6 +210,7 @@ const get_survey_template = async (surveyTemplateIDData) => {
     //   position: "center",
     //   stopOnFocus: true,
     // }).showToast();
+    return
   } catch (err) {
     console.log(`send_form err 0.5: ${err}`)
     let processed_err = process_axios_error(err)
@@ -219,6 +228,7 @@ const get_survey_template = async (surveyTemplateIDData) => {
       position: "center",
       stopOnFocus: true,
     }).showToast();
+    return 
   }
 
 

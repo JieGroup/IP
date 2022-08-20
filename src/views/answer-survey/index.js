@@ -14,6 +14,7 @@ const process_startFormData = (startFormDataValidate) => {
   console.log('validate', startFormDataValidate)
   let tempData = {}
   let startFormDataValidateValue = startFormDataValidate.value
+  startFormDataValidateValue.$touch();
   for (let key of startFormDataKeys) {
     console.log('valida_key', key, startFormDataValidateValue[key])
     console.log("???", startFormDataValidateValue[key].$model)

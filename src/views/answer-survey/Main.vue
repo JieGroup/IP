@@ -229,7 +229,7 @@ let answerFormData = reactive({})
 let formTemplateData = reactive({})
 
 //判断answer store
-const storedVoterAnswer = voterAnswerStore();
+// const storedVoterAnswer = voterAnswerStore();
 
 //判断voterToken
 const authenticationStore = useAuthenticationStore();
@@ -265,9 +265,9 @@ const back_to_start_answering = () => {
   }
   isStartAnswer.value = true
   authenticationStore.deleteVoterToken();
-  storedVoterAnswer.deletesurveyTopics()
-  storedVoterAnswer.deletesurveyAnswerID();
-  storedVoterAnswer.deletesurveyUpdateMethod();
+  // storedVoterAnswer.deletesurveyTopics()
+  // storedVoterAnswer.deletesurveyAnswerID();
+  // storedVoterAnswer.deletesurveyUpdateMethod();
 }
 
 // ref, computed 取值要加.value
@@ -282,17 +282,17 @@ const send_to_server = () => {
   }
 }
 
-const load_prev_template_info = () => {
-  console.log('##### load_prev_template_info', storedVoterAnswer)
-  // console.log('##### json parse', JSON.parse(voterAnswer.surveyTopics))
-  // for (let key in storedVoterAnswer.surveyTopics) {
-  //   console.log('dasdsad', key)
-  // }
-  console.log('storedSurveyTopics.value', storedVoterAnswer.surveyTopics, JSON.parse(storedVoterAnswer.surveyTopics))
-  formTemplateData.surveyTopics = JSON.parse(storedVoterAnswer.surveyTopics);
-  formTemplateData.surveyAnswerID = storedVoterAnswer.surveyAnswerID;
-  formTemplateData.surveyUpdateMethod = storedVoterAnswer.surveyUpdateMethod;
-}
+// const load_prev_template_info = () => {
+//   console.log('##### load_prev_template_info', storedVoterAnswer)
+//   // console.log('##### json parse', JSON.parse(voterAnswer.surveyTopics))
+//   // for (let key in storedVoterAnswer.surveyTopics) {
+//   //   console.log('dasdsad', key)
+//   // }
+//   console.log('storedSurveyTopics.value', storedVoterAnswer.surveyTopics, JSON.parse(storedVoterAnswer.surveyTopics))
+//   formTemplateData.surveyTopics = JSON.parse(storedVoterAnswer.surveyTopics);
+//   formTemplateData.surveyAnswerID = storedVoterAnswer.surveyAnswerID;
+//   formTemplateData.surveyUpdateMethod = storedVoterAnswer.surveyUpdateMethod;
+// }
 
 const store_cur_template_info = (templateDataFromBackEnd) => {
   // change data in storage
@@ -328,17 +328,17 @@ const send_voter_start_answering = async () => {
     startFormDataValidate
   )
   if (startFormDataValidate.value.$invalid) {
-    Toastify({
-      node: dom("#request-error-content")
-        .clone()
-        .removeClass("hidden")[0],
-      duration: 10000,
-      newWindow: true,
-      close: true,
-      gravity: "top",
-      position: "center",
-      stopOnFocus: true,
-    }).showToast();
+    // Toastify({
+    //   node: dom("#request-error-content")
+    //     .clone()
+    //     .removeClass("hidden")[0],
+    //   duration: 10000,
+    //   newWindow: true,
+    //   close: true,
+    //   gravity: "top",
+    //   position: "center",
+    //   stopOnFocus: true,
+    // }).showToast();
   } else {
     try{
       let res = await axios.post(get_api_url('voter_start_answering'), startFormData);
@@ -353,21 +353,29 @@ const send_voter_start_answering = async () => {
       console.log('sttt', err)
       let processed_err = process_axios_error(err)
       console.log('----- Debugdone', processed_err)
+      if (processed_err.error_msg === 'Reach the limit of number of copies') {
+        let params = {
+          msg: 'Thanks for your attention. This survey has expired.'
+        }
+        linkTo('side-menu-answer-survey-reject', router, params)
+      } else {
+        Toastify({
+          node: dom("#request-error-content")
+            .clone()
+            .removeClass("hidden")[0],
+          duration: 10000,
+          newWindow: true,
+          close: true,
+          gravity: "top",
+          position: "center",
+          stopOnFocus: true,
+        }).showToast();
+      }
       // request_error.error_name = processed_err.error_name
       // request_error.error_msg = processed_err.error_msg
       // request_error.error_status = processed_err.error_status
       console.log('fuzhi', request_error)
-      Toastify({
-        node: dom("#request-error-content")
-          .clone()
-          .removeClass("hidden")[0],
-        duration: 10000,
-        newWindow: true,
-        close: true,
-        gravity: "top",
-        position: "center",
-        stopOnFocus: true,
-      }).showToast();
+      
     } 
   }
 }
@@ -382,17 +390,17 @@ const send_voter_submit_answers = async () => {
     answerFormData
   )
   if (processed_answerFormData === false) {
-    Toastify({
-      node: dom("#request-error-content")
-        .clone()
-        .removeClass("hidden")[0],
-      duration: 10000,
-      newWindow: true,
-      close: true,
-      gravity: "top",
-      position: "center",
-      stopOnFocus: true,
-    }).showToast();
+    // Toastify({
+    //   node: dom("#request-error-content")
+    //     .clone()
+    //     .removeClass("hidden")[0],
+    //   duration: 10000,
+    //   newWindow: true,
+    //   close: true,
+    //   gravity: "top",
+    //   position: "center",
+    //   stopOnFocus: true,
+    // }).showToast();
   } else {
     let answer_id = formTemplateData.surveyAnswerID
     try{
@@ -452,9 +460,9 @@ onMounted(() => {
   // Indicates the voter is answering the survey topics
   // The voter might refresh the page
 
-  console.log('storage', storedVoterAnswer.surveyTopics, storedVoterAnswer.surveyAnswerID, storedVoterAnswer.surveyUpdateMethod)
-  console.log(JSON.parse(JSON.stringify(storedVoterAnswer.surveyTopics)))
-  console.log('storage_json_parse', storedVoterAnswer.surveyTopics, typeof storedVoterAnswer.surveyTopics === 'string')
+  // console.log('storage', storedVoterAnswer.surveyTopics, storedVoterAnswer.surveyAnswerID, storedVoterAnswer.surveyUpdateMethod)
+  // console.log(JSON.parse(JSON.stringify(storedVoterAnswer.surveyTopics)))
+  // console.log('storage_json_parse', storedVoterAnswer.surveyTopics, typeof storedVoterAnswer.surveyTopics === 'string')
   console.log('!@#!@#!', router.query, route.query)
   // if (storedVoterAnswer.surveyTopics === null && isStartAnswer.value === true){
   //   //
@@ -466,12 +474,12 @@ onMounted(() => {
   // let a = JSON.parse(null)
   // let b = JSON.parse('')
   // console.log('123123', a, b)
-  try {
-    JSON.parse(storedVoterAnswer.surveyTopics)
-  } catch (error) {
-    console.log('------DEBUG JSON.parse error', error)
-    back_to_start_answering()
-  }
+  // try {
+  //   JSON.parse(storedVoterAnswer.surveyTopics)
+  // } catch (error) {
+  //   console.log('------DEBUG JSON.parse error', error)
+  //   back_to_start_answering()
+  // }
   // }
   // if (JSON.parse(storedVoterAnswer.surveyTopics) !== null || isStartAnswer.value === false){
   //   console.log('jinlai')

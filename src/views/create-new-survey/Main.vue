@@ -57,7 +57,7 @@
             >
               <CheckCircleIcon class="text-success" />
               <div class="ml-4 mr-4">
-                <div class="font-medium">Create form success!</div>
+                <div class="font-medium">Create form successfully!</div>
                 <div class="text-slate-500 mt-1">
                   Please check your history for further info!
                 </div>
