@@ -38,6 +38,10 @@ export const useAuthenticationStore = defineStore("authentication", {
       localStorage.getItem('userToken') !== null
         ? JSON.parse(atob(localStorage.getItem('userToken').split('.')[1])).username 
         : null,
+    userAvatarValue: 
+      localStorage.getItem('userAvatar') !== null
+        ? localStorage.getItem('userAvatar')
+        : null,
   }),
   getters: {
     userToken(state) {
@@ -64,6 +68,9 @@ export const useAuthenticationStore = defineStore("authentication", {
     userId(state) {
       return state.userIdValue;
     },
+    userAvatar(state) {
+      return state.userAvatarValue;
+    }
   },
   actions: {
     setUserToken(userToken) {
@@ -94,6 +101,14 @@ export const useAuthenticationStore = defineStore("authentication", {
     setIsUserAthenticated(isUserAthenticated) {
       this.isUserAuthenticatedValue = isUserAthenticated
     },
+    setUserAvatar(userAvatar) {
+      localStorage.setItem("userAvatar", userAvatar);
+      this.userAvatarValue = userAvatar
+    },
+    deleteUserAvatar() {
+      localStorage.removeItem("userAvatar");
+      this.userAvatarValue = ''
+    },
     loginAction (userToken) {
       console.log('loginAction triggered')
       const parsed_token = JSON.parse(atob(localStorage.getItem('userToken').split('.')[1]));
@@ -114,6 +129,7 @@ export const useAuthenticationStore = defineStore("authentication", {
       this.setUserName(null)
       this.setUserID(null)
       this.setIsUserAthenticated(false)
+      this.deleteUserAvatar()
     },
   },
 });

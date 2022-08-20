@@ -154,9 +154,20 @@
         role="button"
         class="w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in"
       >
-        <img
+        <!-- <img
           alt="Midone Tailwind HTML Admin Template"
-          :src="$f()[9].photos[0]"
+          :src="$f()[0].photos[0]"
+        /> -->
+        <img
+          v-if="authenticationStore.userAvatar !== '' || authenticationStore.userAvatar !== null"
+          class="rounded-full"
+          :src="authenticationStore.userAvatar"
+        />
+        <img
+          v-else
+          alt="Midone Tailwind HTML Admin Template"
+          class="rounded-full"
+          :src="$f()[0].photos[0]"
         />
       </DropdownToggle>
       <DropdownMenu class="w-56">

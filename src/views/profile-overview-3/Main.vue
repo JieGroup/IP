@@ -11,6 +11,12 @@
         <div class="relative flex items-center p-5">
           <div class="w-12 h-12 image-fit">
             <img
+              v-if="authenticationStore.userAvatar !== '' || authenticationStore.userAvatar !== null"
+              class="rounded-full"
+              :src="authenticationStore.userAvatar"
+            />
+            <img
+              v-else
               alt="Midone Tailwind HTML Admin Template"
               class="rounded-full"
               :src="$f()[0].photos[0]"
@@ -65,7 +71,6 @@
             </DropdownMenu>
           </Dropdown> -->
         </div>
-        <input type="file" accept="image/*" @change="uploadImage" />
         <div class="p-5 border-t border-slate-200/60 dark:border-darkmode-400">
           <!-- <a class="flex items-center text-primary font-medium" href="">
             <ActivityIcon class="w-4 h-4 mr-2" /> Personal Information
@@ -73,17 +78,44 @@
           <a class="flex items-center mt-5" href="">
             <BoxIcon class="w-4 h-4 mr-2" /> Account Settings
           </a> -->
-          <a @click="change_avatar" class="flex items-center mt-5" href="javascript:;">
+          <a 
+            v-if="profile_indicator === 'change_avatar'"
+            @click="change_avatar" 
+            class="flex items-center text-primary font-medium" 
+            href="javascript:;">
             <LockIcon class="w-4 h-4 mr-2" /> Change Avatar
           </a>
-          <input type="file" accept="image/*" @change="uploadImage" />
-          <a @click="to_reset_pwd_page" class="flex items-center mt-5" href="javascript:;">
+          <a 
+            v-else
+            @click="change_avatar" 
+            class="flex items-center mt-5" 
+            href="javascript:;">
+            <LockIcon class="w-4 h-4 mr-2" /> Change Avatar
+          </a>
+
+          
+
+          <a 
+            v-if="profile_indicator === 'change_password'"
+            @click="to_reset_pwd_page" 
+            class="flex items-center text-primary font-medium" 
+            href="javascript:;">
+            <LockIcon class="w-4 h-4 mr-2" /> Change Password
+          </a>
+          <a 
+            v-else
+            @click="to_reset_pwd_page" 
+            class="flex items-center mt-5" 
+            href="javascript:;">
             <LockIcon class="w-4 h-4 mr-2" /> Change Password
           </a>
           <!-- <a class="flex items-center mt-5" href="">
             <SettingsIcon class="w-4 h-4 mr-2" /> User Settings
           </a> -->
         </div>
+
+
+        
         <!-- <div class="p-5 border-t border-slate-200/60 dark:border-darkmode-400">
           <a class="flex items-center" href="">
             <ActivityIcon class="w-4 h-4 mr-2" /> Email Settings
@@ -145,6 +177,7 @@
     <!-- END: Profile Menu -->
     <div class="col-span-12 lg:col-span-8 2xl:col-span-9">
       <div class="grid grid-cols-12 gap-6">
+        
         <!-- BEGIN: Daily Sales -->
         <!-- <div class="intro-y box col-span-12 2xl:col-span-6">
           <div
@@ -226,12 +259,12 @@
         </div> -->
         <!-- END: Daily Sales -->
         <!-- BEGIN: Announcement -->
-        <!-- <div class="intro-y box col-span-12 2xl:col-span-6">
+        <div v-if="profile_indicator === 'change_avatar'" class="intro-y box col-span-12 2xl:col-span-6">
           <div
             class="flex items-center px-5 py-3 border-b border-slate-200/60 dark:border-darkmode-400"
           >
-            <h2 class="font-medium text-base mr-auto">Announcement</h2>
-            <button
+            <h2 class="font-medium text-base mr-auto">Change Avatar</h2>
+            <!-- <button
               class="tiny-slider-navigator btn btn-outline-secondary px-2 mr-2"
               @click="prevAnnouncement"
             >
@@ -242,10 +275,29 @@
               @click="nextAnnouncement"
             >
               <ChevronRightIcon class="w-4 h-4" />
-            </button>
+            </button> -->
           </div>
           <TinySlider ref-key="announcementRef" class="py-5">
             <div class="px-5">
+              <input type="file" accept="image/*" @change="uploadImage" />
+              <!-- <div class="font-medium text-lg">Midone Admin Template</div>
+              <div class="text-slate-600 dark:text-slate-500 mt-2">
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's standard dummy
+                text ever. <br /><br />
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry since the 1500s.
+              </div>
+              <div class="flex items-center mt-5">
+                <div
+                  class="px-3 py-2 text-primary bg-primary/10 dark:bg-darkmode-400 dark:text-slate-300 rounded font-medium"
+                >
+                  02 June 2021
+                </div>
+                <button class="btn btn-secondary ml-auto">View Details</button>
+              </div> -->
+            </div>
+            <!-- <div class="px-5">
               <div class="font-medium text-lg">Midone Admin Template</div>
               <div class="text-slate-600 dark:text-slate-500 mt-2">
                 Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -262,8 +314,8 @@
                 </div>
                 <button class="btn btn-secondary ml-auto">View Details</button>
               </div>
-            </div>
-            <div class="px-5">
+            </div> -->
+            <!-- <div class="px-5">
               <div class="font-medium text-lg">Midone Admin Template</div>
               <div class="text-slate-600 dark:text-slate-500 mt-2">
                 Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -280,27 +332,9 @@
                 </div>
                 <button class="btn btn-secondary ml-auto">View Details</button>
               </div>
-            </div>
-            <div class="px-5">
-              <div class="font-medium text-lg">Midone Admin Template</div>
-              <div class="text-slate-600 dark:text-slate-500 mt-2">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever. <br /><br />
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry since the 1500s.
-              </div>
-              <div class="flex items-center mt-5">
-                <div
-                  class="px-3 py-2 text-primary bg-primary/10 dark:bg-darkmode-400 dark:text-slate-300 rounded font-medium"
-                >
-                  02 June 2021
-                </div>
-                <button class="btn btn-secondary ml-auto">View Details</button>
-              </div>
-            </div>
+            </div> -->
           </TinySlider>
-        </div> -->
+        </div>
         <!-- END: Announcement -->
         <!-- BEGIN: Projects -->
         <!-- <div class="intro-y box col-span-12 2xl:col-span-6">
@@ -863,6 +897,40 @@
           </div>
         </div> -->
         <!-- END: General Statistics -->
+        <!-- BEGIN: Request Success Content -->
+        <div
+          id="request-success-content"
+          class="toastify-content hidden flex"
+        >
+          <CheckCircleIcon class="text-success" />
+          <div class="ml-4 mr-4">
+            <div class="font-medium">Send reset link successfully!</div>
+            <div class="text-slate-500 mt-1">
+              Please go to your email to reset the password!
+            </div>
+          </div>
+        </div>
+        <!-- END: Request Success Content -->
+        <!-- BEGIN: Request Error Content -->
+        <div
+          id="request-error-content"
+          class="toastify-content hidden flex"
+        >
+          <CheckCircleIcon class="text-danger" />
+          <div class="ml-4 mr-4">
+            <div class="font-medium">Network request error!</div>
+            <div class="text-slate-500 mt-1">
+              <!-- {{ request_error }}
+              error_name: {{ request_error['error_name'] }}
+              error_msg: {{ request_error.error_msg }}
+              error_status: {{ request_error.error_status }} -->
+              <!-- <div> -->
+              Please check your input and send again
+              <!-- </div> -->
+            </div>
+          </div>
+        </div>
+        <!-- END: Request Error Content -->
       </div>
     </div>
   </div>
@@ -871,6 +939,7 @@
 <script setup>
 import { ref, provide } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import Toastify from "toastify-js";
 import { process_axios_response, process_axios_error, get_api_url } from "@/utils/axios_utils"
 import { useAuthenticationStore } from "@/stores/authentication"
 import ReportLineChart from "@/components/report-line-chart/Main.vue";
@@ -882,6 +951,8 @@ const announcementRef = ref();
 const newProjectsRef = ref();
 const todaySchedulesRef = ref();
 const authenticationStore = useAuthenticationStore()
+
+let profile_indicator = ref('change_avatar')
 
 provide("bind[announcementRef]", (el) => {
   announcementRef.value = el;
@@ -895,97 +966,94 @@ provide("bind[todaySchedulesRef]", (el) => {
   todaySchedulesRef.value = el;
 });
 
+const change_avatar = () => {
+  profile_indicator.value = 'change_avator'
+}
+
 const uploadImage = async (event) => {
   let file = event.target.files[0];
   // var file = e.target.files[0];
   var filesize = file.size;
   var filename = file.name;
-  if (filesize > 2101440) {
-    // 图片大于2MB
-    console.log("图片过大，请使用其它方式上传！");
+  if (filesize > 512000) {
+    // 图片大于500KB
+    // console.log("图片过大，请使用其它方式上传！");
+    const dom_ele = dom("#request-error-content").clone().removeClass("hidden")[0]
+    dom_ele.children[1].querySelector(".font-medium").innerHTML = 'Avatar is too large'
+    dom_ele.children[1].querySelector(".text-slate-500.mt-1").innerHTML = 'Please keep avatar smaller than 500KB'
+
+    Toastify({
+      node: dom_ele,
+      duration: 10000,
+      newWindow: true,
+      close: true,
+      gravity: "top",
+      position: "center",
+      stopOnFocus: true,
+    }).showToast(); 
+  } else {
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = (event) => {
+      // 读取到的图片base64 数据编码 将此编码字符串传给后台即可
+      let imgcode = event.target.result;
+      console.log(imgcode);
+
+      // console.log('imgcode22222', imgcode)
+
+      axios({
+        method: 'post',
+        url: get_api_url('update_avatar'), 
+        data: {
+          'filename': filename,
+          'filesize': filesize,
+          'filebase64': imgcode
+        },
+      }).then((response) => {
+        // console.log('rrrr', response)    
+        authenticationStore.setUserAvatar(imgcode)  
+        const dom_ele = dom("#request-success-content").clone().removeClass("hidden")[0]
+        dom_ele.children[1].querySelector(".font-medium").innerHTML = 'Upload successfully'
+        dom_ele.children[1].querySelector(".text-slate-500.mt-1").innerHTML = 'Thank you'
+
+        Toastify({
+          node: dom_ele,
+          duration: 10000,
+          newWindow: true,
+          close: true,
+          gravity: "top",
+          position: "center",
+          stopOnFocus: true,
+        }).showToast(); 
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error)
+        const dom_ele = dom("#request-error-content").clone().removeClass("hidden")[0]
+        // dom_ele.children[1].querySelector(".font-medium").innerHTML = 'Upload successfully'
+        dom_ele.children[1].querySelector(".text-slate-500.mt-1").innerHTML = 'Please upload your avatar again'
+
+        Toastify({
+          node: dom_ele,
+          duration: 10000,
+          newWindow: true,
+          close: true,
+          gravity: "top",
+          position: "center",
+          stopOnFocus: true,
+        }).showToast(); 
+        // this.$toasted.error('Task' + task_id.toString() + 'occurs error at stage 1', { icon: 'fingerprint' })
+      }) // axios
+
+
+    };
   }
-  var reader = new FileReaderSync();
-  reader.readAsDataURL(file);
-  var imgcode = null;
-  reader.onloadend = (event) => {
-    // 读取到的图片base64 数据编码 将此编码字符串传给后台即可
-    imgcode = event.target.result;
-    // console.log(imgcode);
-
-    console.log('imgcode22222', imgcode)
-    // console.log('????为什么不来啊')
-    // console.log('----------------imgcode22222', typeof imgcode, imgcode, )
-    // let response = await axios({
-    //   method: 'post',
-    //   url: get_api_url('update_avatar'), 
-    //   data: {
-    //     'filename': filename,
-    //     'filesize': filesize,
-    //     'base64': 'asdfadsaf'
-    //   },
-    //   headers: {
-    //     "Content-Type": 'multipart/form-data',
-    //   },
-    //   // headers: {
-    //   //   "Content-Type": 'multipart/form-data',
-    //   // },
-    //   // responseType: 'blob'
-    // });
-
-  // let response = await axios({
-  //   method: 'post',
-  //   url: get_api_url('update_avatar'), 
-  //   data: {
-  //     filename: filename,
-  //     filesize: filesize,
-  //     base64: imgcode
-  //   },
-  //   // headers: {
-  //   //   "Content-Type": 'multipart/form-data',
-  //   // },
-  //   // responseType: 'blob'
-  // });
-
-
-  };
-  console.log('????为什么不来啊')
-  console.log('----------------imgcode333333', typeof imgcode, imgcode, )
-  let response = await axios({
-    method: 'post',
-    url: get_api_url('update_avatar'), 
-    data: {
-      'filename': filename,
-      'filesize': filesize,
-      'base64': 'asdfadsaf'
-    },
-    headers: {
-      "Content-Type": 'multipart/form-data',
-    },
-    // headers: {
-    //   "Content-Type": 'multipart/form-data',
-    // },
-    // responseType: 'blob'
-  });
-
-  // console.log("event.target.files[0]", event.target.files[0])
-  // let fileData = new FormData();
-  // // data.append("name", "my-picture");
-  // fileData.append("file", fileInfo);
   
-  // let response = await axios({
-  //   method: 'post',
-  //   url: get_api_url('update_avatar'), 
-  //   data: fileData,
-  //   headers: {
-  //     "Content-Type": 'multipart/form-data',
-  //   },
-  //   // responseType: 'blob'
-  // });
-
-
 
 }
+
 const to_reset_pwd_page = () => {
+  profile_indicator.value = 'change_password'
   linkTo('resetPwd', router, {})
 }
 

@@ -120,7 +120,7 @@
                   id="remember-me"
                   type="checkbox"
                   class="form-check-input border mr-2"
-                  value='yes'
+                  value='true'
                   v-model="remember_me"
                 />
                 <label class="cursor-pointer select-none" for="remember-me"
@@ -258,7 +258,7 @@ const store_user_info = (username, password, remember) => {
 }
 
 const load_user_info = () => {
-  console.log('????', infoStore.remember, infoStore.remember === true, typeof infoStore.remember)
+  console.log('????', infoStore.remember, infoStore.remember === true, typeof infoStore.remember, infoStore.username, infoStore.password)
   if (infoStore.remember === 'true') {
     console.log('@@@@')
     formData.username = infoStore.username
@@ -293,6 +293,9 @@ const login = async () => {
     try{
       let response = await axios.post(get_auth_url('get_userToken'), login_data)
       authenticationStore.loginAction(response.data.userToken)
+
+      response = await axios.get(get_api_url('get_avatar'))
+      authenticationStore.setUserAvatar(response.data.avatarbase64)
       // Toastify({
       //   node: dom("#request-success-content")
       //     .clone()
