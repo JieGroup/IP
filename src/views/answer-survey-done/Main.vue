@@ -9,7 +9,7 @@
               to get your reward (if any) from the survey creator.
             </Accordion>
             <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
-                Survey Answer ID: {{ surveyAnswerID }}
+                Completion Code: {{ surveyAnswerID }}
             </AccordionPanel>
         </AccordionItem>
       </AccordionGroup>

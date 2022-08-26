@@ -49,13 +49,37 @@ const fakers = {
   },
   fakePhotos() {
     const photos = [];
-    for (let i = 0; i < 15; i++) {
+    // for (let i = 0; i < 15; i++) {
+    //   photos[photos.length] =
+    //     imageAssets[
+    //       "/src/assets/images/profile-" + _.random(1, 15) + ".jpg"
+    //     ].default;
+    // }
+    for (let i = 0; i < 1; i++) {
       photos[photos.length] =
         imageAssets[
-          "/src/assets/images/profile-" + _.random(1, 15) + ".jpg"
+          "/src/assets/images/profile-0.jpg"
         ].default;
     }
-    return _.sampleSize(photos, 10);
+    // return _.sampleSize(photos, 10);
+    return photos;
+  },
+  fakeCompanyIcons() {
+    const icons = [];
+    // for (let i = 0; i < 15; i++) {
+    //   photos[photos.length] =
+    //     imageAssets[
+    //       "/src/assets/images/profile-" + _.random(1, 15) + ".jpg"
+    //     ].default;
+    // }
+    for (let i = 0; i < 4; i++) {
+      icons[icons.length] =
+        imageAssets[
+          "/src/assets/images/icon-" + i + ".png"
+        ].default;
+    }
+    // return _.sampleSize(photos, 10);
+    return icons;
   },
   fakeImages() {
     const images = [];
@@ -350,26 +374,47 @@ const fakers = {
 };
 
 const fakerData = [];
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 1; i++) {
   fakerData[fakerData.length] = {
-    users: fakers.fakeUsers(),
+    // users: fakers.fakeUsers(),
     photos: fakers.fakePhotos(),
-    images: fakers.fakeImages(),
-    dates: fakers.fakeDates(),
-    times: fakers.fakeTimes(),
-    formattedTimes: fakers.fakeFormattedTimes(),
-    totals: fakers.fakeTotals(),
-    trueFalse: fakers.fakeTrueFalse(),
-    stocks: fakers.fakeStocks(),
-    products: fakers.fakeProducts(),
-    categories: fakers.fakeCategories(),
-    news: fakers.fakeNews(),
-    files: fakers.fakeFiles(),
-    jobs: fakers.fakeJobs(),
-    notificationCount: fakers.fakeNotificationCount(),
-    foods: fakers.fakeFoods(),
+    companyIcons: fakers.fakeCompanyIcons(),
+    // images: fakers.fakeImages(),
+    // dates: fakers.fakeDates(),
+    // times: fakers.fakeTimes(),
+    // formattedTimes: fakers.fakeFormattedTimes(),
+    // totals: fakers.fakeTotals(),
+    // trueFalse: fakers.fakeTrueFalse(),
+    // stocks: fakers.fakeStocks(),
+    // products: fakers.fakeProducts(),
+    // categories: fakers.fakeCategories(),
+    // news: fakers.fakeNews(),
+    // files: fakers.fakeFiles(),
+    // jobs: fakers.fakeJobs(),
+    // notificationCount: fakers.fakeNotificationCount(),
+    // foods: fakers.fakeFoods(),
   };
 }
+// for (let i = 0; i < 20; i++) {
+//   fakerData[fakerData.length] = {
+//     users: fakers.fakeUsers(),
+//     photos: fakers.fakePhotos(),
+//     images: fakers.fakeImages(),
+//     dates: fakers.fakeDates(),
+//     times: fakers.fakeTimes(),
+//     formattedTimes: fakers.fakeFormattedTimes(),
+//     totals: fakers.fakeTotals(),
+//     trueFalse: fakers.fakeTrueFalse(),
+//     stocks: fakers.fakeStocks(),
+//     products: fakers.fakeProducts(),
+//     categories: fakers.fakeCategories(),
+//     news: fakers.fakeNews(),
+//     files: fakers.fakeFiles(),
+//     jobs: fakers.fakeJobs(),
+//     notificationCount: fakers.fakeNotificationCount(),
+//     foods: fakers.fakeFoods(),
+//   };
+// }
 
 const install = (app) => {
   app.config.globalProperties.$f = () => {

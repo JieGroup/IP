@@ -23,7 +23,7 @@
 
 
           <router-link
-            :to="{ name: 'side-menu-faq-layout-3' }"
+            :to="{ name: 'side-menu-create-new-survey' }"
             tag="a"
             class="intro-x flex items-center pl-5 pt-4"
           >
@@ -142,6 +142,84 @@
               >
                 Register
               </button>
+              <br />
+              <br />
+              <!-- <img
+                @click="googleSignin"
+                alt="Midone Tailwind HTML Admin Template"
+                class="btn btn-outline-secondary py-3 px-4 w-full xl:w-20 mt-3 xl:mt-0 align-top"
+                :src="$f()[0].companyIcons[0]"
+              />
+              <img
+                @click="facebookSignin"
+                alt="Midone Tailwind HTML Admin Template"
+                class="btn btn-outline-secondary py-3 px-4 w-full xl:w-20 mt-3 xl:mt-0 align-top"
+                :src="$f()[0].companyIcons[1]"
+              />
+              <img
+                @click="twitterSignin"
+                alt="Midone Tailwind HTML Admin Template"
+                class="btn btn-outline-secondary py-1 px-2 w-full xl:w-20 mt-3 xl:mt-0 align-top"
+                :src="$f()[0].companyIcons[2]"
+              />
+              <img
+                @click="githubSignin"
+                alt="Midone Tailwind HTML Admin Template"
+                class="btn btn-outline-secondary py-1 px-2 w-full xl:w-20 mt-3 xl:mt-0 align-top"
+                :src="$f()[0].companyIcons[3]"
+              /> -->
+
+              <button
+                class="btn btn-outline-secondary py-2 px-3 w-full xl:w-32 mt-3 xl:mt-0 align-top"
+                @click="googleSignin"
+              >
+                <img
+                  alt="Midone Tailwind HTML Admin Template"
+                  class="w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in"
+                  :src="$f()[0].companyIcons[0]"
+                />
+              </button>
+              <!-- <br />
+              <br />
+              <button
+                class="btn btn-outline-secondary py-2 px-3 w-full xl:w-32 mt-3 xl:mt-0 align-top"
+                @click="facebookSignin"
+              >
+                <img
+                  alt="Midone Tailwind HTML Admin Template"
+                  class="w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in"
+                  :src="$f()[0].companyIcons[1]"
+                />
+              </button>
+              <br />
+              <br />
+              <button
+                class="btn btn-outline-secondary py-2 px-3 w-full xl:w-32 mt-3 xl:mt-0 align-top"
+                @click="twitterSignin"
+              >
+                <imgx
+                  alt="Midone Tailwind HTML Admin Template"
+                  class="w-9 h-9 rounded-full overflow-hidden shadow-lg image-fit zoom-in"
+                  :src="$f()[0].companyIcons[2]"
+                />
+              </button> -->
+              <!-- <br />
+              <br />
+              <button
+                class="btn btn-outline-secondary py-2 px-3 w-full xl:w-32 mt-3 xl:mt-0 align-top"
+                @click="githubSignin"
+              >
+                <img
+                  alt="Midone Tailwind HTML Admin Template"
+                  class="w-9 h-9 rounded-full overflow-hidden shadow-lg image-fit zoom-in"
+                  :src="$f()[0].companyIcons[3]"
+                />
+              </button> -->
+              
+              <!-- <br />
+              <button @click="firebaseSignout">
+                ceshiyixialogout
+              </button> -->
             </div>
             <div
               class="intro-x mt-10 xl:mt-24 text-slate-600 dark:text-slate-500 text-center xl:text-left"
@@ -163,6 +241,7 @@
             </div>
           </div>
         </div>
+        
         <!-- END: Login Form -->
         <!-- BEGIN: Request Success Content -->
         <div
@@ -220,6 +299,221 @@ import { process_axios_error, get_auth_url, get_api_url } from "@/utils/axios_ut
 import { axios } from "@/utils/axios";
 // import { axios } from "@/utils/axios";
 import { linkTo } from "./index"
+import { initializeApp } from "firebase/app";
+import { getAuth, signInWithPopup, signOut } from "firebase/auth";
+import { GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, GithubAuthProvider} from "firebase/auth";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA0H8fJmafRikhR1bxuLBetsdXAaAkaLZQ",
+  authDomain: "intervalprivacy-5fd0e.firebaseapp.com",
+  projectId: "intervalprivacy-5fd0e",
+  storageBucket: "intervalprivacy-5fd0e.appspot.com",
+  messagingSenderId: "223398428376",
+  appId: "1:223398428376:web:fb834783dbc72f3546a1ad",
+  measurementId: "G-Y5C5PE5HX6"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const firebaseAuth = getAuth(app);
+
+const googleProvider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
+const twitterProvider = new TwitterAuthProvider();
+const githubProvider = new GithubAuthProvider();
+
+
+const firebase_login = (username, password, displayName, email, avatar) => {
+  let login_data = {
+    'username': username,
+    'password': password,
+    'displayName': displayName,
+    'email': email,
+    'avatar': avatar
+  }
+
+  axios.post(get_auth_url('firebase_get_userToken'), login_data)
+    .then((response) => {
+      authenticationStore.loginAction(response.data.userToken)
+
+      axios.get(get_api_url('get_avatar'))
+        .then((response) => {
+          authenticationStore.setUserAvatar(response.data.avatarbase64)
+          const dom_ele = dom("#request-success-content").clone().removeClass("hidden")[0]
+          // dom_ele.children[1].querySelector(".font-medium").innerHTML = 'Login expired'
+          dom_ele.children[1].querySelector(".text-slate-500.mt-1").innerHTML = `Hello, ${authenticationStore.displayName}`
+          
+           Toastify({
+            node: dom_ele,
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: "top",
+            position: "center",
+            stopOnFocus: true,
+          }).showToast();
+
+          linkTo('side-menu-create-new-survey', router, {})
+        }).catch((err) => {
+          let processed_err = process_axios_error(err)
+          console.log(`login processed err: ${processed_err}`)
+
+          Toastify({
+            node: dom("#request-error-content")
+              .clone()
+              .removeClass("hidden")[0],
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: "top",
+            position: "center",
+            stopOnFocus: true,
+          }).showToast();
+        });
+
+    }).catch((err) => {
+      let processed_err = process_axios_error(err)
+      console.log(`login processed err: ${processed_err}`)
+
+      Toastify({
+        node: dom("#request-error-content")
+          .clone()
+          .removeClass("hidden")[0],
+        duration: 3000,
+        newWindow: true,
+        close: true,
+        gravity: "top",
+        position: "center",
+        stopOnFocus: true,
+      }).showToast();
+    }); 
+}
+
+const googleSignin = () => {
+  const auth = getAuth();
+  signInWithPopup(auth, googleProvider)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      console.log('google_credential', result, credential)
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+
+
+      const username = user.uid;
+      const password = user.uid;
+      const displayName = user.displayName;
+      const email = user.email;
+      const avatar = '';
+
+      firebase_login(username, password, displayName, email, avatar)
+
+    }).catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
+    });
+}
+
+function facebookSignin() {
+  const auth = getAuth();
+  signInWithPopup(auth, facebookProvider)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = FacebookAuthProvider.credentialFromResult(result);
+      console.log('credential', result, credential)
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      const firebaseUserID = user.uid
+      console.log('????', token, user, firebaseUserID)
+      // ...
+    }).catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = FacebookAuthProvider.credentialFromError(error);
+      // ...
+    });
+}
+
+const twitterSignin = () => {
+  const auth = getAuth();
+  signInWithPopup(auth, twitterProvider)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = TwitterAuthProvider.credentialFromResult(result);
+      console.log('twitter_credential', result, credential)
+
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+
+
+      const username = user.uid;
+      const password = user.uid;
+      const displayName = user.displayName;
+      const email = user.email;
+      const avatar = user.photoURL;
+      // firebase_login(username, password, displayName, email, avatar)
+      // ...
+    }).catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = TwitterAuthProvider.credentialFromError(error);
+      // ...
+    });
+}
+
+function githubSignin() {
+  const auth = getAuth();
+  signInWithPopup(auth, githubProvider)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GithubAuthProvider.credentialFromResult(result);
+      console.log('credential', result, credential)
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      const firebaseUserID = user.uid
+      console.log('????', token, user, firebaseUserID)
+      // ...
+    }).catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = GithubAuthProvider.credentialFromError(error);
+      // ...
+    });
+}
+
+function firebaseSignout() {
+  const auth = getAuth();
+  signOut(auth).then(() => {
+    // Sign-out successful.
+    console.log('google logout successfullt')
+  }).catch((error) => {
+    // An error happened.
+    console.log('google logout failed')
+  });
+}
+
 
 const router = useRouter();
 
@@ -281,7 +575,7 @@ const login = async () => {
     //   node: dom("#request-error-content")
     //     .clone()
     //     .removeClass("hidden")[0],
-    //   duration: 10000,
+    //   duration: 3000,
     //   newWindow: true,
     //   close: true,
     //   gravity: "top",
@@ -299,7 +593,7 @@ const login = async () => {
       //   node: dom("#request-success-content")
       //     .clone()
       //     .removeClass("hidden")[0],
-      //   duration: 10000,
+      //   duration: 3000,
       //   newWindow: true,
       //   close: true,
       //   gravity: "top",
@@ -314,7 +608,7 @@ const login = async () => {
 
       Toastify({
         node: dom_ele,
-        duration: 10000,
+        duration: 3000,
         newWindow: true,
         close: true,
         gravity: "top",
@@ -331,7 +625,7 @@ const login = async () => {
         node: dom("#request-error-content")
           .clone()
           .removeClass("hidden")[0],
-        duration: 10000,
+        duration: 3000,
         newWindow: true,
         close: true,
         gravity: "top",
@@ -417,7 +711,7 @@ onMounted(() => {
 
     Toastify({
       node: dom_ele,
-      duration: 10000,
+      duration: 3000,
       newWindow: true,
       close: true,
       gravity: "top",

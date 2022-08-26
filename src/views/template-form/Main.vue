@@ -203,7 +203,7 @@ const get_survey_template = async (surveyTemplateIDData) => {
     //   node: dom("#success-notification-content")
     //     .clone()
     //     .removeClass("hidden")[0],
-    //   duration: 10000,
+    //   duration: 3000,
     //   newWindow: true,
     //   close: true,
     //   gravity: "top",
@@ -221,7 +221,7 @@ const get_survey_template = async (surveyTemplateIDData) => {
       node: dom("#request-error-content")
         .clone()
         .removeClass("hidden")[0],
-      duration: 10000,
+      duration: 3000,
       newWindow: true,
       close: true,
       gravity: "top",

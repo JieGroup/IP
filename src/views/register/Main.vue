@@ -23,7 +23,7 @@
 
 
           <router-link
-            :to="{ name: 'side-menu-faq-layout-3' }"
+            :to="{ name: 'side-menu-create-new-survey' }"
             tag="a"
             class="intro-x flex items-center pl-5 pt-4"
           >
@@ -343,7 +343,7 @@ const register = async () => {
     //   node: dom("#request-error-content")
     //     .clone()
     //     .removeClass("hidden")[0],
-    //   duration: 10000,
+    //   duration: 3000,
     //   newWindow: true,
     //   close: true,
     //   gravity: "top",
@@ -361,7 +361,7 @@ const register = async () => {
         node: dom("#request-success-content")
           .clone()
           .removeClass("hidden")[0],
-        duration: 10000,
+        duration: 3000,
         newWindow: true,
         close: true,
         gravity: "top",
@@ -383,7 +383,7 @@ const register = async () => {
       
       Toastify({
         node: dom_ele,
-        duration: 10000,
+        duration: 3000,
         newWindow: true,
         close: true,
         gravity: "top",
@@ -404,7 +404,7 @@ const resend_email_confirmation_link = async () => {
       node: dom("#request-error-content")
         .clone()
         .removeClass("hidden")[0],
-      duration: 10000,
+      duration: 3000,
       newWindow: true,
       close: true,
       gravity: "top",
@@ -422,7 +422,7 @@ const resend_email_confirmation_link = async () => {
         node: dom("#resend-success-content")
           .clone()
           .removeClass("hidden")[0],
-        duration: 10000,
+        duration: 3000,
         newWindow: true,
         close: true,
         gravity: "top",
@@ -439,7 +439,7 @@ const resend_email_confirmation_link = async () => {
         node: dom("#request-error-content")
           .clone()
           .removeClass("hidden")[0],
-        duration: 10000,
+        duration: 3000,
         newWindow: true,
         close: true,
         gravity: "top",

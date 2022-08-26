@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 
 export const useWebStore = defineStore("web", {
   state: () => ({
-    websiteURLValue: "https://grand-liger-cad265.netlify.app"
-    // websiteURLValue: "http://localhost:3000"
+    // websiteURLValue: "https://grand-liger-cad265.netlify.app"
+    websiteURLValue: "http://localhost:3000"
   }),
   getters: {
     websiteURL(state) {

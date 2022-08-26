@@ -7,7 +7,7 @@ const linkTo = (name, router, params) => {
 
 const startFormDataKeys = new Set([
   'survey_template_id',
-  'mturk_id'
+  'participation_id'
 ])
 
 const process_startFormData = (startFormDataValidate) => {

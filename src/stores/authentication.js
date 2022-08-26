@@ -38,10 +38,14 @@ export const useAuthenticationStore = defineStore("authentication", {
       localStorage.getItem('userToken') !== null
         ? JSON.parse(atob(localStorage.getItem('userToken').split('.')[1])).username 
         : null,
+    displayNameValue: 
+      localStorage.getItem('userToken') !== null
+        ? JSON.parse(atob(localStorage.getItem('userToken').split('.')[1])).displayName 
+        : null,
     userAvatarValue: 
       localStorage.getItem('userAvatar') !== null
         ? localStorage.getItem('userAvatar')
-        : null,
+        : '',
   }),
   getters: {
     userToken(state) {
@@ -61,6 +65,9 @@ export const useAuthenticationStore = defineStore("authentication", {
     },
     userName(state){
       return state.userNameValue;
+    },
+    displayName(state){
+      return state.displayNameValue;
     },
     // voterAuthority(state) {
     //   return state.voterAuthorityValue;
@@ -95,6 +102,9 @@ export const useAuthenticationStore = defineStore("authentication", {
     setUserName(username) {
       this.userNameValue = username
     },
+    setdisplayName(displayName) {
+      this.displayNameValue = displayName
+    },
     setUserID(user_id) {
       this.userIdValue = user_id
     },
@@ -115,10 +125,13 @@ export const useAuthenticationStore = defineStore("authentication", {
       console.log(`loginAction${parsed_token}`)
       let authority_level = parsed_token.authority_level;
       let username = parsed_token.username;
+      let displayName = parsed_token.displayName;
       let user_id = parsed_token.user_id;
+      
       this.setUserToken(userToken)
       this.setUserAuthority(authority_level)
       this.setUserName(username)
+      this.setdisplayName(displayName)
       this.setUserID(user_id)
       this.setIsUserAthenticated(true)
     },
@@ -127,6 +140,7 @@ export const useAuthenticationStore = defineStore("authentication", {
       this.deleteUserToken()
       this.setUserAuthority(null)
       this.setUserName(null)
+      this.setdisplayName(null)
       this.setUserID(null)
       this.setIsUserAthenticated(false)
       this.deleteUserAvatar()

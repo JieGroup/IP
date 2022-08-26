@@ -214,6 +214,8 @@ import { useInfoStore } from "@/stores/user-info"
 import { useAuthenticationStore } from "@/stores/authentication"
 import { process_axios_error, get_auth_url, get_api_url } from "@/utils/axios_utils"
 import { axios } from "@/utils/axios";
+import { initializeApp } from "firebase/app";
+import { getAuth, signInWithPopup, signOut } from "firebase/auth";
 // import { axios } from "@/utils/axios";
 import { linkTo } from "./index"
 
@@ -275,7 +277,7 @@ const authenticationStore = useAuthenticationStore()
 //       node: dom("#request-error-content")
 //         .clone()
 //         .removeClass("hidden")[0],
-//       duration: 10000,
+//       duration: 3000,
 //       newWindow: true,
 //       close: true,
 //       gravity: "top",
@@ -291,7 +293,7 @@ const authenticationStore = useAuthenticationStore()
 //         node: dom("#request-success-content")
 //           .clone()
 //           .removeClass("hidden")[0],
-//         duration: 10000,
+//         duration: 3000,
 //         newWindow: true,
 //         close: true,
 //         gravity: "top",
@@ -307,7 +309,7 @@ const authenticationStore = useAuthenticationStore()
 //         node: dom("#request-error-content")
 //           .clone()
 //           .removeClass("hidden")[0],
-//         duration: 10000,
+//         duration: 3000,
 //         newWindow: true,
 //         close: true,
 //         gravity: "top",
@@ -339,10 +341,36 @@ const authenticationStore = useAuthenticationStore()
 //   }
 //   linkTo('side-menu-faq-layout-3', router, params)
 // }
+function firebaseSignout() {
+  const firebaseConfig = {
+    apiKey: "AIzaSyA0H8fJmafRikhR1bxuLBetsdXAaAkaLZQ",
+    authDomain: "intervalprivacy-5fd0e.firebaseapp.com",
+    projectId: "intervalprivacy-5fd0e",
+    storageBucket: "intervalprivacy-5fd0e.appspot.com",
+    messagingSenderId: "223398428376",
+    appId: "1:223398428376:web:fb834783dbc72f3546a1ad",
+    measurementId: "G-Y5C5PE5HX6"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+
+  const auth = getAuth();
+  console.log('zhezhe');
+  signOut(auth).then(() => {
+    // Sign-out successful.
+    linkTo('login', router, {})
+    console.log('google logout successfullt')
+  }).catch((error) => {
+    // An error happened.
+    console.log('google logout failed')
+  });
+}
 
 const logout = () => {
   // clean msg stored in authenticationStore
   authenticationStore.logoutAction()
+  firebaseSignout()
   // go back to main page
   linkTo('login', router, {})
 }

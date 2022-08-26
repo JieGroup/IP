@@ -8,7 +8,7 @@
       <!-- :to="{ name: 'side-menu-dashboard-overview-4' }" -->
       <nav class="side-nav">
         <router-link
-          :to="{ name: 'side-menu-faq-layout-3' }"
+          :to="{ name: 'side-menu-create-new-survey' }"
           tag="a"
           class="intro-x flex items-center pl-5 pt-4"
         >

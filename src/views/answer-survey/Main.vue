@@ -30,13 +30,7 @@
           <div class="p-5">
             <Preview>
               <!-- BEGIN: Validation Form -->
-              <button @click="send_to_server" type="button" class="btn btn-primary mt-3">
-              Send
-              </button>
-              {{ }}
-              <button @click="back_to_start_answering" type="button" class="btn btn-primary mt-3">
-              Back
-              </button>
+              
               
               <!-- <br />
               <br /> -->
@@ -86,23 +80,23 @@
                   for="validation-form-2"
                   class="form-label w-full flex flex-col sm:flex-row"
               >
-                  Participation ID (e.g., MTurk ID, student ID)
+                  Participation ID (e.g., Participation ID, student ID)
                   <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
                   >Required</span
                   >
               </label>
               <input
                   id="validation-form-2"
-                  v-model.trim="startFormDataValidate.mturk_id.$model"
+                  v-model.trim="startFormDataValidate.participation_id.$model"
                   type="text"
-                  name="mturk_id"
+                  name="participation_id"
                   class="form-control"
-                  :class="{ 'border-danger': startFormDataValidate.mturk_id.$error }"
+                  :class="{ 'border-danger': startFormDataValidate.participation_id.$error }"
                   placeholder="Your unique participation ID."
               />
-              <template v-if="startFormDataValidate.mturk_id.$error">
+              <template v-if="startFormDataValidate.participation_id.$error">
                   <div
-                  v-for="(error, index) in startFormDataValidate.mturk_id.$errors"
+                  v-for="(error, index) in startFormDataValidate.participation_id.$errors"
                   :key="index"
                   class="text-danger mt-2"
                   >
@@ -138,7 +132,13 @@
                 </div>
               </div>
               <!-- BEGIN: Voter Submit Answers -->
-
+              <button @click="send_to_server" type="button" class="btn btn-primary mt-3">
+              Submit
+              </button>
+              {{ }}
+              <button @click="back_to_start_answering" type="button" class="btn btn-primary mt-3">
+              Back
+              </button>
               <!-- <button @click="ceshierror">
                 ceshierror
               </button> -->
@@ -239,14 +239,14 @@ let unique_key_num = ref(100000);
 
 let startFormData = reactive({
   survey_template_id: "",
-  mturk_id: "",
+  participation_id: "",
 });
 const rules = {
   survey_template_id: {
     required,
     minLength: minLength(1),
   },
-  mturk_id: {
+  participation_id: {
     required,
     minLength: minLength(1),
   },
@@ -332,7 +332,7 @@ const send_voter_start_answering = async () => {
     //   node: dom("#request-error-content")
     //     .clone()
     //     .removeClass("hidden")[0],
-    //   duration: 10000,
+    //   duration: 3000,
     //   newWindow: true,
     //   close: true,
     //   gravity: "top",
@@ -355,7 +355,7 @@ const send_voter_start_answering = async () => {
       console.log('----- Debugdone', processed_err)
       if (processed_err.error_msg === 'Reach the limit of number of copies') {
         let params = {
-          msg: 'Thanks for your attention. This survey has expired.'
+          msg: 'Thanks for your attention. This survey has completed.'
         }
         linkTo('side-menu-answer-survey-reject', router, params)
       } else {
@@ -363,7 +363,7 @@ const send_voter_start_answering = async () => {
           node: dom("#request-error-content")
             .clone()
             .removeClass("hidden")[0],
-          duration: 10000,
+          duration: 3000,
           newWindow: true,
           close: true,
           gravity: "top",
@@ -394,7 +394,7 @@ const send_voter_submit_answers = async () => {
     //   node: dom("#request-error-content")
     //     .clone()
     //     .removeClass("hidden")[0],
-    //   duration: 10000,
+    //   duration: 3000,
     //   newWindow: true,
     //   close: true,
     //   gravity: "top",
@@ -413,7 +413,7 @@ const send_voter_submit_answers = async () => {
       console.log('sssssshuishi', dom_ele.children[1].querySelector(".font-medium").innerHTML)
       Toastify({
         node: dom_ele,
-        duration: 10000,
+        duration: 3000,
         newWindow: true,
         close: true,
         gravity: "top",
@@ -443,7 +443,7 @@ const send_voter_submit_answers = async () => {
         node: dom("#request-error-content")
           .clone()
           .removeClass("hidden")[0],
-        duration: 10000,
+        duration: 3000,
         newWindow: true,
         close: true,
         gravity: "top",

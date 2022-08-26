@@ -160,19 +160,22 @@
                 <div class="text-xs text-slate-500 ml-1">(2.5+)</div>
               </div>
             </td> -->
+            <!-- creation_time: {{ item.creation_time }} -->
             <td class="text-center whitespace-nowrap">
-              {{ item.creation_time }}
+              {{ change_utc_time_to_local_time(item.creation_time) }} | Timezone: {{ get_current_timeZone() }}
             </td>
+            <!-- {{ item.status }} {{ item.status === true }} -->
             <td class="w-40">
               <div
                 class="flex items-center justify-center"
                 :class="{
-                  'text-success': item.status,
-                  'text-danger': !item.status,
+                  'text-success': item.status === 'Active',
+                  'text-primary': item.status === 'Completed',
+                  'text-danger': item.status === 'Removed',
                 }"
               >
                 <CheckSquareIcon class="w-4 h-4 mr-2" />
-                {{ item.status ? "Active" : "Removed" }}
+                {{ item.status }}
               </div>
             </td>
             <!-- <td class="w-40">
@@ -322,7 +325,7 @@
   </div>
   <!-- END: Request Error Content -->
   <!-- BEGIN: Delete Confirmation Modal -->
-  <Modal
+  <!-- <Modal
     :show="deleteConfirmationModal"
     @hidden="deleteConfirmationModal = false"
   >
@@ -346,7 +349,7 @@
         <button type="button" class="btn btn-danger w-24">Delete</button>
       </div>
     </ModalBody>
-  </Modal>
+  </Modal> -->
   <!-- END: Delete Confirmation Modal -->
 </template>
 
@@ -382,7 +385,7 @@ const copy_survey_link = async (surveyTemplateID) => {
 
     Toastify({
       node: dom_ele,
-      duration: 10000,
+      duration: 3000,
       newWindow: true,
       close: true,
       gravity: "top",
@@ -398,7 +401,7 @@ const copy_survey_link = async (surveyTemplateID) => {
 
     Toastify({
       node: dom_ele,
-      duration: 10000,
+      duration: 3000,
       newWindow: true,
       close: true,
       gravity: "top",
@@ -519,7 +522,7 @@ const download_file = async (survey_template_name, survey_template_id) => {
 
     Toastify({
       node: dom_ele,
-      duration: 10000,
+      duration: 3000,
       newWindow: true,
       close: true,
       gravity: "top",
@@ -535,7 +538,7 @@ const download_file = async (survey_template_name, survey_template_id) => {
       node: dom("#request-error-content")
         .clone()
         .removeClass("hidden")[0],
-      duration: 10000,
+      duration: 3000,
       newWindow: true,
       close: true,
       gravity: "top",
@@ -631,6 +634,38 @@ const page_count = () => {
   
 // }
 
+const convertTZ = (date, tzString) => {
+    return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));   
+}
+
+const get_timestamp = () => {
+    const today = new Date();
+    const date = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate();
+    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    const timestamp = date + ' ' + time;
+    return timestamp;
+  }
+
+const get_current_timeZone = () => {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone
+}
+
+const change_utc_time_to_local_time = (utcTimeStr) => {
+  console.log('utcTimeStr', utcTimeStr);
+  let GMTDate = new Date(utcTimeStr)
+  console.log('GMTData', GMTDate);
+  // 与对应的格林位置时间的差值
+  let offset = new Date().getTimezoneOffset()* 60 * 1000;
+  console.log('offset', offset);
+  //算出格林位置时间对应的本地时间
+  let localDate = new Date(GMTDate - offset);//Wed Apr 20 2016 22:27:02 GMT+0800 (CST)
+  console.log('localDate', localDate);
+  //转换成本地时间格式
+  let localDateInLocalString = localDate.toLocaleString();//2016/4/20 下午10:27:02
+  return localDateInLocalString
+}
+
+
 onMounted(() => {
   console.log('history-mounted')
 
@@ -683,7 +718,7 @@ onBeforeMount(async () => {
     //   node: dom("#success-notification-content")
     //     .clone()
     //     .removeClass("hidden")[0],
-    //   duration: 10000,
+    //   duration: 3000,
     //   newWindow: true,
     //   close: true,
     //   gravity: "top",
@@ -699,7 +734,7 @@ onBeforeMount(async () => {
     //   node: dom("#request-error-content")
     //     .clone()
     //     .removeClass("hidden")[0],
-    //   duration: 10000,
+    //   duration: 3000,
     //   newWindow: true,
     //   close: true,
     //   gravity: "top",
@@ -708,6 +743,30 @@ onBeforeMount(async () => {
     // }).showToast();
   }
   console.log('after_history')
+
+  // let time_stamp = get_timestamp()
+  // console.log('%%%%%time_stamp', time_stamp)
+
+  // let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+  // console.log('%%%%%timeZone', timeZone)
+
+  // // UTC时间
+  // let timeExample = '08/20/2022, 04:37:58'
+  // // let timeExample = '1660988278'
+  // let GMTDate = new Date(timeExample)
+  // console.log('$$$time', timeExample, GMTDate)
+  // let res = convertTZ(GMTDate, timeZone)
+  // console.log('((((', res)
+
+  // // 与对应的格林位置时间的差值
+  // let offset = new Date().getTimezoneOffset()* 60 * 1000;
+  // //算出现在的时间：
+  // // let nowDate = new Date().getTime();
+  // //算出格林位置时间对应的本地时间
+  // let localDate = new Date(GMTDate - offset);//Wed Apr 20 2016 22:27:02 GMT+0800 (CST)
+  // //转换成本地时间格式
+  // let GMTDateInLocalString = GMTDate.toLocaleString();//2016/4/20 下午10:27:02
+  // console.log('ceshiyxia', localDate, GMTDateInLocalString)
   // let Data = [
   //   {
   //     'survey_template_name': 'as',

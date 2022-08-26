@@ -158,8 +158,9 @@
           alt="Midone Tailwind HTML Admin Template"
           :src="$f()[0].photos[0]"
         /> -->
+        
         <img
-          v-if="authenticationStore.userAvatar !== '' || authenticationStore.userAvatar !== null"
+          v-if="authenticationStore.userAvatar !== ''"
           class="rounded-full"
           :src="authenticationStore.userAvatar"
         />
@@ -174,7 +175,7 @@
         <DropdownContent class="bg-primary text-white">
           <DropdownHeader v-if="authenticationStore.isUserAthenticated === true" tag="div" class="!font-normal">
             <!-- <div class="font-medium">{{ $f()[0].users[0].name }}</div> -->
-            <div class="font-medium">{{ authenticationStore.userName }}</div>
+            <div class="font-medium">{{ authenticationStore.displayName }}</div>
             <!-- <div class="text-xs text-white/70 mt-0.5 dark:text-slate-500">
               {{ $f()[0].jobs[0] }}
             </div> -->

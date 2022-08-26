@@ -10,11 +10,17 @@
       <div class="intro-y box mt-5 lg:mt-0">
         <div class="relative flex items-center p-5">
           <div class="w-12 h-12 image-fit">
+            <!-- {{ authenticationStore.userAvatar }} -->
+            <!-- <img
+              class="rounded-full"
+              [src]="https://lh3.googleusercontent.com/a-/AFdZucrnvQ7xL-8PDFcrBCiBwesvcUSR71ZpTK-fKv9NnA=s96-c"
+            /> -->
             <img
-              v-if="authenticationStore.userAvatar !== '' || authenticationStore.userAvatar !== null"
+              v-if="authenticationStore.userAvatar !== ''"
               class="rounded-full"
               :src="authenticationStore.userAvatar"
             />
+            
             <img
               v-else
               alt="Midone Tailwind HTML Admin Template"
@@ -23,7 +29,7 @@
             />
           </div>
           <div class="ml-4 mr-auto">
-            <div class="font-medium text-base">{{ authenticationStore.userName }}</div>
+            <div class="font-medium text-base">{{ authenticationStore.displayName }}</div>
             <!-- <div class="text-slate-500">{{ $f()[0].jobs[0] }}</div> -->
           </div>
           <!-- <Dropdown>
@@ -984,7 +990,7 @@ const uploadImage = async (event) => {
 
     Toastify({
       node: dom_ele,
-      duration: 10000,
+      duration: 3000,
       newWindow: true,
       close: true,
       gravity: "top",
@@ -1018,7 +1024,7 @@ const uploadImage = async (event) => {
 
         Toastify({
           node: dom_ele,
-          duration: 10000,
+          duration: 3000,
           newWindow: true,
           close: true,
           gravity: "top",
@@ -1035,7 +1041,7 @@ const uploadImage = async (event) => {
 
         Toastify({
           node: dom_ele,
-          duration: 10000,
+          duration: 3000,
           newWindow: true,
           close: true,
           gravity: "top",

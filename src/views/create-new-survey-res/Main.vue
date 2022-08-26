@@ -158,7 +158,7 @@ const copy_survey_link = async (surveyTemplateID) => {
 
     Toastify({
       node: dom_ele,
-      duration: 10000,
+      duration: 3000,
       newWindow: true,
       close: true,
       gravity: "top",
@@ -174,7 +174,7 @@ const copy_survey_link = async (surveyTemplateID) => {
 
     Toastify({
       node: dom_ele,
-      duration: 10000,
+      duration: 3000,
       newWindow: true,
       close: true,
       gravity: "top",

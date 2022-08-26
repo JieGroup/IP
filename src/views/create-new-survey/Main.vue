@@ -276,7 +276,7 @@ const send_form = async (templateData) => {
       node: dom("#success-notification-content")
         .clone()
         .removeClass("hidden")[0],
-      duration: 10000,
+      duration: 3000,
       newWindow: true,
       close: true,
       gravity: "top",
@@ -293,7 +293,7 @@ const send_form = async (templateData) => {
       node: dom("#request-error-content")
         .clone()
         .removeClass("hidden")[0],
-      duration: 10000,
+      duration: 3000,
       newWindow: true,
       close: true,
       gravity: "top",
@@ -327,7 +327,7 @@ const send_to_server = () => {
         node: dom("#failed-notification-content")
           .clone()
           .removeClass("hidden")[0],
-        duration: 6000,
+        duration: 3000,
         newWindow: true,
         close: true,
         gravity: "top",

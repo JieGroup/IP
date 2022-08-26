@@ -23,7 +23,7 @@
 
 
           <router-link
-            :to="{ name: 'side-menu-faq-layout-3' }"
+            :to="{ name: 'side-menu-create-new-survey' }"
             tag="a"
             class="intro-x flex items-center pl-5 pt-4"
           >
@@ -299,7 +299,7 @@ const reset_pwd = async () => {
       node: dom("#request-error-content")
         .clone()
         .removeClass("hidden")[0],
-      duration: 10000,
+      duration: 3000,
       newWindow: true,
       close: true,
       gravity: "top",
@@ -317,7 +317,7 @@ const reset_pwd = async () => {
         node: dom("#request-success-content")
           .clone()
           .removeClass("hidden")[0],
-        duration: 10000,
+        duration: 3000,
         newWindow: true,
         close: true,
         gravity: "top",
@@ -334,7 +334,7 @@ const reset_pwd = async () => {
         node: dom("#request-error-content")
           .clone()
           .removeClass("hidden")[0],
-        duration: 10000,
+        duration: 3000,
         newWindow: true,
         close: true,
         gravity: "top",

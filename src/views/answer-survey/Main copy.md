@@ -77,23 +77,23 @@
                   for="validation-form-2"
                   class="form-label w-full flex flex-col sm:flex-row"
               >
-                  Mturk ID
+                  Participation ID
                   <span class="sm:ml-auto mt-1 sm:mt-0 text-xs text-slate-500"
                   >Required</span
                   >
               </label>
               <input
                   id="validation-form-2"
-                  v-model.trim="startFormDataValidate.mturk_id.$model"
+                  v-model.trim="startFormDataValidate.participation_id.$model"
                   type="text"
-                  name="mturk_id"
+                  name="participation_id"
                   class="form-control"
-                  :class="{ 'border-danger': startFormDataValidate.mturk_id.$error }"
-                  placeholder="Your Mturk ID."
+                  :class="{ 'border-danger': startFormDataValidate.participation_id.$error }"
+                  placeholder="Your Participation ID."
               />
-              <template v-if="startFormDataValidate.mturk_id.$error">
+              <template v-if="startFormDataValidate.participation_id.$error">
                   <div
-                  v-for="(error, index) in startFormDataValidate.mturk_id.$errors"
+                  v-for="(error, index) in startFormDataValidate.participation_id.$errors"
                   :key="index"
                   class="text-danger mt-2"
                   >
@@ -229,14 +229,14 @@ let unique_key_num = ref(100000);
 
 let startFormData = reactive({
   survey_template_id: "",
-  mturk_id: "",
+  participation_id: "",
 });
 const rules = {
   survey_template_id: {
     required,
     minLength: minLength(1),
   },
-  mturk_id: {
+  participation_id: {
     required,
     minLength: minLength(1),
   },
@@ -322,7 +322,7 @@ const send_voter_start_answering = async () => {
       node: dom("#request-error-content")
         .clone()
         .removeClass("hidden")[0],
-      duration: 10000,
+      duration: 3000,
       newWindow: true,
       close: true,
       gravity: "top",
@@ -351,7 +351,7 @@ const send_voter_start_answering = async () => {
         node: dom("#request-error-content")
           .clone()
           .removeClass("hidden")[0],
-        duration: 10000,
+        duration: 3000,
         newWindow: true,
         close: true,
         gravity: "top",
@@ -376,7 +376,7 @@ const send_voter_submit_answers = async () => {
       node: dom("#request-error-content")
         .clone()
         .removeClass("hidden")[0],
-      duration: 10000,
+      duration: 3000,
       newWindow: true,
       close: true,
       gravity: "top",
@@ -395,7 +395,7 @@ const send_voter_submit_answers = async () => {
 
       Toastify({
         node: dom_ele,
-        duration: 10000,
+        duration: 3000,
         newWindow: true,
         close: true,
         gravity: "top",
@@ -425,7 +425,7 @@ const send_voter_submit_answers = async () => {
         node: dom("#request-error-content")
           .clone()
           .removeClass("hidden")[0],
-        duration: 10000,
+        duration: 3000,
         newWindow: true,
         close: true,
         gravity: "top",

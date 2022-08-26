@@ -25,6 +25,7 @@
     "chart.js": "^3.7.1",
     "dayjs": "^1.10.4",
     "dropzone": "^5.7.6",
+    "firebase": "^9.9.3",
     "highlight.js": "^10.6.0",
     "js-beautify": "^1.13.5",
     "litepicker": "^2.0.11",
