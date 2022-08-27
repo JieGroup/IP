@@ -169,7 +169,7 @@
                 :src="$f()[0].companyIcons[3]"
               /> -->
 
-              <button
+              <!-- <button
                 class="btn btn-outline-secondary py-2 px-3 w-full xl:w-32 mt-3 xl:mt-0 align-top"
                 @click="googleSignin"
               >
@@ -178,7 +178,7 @@
                   class="w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in"
                   :src="$f()[0].companyIcons[0]"
                 />
-              </button>
+              </button> -->
               <!-- <br />
               <br />
               <button
@@ -266,7 +266,7 @@
           <div class="ml-4 mr-4">
             <div class="font-medium">Request error!</div>
             <div class="text-slate-500 mt-1" >
-              Please check your input!
+              Please register first and check your input!
             </div>
           </div>
         </div>

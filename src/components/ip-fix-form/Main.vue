@@ -163,7 +163,7 @@ const emit = defineEmits([])
 
 const formData = reactive({
   survey_template_name: "",
-  survey_update_method: "static",
+  survey_update_method: "uniform",
   max_rounds: 1,
   number_of_copies: "",
   time_period: "3"
